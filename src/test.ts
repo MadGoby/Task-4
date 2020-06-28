@@ -1,5 +1,5 @@
-export function createDiv() {
+export function createDiv(context: HTMLElement) {
   let div: HTMLDivElement = document.createElement('div');
   div.classList.add('blackBlock')
-  document.body.append(div)
+  context.append(div)
 }
