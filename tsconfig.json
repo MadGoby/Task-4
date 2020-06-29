@@ -11,7 +11,7 @@
     "node_modules"
   ],
   "files": [
-    "./src/jquery.ui.customSlider.ts",
-    "./src/test.ts"
+    "src/jquery.ui.customSlider.ts",
+    "src/components/view/view.ts"
     ]
   }

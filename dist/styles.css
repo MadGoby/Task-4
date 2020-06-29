@@ -1,0 +1,38 @@
+@font-face {
+  font-family: "Mukta";
+  src: url('fonts/Mukta.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Mukta";
+  src: url('fonts/Mukta-Bold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: bold;
+}
+body {
+  font-family: 'Mukta', sans-serif;
+  background-color: grey;
+  position: relative;
+  height: 3000px;
+  min-width: 1450px;
+  user-select: none;
+}
+.mainH1 {
+  color: white;
+  border-bottom: 2px solid white;
+  width: 810px;
+  margin: auto;
+  margin-bottom: 20px;
+  outline: none;
+}
+.slider {
+  background-color: white;
+  width: 500px;
+  min-height: 30px;
+  border-radius: 10px;
+  padding: 30px 30px;
+  margin: auto;
+  position: relative;
+  top: 87px;
+}

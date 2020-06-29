@@ -49,7 +49,7 @@ module.exports = {
     new CopyWebpackPlugin({
       patterns: [
         {
-          from: path.resolve(__dirname, './src/jquery.ui.customSliderStyle.css'),
+          from: path.resolve(__dirname, './src/jquery.ui.customSliderStyles.css'),
           to: path.resolve(__dirname, './dist/plugin')
         }
       ],
