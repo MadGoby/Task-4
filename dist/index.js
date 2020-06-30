@@ -1,1 +1,5 @@
-$("#slider").testSlider();
+$("#slider").testSlider(
+  {
+    'range': true
+  }
+);
