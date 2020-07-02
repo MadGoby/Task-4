@@ -1,5 +1,6 @@
 import { View } from './components/view/view.ts';
 import { Model } from './components/model/model.ts';
+import { Presenter } from './components/presenter/presenter.ts';
 
 (function( $ ) {
   $.fn.testSlider = function( options ) {
@@ -8,24 +9,16 @@ import { Model } from './components/model/model.ts';
       'min': '0',
       'max': '10',
       'range': false,
+      'side-menu': false,
     }, options);
+
     let that:HTMLDivElement = this;
     
-    // Model
-    {
-      let model = new Model({'min': settings.min, 'max': settings.max})
-    }
-
-    // View
-    {
-      let view = new View(that, settings);
-      view.displayElements();
-    }
-
-    // Presenter
-    {
-
-    }
+    let model = new Model({'min': settings.min, 'max': settings.max})
     
+    let view = new View(that, settings);
+    view.displayElements();
+
+    let presenter = Presenter(view)
   };
 })(jQuery);

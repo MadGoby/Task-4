@@ -1,5 +1,6 @@
 $("#slider").testSlider(
   {
-    'range': true
+    'range': true,
+    'side-menu': true,
   }
 );
