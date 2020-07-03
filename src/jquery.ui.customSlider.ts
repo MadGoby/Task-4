@@ -10,6 +10,7 @@ import { Presenter } from './components/presenter/presenter.ts';
       'max': '10',
       'range': false,
       'side-menu': false,
+      'sideMenuContainer': 'false',
     }, options);
 
     let that:HTMLDivElement = this;

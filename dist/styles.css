@@ -11,12 +11,10 @@
   font-style: bold;
 }
 body {
-  font-family: 'Mukta', sans-serif;
   background-color: grey;
   position: relative;
   height: 3000px;
-  min-width: 1450px;
-  user-select: none;
+  min-width: 1500px;
 }
 .mainH1 {
   color: white;
@@ -24,7 +22,7 @@ body {
   width: 810px;
   margin: auto;
   margin-bottom: 20px;
-  outline: none;
+
 }
 .slider {
   background-color: white;
@@ -35,4 +33,39 @@ body {
   margin: auto;
   position: relative;
   top: 87px;
+}
+.headerh2 {
+  margin: 0;
+}
+.sliderMenu {
+  font-family: 'Mukta', sans-serif;
+  color: white;
+  width: 440px;
+  padding: 10px;
+  box-sizing: border-box;
+  position: relative;
+  top: -125px;
+}
+.sliderMenuContainer {
+  border-top-color: white;
+  border-bottom-color: white;
+  width: 430px;
+}
+.customToggleSliderBorder {
+  border-color: white;
+}
+.customToggleSliderBorder::before {
+  background-color: white;;
+}
+.customSliderToggle input:checked + .customToggleSliderBorder::before { 
+  background-color: rgb(229, 255, 0);
+}
+.customSliderToggle input:checked + .customToggleSliderBorder{ 
+  border-color: rgb(229, 255, 0);
+}
+.customSliderMinInput {
+  color: gray;
+}
+.customSliderMaxInput {
+  color: gray;
 }

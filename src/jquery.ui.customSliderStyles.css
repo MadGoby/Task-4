@@ -24,3 +24,78 @@
   right: 0px;
   display: none;
 }
+/* --------------------------------------- */
+.sliderMenuContainer {
+  width: 400px;
+  border-top: 4px solid black;
+  border-bottom: 4px solid black;
+  padding: 20px 10px;
+  font-weight: bold;
+  font-size: 20px;
+  line-height: 40px;
+  user-select: none;
+}
+
+.customToggleSliderBorder {
+  display: inline-block;
+  height: 20px;
+  width: 50px;
+  border: 2px solid black;
+  border-radius: 20px;
+  position: relative;
+}
+.customToggleSliderBorder::before {
+  content: "";
+  height: 16px;
+  width: 16px;
+  display: inline-block;
+  background-color: black;
+  border-radius: 50%;
+  position: absolute;
+  top: 2px; left: 2px;
+}
+.customSliderToggle {
+  height: 24px;
+  position: relative;
+  top: 7px;
+  margin-left: 5px;
+}
+.customSliderToggle input, .planeToggle, .showValueToggle{
+  display: none;
+}
+.customSliderToggle input:checked + .customToggleSliderBorder::before { 
+  left: 32px;
+}
+.customSliderParag, .customSliderParagVal {
+  display: inline-block;
+  margin: 0;
+  height: 24px;
+}
+.customSliderParagVal {
+  width: 100%;
+}
+.customSliderInputs {
+  width: 270px;
+}
+.customSliderInputlabel {
+  display: inline-block;
+  width: 60px;
+  margin-left: 30px;
+}
+.customSliderMinInput, .customSliderMaxInput {
+  display: inline-block;
+  height: 30px;
+  width: 150px;
+  border-radius: 32px;
+  border: none;
+  outline: none;
+  text-align: center;
+  font-weight: bold;
+  font-size: 25px;
+}
+.customSliderMinInput {
+  margin-bottom: 10px;
+}
+.customSliderInputs p{
+  width: 100%;
+}

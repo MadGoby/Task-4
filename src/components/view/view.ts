@@ -14,8 +14,9 @@ export class View {
   private sliderRange: HTMLDivElement;
   private minHandel: HTMLSpanElement;
   private maxHandel: HTMLSpanElement;
-  private sliderMovement: object;
+  private sliderMovement: Object;
   private sideMenu: HTMLDivElement;
+  private sideMenuContainer: String | Boolean;
   
   private constructor(target: HTMLDivElement, settings: Settings) {
     this.sliderRange = new SliderRange().getElement();
@@ -25,8 +26,7 @@ export class View {
     this.settings = settings;
     this.that = target;
     this.sideMenu = settings['side-menu'] === true ? new SideMenu().getElements(): undefined;
-    console.log(new SideMenu().getElements())
-    console.log(this.sideMenu)
+    this.sideMenuContainer = settings.sideMenuContainer;
   }
 
   displayElements(): void {
@@ -36,11 +36,15 @@ export class View {
     this.that.append(container);
     this.sliderRange.append(this.minHandel);
     this.sliderRange.append(this.maxHandel);
-    this.sideMenu !== undefined? this.that.append(this.sideMenu): console.log(false);
 
+    if (this.sideMenuContainer !== 'false') {
+      document.querySelector(this.sideMenuContainer).append(this.sideMenu)
+    } else {
+      this.that.append(this.sideMenu)
+    }
+    
     if (this.settings["range"] === true || 'true') {
       this.maxHandel.style.display = 'block'
     };
-  }
-  
-}
+  };
+};
