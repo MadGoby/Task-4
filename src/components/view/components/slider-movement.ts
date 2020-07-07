@@ -1,6 +1,9 @@
 interface Handels {
   [key: string]: HTMLElement;
 }
+interface MyDataObject {
+  [key: string]: string;
+}
 
 export class SliderMovement {
   min: HTMLSpanElement;
@@ -13,11 +16,16 @@ export class SliderMovement {
     this.sliderRange = handels.sliderRange;
   }
 
+  myData: MyDataObject = {
+    'min': ''
+  }
+
   minHandelListener( event ) {
-    
+    let position: number;
+    let sliderWidth: number;
     let min = this.min;
     let sliderRange = this.sliderRange
-
+    let that = this
     let shift: number;
     shift = event.clientX - min.getBoundingClientRect().left;
     
@@ -25,6 +33,7 @@ export class SliderMovement {
     document.addEventListener('mouseup', onMouseUp);
     
     function onMouseMove( event ) {
+      
       let newLeft: number;
       
       newLeft = event.clientX - shift - sliderRange.getBoundingClientRect().left;
@@ -40,16 +49,19 @@ export class SliderMovement {
       }
       
       min.style.left = newLeft + 'px';
+
+      position = newLeft;
+      sliderWidth = rightEdge;
     }
     
     function onMouseUp() {
       document.removeEventListener('mouseup', onMouseUp);
       document.removeEventListener('mousemove', onMouseMove);
+      that.myData['min'] = `${position}:${sliderWidth}`
     }
   }
 
-  maxHandelListener( event ) {
-    
+  maxHandelListener( event, target ) {
     let max = this.max;
     let sliderRange = this.sliderRange
 
@@ -80,6 +92,11 @@ export class SliderMovement {
     function onMouseUp() {
       document.removeEventListener('mouseup', onMouseUp);
       document.removeEventListener('mousemove', onMouseMove);
+      this.target['min'] = '1'
     }
+  }
+
+  getDataForModel(): object {
+    return {'position':  Number(this.min.style.left), 'sldierWidth': this.sliderRange.offsetWidth - this.max.offsetWidth}
   }
 }

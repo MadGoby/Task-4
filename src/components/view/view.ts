@@ -8,7 +8,6 @@ interface Settings {
 }
 
 export class View {
-
   private that: HTMLDivElement;
   private settings: Settings;
   private sliderRange: HTMLDivElement;

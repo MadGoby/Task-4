@@ -1,5 +1,6 @@
 import { View } from './components/view/view.ts';
-import { Model } from './components/model/model.ts';
+import { Model } from './components/model/Model.ts';
+import { Facade } from './components/model/facade.ts';
 import { Presenter } from './components/presenter/presenter.ts';
 
 (function( $ ) {
@@ -15,11 +16,13 @@ import { Presenter } from './components/presenter/presenter.ts';
 
     let that:HTMLDivElement = this;
     
-    let model = new Model({'min': settings.min, 'max': settings.max})
+    let model = new Model({'min': settings['min'], max: settings['max']});
+
+    let facade = new Facade(model)
     
     let view = new View(that, settings);
     view.displayElements();
 
-    let presenter = Presenter(view)
+    let presenter = Presenter(view, facade);
   };
 })(jQuery);
