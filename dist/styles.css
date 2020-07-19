@@ -18,11 +18,11 @@ body {
 }
 .mainH1 {
   color: white;
-  border-bottom: 2px solid white;
-  width: 810px;
-  margin: auto;
+  font-family: 'Mukta', sans-serif;
+  text-align: center;
   margin-bottom: 20px;
-
+  font-size: 40px;
+  user-select: none;
 }
 .slider {
   background-color: white;
@@ -36,6 +36,7 @@ body {
 }
 .headerh2 {
   margin: 0;
+  user-select: none;
 }
 .sliderMenu {
   font-family: 'Mukta', sans-serif;
@@ -63,9 +64,17 @@ body {
 .customSliderToggle input:checked + .customToggleSliderBorder{ 
   border-color: rgb(229, 255, 0);
 }
-.customSliderMinInput {
+.customSliderMinInput, .customSliderMaxInput  {
   color: gray;
 }
-.customSliderMaxInput {
+.minSliderPoint, .maxSliderPoint {
+  color: grey;
+  font-family: 'Mukta', sans-serif;
+}
+.sliderValue {
+  color: rgb(229, 255, 0);
+}
+.minSliderHandelLabel, .maxSliderHandelLabel {
   color: gray;
+  font-family: 'Mukta', sans-serif;
 }

@@ -1,34 +1,47 @@
 interface Handels {
-  [key: string]: HTMLElement;
+  [key: string]: HTMLDivElement | HTMLLabelElement ;
 }
 interface MyDataObject {
-  [key: string]: string;
+  [key: string]: {
+    [key: string]: string
+  };
 }
 
 export class SliderMovement {
   min: HTMLSpanElement;
   max: HTMLSpanElement;
+  minLabel: HTMLElement;
+  maxLabel: HTMLElement;
   sliderRange: HTMLElement;
 
   constructor( handels: Handels) {
     this.min = handels.min;
     this.max = handels.max;
+    this.minLabel= handels.minLabel;
+    this.maxLabel= handels.maxLabel;
     this.sliderRange = handels.sliderRange;
   }
 
   myData: MyDataObject = {
-    'min': ''
+    'min': {},
+    'max': {}
   }
 
+  startHandlersPositions(positionValues: object | undefined) {
+    if (typeof positionValues === 'undefined') {
+      this.myData.min.min = '0';
+      this.myData.max.max = this.sliderRange.offsetWidth - this.max.offsetWidth + '';
+    }
+  }
+  
   minHandelListener( event ) {
-    let position: number;
-    let sliderWidth: number;
     let min = this.min;
+    let max = this.max;
+    let minLabel = this.minLabel;
     let sliderRange = this.sliderRange
     let that = this
     let shift: number;
     shift = event.clientX - min.getBoundingClientRect().left;
-    
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
     
@@ -48,24 +61,32 @@ export class SliderMovement {
         newLeft = rightEdge;
       }
       
-      min.style.left = newLeft + 'px';
+      if (newLeft >= +that.myData.max['max'] - max.offsetWidth) {
+        newLeft = +that.myData.max['max'] - max.offsetWidth
+      }
 
-      position = newLeft;
-      sliderWidth = rightEdge;
+      min.style.left = newLeft + 'px';
+      
+      if (newLeft !== undefined || rightEdge !== undefined) {
+        that.myData['min'] = {'min': `${newLeft}`, 'sliderWidth': `${sliderRange.offsetWidth - min.offsetWidth}`}
+      }
+      
+      minLabel.style.left = ((min.offsetWidth - minLabel.offsetWidth) - 1) / 2 + 'px';
     }
-    
+
     function onMouseUp() {
       document.removeEventListener('mouseup', onMouseUp);
       document.removeEventListener('mousemove', onMouseMove);
-      that.myData['min'] = `${position}:${sliderWidth}`
     }
   }
 
   maxHandelListener( event, target ) {
     let max = this.max;
-    let sliderRange = this.sliderRange
-
+    let min = this.min;
+    let sliderRange = this.sliderRange;
     let shift: number;
+    let maxLabel = this.maxLabel;
+    let that = this
     shift = event.clientX - max.getBoundingClientRect().left;
     
     document.addEventListener('mousemove', onMouseMove);
@@ -85,18 +106,23 @@ export class SliderMovement {
       if (newLeft > rightEdge) {
         newLeft = rightEdge;
       }
+
+      if (newLeft <= +that.myData.min['min'] + min.offsetWidth) {
+        newLeft = +that.myData.min['min'] + min.offsetWidth
+      }
       
       max.style.left = newLeft + 'px';
+
+      if (newLeft !== undefined || rightEdge !== undefined) {
+        that.myData['max'] = {'max': `${newLeft}`, 'sliderWidth': `${sliderRange.offsetWidth - max.offsetWidth}`}
+      }
+      
+      maxLabel.style.left = ((max.offsetWidth - maxLabel.offsetWidth) - 1) / 2 + 'px';
     }
     
     function onMouseUp() {
       document.removeEventListener('mouseup', onMouseUp);
       document.removeEventListener('mousemove', onMouseMove);
-      this.target['min'] = '1'
     }
-  }
-
-  getDataForModel(): object {
-    return {'position':  Number(this.min.style.left), 'sldierWidth': this.sliderRange.offsetWidth - this.max.offsetWidth}
   }
 }

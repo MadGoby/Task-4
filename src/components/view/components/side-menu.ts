@@ -1,15 +1,21 @@
 export class SideMenu {
+
   customSliderMenuContainer: HTMLDivElement;
+
   constructor() {
     let sliderValueP:HTMLParagraphElement = document.createElement('p');
-    sliderValueP.classList.add('customSliderParagVal')
+    sliderValueP.classList.add('customSliderParagVal');
     sliderValueP.innerText = 'Текущее занчение: ';
     
-    let sliderValueOutput:HTMLOutputElement = document.createElement('output');
-    sliderValueOutput.classList.add('sliderValue');
+    let minSliderValueOutput:HTMLOutputElement = document.createElement('output');
+    minSliderValueOutput.classList.add('sliderValue');
+    minSliderValueOutput.id = 'minSliderValue';
+    let maxSliderValueOutput:HTMLOutputElement = document.createElement('output');
+    maxSliderValueOutput.classList.add('sliderValue');
+    maxSliderValueOutput.id = 'maxSliderValue';
     
     let sliderToggleP:HTMLParagraphElement = document.createElement('p');
-    sliderToggleP.classList.add('customSliderParag')
+    sliderToggleP.classList.add('customSliderParag');
     sliderToggleP.innerText = 'Включить второй ползунок: ';
     
     let sliderToggleLabel:HTMLLabelElement = document.createElement('label');
@@ -17,7 +23,7 @@ export class SideMenu {
 
     let maxSliderHandelToggle: HTMLInputElement = document.createElement('input');
     maxSliderHandelToggle.classList.add('maxSliderHandelToggle');
-    maxSliderHandelToggle.id = 'maxSliderHandelToggle'
+    maxSliderHandelToggle.id = 'maxSliderHandelToggle';
     maxSliderHandelToggle.setAttribute('type', 'checkbox')
 
     let customSliderBorder: HTMLSpanElement = document.createElement('span');
@@ -27,15 +33,15 @@ export class SideMenu {
     customSliderInputs.classList.add('customSliderInputs');
     
     let customSliderInputsP: HTMLParagraphElement = document.createElement('p');
-    customSliderInputsP.innerText = 'Изменить значение: '
-    customSliderInputsP.classList.add('customSliderParag')
+    customSliderInputsP.innerText = 'Изменить значение: ';
+    customSliderInputsP.classList.add('customSliderParag');
 
-    let customSliderInputsMinLabel: HTMLLabelElement = document.createElement('label')
+    let customSliderInputsMinLabel: HTMLLabelElement = document.createElement('label');
     customSliderInputsMinLabel.classList.add('customSliderInputlabel');
     customSliderInputsMinLabel.setAttribute('for', 'customSliderMinInput');
     customSliderInputsMinLabel.innerText = 'Min: ';
     
-    let customSliderInputsMaxLabel: HTMLLabelElement = document.createElement('label')
+    let customSliderInputsMaxLabel: HTMLLabelElement = document.createElement('label');
     customSliderInputsMaxLabel.classList.add('customSliderInputlabel');
     customSliderInputsMaxLabel.setAttribute('for', 'customSliderMaxInput');
     customSliderInputsMaxLabel.innerText = 'Max: ';
@@ -50,10 +56,10 @@ export class SideMenu {
     customSliderInputsMax.id = 'customSliderMaxInput';
     customSliderInputsMax.setAttribute('type', 'nymber');
 
-    let toggleForValuesContainer: HTMLDivElement = document.createElement('div')
+    let toggleForValuesContainer: HTMLDivElement = document.createElement('div');
 
     let toggleForValuesP: HTMLParagraphElement = document.createElement('p');
-    toggleForValuesP.classList.add('customSliderParag')
+    toggleForValuesP.classList.add('customSliderParag');
     toggleForValuesP.innerText = 'Включить занчение под ползунками: ';
 
     let toggleForValuesLabel: HTMLLabelElement = document.createElement('label');
@@ -65,12 +71,12 @@ export class SideMenu {
     toggleForValuesInput.id = 'showValueToggle';
 
     let toggleForValuesSpan: HTMLSpanElement = document.createElement('span');
-    toggleForValuesSpan.classList.add('customToggleSliderBorder')
+    toggleForValuesSpan.classList.add('customToggleSliderBorder');
     
-    let toggleForPlaneContainer: HTMLDivElement = document.createElement('div')
+    let toggleForPlaneContainer: HTMLDivElement = document.createElement('div');
 
     let toggleForPlaneP: HTMLParagraphElement = document.createElement('p');
-    toggleForPlaneP.classList.add('customSliderParag')
+    toggleForPlaneP.classList.add('customSliderParag');
     toggleForPlaneP.innerText = 'Изменить плоскость: ';
 
     let toggleForPlaneLabel: HTMLLabelElement = document.createElement('label');
@@ -82,32 +88,34 @@ export class SideMenu {
     toggleForPlaneInput.id = 'planeToggle';
 
     let toggleForPlaneSpan: HTMLSpanElement = document.createElement('span');
-    toggleForPlaneSpan.classList.add('customToggleSliderBorder')
+    toggleForPlaneSpan.classList.add('customToggleSliderBorder');
 
 
     let mainSliderContainer: HTMLDivElement = document.createElement('div');
 
     mainSliderContainer.classList.add('sliderMenuContainer');
     mainSliderContainer.append(sliderValueP);
-    sliderValueP.append(sliderValueOutput)
-    mainSliderContainer.append(sliderToggleP)
-    mainSliderContainer.append(sliderToggleLabel)
-    sliderToggleLabel.append(maxSliderHandelToggle, customSliderBorder)
+    sliderValueP.append(minSliderValueOutput);
+    sliderValueP.append(maxSliderValueOutput);
+    mainSliderContainer.append(sliderToggleP);
+    mainSliderContainer.append(sliderToggleLabel);
+    sliderToggleLabel.append(maxSliderHandelToggle, customSliderBorder);
 
-    customSliderInputs.append(customSliderInputsP, customSliderInputsMinLabel, customSliderInputsMin, customSliderInputsMaxLabel, customSliderInputsMax)
-    mainSliderContainer.append(customSliderInputs)
+    customSliderInputs.append(customSliderInputsP, customSliderInputsMinLabel, customSliderInputsMin, customSliderInputsMaxLabel, customSliderInputsMax);
+    mainSliderContainer.append(customSliderInputs);
 
     toggleForValuesContainer.append(toggleForValuesP, toggleForValuesLabel);
-    toggleForValuesLabel.append(toggleForValuesInput, toggleForValuesSpan)
-    mainSliderContainer.append(toggleForValuesContainer)
+    toggleForValuesLabel.append(toggleForValuesInput, toggleForValuesSpan);
+    mainSliderContainer.append(toggleForValuesContainer);
 
     toggleForPlaneContainer.append(toggleForPlaneP, toggleForPlaneLabel);
-    toggleForPlaneLabel.append(toggleForPlaneInput, toggleForPlaneSpan)
-    mainSliderContainer.append(toggleForPlaneContainer)
+    toggleForPlaneLabel.append(toggleForPlaneInput, toggleForPlaneSpan);
+    mainSliderContainer.append(toggleForPlaneContainer);
 
     this.customSliderMenuContainer = mainSliderContainer;
-  }
+  };
+
   getElements(): HTMLDivElement {
     return this.customSliderMenuContainer;
-  }
-}
+  };
+};

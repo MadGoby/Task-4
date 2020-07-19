@@ -14,7 +14,7 @@ import { Presenter } from './components/presenter/presenter.ts';
       'sideMenuContainer': 'false',
     }, options);
 
-    let that:HTMLDivElement = this;
+    let that: HTMLDivElement = this;
     
     let model = new Model({'min': settings['min'], max: settings['max']});
 
@@ -22,7 +22,8 @@ import { Presenter } from './components/presenter/presenter.ts';
     
     let view = new View(that, settings);
     view.displayElements();
-
+    'startValue' in settings ? view.sliderMovement.startHandlersPositions() : view.sliderMovement.startHandlersPositions();
+    'startValue' in settings ? view.refreshCurrentValues(settings.startValue) : view.refreshCurrentValues({'min': settings.min, 'max': settings.max});
     let presenter = Presenter(view, facade);
   };
 })(jQuery);

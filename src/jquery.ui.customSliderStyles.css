@@ -12,13 +12,14 @@
 }
 .minSliderHandel, .maxSliderHandel {
   display: block;
-  height: 24px; width: 24px;
+  height: 26px; width: 26px;
   border-radius: 50%;
   background: white;
   border: 1px solid black;
   position: absolute;
   top: -9px;
   z-index: 20;
+  box-sizing: border-box;
 }
 .maxSliderHandel {
   right: 0px;
@@ -69,7 +70,6 @@
 .customSliderParag, .customSliderParagVal {
   display: inline-block;
   margin: 0;
-  height: 24px;
 }
 .customSliderParagVal {
   width: 100%;
@@ -98,4 +98,36 @@
 }
 .customSliderInputs p{
   width: 100%;
+}
+.minSliderPoint, .maxSliderPoint {
+  position: absolute;
+  font-size: 24px;
+  user-select: none;
+  cursor: pointer;
+  margin: 0px;
+  top: -70px;
+}
+.maxSliderPoint {
+  right: 0px;
+}
+.minSliderPoint {
+  left: 0px;  
+}
+.sliderValue {
+  font-size: 30px;
+}
+#minSliderValue {
+  margin-left: 15px;
+}
+.minSliderHandelLabel, .maxSliderHandelLabel {
+  font-size: 20px;
+  position: relative;
+  text-align: center;
+  user-select: none;
+}
+.minSliderHandelLabel {
+  top: 25px;
+}
+.maxSliderHandelLabel {
+  top: -33px;
 }

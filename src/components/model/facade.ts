@@ -7,8 +7,13 @@ export class Facade {
     this.model = model
   }
   
-  refreshModelData(str: string): void {
-    let data = str.split(':')
-    this.model.data['current-min'] = Math.round(Number(data[0]) / (Number(data[1]) / (this.model.data['max'] - this.model.data['min'])))
-  }
+  refreshModelData(data: object, prop: string): object {
+    if (prop === 'min') {
+      this.model.data['current-min'] = Math.round(data['min'] / (+data['sliderWidth'] / (this.model.data['max'] - this.model.data['min'])));
+      return { 'min': this.model.data['current-min'] }
+    } else {
+      this.model.data['current-max'] = Math.round(data['max'] / (+data['sliderWidth'] / (this.model.data['max'] - this.model.data['min'])));
+      return { 'max': this.model.data['current-max'] }
+    }
+  } 
 }

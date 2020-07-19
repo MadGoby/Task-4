@@ -5,9 +5,10 @@ export function Presenter (view, facade): void {
 
   view.sliderMovement.myData = new Proxy(view.sliderMovement.myData, {
     set(target, prop, val) {
-      if(typeof val === 'string') {
+      if(typeof val === 'object') {
         target[prop] = val;
-        facade.refreshModelData(val);
+        let modelResult = facade.refreshModelData(val, prop);
+        view.refreshCurrentValues(modelResult)
         return true
       } else {
         return false
