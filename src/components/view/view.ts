@@ -9,6 +9,10 @@ interface Settings {
   [key: string]: string | boolean
 }
 
+interface SideMenuElements {
+  [key: string]: HTMLDivElement | HTMLInputElement;
+}
+
 interface DataOfValueRefresh {
   'min'?: string;
   'max'?: string;
@@ -27,6 +31,9 @@ export class View {
   private maxValue: HTMLParagraphElement;
   private minLabel: HTMLLabelElement;
   private maxLabel: HTMLLabelElement;
+  private handelToggle: HTMLInputElement;
+  private handelLabelToggle: HTMLInputElement;
+  private planeToggle: HTMLInputElement;
   
   private constructor(target: HTMLDivElement, settings: Settings) {
     this.settings = settings;
@@ -36,7 +43,13 @@ export class View {
     this.maxHandel = new Handels().getElements().max;
     this.minValue = new ValueRange({'min': this.settings['min'], 'max': this.settings['max']}).getElements().min;
     this.maxValue = new ValueRange({'min': this.settings['min'], 'max': this.settings['max']}).getElements().max;
-    this.sideMenu = settings['side-menu'] === true ? new SideMenu().getElements(): undefined;
+    if (settings['side-menu'] === true) {
+      let sideMenuElements: SideMenuElements = new SideMenu().getElements();
+      this.sideMenu = sideMenuElements.menu;
+      this.handelToggle = sideMenuElements.handelToggle;
+      this.handelLabelToggle = sideMenuElements.handelLabelToggle;
+      this.planeToggle = sideMenuElements.planeToggle;
+    }
     this.sideMenuContainer = settings.sideMenuContainer;
     this.minLabel = new HandelsLabels().getElements().min;
     this.maxLabel = new HandelsLabels().getElements().max;
@@ -54,6 +67,10 @@ export class View {
     this.sliderRange.append(this.maxValue);
     this.minHandel.append(this.minLabel);
     this.maxHandel.append(this.maxLabel);
+    if (this.settings['handelsLabel'] === false) {
+      this.minLabel.style.display = 'none';
+      this.maxLabel.style.display = 'none';
+    }
 
     if (this.sideMenuContainer !== 'false') {
       document.querySelector(this.sideMenuContainer).append(this.sideMenu)
@@ -61,14 +78,14 @@ export class View {
       this.that.append(this.sideMenu)
     }
     
-    if (this.settings["range"] === true || 'true') {
+    if (this.settings["range"] === true) {
       this.maxHandel.style.display = 'block'
     };
 
   };
 
   refreshCurrentValues(newData: DataOfValueRefresh): void {
-    if ('min' in newData && 'max' in newData) {
+    if ('min' in newData && 'max' in newData && this.settings['range'] === true) {
       this.sideMenu.querySelector('#minSliderValue').textContent = `${newData.min} - `;
       this.sideMenu.querySelector('#maxSliderValue').textContent = newData.max;
       this.sideMenu.querySelector('.customSliderMinInput').value = newData.min;
@@ -76,7 +93,11 @@ export class View {
       this.minHandel.querySelector('.minSliderHandelLabel').textContent = newData.min;
       this.maxHandel.querySelector('.maxSliderHandelLabel').textContent = newData.max;
     } else if ('min' in newData) {
-      this.sideMenu.querySelector('#minSliderValue').textContent = `${newData.min} - `;
+      if (this.settings['range'] === true) {
+        this.sideMenu.querySelector('#minSliderValue').textContent = `${newData.min} - `;
+      } else {
+        this.sideMenu.querySelector('#minSliderValue').textContent = `${newData.min}`;
+      }
       this.sideMenu.querySelector('.customSliderMinInput').value = newData.min;
       this.minHandel.querySelector('.minSliderHandelLabel').textContent = newData.min;
     } else {
@@ -87,4 +108,8 @@ export class View {
     this.minLabel.style.left = ((this.minHandel.offsetWidth - this.minLabel.offsetWidth) - 1) / 2 + 'px';
     this.maxLabel.style.left = ((this.maxHandel.offsetWidth - this.maxLabel.offsetWidth) - 1) / 2 + 'px';
   };
+
+  callHandelLabelToggleChanger(target: View): void {
+    new HandelsLabels(target.handelLabelToggle).displayController();
+  }
 };

@@ -24,4 +24,10 @@ export function Presenter (view, facade): void {
   view.maxHandel.onmousedown = function(event): void {
     view.sliderMovement.maxHandelListener( event );
   };
+  
+  view.handelLabelToggle.addEventListener('change', function() {
+    view.callHandelLabelToggleChanger(view)
+    let modelResult = facade.getModelData()
+    console.log(modelResult)
+  });
 };

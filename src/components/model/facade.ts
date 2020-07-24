@@ -15,5 +15,9 @@ export class Facade {
       this.model.data['current-max'] = Math.round(data['max'] / (+data['sliderWidth'] / (this.model.data['max'] - this.model.data['min'])));
       return { 'max': this.model.data['current-max'] }
     }
-  } 
+  }
+  getModelData(): object {
+    console.log(this.model.data)
+    return { 'min': this.model.data['current-min'], 'max': this.model.data['current-max']}
+  }
 }

@@ -11,13 +11,23 @@ import { Presenter } from './components/presenter/presenter.ts';
       'max': '10',
       'range': false,
       'side-menu': false,
+      'handelsLabel': false,
       'sideMenuContainer': 'false',
     }, options);
 
     let that: HTMLDivElement = this;
     
-    let model = new Model({'min': settings['min'], max: settings['max']});
-
+    let model;
+    if ('current-min' in settings && 'current-max' in settings) {
+      model = new Model({'min': settings['min'], max: settings['max'], 'current-min': settings['current-min'], 'current-max': settings['current-max']});
+    } else if ('current-min' in settings) {
+      model = new Model({'min': settings['min'], max: settings['max'], 'current-min': settings['current-min'], 'current-max': settings['max']});
+    } else if ('current-max' in settings) {
+      model = new Model({'min': settings['min'], max: settings['max'], 'current-min': settings['min'], 'current-max': settings['current-max']});
+    } else {
+      model = new Model({'min': settings['min'], max: settings['max'], 'current-min': settings['min'], 'current-max': settings['max']});
+    }
+    
     let facade = new Facade(model)
     
     let view = new View(that, settings);

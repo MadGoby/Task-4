@@ -1,6 +1,9 @@
 export class SideMenu {
 
   customSliderMenuContainer: HTMLDivElement;
+  handelToggle: HTMLInputElement;
+  handelLabelToggle: HTMLInputElement;
+  planeToggle: HTMLInputElement;
 
   constructor() {
     let sliderValueP:HTMLParagraphElement = document.createElement('p');
@@ -113,9 +116,18 @@ export class SideMenu {
     mainSliderContainer.append(toggleForPlaneContainer);
 
     this.customSliderMenuContainer = mainSliderContainer;
+    this.handelToggle = maxSliderHandelToggle;
+    this.handelLabelToggle = toggleForValuesInput;
+    this.planeToggle = toggleForPlaneInput;
+
   };
 
-  getElements(): HTMLDivElement {
-    return this.customSliderMenuContainer;
+  getElements(): object {
+    return {
+      menu: this.customSliderMenuContainer,
+      handelToggle: this.handelToggle,
+      handelLabelToggle: this.handelLabelToggle,
+      planeToggle: this.planeToggle
+    }
   };
 };
