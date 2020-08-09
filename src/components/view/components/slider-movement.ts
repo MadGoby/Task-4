@@ -80,7 +80,7 @@ export class SliderMovement {
     }
   }
 
-  maxHandelListener( event, target ) {
+  maxHandelListener( event ) {
     let max = this.max;
     let min = this.min;
     let sliderRange = this.sliderRange;
@@ -94,7 +94,7 @@ export class SliderMovement {
     
     function onMouseMove( event ) {
       let newLeft: number;
-      
+  
       newLeft = event.clientX - shift - sliderRange.getBoundingClientRect().left;
       
       if (newLeft < 0) {
@@ -102,7 +102,6 @@ export class SliderMovement {
       }
       
       let rightEdge = sliderRange.offsetWidth - max.offsetWidth;
-      
       if (newLeft > rightEdge) {
         newLeft = rightEdge;
       }

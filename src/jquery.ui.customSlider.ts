@@ -32,8 +32,10 @@ import { Presenter } from './components/presenter/presenter.ts';
     
     let view = new View(that, settings);
     view.displayElements();
+    
     'startValue' in settings ? view.sliderMovement.startHandlersPositions() : view.sliderMovement.startHandlersPositions();
     'startValue' in settings ? view.refreshCurrentValues(settings.startValue) : view.refreshCurrentValues({'min': settings.min, 'max': settings.max});
+    
     let presenter = Presenter(view, facade);
   };
 })(jQuery);

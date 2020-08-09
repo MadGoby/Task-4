@@ -9,7 +9,17 @@ export class Handels {
     this.minHandel = min;
     this.maxHandel = max;
   }
+
   getElements(): object {
     return {min: this.minHandel, max: this.maxHandel}
   }
+
+  displayController(toggle: HTMLInputElement, max: HTMLSpanElement) {
+    if (toggle.checked === true) {
+      max.style.display = 'block';
+    } else {
+      max.style.display = 'none';
+    }
+  }
+
 }

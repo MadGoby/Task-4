@@ -18,7 +18,6 @@ export function Presenter (view, facade): void {
 
   view.minHandel.onmousedown = function( event ): void {
     view.sliderMovement.minHandelListener( event );
-    
   };
 
   view.maxHandel.onmousedown = function(event): void {
@@ -28,6 +27,9 @@ export function Presenter (view, facade): void {
   view.handelLabelToggle.addEventListener('change', function() {
     view.callHandelLabelToggleChanger(view)
     let modelResult = facade.getModelData()
-    console.log(modelResult)
+  });
+
+  view.handelToggle.addEventListener('change', function() {
+    view.callMaxHandelToggleChanger(view)
   });
 };

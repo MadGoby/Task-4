@@ -3,10 +3,7 @@ export class HandelsLabels {
   maxLabel: HTMLLabelElement;
   labelInput: HTMLInputElement;
 
-  constructor(toggle: HTMLInputElement) {
-    if (toggle !== undefined) {
-      this.labelInput = toggle;
-    }
+  constructor() {
     let min:HTMLLabelElement = document.createElement('label');
     let max:HTMLLabelElement = document.createElement('label');
     min.classList.add('minSliderHandelLabel');
@@ -19,16 +16,18 @@ export class HandelsLabels {
     return {'min': this.minLabel, 'max': this.maxLabel};
   };
 
-  displayController() {
-    
-    if (this.labelInput.checked === true) {
-      console.log(this.minLabel)
-      this.minLabel.style.display = 'block';
-      this.maxLabel.style.display = 'block';
+  displayController(toggle: HTMLInputElement, min: HTMLLabelElement, max: HTMLLabelElement) {
+    if (toggle.checked === true) {
+      min.style.display = 'inline';
+      max.style.display = 'inline';
     } else {
-      this.minLabel.style.display = 'none';
-      this.maxLabel.style.display = 'none'; 
-      console.log(this.minLabel)
+      min.style.display = 'none';
+      max.style.display = 'none';
     }
+  }
+
+  centeringRelativeToHandles(minHandel: HTMLSpanElement, maxHandel: HTMLSpanElement, minLabel:HTMLLabelElement, maxLabel:HTMLLabelElement): void {
+    minLabel.style.left = ((minHandel.offsetWidth - minLabel.offsetWidth) - 1) / 2 + 'px';
+    maxLabel.style.left = ((maxHandel.offsetWidth - maxLabel.offsetWidth) - 1) / 2 + 'px';
   }
 }

@@ -67,9 +67,12 @@ export class View {
     this.sliderRange.append(this.maxValue);
     this.minHandel.append(this.minLabel);
     this.maxHandel.append(this.maxLabel);
+
     if (this.settings['handelsLabel'] === false) {
       this.minLabel.style.display = 'none';
       this.maxLabel.style.display = 'none';
+    } else {
+      this.handelLabelToggle.checked = true;
     }
 
     if (this.sideMenuContainer !== 'false') {
@@ -105,11 +108,29 @@ export class View {
       this.sideMenu.querySelector('.customSliderMaxInput').value = newData.max;
       this.maxHandel.querySelector('.maxSliderHandelLabel').textContent = newData.max;
     }
-    this.minLabel.style.left = ((this.minHandel.offsetWidth - this.minLabel.offsetWidth) - 1) / 2 + 'px';
-    this.maxLabel.style.left = ((this.maxHandel.offsetWidth - this.maxLabel.offsetWidth) - 1) / 2 + 'px';
+    new HandelsLabels().centeringRelativeToHandles(this.minHandel, this.maxHandel, this.minLabel, this.maxLabel)
   };
 
   callHandelLabelToggleChanger(target: View): void {
-    new HandelsLabels(target.handelLabelToggle).displayController();
+    new HandelsLabels().displayController(target.handelLabelToggle, this.minLabel, this.maxLabel);
+    if (target.handelLabelToggle.checked === true) {
+      new HandelsLabels().centeringRelativeToHandles(this.minHandel, this.maxHandel, this.minLabel, this.maxLabel)
+    }
+  }
+
+  callMaxHandelToggleChanger(target: View): void {
+    if (target.handelToggle.checked === false) {
+      this.sliderMovement.myData['max'] = {'max': `${this.sliderRange.offsetWidth - this.maxHandel.offsetWidth}`, 'sliderWidth': `${this.sliderRange.offsetWidth - this.maxHandel.offsetWidth}`}
+      this.maxHandel.style.left = `${this.sliderRange.offsetWidth - this.maxHandel.offsetWidth}px`;
+    }
+    
+    new Handels().displayController(target.handelToggle, this.maxHandel);
+
+    if (target.handelToggle.checked === true) {
+      if (this.sliderMovement.myData.min['min'] >= this.sliderRange.offsetWidth - this.maxHandel.offsetWidth - this.minHandel.offsetWidth) {
+        this.sliderMovement.myData['min'] = {'min': `${this.sliderRange.offsetWidth - this.maxHandel.offsetWidth - this.minHandel.offsetWidth}`, 'sliderWidth': `${this.sliderRange.offsetWidth - this.maxHandel.offsetWidth}`}
+        this.minHandel.style.left = `${this.sliderRange.offsetWidth - this.maxHandel.offsetWidth - this.minHandel.offsetWidth}px`;
+      }
+    }
   }
 };
