@@ -10,6 +10,5 @@ export class Model {
   
   constructor( settings: Settings ) { 
     this.data = Object.assign({}, settings);
-    // console.log(this.data)
   }
 }

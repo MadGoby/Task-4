@@ -99,6 +99,14 @@
 .customSliderInputs p{
   width: 100%;
 }
+.sliderValue {
+  font-size: 30px;
+}
+#minSliderValue {
+  margin-left: 15px;
+}
+/* ------------------------------------------------------ */
+/* Horizont */
 .minSliderPoint, .maxSliderPoint {
   position: absolute;
   font-size: 24px;
@@ -113,12 +121,26 @@
 .minSliderPoint {
   left: 0px;  
 }
-.sliderValue {
-  font-size: 30px;
+/* Vertical */
+.minSliderPointVertical, .maxSliderPointVertical {
+  position: absolute;
+  color: gray;
+  font-size: 24px;
+  transform: rotate(90deg);
+  margin-top: -30px;
 }
-#minSliderValue {
-  margin-left: 15px;
+.maxSliderPointVertical {
+  top: -70px;
+  right: -15px;
 }
+.minSliderPointVertical {
+  top: -70px;
+  left: 0px;
+  
+}
+/* ------------------------------------------------------ */
+/* ------------------------------------------------------ */
+/* Horizont */
 .minSliderHandelLabel, .maxSliderHandelLabel {
   font-size: 20px;
   position: relative;
@@ -131,3 +153,19 @@
 .maxSliderHandelLabel {
   top: -33px;
 }
+/* Vertical */
+.minSliderHandelLabelVertical, .maxSliderHandelLabelVertical {
+  display: none;
+  position: absolute;
+  color: grey;
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+  width: auto;
+  transform: rotate(90deg);
+  height: 26px;
+  top: 40px;
+  line-height: 26px;
+  user-select: none;
+}
+/* -------------------------------------------------------- */

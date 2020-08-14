@@ -8,6 +8,7 @@ export function Presenter (view, facade): void {
       if(typeof val === 'object') {
         target[prop] = val;
         let modelResult = facade.refreshModelData(val, prop);
+        console.log(modelResult)
         view.refreshCurrentValues(modelResult)
         return true
       } else {
@@ -31,5 +32,13 @@ export function Presenter (view, facade): void {
 
   view.handelToggle.addEventListener('change', function() {
     view.callMaxHandelToggleChanger(view)
+    if (view.handelToggle.checked === true) {
+      let result: number = facade.getMaxData();
+      view.refreshMaxSideMenuData(result)
+    };
+  });
+
+  view.planeToggle.addEventListener('change', function() {
+    view.sliderMovement.changePlane(view.planeToggle, view.sliderContainer, view.minValue, view.maxValue);
   });
 };

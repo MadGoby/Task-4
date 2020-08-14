@@ -44,8 +44,8 @@ body {
   width: 440px;
   padding: 10px;
   box-sizing: border-box;
-  position: relative;
-  top: -125px;
+  position: absolute;
+  top: 125px;
 }
 .sliderMenuContainer {
   border-top-color: white;
@@ -77,4 +77,11 @@ body {
 .minSliderHandelLabel, .maxSliderHandelLabel {
   color: gray;
   font-family: 'Mukta', sans-serif;
+}
+.minSliderPointVertical, .maxSliderPointVertical {
+  font-family: 'Mukta', sans-serif;
+}
+.minSliderHandelLabelVertical, .maxSliderHandelLabelVertical {
+  font-family: 'Mukta', sans-serif;
+  line-height: 26px;
 }

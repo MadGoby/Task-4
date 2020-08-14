@@ -4,6 +4,7 @@ export class SideMenu {
   handelToggle: HTMLInputElement;
   handelLabelToggle: HTMLInputElement;
   planeToggle: HTMLInputElement;
+  maxInput: HTMLInputElement;
 
   constructor() {
     let sliderValueP:HTMLParagraphElement = document.createElement('p');
@@ -119,7 +120,7 @@ export class SideMenu {
     this.handelToggle = maxSliderHandelToggle;
     this.handelLabelToggle = toggleForValuesInput;
     this.planeToggle = toggleForPlaneInput;
-
+    this.maxInput = customSliderInputsMax;
   };
 
   getElements(): object {
@@ -127,7 +128,8 @@ export class SideMenu {
       menu: this.customSliderMenuContainer,
       handelToggle: this.handelToggle,
       handelLabelToggle: this.handelLabelToggle,
-      planeToggle: this.planeToggle
+      planeToggle: this.planeToggle,
+      maxInput: this.maxInput
     }
   };
 };

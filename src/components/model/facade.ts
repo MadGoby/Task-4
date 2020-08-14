@@ -16,8 +16,12 @@ export class Facade {
       return { 'max': this.model.data['current-max'] }
     }
   }
+
   getModelData(): object {
-    console.log(this.model.data)
     return { 'min': this.model.data['current-min'], 'max': this.model.data['current-max']}
+  }
+
+  getMaxData(): number {
+    return this.model.data['max']
   }
 }

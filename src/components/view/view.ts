@@ -22,6 +22,7 @@ export class View {
   private that: HTMLDivElement;
   private settings: Settings;
   private sliderRange: HTMLDivElement;
+  private sliderContainer: HTMLDivElement;
   private minHandel: HTMLSpanElement;
   private maxHandel: HTMLSpanElement;
   private sliderMovement: Object;
@@ -34,6 +35,7 @@ export class View {
   private handelToggle: HTMLInputElement;
   private handelLabelToggle: HTMLInputElement;
   private planeToggle: HTMLInputElement;
+  private maxInput: HTMLInputElement;
   
   private constructor(target: HTMLDivElement, settings: Settings) {
     this.settings = settings;
@@ -49,15 +51,17 @@ export class View {
       this.handelToggle = sideMenuElements.handelToggle;
       this.handelLabelToggle = sideMenuElements.handelLabelToggle;
       this.planeToggle = sideMenuElements.planeToggle;
+      this.maxInput = sideMenuElements.maxInput;
     }
     this.sideMenuContainer = settings.sideMenuContainer;
     this.minLabel = new HandelsLabels().getElements().min;
     this.maxLabel = new HandelsLabels().getElements().max;
-    this.sliderMovement = new SliderMovement({'min': this.minHandel, 'max': this.maxHandel,'minLabel': this.minLabel, 'maxLabel': this.maxLabel ,'sliderRange': this.sliderRange})
+    this.sliderMovement = new SliderMovement({'min': this.minHandel, 'max': this.maxHandel,'minLabel': this.minLabel, 'maxLabel': this.maxLabel ,'sliderRange': this.sliderRange, 'planeToggle': this.planeToggle, 'handelsToggle': this.handelToggle})
   }
 
   displayElements(): void {
     let container: HTMLDivElement = document.createElement('div');
+    this.sliderContainer = container;
     container.classList.add('sliderBody');
     container.append(this.sliderRange);
     this.that.append(container);
@@ -83,30 +87,32 @@ export class View {
     
     if (this.settings["range"] === true) {
       this.maxHandel.style.display = 'block'
+      this.handelToggle.checked = true;
     };
+
 
   };
 
   refreshCurrentValues(newData: DataOfValueRefresh): void {
-    if ('min' in newData && 'max' in newData && this.settings['range'] === true) {
-      this.sideMenu.querySelector('#minSliderValue').textContent = `${newData.min} - `;
-      this.sideMenu.querySelector('#maxSliderValue').textContent = newData.max;
+    if ('min' in newData && 'max' in newData && this.settings['range'] === true && this.handelToggle.checked === true) {
+      this.sideMenu.querySelector('#minSliderValue').textContent = newData.min;
+      this.sideMenu.querySelector('#maxSliderValue').textContent = ` - ${newData.max}`;
       this.sideMenu.querySelector('.customSliderMinInput').value = newData.min;
       this.sideMenu.querySelector('.customSliderMaxInput').value = newData.max;
       this.minHandel.querySelector('.minSliderHandelLabel').textContent = newData.min;
       this.maxHandel.querySelector('.maxSliderHandelLabel').textContent = newData.max;
     } else if ('min' in newData) {
-      if (this.settings['range'] === true) {
-        this.sideMenu.querySelector('#minSliderValue').textContent = `${newData.min} - `;
+      if (this.settings['range'] === true && this.handelToggle.checked === true) {
+        this.sideMenu.querySelector('#minSliderValue').textContent = newData.min;;
       } else {
-        this.sideMenu.querySelector('#minSliderValue').textContent = `${newData.min}`;
+        this.sideMenu.querySelector('#minSliderValue').textContent = newData.min;;
       }
       this.sideMenu.querySelector('.customSliderMinInput').value = newData.min;
-      this.minHandel.querySelector('.minSliderHandelLabel').textContent = newData.min;
+      this.minLabel.textContent = newData.min;
     } else {
-      this.sideMenu.querySelector('#maxSliderValue').textContent = newData.max;
+      this.sideMenu.querySelector('#maxSliderValue').textContent = ` - ${newData.max}`;
       this.sideMenu.querySelector('.customSliderMaxInput').value = newData.max;
-      this.maxHandel.querySelector('.maxSliderHandelLabel').textContent = newData.max;
+      this.maxLabel.textContent = newData.max;
     }
     new HandelsLabels().centeringRelativeToHandles(this.minHandel, this.maxHandel, this.minLabel, this.maxLabel)
   };
@@ -122,15 +128,27 @@ export class View {
     if (target.handelToggle.checked === false) {
       this.sliderMovement.myData['max'] = {'max': `${this.sliderRange.offsetWidth - this.maxHandel.offsetWidth}`, 'sliderWidth': `${this.sliderRange.offsetWidth - this.maxHandel.offsetWidth}`}
       this.maxHandel.style.left = `${this.sliderRange.offsetWidth - this.maxHandel.offsetWidth}px`;
+      this.sideMenu.querySelector('#maxSliderValue').textContent = '';
+      this.maxInput.setAttribute('readonly', '');
+      this.maxInput.value = '';
+      this.maxInput.style.opacity = '0.3';
     }
     
     new Handels().displayController(target.handelToggle, this.maxHandel);
 
     if (target.handelToggle.checked === true) {
+      this.maxInput.removeAttribute('readonly');
       if (this.sliderMovement.myData.min['min'] >= this.sliderRange.offsetWidth - this.maxHandel.offsetWidth - this.minHandel.offsetWidth) {
         this.sliderMovement.myData['min'] = {'min': `${this.sliderRange.offsetWidth - this.maxHandel.offsetWidth - this.minHandel.offsetWidth}`, 'sliderWidth': `${this.sliderRange.offsetWidth - this.maxHandel.offsetWidth}`}
         this.minHandel.style.left = `${this.sliderRange.offsetWidth - this.maxHandel.offsetWidth - this.minHandel.offsetWidth}px`;
       }
     }
   }
+
+  refreshMaxSideMenuData(data: number): void {
+    this.sideMenu.querySelector('#maxSliderValue').textContent = ` - ${data}`;
+    this.maxInput.style.opacity = '1';
+    this.maxInput.value = `${data}`;
+  }
+    
 };
