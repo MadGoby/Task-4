@@ -11,4 +11,8 @@ export class Model {
   constructor( settings: Settings ) { 
     this.data = Object.assign({}, settings);
   }
+
+  getCurrentData(): object {
+    return {'min': this.data['current-min'], 'max': this.data['current-max'], 'positions': `${this.data.max - this.data.min}`}
+  }
 }

@@ -7,6 +7,10 @@ interface MyDataObject {
   };
 }
 
+interface StartHandelsPositionsData {
+  [key: string]: string
+}
+
 export class SliderMovement {
   min: HTMLSpanElement;
   max: HTMLSpanElement;
@@ -15,6 +19,7 @@ export class SliderMovement {
   sliderRange: HTMLElement;
   handelsToggle: HTMLInputElement;
   planeToggle: HTMLInputElement;
+  interval: HTMLDivElement;
 
   constructor( handels: Handels) {
     this.min = handels.min;
@@ -24,6 +29,7 @@ export class SliderMovement {
     this.sliderRange = handels.sliderRange;
     this.handelsToggle = handels.handelsToggle;
     this.planeToggle = handels.planeToggle;
+    this.interval = handels.interval;
   }
 
   myData: MyDataObject = {
@@ -31,11 +37,18 @@ export class SliderMovement {
     'max': {}
   }
 
-  startHandlersPositions(positionValues: object | undefined) {
-    if (typeof positionValues === 'undefined') {
-      this.myData.min.min = '0';
-      this.myData.max.max = this.sliderRange.offsetWidth - this.max.offsetWidth + '';
-    }
+  startHandlersPositions(positionValues: StartHandelsPositionsData ) {
+    let min: string = ((this.sliderRange.offsetWidth - this.max.offsetWidth) / +positionValues.positions) * +positionValues['min'] + '';
+    let max: string = ((this.sliderRange.offsetWidth - this.max.offsetWidth) / +positionValues.positions) * +positionValues['max'] + '';
+    
+    this.myData.min.min = min;
+    this.myData.max.max = max;
+
+    this.min.style.left = min + 'px';
+    this.max.style.left = max + 'px';
+
+    this.interval.style.left = +min + this.min.offsetWidth / 2 + 'px';
+    this.interval.style.right = (this.sliderRange.offsetWidth - +max) - this.min.offsetWidth / 2 + 'px';
   }
   
   minHandelListener( event ) {
@@ -47,6 +60,7 @@ export class SliderMovement {
     let shift: number;
     let doubleHandels = this.handelsToggle.checked;
     let vertical = this.planeToggle.checked;
+    let interval = this.interval;
 
     if (vertical) {
       shift = event.clientY - min.getBoundingClientRect().top - min.offsetWidth;
@@ -83,6 +97,7 @@ export class SliderMovement {
       }
 
       min.style.left = newLeft + 'px';
+      interval.style.left = newLeft + min.offsetWidth / 2 + 'px';
       
       if (newLeft !== undefined || rightEdge !== undefined) {
         that.myData['min'] = {'min': `${newLeft}`, 'sliderWidth': `${sliderRange.offsetWidth - min.offsetWidth}`}
@@ -106,6 +121,7 @@ export class SliderMovement {
     let that = this;
     let doubleHandels = this.handelsToggle.checked;
     let vertical = this.planeToggle.checked;
+    let interval = this.interval;
 
     if (vertical) {
       shift = event.clientY - max.getBoundingClientRect().top - max.offsetWidth;
@@ -139,6 +155,7 @@ export class SliderMovement {
       }
       
       max.style.left = newLeft + 'px';
+      interval.style.right = (sliderRange.offsetWidth - newLeft) - max.offsetWidth / 2 + 'px';
 
       if (newLeft !== undefined || rightEdge !== undefined) {
         that.myData['max'] = {'max': `${newLeft}`, 'sliderWidth': `${sliderRange.offsetWidth - max.offsetWidth}`}

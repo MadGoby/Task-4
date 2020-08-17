@@ -28,13 +28,10 @@ import { Presenter } from './components/presenter/presenter.ts';
       model = new Model({'min': settings['min'], max: settings['max'], 'current-min': settings['min'], 'current-max': settings['max']});
     }
     
-    let facade = new Facade(model)
-    
     let view = new View(that, settings);
-    view.displayElements();
+    // view.displayElements();
     
-    'startValue' in settings ? view.sliderMovement.startHandlersPositions() : view.sliderMovement.startHandlersPositions();
-    'startValue' in settings ? view.refreshCurrentValues(settings.startValue) : view.refreshCurrentValues({'min': settings.min, 'max': settings.max});
+    let facade = new Facade(model)
     
     let presenter = Presenter(view, facade);
   };

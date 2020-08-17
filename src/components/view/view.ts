@@ -4,6 +4,7 @@ import {SliderMovement} from './components/slider-movement.ts';
 import {SideMenu} from './components/side-menu.ts';
 import {ValueRange} from './components/valueRange.ts';
 import {HandelsLabels} from './components/handels-labels.ts';
+import {SelectedRange} from './components/selected-range.ts';
 
 interface Settings {
   [key: string]: string | boolean
@@ -36,6 +37,7 @@ export class View {
   private handelLabelToggle: HTMLInputElement;
   private planeToggle: HTMLInputElement;
   private maxInput: HTMLInputElement;
+  private interval: HTMLDivElement;
   
   private constructor(target: HTMLDivElement, settings: Settings) {
     this.settings = settings;
@@ -56,7 +58,8 @@ export class View {
     this.sideMenuContainer = settings.sideMenuContainer;
     this.minLabel = new HandelsLabels().getElements().min;
     this.maxLabel = new HandelsLabels().getElements().max;
-    this.sliderMovement = new SliderMovement({'min': this.minHandel, 'max': this.maxHandel,'minLabel': this.minLabel, 'maxLabel': this.maxLabel ,'sliderRange': this.sliderRange, 'planeToggle': this.planeToggle, 'handelsToggle': this.handelToggle})
+    this.interval = new SelectedRange().getElements();
+    this.sliderMovement = new SliderMovement({'min': this.minHandel, 'max': this.maxHandel,'minLabel': this.minLabel, 'maxLabel': this.maxLabel ,'sliderRange': this.sliderRange, 'planeToggle': this.planeToggle, 'handelsToggle': this.handelToggle, 'interval': this.interval})
   }
 
   displayElements(): void {
@@ -69,6 +72,8 @@ export class View {
     this.sliderRange.append(this.maxHandel);
     this.sliderRange.append(this.minValue);
     this.sliderRange.append(this.maxValue);
+    this.interval.style.height = this.sliderRange.offsetHeight + 'px';
+    this.sliderRange.append(this.interval);
     this.minHandel.append(this.minLabel);
     this.maxHandel.append(this.maxLabel);
 

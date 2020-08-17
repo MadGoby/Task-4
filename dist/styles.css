@@ -85,3 +85,6 @@ body {
   font-family: 'Mukta', sans-serif;
   line-height: 26px;
 }
+.mainInterval {
+  background-color: rgb(229, 255, 0);
+}

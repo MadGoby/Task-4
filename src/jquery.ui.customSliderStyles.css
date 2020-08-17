@@ -169,3 +169,8 @@
   user-select: none;
 }
 /* -------------------------------------------------------- */
+.mainInterval {
+  position: absolute;
+  background-color: red;
+  z-index: 10;
+}

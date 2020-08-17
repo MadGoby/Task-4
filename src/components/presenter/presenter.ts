@@ -2,9 +2,12 @@ import { SliderMovement } from "../view/components/slider-movement.ts";
 
 
 export function Presenter (view, facade): void {
-
+  
+  view.displayElements();
+  
   view.sliderMovement.myData = new Proxy(view.sliderMovement.myData, {
     set(target, prop, val) {
+      console.log(prop, val)
       if(typeof val === 'object') {
         target[prop] = val;
         let modelResult = facade.refreshModelData(val, prop);
@@ -41,4 +44,11 @@ export function Presenter (view, facade): void {
   view.planeToggle.addEventListener('change', function() {
     view.sliderMovement.changePlane(view.planeToggle, view.sliderContainer, view.minValue, view.maxValue);
   });
+
+  let startPositions: object = facade.startHandelsPosition();
+  view.sliderMovement.startHandlersPositions(startPositions);
+  view.refreshCurrentValues(startPositions)
+  
 };
+
+
