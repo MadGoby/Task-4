@@ -38,8 +38,8 @@ export class SliderMovement {
   }
 
   startHandlersPositions(positionValues: StartHandelsPositionsData ) {
-    let min: string = ((this.sliderRange.offsetWidth - this.max.offsetWidth) / +positionValues.positions) * +positionValues['min'] + '';
-    let max: string = ((this.sliderRange.offsetWidth - this.max.offsetWidth) / +positionValues.positions) * +positionValues['max'] + '';
+    let min: string = ((this.sliderRange.offsetWidth - this.min.offsetWidth) / +positionValues.positions) * +positionValues['min'] + '';
+    let max: string = ((this.sliderRange.offsetWidth - this.min.offsetWidth) / +positionValues.positions) * +positionValues['max'] + '';
     
     this.myData.min.min = min;
     this.myData.max.max = max;
@@ -197,4 +197,22 @@ export class SliderMovement {
       maxValue.classList.add('maxSliderPoint');
     };
   };
+
+  selectionOfPreparedValue(target: string): void {
+    if (target === 'min') {
+      this.myData['min'] = {'min': '0', 'sliderWidth':`${this.sliderRange.offsetWidth - this.min.offsetWidth}`}
+      this.min.style.left = '0px'
+      this.interval.style.left = 0 + this.min.offsetWidth / 2 + 'px';
+    } else {
+      if (this.handelsToggle.checked === true) {
+        this.myData['max'] = {'max': `${this.sliderRange.offsetWidth - this.min.offsetWidth}`, 'sliderWidth':`${this.sliderRange.offsetWidth - this.min.offsetWidth}`}
+        this.max.style.left = this.sliderRange.offsetWidth - this.min.offsetWidth + 'px';
+        this.interval.style.right = (this.sliderRange.offsetWidth - this.sliderRange.offsetWidth) + this.min.offsetWidth / 2 + 'px';
+      } else {
+        this.myData['min'] = {'min': `${this.sliderRange.offsetWidth - this.min.offsetWidth}`, 'sliderWidth':`${this.sliderRange.offsetWidth - this.min.offsetWidth}`}
+        this.min.style.left = this.sliderRange.offsetWidth - this.min.offsetWidth + 'px';
+        this.interval.style.left = (this.sliderRange.offsetWidth - this.min.offsetWidth) + this.min.offsetWidth / 2 +'px';
+      }
+    }
+  }
 };

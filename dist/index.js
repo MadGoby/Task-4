@@ -6,7 +6,9 @@ $("#slider").testSlider(
     'current-max': 700, //Only if range = true
     'range': true,
     'side-menu': true,
-    'handelsLabel': false,
+    'handelsLabel': true,
+    'vertical': true,
+    'step': 100,
     'sideMenuContainer': '#sliderMenu',
   }
 );

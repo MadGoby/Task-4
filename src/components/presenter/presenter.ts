@@ -7,11 +7,9 @@ export function Presenter (view, facade): void {
   
   view.sliderMovement.myData = new Proxy(view.sliderMovement.myData, {
     set(target, prop, val) {
-      console.log(prop, val)
       if(typeof val === 'object') {
         target[prop] = val;
         let modelResult = facade.refreshModelData(val, prop);
-        console.log(modelResult)
         view.refreshCurrentValues(modelResult)
         return true
       } else {
@@ -45,10 +43,17 @@ export function Presenter (view, facade): void {
     view.sliderMovement.changePlane(view.planeToggle, view.sliderContainer, view.minValue, view.maxValue);
   });
 
+  view.minValue.addEventListener('click', function() {
+    view.sliderMovement.selectionOfPreparedValue('min');
+  });
+
+  view.maxValue.addEventListener('click', function() {
+    view.sliderMovement.selectionOfPreparedValue('max');
+  });
+
   let startPositions: object = facade.startHandelsPosition();
   view.sliderMovement.startHandlersPositions(startPositions);
   view.refreshCurrentValues(startPositions)
-  
 };
 
 

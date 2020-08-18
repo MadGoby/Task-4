@@ -53,12 +53,12 @@ export class SideMenu {
     let customSliderInputsMin: HTMLInputElement = document.createElement('input');
     customSliderInputsMin.classList.add('customSliderMinInput');
     customSliderInputsMin.id = 'customSliderMinInput';
-    customSliderInputsMin.setAttribute('type', 'nymber');
+    customSliderInputsMin.setAttribute('type', 'number');
 
     let customSliderInputsMax: HTMLInputElement = document.createElement('input');
     customSliderInputsMax.classList.add('customSliderMaxInput');
     customSliderInputsMax.id = 'customSliderMaxInput';
-    customSliderInputsMax.setAttribute('type', 'nymber');
+    customSliderInputsMax.setAttribute('type', 'number');
 
     let toggleForValuesContainer: HTMLDivElement = document.createElement('div');
 

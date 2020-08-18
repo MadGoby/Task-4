@@ -93,9 +93,14 @@ export class View {
     if (this.settings["range"] === true) {
       this.maxHandel.style.display = 'block'
       this.handelToggle.checked = true;
+      this.interval.style.display = 'block';
+      this.maxInput.style.opacity = '1';
     };
 
-
+    if (this.settings['vertical'] === true) {
+      this.planeToggle.checked = true;
+      this.sliderMovement.changePlane(this.planeToggle, this.sliderContainer, this.minValue, this.maxValue);
+    }
   };
 
   refreshCurrentValues(newData: DataOfValueRefresh): void {
@@ -104,8 +109,8 @@ export class View {
       this.sideMenu.querySelector('#maxSliderValue').textContent = ` - ${newData.max}`;
       this.sideMenu.querySelector('.customSliderMinInput').value = newData.min;
       this.sideMenu.querySelector('.customSliderMaxInput').value = newData.max;
-      this.minHandel.querySelector('.minSliderHandelLabel').textContent = newData.min;
-      this.maxHandel.querySelector('.maxSliderHandelLabel').textContent = newData.max;
+      this.minLabel.textContent = newData.min;
+      this.maxLabel.textContent = newData.max;
     } else if ('min' in newData) {
       if (this.settings['range'] === true && this.handelToggle.checked === true) {
         this.sideMenu.querySelector('#minSliderValue').textContent = newData.min;;
@@ -131,18 +136,21 @@ export class View {
 
   callMaxHandelToggleChanger(target: View): void {
     if (target.handelToggle.checked === false) {
-      this.sliderMovement.myData['max'] = {'max': `${this.sliderRange.offsetWidth - this.maxHandel.offsetWidth}`, 'sliderWidth': `${this.sliderRange.offsetWidth - this.maxHandel.offsetWidth}`}
-      this.maxHandel.style.left = `${this.sliderRange.offsetWidth - this.maxHandel.offsetWidth}px`;
+      this.sliderMovement.myData['max'] = {'max': `${this.sliderRange.offsetWidth - this.minHandel.offsetWidth}`, 'sliderWidth': `${this.sliderRange.offsetWidth - this.minHandel.offsetWidth}`}
+      this.maxHandel.style.left = `${this.sliderRange.offsetWidth - this.minHandel.offsetWidth}px`;
       this.sideMenu.querySelector('#maxSliderValue').textContent = '';
       this.maxInput.setAttribute('readonly', '');
       this.maxInput.value = '';
       this.maxInput.style.opacity = '0.3';
+      this.interval.style.display = 'none';
     }
     
     new Handels().displayController(target.handelToggle, this.maxHandel);
 
     if (target.handelToggle.checked === true) {
       this.maxInput.removeAttribute('readonly');
+      this.interval.style.display = 'block';
+      this.interval.style.right = this.sliderRange.offsetWidth - (this.sliderRange.offsetWidth - this.minHandel.offsetWidth / 2 ) + 'px';
       if (this.sliderMovement.myData.min['min'] >= this.sliderRange.offsetWidth - this.maxHandel.offsetWidth - this.minHandel.offsetWidth) {
         this.sliderMovement.myData['min'] = {'min': `${this.sliderRange.offsetWidth - this.maxHandel.offsetWidth - this.minHandel.offsetWidth}`, 'sliderWidth': `${this.sliderRange.offsetWidth - this.maxHandel.offsetWidth}`}
         this.minHandel.style.left = `${this.sliderRange.offsetWidth - this.maxHandel.offsetWidth - this.minHandel.offsetWidth}px`;

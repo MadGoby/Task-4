@@ -12,7 +12,9 @@ import { Presenter } from './components/presenter/presenter.ts';
       'range': false,
       'side-menu': false,
       'handelsLabel': false,
-      'sideMenuContainer': 'false',
+      'vertical': false,
+      'step': false,
+      'sideMenuContainer': 'false'
     }, options);
 
     let that: HTMLDivElement = this;
@@ -29,7 +31,6 @@ import { Presenter } from './components/presenter/presenter.ts';
     }
     
     let view = new View(that, settings);
-    // view.displayElements();
     
     let facade = new Facade(model)
     
