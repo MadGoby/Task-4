@@ -32,4 +32,8 @@ export class Facade {
   getMaxData(): number {
     return this.model.data['max']
   };
+
+  getPositionsAmount(): number {
+    return this.model.data.max - this.model.data.min;
+  }
 };

@@ -28,7 +28,6 @@ export function Presenter (view, facade): void {
   
   view.handelLabelToggle.addEventListener('change', function() {
     view.callHandelLabelToggleChanger(view)
-    let modelResult = facade.getModelData()
   });
 
   view.handelToggle.addEventListener('change', function() {
@@ -49,6 +48,16 @@ export function Presenter (view, facade): void {
 
   view.maxValue.addEventListener('click', function() {
     view.sliderMovement.selectionOfPreparedValue('max');
+  });
+
+  view.minInput.addEventListener('change', function() {
+    let positions: number = facade.getPositionsAmount();
+    view.sliderMovement.sideMenuInputsValuesValidationChecker('min', view.minInput.value, positions);
+  });
+
+  view.maxInput.addEventListener('change', function() {
+    let positions: number = facade.getPositionsAmount();
+    view.sliderMovement.sideMenuInputsValuesValidationChecker('max', view.maxInput.value, positions);
   });
 
   let startPositions: object = facade.startHandelsPosition();

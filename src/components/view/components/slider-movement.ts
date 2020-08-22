@@ -1,5 +1,5 @@
 interface Handels {
-  [key: string]: HTMLDivElement | HTMLLabelElement | HTMLInputElement ;
+  [key: string]: HTMLLabelElement | HTMLInputElement | HTMLDivElement;
 }
 interface MyDataObject {
   [key: string]: {
@@ -14,9 +14,9 @@ interface StartHandelsPositionsData {
 export class SliderMovement {
   min: HTMLSpanElement;
   max: HTMLSpanElement;
-  minLabel: HTMLElement;
-  maxLabel: HTMLElement;
-  sliderRange: HTMLElement;
+  minLabel: HTMLLabelElement;
+  maxLabel: HTMLLabelElement;
+  sliderRange: HTMLDivElement;
   handelsToggle: HTMLInputElement;
   planeToggle: HTMLInputElement;
   interval: HTMLDivElement;
@@ -24,7 +24,7 @@ export class SliderMovement {
   constructor( handels: Handels) {
     this.min = handels.min;
     this.max = handels.max;
-    this.minLabel= handels.minLabel;
+    this.minLabel = handels.minLabel;
     this.maxLabel= handels.maxLabel;
     this.sliderRange = handels.sliderRange;
     this.handelsToggle = handels.handelsToggle;
@@ -43,14 +43,14 @@ export class SliderMovement {
     
     this.myData.min.min = min;
     this.myData.max.max = max;
-
+    
     this.min.style.left = min + 'px';
     this.max.style.left = max + 'px';
-
+    
     this.interval.style.left = +min + this.min.offsetWidth / 2 + 'px';
     this.interval.style.right = (this.sliderRange.offsetWidth - +max) - this.min.offsetWidth / 2 + 'px';
   }
-  
+
   minHandelListener( event ) {
     let min = this.min;
     let max = this.max;
@@ -64,7 +64,7 @@ export class SliderMovement {
 
     if (vertical) {
       shift = event.clientY - min.getBoundingClientRect().top - min.offsetWidth;
-    } else {
+    } else {  
       shift = event.clientX - min.getBoundingClientRect().left;
     }
     
@@ -72,7 +72,7 @@ export class SliderMovement {
     document.addEventListener('mouseup', onMouseUp);
     
     function onMouseMove( event ) {
-      
+     
       let newLeft: number;
       if (vertical) {
         newLeft = sliderRange.offsetWidth - (event.clientY - shift - sliderRange.getBoundingClientRect().top);
@@ -215,4 +215,29 @@ export class SliderMovement {
       }
     }
   }
+
+  sideMenuInputsValuesValidationChecker(target: string, value: number, positions: number): void {
+    if (target === 'min' && this.handelsToggle.checked) {
+      let min: string = ((this.sliderRange.offsetWidth - this.min.offsetWidth) / positions) * value + '';
+      if (+min >= +this.myData.max.max - this.min.offsetWidth) {
+        min = +this.myData.max.max - this.min.offsetWidth + '';
+      }
+      this.myData['min'] = {'min': min, 'sliderWidth': `${this.sliderRange.offsetWidth - this.min.offsetWidth}`};
+      this.min.style.left = min + 'px';
+      this.interval.style.left = min + this.min.offsetWidth / 2 +'px';
+    } else if (target === 'min') {
+      let min: string = ((this.sliderRange.offsetWidth - this.min.offsetWidth) / positions) * value + '';
+      this.myData['min'] = {'min': min, 'sliderWidth': `${this.sliderRange.offsetWidth - this.min.offsetWidth}`};
+      this.min.style.left = min + 'px';
+      this.interval.style.left = min + this.min.offsetWidth / 2 +'px';
+    } else if (target === 'max') {
+      let max: string = ((this.sliderRange.offsetWidth - this.max.offsetWidth) / positions) * value + '';
+      if (+max <= +this.myData.min.min + this.min.offsetWidth) {
+        max = +this.myData.min.min + this.max.offsetWidth + '';
+      }
+      this.myData['max'] = {'max': max, 'sliderWidth': `${this.sliderRange.offsetWidth - this.max.offsetWidth}`};
+      this.max.style.left = max + 'px';
+      this.interval.style.right = (this.sliderRange.offsetWidth - +max) - this.min.offsetWidth / 2 + 'px';
+    }
+  };
 };

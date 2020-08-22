@@ -36,6 +36,7 @@ export class View {
   private handelToggle: HTMLInputElement;
   private handelLabelToggle: HTMLInputElement;
   private planeToggle: HTMLInputElement;
+  private minInput: HTMLInputElement;
   private maxInput: HTMLInputElement;
   private interval: HTMLDivElement;
   
@@ -53,6 +54,7 @@ export class View {
       this.handelToggle = sideMenuElements.handelToggle;
       this.handelLabelToggle = sideMenuElements.handelLabelToggle;
       this.planeToggle = sideMenuElements.planeToggle;
+      this.minInput = sideMenuElements.minInput;
       this.maxInput = sideMenuElements.maxInput;
     }
     this.sideMenuContainer = settings.sideMenuContainer;
@@ -76,7 +78,7 @@ export class View {
     this.sliderRange.append(this.interval);
     this.minHandel.append(this.minLabel);
     this.maxHandel.append(this.maxLabel);
-
+    
     if (this.settings['handelsLabel'] === false) {
       this.minLabel.style.display = 'none';
       this.maxLabel.style.display = 'none';
