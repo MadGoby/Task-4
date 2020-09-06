@@ -65,7 +65,7 @@ export class SideMenu {
 
     let toggleForValuesP: HTMLParagraphElement = document.createElement('p');
     toggleForValuesP.classList.add('customSliderParag');
-    toggleForValuesP.innerText = 'Включить занчение под ползунками: ';
+    toggleForValuesP.innerText = 'Включить значения под ползунками: ';
 
     let toggleForValuesLabel: HTMLLabelElement = document.createElement('label');
     toggleForValuesLabel.classList.add('customSliderToggle');
@@ -133,6 +133,6 @@ export class SideMenu {
       planeToggle: this.planeToggle,
       minInput: this.minInput,
       maxInput: this.maxInput
-    }
+    };
   };
 };

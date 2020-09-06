@@ -12,14 +12,16 @@ interface StartHandelsPositionsData {
 }
 
 export class SliderMovement {
-  min: HTMLSpanElement;
-  max: HTMLSpanElement;
-  minLabel: HTMLLabelElement;
-  maxLabel: HTMLLabelElement;
-  sliderRange: HTMLDivElement;
-  handelsToggle: HTMLInputElement;
-  planeToggle: HTMLInputElement;
-  interval: HTMLDivElement;
+  private min: HTMLSpanElement;
+  private max: HTMLSpanElement;
+  private minLabel: HTMLLabelElement;
+  private maxLabel: HTMLLabelElement;
+  private sliderRange: HTMLDivElement;
+  private handelsToggle: HTMLInputElement;
+  private planeToggle: HTMLInputElement;
+  private interval: HTMLDivElement;
+  private step: number | string | boolean;
+  private stepAmount: number;
 
   constructor( handels: Handels) {
     this.min = handels.min;
@@ -30,6 +32,7 @@ export class SliderMovement {
     this.handelsToggle = handels.handelsToggle;
     this.planeToggle = handels.planeToggle;
     this.interval = handels.interval;
+    this.step = handels.step;
   }
 
   myData: MyDataObject = {
@@ -49,6 +52,7 @@ export class SliderMovement {
     
     this.interval.style.left = +min + this.min.offsetWidth / 2 + 'px';
     this.interval.style.right = (this.sliderRange.offsetWidth - +max) - this.min.offsetWidth / 2 + 'px';
+
   }
 
   minHandelListener( event ) {
@@ -61,6 +65,11 @@ export class SliderMovement {
     let doubleHandels = this.handelsToggle.checked;
     let vertical = this.planeToggle.checked;
     let interval = this.interval;
+    let step;
+    
+    if (this.step !== false) {
+      step = (sliderRange.offsetWidth - min.offsetWidth) / this.stepAmount * +this.step;
+    }
 
     if (vertical) {
       shift = event.clientY - min.getBoundingClientRect().top - min.offsetWidth;
@@ -78,32 +87,46 @@ export class SliderMovement {
         newLeft = sliderRange.offsetWidth - (event.clientY - shift - sliderRange.getBoundingClientRect().top);
       } else {
         newLeft = event.clientX - shift - sliderRange.getBoundingClientRect().left;
-      }
-      
-      if (newLeft < 0) {
-        newLeft = 0;
-      }
-      
+      };
+
       let rightEdge = sliderRange.offsetWidth - min.offsetWidth;
 
-      if (doubleHandels) { 
-        if (newLeft >= +that.myData.max['max'] - max.offsetWidth) {
-          newLeft = +that.myData.max['max'] - max.offsetWidth
+      if (that.step !== false) {
+        if (newLeft >= +that.myData.min.min + step || newLeft <= +that.myData.min.min - step) {
+          newLeft >= +that.myData.min.min + step ? newLeft = +that.myData.min.min + step : false;
+          newLeft <= +that.myData.min.min - step ? newLeft = +that.myData.min.min - step : false;
+          renewalOfPosition();
         }
       } else {
-        if (newLeft > rightEdge) {
-          newLeft = rightEdge;
-        }
-      }
+        renewalOfPosition();
+      };
 
-      min.style.left = newLeft + 'px';
-      interval.style.left = newLeft + min.offsetWidth / 2 + 'px';
-      
-      if (newLeft !== undefined || rightEdge !== undefined) {
-        that.myData['min'] = {'min': `${newLeft}`, 'sliderWidth': `${sliderRange.offsetWidth - min.offsetWidth}`}
+      function renewalOfPosition(): void {
+
+        if (newLeft < 0) {
+          newLeft = 0;
+        };
+        
+        if (doubleHandels) { 
+          if (newLeft >= +that.myData.max['max'] - max.offsetWidth) {
+            newLeft = +that.myData.max['max'] - max.offsetWidth
+          };
+        } else {
+          if (newLeft > rightEdge) {
+            newLeft = rightEdge;
+          };
+        };
+
+        min.style.left = newLeft + 'px';
+        interval.style.left = newLeft + min.offsetWidth / 2 + 'px';
+        
+        if (newLeft !== undefined || rightEdge !== undefined) {
+          that.myData['min'] = {'min': `${newLeft}`, 'sliderWidth': `${sliderRange.offsetWidth - min.offsetWidth}`}
+        };
+        
+        minLabel.style.left = ((min.offsetWidth - minLabel.offsetWidth) - 1) / 2 + 'px';
       }
       
-      minLabel.style.left = ((min.offsetWidth - minLabel.offsetWidth) - 1) / 2 + 'px';
     }
 
     function onMouseUp() {
@@ -122,6 +145,11 @@ export class SliderMovement {
     let doubleHandels = this.handelsToggle.checked;
     let vertical = this.planeToggle.checked;
     let interval = this.interval;
+    let step;
+    
+    if (this.step !== false) {
+      step = (sliderRange.offsetWidth - min.offsetWidth) / this.stepAmount * +this.step;
+    }
 
     if (vertical) {
       shift = event.clientY - max.getBoundingClientRect().top - max.offsetWidth;
@@ -140,29 +168,43 @@ export class SliderMovement {
       } else {
         newLeft = event.clientX - shift - sliderRange.getBoundingClientRect().left;
       }
-      
-      if (newLeft < 0) {
-        newLeft = 0;
-      }
-      
+
       let rightEdge = sliderRange.offsetWidth - max.offsetWidth;
-      if (newLeft > rightEdge) {
-        newLeft = rightEdge;
-      }
 
-      if (newLeft <= +that.myData.min['min'] + min.offsetWidth) {
-        newLeft = +that.myData.min['min'] + min.offsetWidth
-      }
-      
-      max.style.left = newLeft + 'px';
-      interval.style.right = (sliderRange.offsetWidth - newLeft) - max.offsetWidth / 2 + 'px';
+      if (that.step !== false) {
+        if (newLeft >= +that.myData.max.max + step || newLeft <= +that.myData.max.max - step) {
+          newLeft >= +that.myData.max.max + step ? newLeft = +that.myData.max.max + step : false;
+          newLeft <= +that.myData.max.max - step ? newLeft = +that.myData.max.max - step : false;
+          renewalOfPosition();
+        }
+      } else {
+        renewalOfPosition();
+      };
 
-      if (newLeft !== undefined || rightEdge !== undefined) {
-        that.myData['max'] = {'max': `${newLeft}`, 'sliderWidth': `${sliderRange.offsetWidth - max.offsetWidth}`}
-      }
-      
-      maxLabel.style.left = ((max.offsetWidth - maxLabel.offsetWidth) - 1) / 2 + 'px';
-    }
+      function renewalOfPosition(): void {
+
+        if (newLeft < 0) {
+          newLeft = 0;
+        };
+
+        if (newLeft > rightEdge) {
+          newLeft = rightEdge;
+        };
+  
+        if (newLeft <= +that.myData.min['min'] + min.offsetWidth) {
+          newLeft = +that.myData.min['min'] + min.offsetWidth
+        };
+        
+        max.style.left = newLeft + 'px';
+        interval.style.right = (sliderRange.offsetWidth - newLeft) - max.offsetWidth / 2 + 'px';
+  
+        if (newLeft !== undefined || rightEdge !== undefined) {
+          that.myData['max'] = {'max': `${newLeft}`, 'sliderWidth': `${sliderRange.offsetWidth - max.offsetWidth}`}
+        };
+        
+        maxLabel.style.left = ((max.offsetWidth - maxLabel.offsetWidth) - 1) / 2 + 'px';
+      };
+    };
     
     function onMouseUp() {
       document.removeEventListener('mouseup', onMouseUp);

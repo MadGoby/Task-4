@@ -8,16 +8,16 @@ import {SelectedRange} from './components/selected-range.ts';
 
 interface Settings {
   [key: string]: string | boolean
-}
+};
 
 interface SideMenuElements {
   [key: string]: HTMLDivElement | HTMLInputElement;
-}
+};
 
 interface DataOfValueRefresh {
   'min'?: string;
   'max'?: string;
-}
+};
 
 export class View {
   private that: HTMLDivElement;
@@ -56,12 +56,12 @@ export class View {
       this.planeToggle = sideMenuElements.planeToggle;
       this.minInput = sideMenuElements.minInput;
       this.maxInput = sideMenuElements.maxInput;
-    }
+    };
     this.sideMenuContainer = settings.sideMenuContainer;
     this.minLabel = new HandelsLabels().getElements().min;
     this.maxLabel = new HandelsLabels().getElements().max;
     this.interval = new SelectedRange().getElements();
-    this.sliderMovement = new SliderMovement({'min': this.minHandel, 'max': this.maxHandel,'minLabel': this.minLabel, 'maxLabel': this.maxLabel ,'sliderRange': this.sliderRange, 'planeToggle': this.planeToggle, 'handelsToggle': this.handelToggle, 'interval': this.interval})
+    this.sliderMovement = new SliderMovement({'min': this.minHandel, 'max': this.maxHandel,'minLabel': this.minLabel, 'maxLabel': this.maxLabel ,'sliderRange': this.sliderRange, 'planeToggle': this.planeToggle, 'handelsToggle': this.handelToggle, 'interval': this.interval, 'step': this.settings.step})
   }
 
   displayElements(): void {
@@ -84,13 +84,13 @@ export class View {
       this.maxLabel.style.display = 'none';
     } else {
       this.handelLabelToggle.checked = true;
-    }
+    };
 
     if (this.sideMenuContainer !== 'false') {
       document.querySelector(this.sideMenuContainer).append(this.sideMenu)
     } else {
       this.that.append(this.sideMenu)
-    }
+    };
     
     if (this.settings["range"] === true) {
       this.maxHandel.style.display = 'block'
@@ -102,7 +102,7 @@ export class View {
     if (this.settings['vertical'] === true) {
       this.planeToggle.checked = true;
       this.sliderMovement.changePlane(this.planeToggle, this.sliderContainer, this.minValue, this.maxValue);
-    }
+    };
   };
 
   refreshCurrentValues(newData: DataOfValueRefresh): void {
@@ -118,14 +118,14 @@ export class View {
         this.sideMenu.querySelector('#minSliderValue').textContent = newData.min;;
       } else {
         this.sideMenu.querySelector('#minSliderValue').textContent = newData.min;;
-      }
+      };
       this.sideMenu.querySelector('.customSliderMinInput').value = newData.min;
       this.minLabel.textContent = newData.min;
     } else {
       this.sideMenu.querySelector('#maxSliderValue').textContent = ` - ${newData.max}`;
       this.sideMenu.querySelector('.customSliderMaxInput').value = newData.max;
       this.maxLabel.textContent = newData.max;
-    }
+    };
     new HandelsLabels().centeringRelativeToHandles(this.minHandel, this.maxHandel, this.minLabel, this.maxLabel)
   };
 
@@ -133,8 +133,8 @@ export class View {
     new HandelsLabels().displayController(target.handelLabelToggle, this.minLabel, this.maxLabel);
     if (target.handelLabelToggle.checked === true) {
       new HandelsLabels().centeringRelativeToHandles(this.minHandel, this.maxHandel, this.minLabel, this.maxLabel)
-    }
-  }
+    };
+  };
 
   callMaxHandelToggleChanger(target: View): void {
     if (target.handelToggle.checked === false) {
@@ -145,7 +145,7 @@ export class View {
       this.maxInput.value = '';
       this.maxInput.style.opacity = '0.3';
       this.interval.style.display = 'none';
-    }
+    };
     
     new Handels().displayController(target.handelToggle, this.maxHandel);
 
@@ -156,14 +156,20 @@ export class View {
       if (this.sliderMovement.myData.min['min'] >= this.sliderRange.offsetWidth - this.maxHandel.offsetWidth - this.minHandel.offsetWidth) {
         this.sliderMovement.myData['min'] = {'min': `${this.sliderRange.offsetWidth - this.maxHandel.offsetWidth - this.minHandel.offsetWidth}`, 'sliderWidth': `${this.sliderRange.offsetWidth - this.maxHandel.offsetWidth}`}
         this.minHandel.style.left = `${this.sliderRange.offsetWidth - this.maxHandel.offsetWidth - this.minHandel.offsetWidth}px`;
-      }
-    }
-  }
+      };
+    };
+  };
 
   refreshMaxSideMenuData(data: number): void {
     this.sideMenu.querySelector('#maxSliderValue').textContent = ` - ${data}`;
     this.maxInput.style.opacity = '1';
     this.maxInput.value = `${data}`;
-  }
+  };
+
+  inputsPossibleRange( data: object, min: HTMLInputElement, max: HTMLInputElement): void {
+    min.setAttribute('max', data.max);
+    min.setAttribute('min', data.min);
+    max.setAttribute('max', data.max);
+  };
     
 };

@@ -18,6 +18,12 @@ export function Presenter (view, facade): void {
     }
   })
 
+  if (view.sliderMovement.step !== false) {
+    let stepAmount: number = facade.getPositionsAmount();
+    view.sliderMovement.stepAmount = stepAmount;
+  }
+  
+
   view.minHandel.onmousedown = function( event ): void {
     view.sliderMovement.minHandelListener( event );
   };
@@ -59,6 +65,9 @@ export function Presenter (view, facade): void {
     let positions: number = facade.getPositionsAmount();
     view.sliderMovement.sideMenuInputsValuesValidationChecker('max', view.maxInput.value, positions);
   });
+
+  let possibleRange: object = facade.getPossibleRange();
+  view.inputsPossibleRange(possibleRange, view.minInput, view.maxInput)
 
   let startPositions: object = facade.startHandelsPosition();
   view.sliderMovement.startHandlersPositions(startPositions);
