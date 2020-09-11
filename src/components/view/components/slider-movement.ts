@@ -43,9 +43,9 @@ export class SliderMovement {
   startHandlersPositions(positionValues: StartHandelsPositionsData ) {
     let min: string = ((this.sliderRange.offsetWidth - this.min.offsetWidth) / +positionValues.positions) * +positionValues['min'] + '';
     let max: string = ((this.sliderRange.offsetWidth - this.min.offsetWidth) / +positionValues.positions) * +positionValues['max'] + '';
-    
-    this.myData.min.min = min;
-    this.myData.max.max = max;
+  
+    // this.myData.min.min = min;
+    // this.myData.max.max = max;
     
     this.min.style.left = min + 'px';
     this.max.style.left = max + 'px';

@@ -17,10 +17,10 @@ export class Facade {
   
   refreshModelData(data: object, prop: string): object {
     if (prop === 'min') {
-      this.model.data['current-min'] = Math.round(data['min'] / (+data['sliderWidth'] / (this.model.data['max'] - this.model.data['min'])));
+      this.model.data['current-min'] = Math.round(this.model.data['min'] + (data['min'] / (+data['sliderWidth'] / (this.model.data['max'] - this.model.data['min']))));
       return { 'min': this.model.data['current-min'] }
     } else {
-      this.model.data['current-max'] = Math.round(data['max'] / (+data['sliderWidth'] / (this.model.data['max'] - this.model.data['min'])));
+      this.model.data['current-max'] = Math.round(this.model.data['min'] + (data['max'] / (+data['sliderWidth'] / (this.model.data['max'] - this.model.data['min']))));
       return { 'max': this.model.data['current-max'] }
     };
   };

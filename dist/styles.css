@@ -15,16 +15,20 @@ body {
   position: relative;
   height: 3000px;
   min-width: 1500px;
+  margin: 0px;
 }
 .mainH1 {
-  color: white;
+  color: gray;
   font-family: 'Mukta', sans-serif;
   text-align: center;
   margin-bottom: 20px;
-  font-size: 40px;
+  font-size: 60px;
   user-select: none;
+  background-color: white;
+  margin: 0px;
+  height: 100px;
 }
-.slider {
+.slider, .slider2, .slider3, .slider4, .slider5 {
   background-color: white;
   width: 500px;
   min-height: 30px;
@@ -32,20 +36,33 @@ body {
   padding: 30px 30px;
   margin: auto;
   position: relative;
-  top: 87px;
 }
 .headerh2 {
   margin: 0;
   user-select: none;
 }
-.sliderMenu {
+.sliderMenu, .sliderMenu2, .sliderMenu3, .sliderMenu4, .sliderMenu5 {
   font-family: 'Mukta', sans-serif;
   color: white;
   width: 440px;
   padding: 10px;
   box-sizing: border-box;
   position: absolute;
-  top: 125px;
+}
+.sliderMenu {
+  top: 124px;
+}
+.sliderMenu2 {
+  top: 757px
+}
+.sliderMenu3 {
+  top: 1391px
+}
+.sliderMenu4 {
+  top: 2026px
+}
+.sliderMenu5 {
+  top: 2659px
 }
 .sliderMenuContainer {
   border-top-color: white;
@@ -87,4 +104,27 @@ body {
 }
 .mainInterval {
   background-color: rgb(229, 255, 0);
+}
+.sliderCustomContainer {
+  width: 560px;
+  height: 560px;
+  margin: auto;
+  position: relative;
+  margin-top: 74px;
+}
+.footer {
+  width: 100%;
+  height: 100px;
+  background-color: white;
+  position: relative;
+  top: 100px;
+}
+.footerText {
+  font-family: 'Mukta', sans-serif;
+  color: grey;
+  font: bolder;
+  font-size: 60px;
+  margin: auto;
+  width: 220px;
+  text-align: center;
 }
