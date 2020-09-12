@@ -41,11 +41,11 @@ export class SliderMovement {
   }
 
   startHandlersPositions(positionValues: StartHandelsPositionsData ) {
-    let min: string = ((this.sliderRange.offsetWidth - this.min.offsetWidth) / +positionValues.positions) * +positionValues['min'] + '';
-    let max: string = ((this.sliderRange.offsetWidth - this.min.offsetWidth) / +positionValues.positions) * +positionValues['max'] + '';
-  
-    // this.myData.min.min = min;
-    // this.myData.max.max = max;
+    let min: string = ((this.sliderRange.offsetWidth - this.min.offsetWidth) / +positionValues.positions) * (+positionValues['min'] - +positionValues['minimum']) + '';
+    let max: string = ((this.sliderRange.offsetWidth - this.min.offsetWidth) / +positionValues.positions) * (+positionValues['max'] - +positionValues['minimum']) + '';
+    
+    this.myData.min.min = min;
+    this.myData.max.max = max;
     
     this.min.style.left = min + 'px';
     this.max.style.left = max + 'px';
@@ -258,9 +258,10 @@ export class SliderMovement {
     }
   }
 
-  sideMenuInputsValuesValidationChecker(target: string, value: number, positions: number): void {
+  sideMenuInputsValuesValidationChecker(target: string, value: number, positions: number, minimum: number): void {
+    console.log(positions)
     if (target === 'min' && this.handelsToggle.checked) {
-      let min: string = ((this.sliderRange.offsetWidth - this.min.offsetWidth) / positions) * value + '';
+      let min: string = ((this.sliderRange.offsetWidth - this.min.offsetWidth) / positions) * (value - minimum) + '';
       if (+min >= +this.myData.max.max - this.min.offsetWidth) {
         min = +this.myData.max.max - this.min.offsetWidth + '';
       }
@@ -268,12 +269,12 @@ export class SliderMovement {
       this.min.style.left = min + 'px';
       this.interval.style.left = min + this.min.offsetWidth / 2 +'px';
     } else if (target === 'min') {
-      let min: string = ((this.sliderRange.offsetWidth - this.min.offsetWidth) / positions) * value + '';
+      let min: string = ((this.sliderRange.offsetWidth - this.min.offsetWidth) / positions) * (value - minimum) + '';
       this.myData['min'] = {'min': min, 'sliderWidth': `${this.sliderRange.offsetWidth - this.min.offsetWidth}`};
       this.min.style.left = min + 'px';
       this.interval.style.left = min + this.min.offsetWidth / 2 +'px';
     } else if (target === 'max') {
-      let max: string = ((this.sliderRange.offsetWidth - this.max.offsetWidth) / positions) * value + '';
+      let max: string = ((this.sliderRange.offsetWidth - this.max.offsetWidth) / positions) * (value - minimum) + '';
       if (+max <= +this.myData.min.min + this.min.offsetWidth) {
         max = +this.myData.min.min + this.max.offsetWidth + '';
       }

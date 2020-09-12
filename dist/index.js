@@ -1,13 +1,13 @@
 $("#slider").testSlider(
   {
-    'min': -1000,
-    'max': 1000,
-    'current-min': 200,
-    'current-max': 800, //Only if range = true
+    'min': -100,
+    'max': 100,
+    'current-min': -70,
+    'current-max': 70, //Only if range = true
     'range': true,
     'handelsLabel': true,
     'vertical': true,
-    'step': false,
+    'step': 10,
     'side-menu': true,
     'sideMenuContainer': '#sliderMenu', //Only if side-menu = true
   }
@@ -22,7 +22,7 @@ $("#slider2").testSlider(
     'range': true,
     'handelsLabel': true,
     'vertical': false,
-    'step': 500,
+    'step': 1000,
     'side-menu': true,
     'sideMenuContainer': '#sliderMenu2', //Only if side-menu = true
   }

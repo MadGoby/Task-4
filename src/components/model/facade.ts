@@ -37,7 +37,7 @@ export class Facade {
     return {'max':this.model.data.max, 'min': this.model.data.min};
   };
 
-  getPositionsAmount(): number {
-    return this.model.data.max - this.model.data.min;
+  getPositionsAmount(): object {
+    return {'positions': this.model.data.max - this.model.data.min, 'minimum': this.model.data.min};
   }
 };

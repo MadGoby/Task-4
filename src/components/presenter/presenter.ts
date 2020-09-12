@@ -19,8 +19,8 @@ export function Presenter (view, facade): void {
   })
 
   if (view.sliderMovement.step !== false) {
-    let stepAmount: number = facade.getPositionsAmount();
-    view.sliderMovement.stepAmount = stepAmount;
+    let stepAmount: object = facade.getPositionsAmount();
+    view.sliderMovement.stepAmount = stepAmount['positions'];
   }
   
 
@@ -58,12 +58,12 @@ export function Presenter (view, facade): void {
 
   view.minInput.addEventListener('change', function() {
     let positions: number = facade.getPositionsAmount();
-    view.sliderMovement.sideMenuInputsValuesValidationChecker('min', view.minInput.value, positions);
+    view.sliderMovement.sideMenuInputsValuesValidationChecker('min', view.minInput.value, positions['positions'], positions['minimum']);
   });
 
   view.maxInput.addEventListener('change', function() {
     let positions: number = facade.getPositionsAmount();
-    view.sliderMovement.sideMenuInputsValuesValidationChecker('max', view.maxInput.value, positions);
+    view.sliderMovement.sideMenuInputsValuesValidationChecker('max', view.maxInput.value, positions['positions'], positions['minimum']);
   });
 
   let possibleRange: object = facade.getPossibleRange();

@@ -13,6 +13,6 @@ export class Model {
   }
 
   getCurrentData(): object {
-    return {'min': this.data['current-min'], 'max': this.data['current-max'], 'positions': `${this.data.max - this.data.min}`}
+    return {'minimum': this.data.min, 'min': this.data['current-min'], 'max': this.data['current-max'], 'positions': `${this.data.max - this.data.min}`}
   }
 }
