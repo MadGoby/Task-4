@@ -13,5 +13,6 @@
   "files": [
     "src/jquery.ui.customSlider.ts",
     "src/components/view/view.ts"
-    ]
-  }
+    ],
+  "typeRoots": ["node_modules/@types"]
+}

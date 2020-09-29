@@ -1,4 +1,4 @@
-import { IData } from './dataInterface.ts'
+import { IData } from './dataInterface.ts';
 
 interface Settings {
   [key: string]: string | boolean

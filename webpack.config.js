@@ -3,7 +3,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 module.exports = {
   mode: 'development',
-  devtool: 'eval-source-map',
+  devtool: 'inline-source-map',
   entry: './src/jquery.ui.customSlider.ts',
   output: {
     filename: '[name].js',
