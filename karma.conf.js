@@ -4,11 +4,13 @@ module.exports = function(config) {
     config.set({
         basePath: '',
         frameworks: ['jasmine'],
-        files: ['test/*.ts', 'test/*.js'],
+        files: [
+            'test/*.ts',
+        ],
         exclude: [],
         preprocessors: {
-            'test/**/*.ts': ['webpack'],
-            'test/**/*.js': ['webpack'],
+            'test/**/*.ts': 'webpack',
+            'src/**/*.ts': 'coverage'
         },
         webpack: {
             module: webpackConfig.module,
@@ -16,7 +18,11 @@ module.exports = function(config) {
             mode: webpackConfig.mode,
             devtool: 'inline-source-map',
         },
-        reporters: ['spec'],
+        coverageReporter: {
+            type : 'html',
+            dir : 'test/coverage/'
+        },
+        reporters: ['spec', 'coverage'],
         port: 9876,
         colors: true,
         logLevel: config.LOG_INFO,

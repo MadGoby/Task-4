@@ -1,6 +1,6 @@
 export interface IData {
   min: string;
   max: string;
-  currentMin?: string;
-  currentMax?: string;
+  'current-min'?: string;
+  'current-max'?: string;
 }
