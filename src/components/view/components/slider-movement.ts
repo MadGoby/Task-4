@@ -52,7 +52,6 @@ export class SliderMovement {
     
     this.interval.style.left = +min + this.min.offsetWidth / 2 + 'px';
     this.interval.style.right = (this.sliderRange.offsetWidth - +max) - this.min.offsetWidth / 2 + 'px';
-
   }
 
   minHandelListener( event ) {
@@ -66,7 +65,7 @@ export class SliderMovement {
     let vertical = this.planeToggle.checked;
     let interval = this.interval;
     let step;
-    
+    console.log('ok')
     if (this.step !== false) {
       step = (sliderRange.offsetWidth - min.offsetWidth) / this.stepAmount * +this.step;
     }
@@ -77,11 +76,8 @@ export class SliderMovement {
       shift = event.clientX - min.getBoundingClientRect().left;
     }
     
-    document.addEventListener('mousemove', onMouseMove);
-    document.addEventListener('mouseup', onMouseUp);
-    
-    function onMouseMove( event ) {
-     
+    let onMouseMove = function( event ) {
+     console.log('OK 2')
       let newLeft: number;
       if (vertical) {
         newLeft = sliderRange.offsetWidth - (event.clientY - shift - sliderRange.getBoundingClientRect().top);
@@ -125,10 +121,12 @@ export class SliderMovement {
         };
         
         minLabel.style.left = ((min.offsetWidth - minLabel.offsetWidth) - 1) / 2 + 'px';
-      }
-      
+      }  
     }
 
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
+    
     function onMouseUp() {
       document.removeEventListener('mouseup', onMouseUp);
       document.removeEventListener('mousemove', onMouseMove);
@@ -146,7 +144,7 @@ export class SliderMovement {
     let vertical = this.planeToggle.checked;
     let interval = this.interval;
     let step;
-    
+
     if (this.step !== false) {
       step = (sliderRange.offsetWidth - min.offsetWidth) / this.stepAmount * +this.step;
     }
@@ -259,7 +257,7 @@ export class SliderMovement {
   }
 
   sideMenuInputsValuesValidationChecker(target: string, value: number, positions: number, minimum: number): void {
-    console.log(positions)
+  
     if (target === 'min' && this.handelsToggle.checked) {
       let min: string = ((this.sliderRange.offsetWidth - this.min.offsetWidth) / positions) * (value - minimum) + '';
       if (+min >= +this.myData.max.max - this.min.offsetWidth) {

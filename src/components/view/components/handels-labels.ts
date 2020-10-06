@@ -26,8 +26,8 @@ export class HandelsLabels {
     }
   }
 
-  centeringRelativeToHandles(minHandel: HTMLSpanElement, maxHandel: HTMLSpanElement, minLabel:HTMLLabelElement, maxLabel:HTMLLabelElement): void {
-    minLabel.style.left = ((minHandel.offsetWidth - minLabel.offsetWidth) - 1) / 2 + 'px';
-    maxLabel.style.left = ((maxHandel.offsetWidth - maxLabel.offsetWidth) - 1) / 2 + 'px';
+  centeringRelativeToHandles(minHandelWidth: number, maxHandelWidth: number, minLabelWidth: number, maxLabelWidth: number, minLabel: HTMLLabelElement, maxLabel: HTMLLabelElement): void {
+    minLabel.style.left = (minHandelWidth - minLabelWidth) / 2 + 'px';
+    maxLabel.style.left = (maxHandelWidth - maxLabelWidth) / 2 + 'px';
   }
 }

@@ -5,6 +5,7 @@ module.exports = function(config) {
         basePath: '',
         frameworks: ['jasmine'],
         files: [
+            'node_modules/jquery/dist/jquery.js',
             'test/*.ts',
         ],
         exclude: [],

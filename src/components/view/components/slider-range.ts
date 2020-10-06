@@ -1,11 +1,15 @@
 export class SliderRange {
-  element: HTMLDivElement;
+
+  range: HTMLDivElement;
+  
   constructor () {
     let elem: HTMLDivElement = document.createElement('div');
     elem.classList.add('sliderRange');
-    this.element = elem;
-  }
-  getElement(): HTMLDivElement{
-    return this.element;
-  }
-}
+    this.range = elem;
+  };
+
+  getElements(): HTMLDivElement{
+    return this.range;
+  };
+
+};

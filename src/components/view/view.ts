@@ -43,7 +43,7 @@ export class View {
   private constructor(target: HTMLDivElement, settings: Settings) {
     this.settings = settings;
     this.that = target;
-    this.sliderRange = new SliderRange().getElement();
+    this.sliderRange = new SliderRange().getElements();
     this.minHandel = new Handels().getElements().min;
     this.maxHandel = new Handels().getElements().max;
     this.minValue = new ValueRange({'min': this.settings['min'], 'max': this.settings['max']}).getElements().min;
@@ -126,13 +126,13 @@ export class View {
       this.sideMenu.querySelector('.customSliderMaxInput').value = newData.max;
       this.maxLabel.textContent = newData.max;
     };
-    new HandelsLabels().centeringRelativeToHandles(this.minHandel, this.maxHandel, this.minLabel, this.maxLabel)
+    new HandelsLabels().centeringRelativeToHandles(this.minHandel.offsetWidth, this.maxHandel.offsetWidth, this.minLabel.offsetWidth, this.maxLabel.offsetWidth, this.minLabel, this.maxLabel);
   };
 
   callHandelLabelToggleChanger(target: View): void {
     new HandelsLabels().displayController(target.handelLabelToggle, this.minLabel, this.maxLabel);
     if (target.handelLabelToggle.checked === true) {
-      new HandelsLabels().centeringRelativeToHandles(this.minHandel, this.maxHandel, this.minLabel, this.maxLabel)
+      new HandelsLabels().centeringRelativeToHandles(this.minHandel.offsetWidth, this.maxHandel.offsetWidth, this.minLabel.offsetWidth, this.maxLabel.offsetWidth, this.minLabel, this.maxLabel)
     };
   };
 

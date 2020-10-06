@@ -1,6 +1,5 @@
 import { SliderMovement } from "../view/components/slider-movement.ts";
 
-
 export function Presenter (view, facade): void {
   
   view.displayElements();
