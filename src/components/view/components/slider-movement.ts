@@ -54,7 +54,7 @@ export class SliderMovement {
     this.interval.style.right = (this.sliderRange.offsetWidth - +max) - this.min.offsetWidth / 2 + 'px';
   }
 
-  minHandelListener( event ) {
+  minHandelListener( event, test:object ) {
     let min = this.min;
     let max = this.max;
     let minLabel = this.minLabel;
@@ -65,7 +65,7 @@ export class SliderMovement {
     let vertical = this.planeToggle.checked;
     let interval = this.interval;
     let step;
-    console.log('ok')
+
     if (this.step !== false) {
       step = (sliderRange.offsetWidth - min.offsetWidth) / this.stepAmount * +this.step;
     }
@@ -76,9 +76,16 @@ export class SliderMovement {
       shift = event.clientX - min.getBoundingClientRect().left;
     }
     
-    let onMouseMove = function( event ) {
-     console.log('OK 2')
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
+    
+    if( test !== undefined ) {
+      onMouseMove( test )
+    };
+
+    function onMouseMove( event ) {
       let newLeft: number;
+
       if (vertical) {
         newLeft = sliderRange.offsetWidth - (event.clientY - shift - sliderRange.getBoundingClientRect().top);
       } else {
@@ -86,7 +93,7 @@ export class SliderMovement {
       };
 
       let rightEdge = sliderRange.offsetWidth - min.offsetWidth;
-
+      
       if (that.step !== false) {
         if (newLeft >= +that.myData.min.min + step || newLeft <= +that.myData.min.min - step) {
           newLeft >= +that.myData.min.min + step ? newLeft = +that.myData.min.min + step : false;
@@ -124,9 +131,6 @@ export class SliderMovement {
       }  
     }
 
-    document.addEventListener('mousemove', onMouseMove);
-    document.addEventListener('mouseup', onMouseUp);
-    
     function onMouseUp() {
       document.removeEventListener('mouseup', onMouseUp);
       document.removeEventListener('mousemove', onMouseMove);

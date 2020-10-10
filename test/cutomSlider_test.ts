@@ -332,11 +332,11 @@ describe(' View Components ', function() {
   describe(' SliderMovement ', function() {
 
     let sliderMovement: SliderMovement;
-    let minHandel = $('<span class="minSliderHandel" style="width: 20px; display: block; position: absolute; left: 100px;">')[0];
-    let maxHandel = $('<span class="maxSliderHandel" style="width: 20px; display: block; position: absolute; left: 200px;">')[0];
+    let minHandel = $('<span class="minSliderHandel" style="width: 20px; display: block;">')[0];
+    let maxHandel = $('<span class="maxSliderHandel" style="width: 20px; display: block;">')[0];
     let minLabel = $('<label class="minSliderHandelLabel">')[0];
     let maxLabel = $('<label class="maxSliderHandelLabel">')[0];
-    let sliderRange = $('<div class="sliderRange" style="width: 120px;"></div>')[0];
+    let sliderRange = $('<div class="sliderRange" style="width: 120px; position: absolute; left: 100px;"></div>')[0];
     let planeToggle = $('<input type="checkbox" class="planeToggle" id="planeToggle">')[0];
     let handelToggle = $('<input class="maxSliderHandelToggle" id="maxSliderHandelToggle" type="checkbox">')[0];
     let interval = $('<div class="mainInterval"></div>')[0];
@@ -413,10 +413,37 @@ describe(' View Components ', function() {
       expect(sliderMovement.myData.max.max).toEqual('75');
     });
 
-    it(' ----------- ', function() {
-      sliderMovement.myData['min']['min'] = '100';
-      sliderMovement.myData.max.max = '200';
-      
+    it(' minHandelListener() set the position to 30px relative to the scale', function() {
+      sliderMovement.myData.min.min = '0';
+      sliderMovement.myData.max.max = '100';
+      document.body.append(sliderRange);
+      sliderRange.append(minHandel);
+
+      sliderMovement.minHandelListener( {clientX: '100'}, {clientX: '130'} );
+
+      expect(sliderMovement.myData.min.min).toEqual('30');    
+    });
+
+    it(' minHandelListener() when a value goes outside the scale range with a negative value, the position will be equal to the minimum possible ', function() {
+      sliderMovement.myData.min.min = '0';
+      sliderMovement.myData.max.max = '100';
+      document.body.append(sliderRange);
+      sliderRange.append(minHandel);
+
+      sliderMovement.minHandelListener( {clientX: '100'}, {clientX: '70'} );
+
+      expect(sliderMovement.myData.min.min).toEqual('0');    
+    });
+
+    it(' minHandelListener () when a value goes out of the scale range with a value greater than the maximum, the position is equal to the maximum possible ', function() {
+      sliderMovement.myData.min.min = '0';
+      sliderMovement.myData.max.max = '100';
+      document.body.append(sliderRange);
+      sliderRange.append(minHandel);
+
+      sliderMovement.minHandelListener( {clientX: '100'}, {clientX: '250'} );
+
+      expect(sliderMovement.myData.min.min).toEqual('100');    
     });
   });
 });
