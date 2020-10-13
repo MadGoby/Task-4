@@ -340,7 +340,10 @@ describe(' View Components ', function() {
     let planeToggle = $('<input type="checkbox" class="planeToggle" id="planeToggle">')[0];
     let handelToggle = $('<input class="maxSliderHandelToggle" id="maxSliderHandelToggle" type="checkbox">')[0];
     let interval = $('<div class="mainInterval"></div>')[0];
-    
+    let container = $('<div></div>')[0];
+    let minValue = $('<p class="minSliderPoint"></p>')[0];
+    let maxValue = $('<p class="maxSliderPoint"></p>')[0];
+
     beforeEach( function() {
       sliderMovement = new SliderMovement({
         'min': minHandel,
@@ -435,7 +438,7 @@ describe(' View Components ', function() {
       expect(sliderMovement.myData.min.min).toEqual('0');    
     });
 
-    it(' minHandelListener () when a value goes out of the scale range with a value greater than the maximum, the position is equal to the maximum possible ', function() {
+    it(' minHandelListener() when a value goes out of the scale range with a value greater than the maximum, the position is equal to the maximum possible ', function() {
       sliderMovement.myData.min.min = '0';
       sliderMovement.myData.max.max = '100';
       document.body.append(sliderRange);
@@ -445,5 +448,63 @@ describe(' View Components ', function() {
 
       expect(sliderMovement.myData.min.min).toEqual('100');    
     });
+
+    it(' minHandelListener() the second Handel prevents the first one from entering it ', function() {
+      sliderMovement.myData.min.min = '0';
+      sliderMovement.myData.max.max = '50';
+      document.body.append(sliderRange, handelToggle);
+      sliderRange.append(minHandel, maxHandel);
+      handelToggle.checked = true;
+
+      sliderMovement.minHandelListener( {clientX: '100'}, {clientX: '170'} );
+
+      expect(sliderMovement.myData.min.min).toEqual('30');
+
+      handelToggle.checked = false;
+    });
+
+    it(' maxHandelListener() the second Handel cannot go beyond the slider ', function() {
+      sliderMovement.myData.min.min = '0';
+      sliderMovement.myData.max.max = '50';
+      document.body.append(sliderRange, handelToggle);
+      sliderRange.append(minHandel, maxHandel);
+      handelToggle.checked = true;
+
+      sliderMovement.maxHandelListener( {clientX: '100'}, {clientX: '270'} );
+
+      expect(sliderMovement.myData.max.max).toEqual('100');
+
+      handelToggle.checked = false;
+    });
+
+    it(' maxHandelListener() the first Handel does not skip the second ', function() {
+      sliderMovement.myData.min.min = '50';
+      sliderMovement.myData.max.max = '100';
+      document.body.append(sliderRange, handelToggle);
+      sliderRange.append(minHandel, maxHandel);
+      handelToggle.checked = true;
+
+      sliderMovement.maxHandelListener( {clientX: '100'}, {clientX: '120'} );
+
+      expect(sliderMovement.myData.max.max).toEqual('70');
+
+      handelToggle.checked = false;
+    });
+
+    it(' changePlane() reassigns classes correctly ', function() {
+      planeToggle.checked = true;
+      sliderMovement.changePlane(planeToggle, container, minValue, maxValue);
+      expect(minLabel).toHaveClass('minSliderHandelLabelVertical');
+      expect(maxLabel).toHaveClass('maxSliderHandelLabelVertical');
+      expect(minValue).toHaveClass('minSliderPointVertical');
+      expect(maxValue).toHaveClass('maxSliderPointVertical');
+      planeToggle.checked = false;
+      sliderMovement.changePlane(planeToggle, container, minValue, maxValue);
+      expect(minLabel).toHaveClass('minSliderHandelLabel');
+      expect(maxLabel).toHaveClass('maxSliderHandelLabel');
+      expect(minValue).toHaveClass('minSliderPoint');
+      expect(maxValue).toHaveClass('maxSliderPoint');
+    })
+
   });
 });

@@ -137,7 +137,7 @@ export class SliderMovement {
     }
   }
 
-  maxHandelListener( event ) {
+  maxHandelListener( event, test:object ) {
     let max = this.max;
     let min = this.min;
     let sliderRange = this.sliderRange;
@@ -161,7 +161,11 @@ export class SliderMovement {
     
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
-    
+
+    if( test !== undefined ) {
+      onMouseMove( test )
+    };
+
     function onMouseMove( event ) {
       let newLeft: number;
       
