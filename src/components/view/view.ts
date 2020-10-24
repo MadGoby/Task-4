@@ -61,8 +61,12 @@ export class View {
     this.minLabel = new HandelsLabels().getElements().min;
     this.maxLabel = new HandelsLabels().getElements().max;
     this.interval = new SelectedRange().getElements();
-    this.sliderMovement = new SliderMovement({'min': this.minHandel, 'max': this.maxHandel,'minLabel': this.minLabel, 'maxLabel': this.maxLabel ,'sliderRange': this.sliderRange, 'planeToggle': this.planeToggle, 'handelsToggle': this.handelToggle, 'interval': this.interval, 'step': this.settings.step})
-  }
+    if(this.settings['side-menu'] !== false) {
+      this.sliderMovement = new SliderMovement({'min': this.minHandel, 'max': this.maxHandel,'minLabel': this.minLabel, 'maxLabel': this.maxLabel ,'sliderRange': this.sliderRange, 'planeToggle': this.planeToggle, 'handelsToggle': this.handelToggle, 'interval': this.interval, 'step': this.settings.step});
+    } else {
+      this.sliderMovement = new SliderMovement({'min': this.minHandel, 'max': this.maxHandel,'minLabel': this.minLabel, 'maxLabel': this.maxLabel ,'sliderRange': this.sliderRange, 'planeToggle': this.settings.vertical, 'handelsToggle': this.settings.range, 'interval': this.interval, 'step': this.settings.step});
+    };
+  };
 
   displayElements(): void {
     let container: HTMLDivElement = document.createElement('div');
@@ -83,53 +87,65 @@ export class View {
       this.minLabel.style.display = 'none';
       this.maxLabel.style.display = 'none';
     } else {
-      this.handelLabelToggle.checked = true;
+      if(this.settings['side-menu'] !== false) {
+        this.handelLabelToggle.checked = true;
+      };
     };
 
-    if (this.sideMenuContainer !== 'false') {
-      document.querySelector(this.sideMenuContainer).append(this.sideMenu)
-    } else {
-      this.that.append(this.sideMenu)
+    if(this.settings['side-menu'] !== false) {
+      if (this.sideMenuContainer !== 'false') {
+        document.querySelector(this.sideMenuContainer).append(this.sideMenu)
+      } else {
+        this.that.append(this.sideMenu)
+      };
     };
     
     if (this.settings["range"] === true) {
-      this.maxHandel.style.display = 'block'
-      this.handelToggle.checked = true;
+      this.maxHandel.style.display = 'block';
       this.interval.style.display = 'block';
-      this.maxInput.style.opacity = '1';
+      if(this.settings['side-menu'] !== false) {
+        this.handelToggle.checked = true;
+        this.maxInput.style.opacity = '1';
+      };
     };
 
     if (this.settings['vertical'] === true) {
-      this.planeToggle.checked = true;
-      this.sliderMovement.changePlane(this.planeToggle, this.sliderContainer, this.minValue, this.maxValue);
+      if(this.settings['side-menu'] !== false) {
+        this.planeToggle.checked = true;
+        this.sliderMovement.changePlane(this.planeToggle, this.sliderContainer, this.minValue, this.maxValue);
+      } else {
+        this.sliderMovement.changePlane(true, this.sliderContainer, this.minValue, this.maxValue);
+      };
     };
 
-    if (this.settings.step !== false && this.settings.sideMenu !== false) {
+    if (this.settings.step !== false && this.settings['side-menu'] !== false) {
       this.maxInput.setAttribute('step', this.settings.step + "");
       this.minInput.setAttribute('step', this.settings.step + "");
     };
   };
 
   refreshCurrentValues(newData: DataOfValueRefresh): void {
-    if ('min' in newData && 'max' in newData && this.settings['range'] === true && this.handelToggle.checked === true) {
-      this.sideMenu.querySelector('#minSliderValue').textContent = newData.min;
-      this.sideMenu.querySelector('#maxSliderValue').textContent = ` - ${newData.max}`;
-      this.sideMenu.querySelector('.customSliderMinInput').value = newData.min;
-      this.sideMenu.querySelector('.customSliderMaxInput').value = newData.max;
+    if ('min' in newData && 'max' in newData && this.settings['range'] === true) {
+      if(this.settings['side-menu'] !== false && this.handelToggle.checked === true) {
+        this.sideMenu.querySelector('#minSliderValue').textContent = newData.min;
+        this.sideMenu.querySelector('#maxSliderValue').textContent = ` - ${newData.max}`;
+        this.sideMenu.querySelector('.customSliderMinInput').value = newData.min;
+        this.sideMenu.querySelector('.customSliderMaxInput').value = newData.max;
+      };
       this.minLabel.textContent = newData.min;
       this.maxLabel.textContent = newData.max;
     } else if ('min' in newData) {
-      if (this.settings['range'] === true && this.handelToggle.checked === true) {
-        this.sideMenu.querySelector('#minSliderValue').textContent = newData.min;;
-      } else {
-        this.sideMenu.querySelector('#minSliderValue').textContent = newData.min;;
-      };
-      this.sideMenu.querySelector('.customSliderMinInput').value = newData.min;
       this.minLabel.textContent = newData.min;
+      if (this.settings['side-menu'] !== false) {
+        this.sideMenu.querySelector('#minSliderValue').textContent = newData.min;;
+        this.sideMenu.querySelector('.customSliderMinInput').value = newData.min;
+      };
     } else {
-      this.sideMenu.querySelector('#maxSliderValue').textContent = ` - ${newData.max}`;
-      this.sideMenu.querySelector('.customSliderMaxInput').value = newData.max;
       this.maxLabel.textContent = newData.max;
+      if (this.settings['side-menu'] !== false) {
+        this.sideMenu.querySelector('#maxSliderValue').textContent = ` - ${newData.max}`;
+        this.sideMenu.querySelector('.customSliderMaxInput').value = newData.max;
+      };
     };
     new HandelsLabels().centeringRelativeToHandles(this.minHandel.offsetWidth, this.maxHandel.offsetWidth, this.minLabel.offsetWidth, this.maxLabel.offsetWidth, this.minLabel, this.maxLabel);
   };

@@ -30,23 +30,29 @@ export function Presenter (view, facade): void {
   view.maxHandel.onmousedown = function(event): void {
     view.sliderMovement.maxHandelListener( event );
   };
+
+  if (view.settings['side-menu'] !== false) {
+    view.handelLabelToggle.addEventListener('change', function() {
+      view.callHandelLabelToggleChanger(view)
+    });
+  };
+
+  if (view.settings['side-menu'] !== false) {
+    view.handelToggle.addEventListener('change', function() {
+      view.callMaxHandelToggleChanger(view)
+      if (view.handelToggle.checked === true) {
+        let result: number = facade.getMaxData();
+        view.refreshMaxSideMenuData(result)
+      };
+    });
+  };
+
+  if (view.settings['side-menu'] !== false) {
+    view.planeToggle.addEventListener('change', function() {
+      view.sliderMovement.changePlane(view.planeToggle, view.sliderContainer, view.minValue, view.maxValue);
+    });
+  };
   
-  view.handelLabelToggle.addEventListener('change', function() {
-    view.callHandelLabelToggleChanger(view)
-  });
-
-  view.handelToggle.addEventListener('change', function() {
-    view.callMaxHandelToggleChanger(view)
-    if (view.handelToggle.checked === true) {
-      let result: number = facade.getMaxData();
-      view.refreshMaxSideMenuData(result)
-    };
-  });
-
-  view.planeToggle.addEventListener('change', function() {
-    view.sliderMovement.changePlane(view.planeToggle, view.sliderContainer, view.minValue, view.maxValue);
-  });
-
   view.minValue.addEventListener('click', function() {
     view.sliderMovement.selectionOfPreparedValue('min');
   });
@@ -55,22 +61,29 @@ export function Presenter (view, facade): void {
     view.sliderMovement.selectionOfPreparedValue('max');
   });
 
-  view.minInput.addEventListener('change', function() {
-    let positions: object = facade.getPositionsAmount();
-    view.sliderMovement.sideMenuInputsValuesValidationChecker('min', view.minInput.value, positions['positions'], positions['minimum']);
-  });
-
-  view.maxInput.addEventListener('change', function() {
-    let positions: object = facade.getPositionsAmount();
-    view.sliderMovement.sideMenuInputsValuesValidationChecker('max', view.maxInput.value, positions['positions'], positions['minimum']);
-  });
-
-  let possibleRange: object = facade.getPossibleRange();
-  view.inputsPossibleRange(possibleRange, view.minInput, view.maxInput)
+  if (view.settings['side-menu'] !== false) {
+    view.minInput.addEventListener('change', function() {
+      let positions: object = facade.getPositionsAmount();
+      view.sliderMovement.sideMenuInputsValuesValidationChecker('min', view.minInput.value, positions['positions'], positions['minimum']);
+    });
+  };
+  
+  if (view.settings['side-menu'] !== false) {
+    view.maxInput.addEventListener('change', function() {
+      let positions: object = facade.getPositionsAmount();
+      view.sliderMovement.sideMenuInputsValuesValidationChecker('max', view.maxInput.value, positions['positions'], positions['minimum']);
+    });
+  };
+  
+  if (view.settings['side-menu'] !== false) {
+    let possibleRange: object = facade.getPossibleRange();
+    view.inputsPossibleRange(possibleRange, view.minInput, view.maxInput);
+  };
+  
 
   let startPositions: object = facade.startHandelsPosition();
   view.sliderMovement.startHandlersPositions(startPositions);
-  view.refreshCurrentValues(startPositions)
+  view.refreshCurrentValues(startPositions);
 };
 
 

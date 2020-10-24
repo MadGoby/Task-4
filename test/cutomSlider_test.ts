@@ -20,7 +20,6 @@ let settings = {
   'handelsLabel': false,
   'vertical': false,
   'step': false,
-  'sideMenuContainer': 'false'
 };
 
 let modelData: IData = {
@@ -110,11 +109,102 @@ describe('Facade', function() {
 });
 
 describe(' View ', function() {
-  let shell = $('<div class="MainShell"></div>')[0];
+  let view: View;
+  let shell = $('<div class="MainShell" ></div>')[0];
+  let sideMenuShell = $('<div id="sideMenuShell" ></div>')[0];
+  document.body.append(shell);
+  shell.append(sideMenuShell);
+
+  let settings = {
+    'min': '-10',
+    'max': '10',
+    'range': true,
+    'side-menu': true,
+    'handelsLabel': true,
+    'vertical': false,
+    'step': '2',
+    'sideMenuContainer': '#sideMenuShell'
+  };
+
   beforeEach( function() {
-    model = new Model(modelData);
-    facade = new Facade(model);
     view = new View(shell, settings);
+  });
+
+  it(' refreshCurrentValues() correctly updates View for Min value ', function() {
+    view.refreshCurrentValues({'min': 5});
+    expect(view.minLabel.textContent).toEqual('5');
+    expect(view.sideMenu.querySelector('#minSliderValue').textContent).toEqual('5');
+    expect(view.sideMenu.querySelector('.customSliderMinInput').value).toEqual('5');
+  });
+
+  it(' refreshCurrentValues() correctly updates View for Max value ', function() {
+    view.refreshCurrentValues({'max': 5});
+    expect(view.maxLabel.textContent).toEqual('5');
+    expect(view.sideMenu.querySelector('#maxSliderValue').textContent).toEqual(' - 5');
+    expect(view.sideMenu.querySelector('.customSliderMaxInput').value).toEqual('5');
+  });
+
+  it(' refreshCurrentValues() correctly updates View for Max and Min value ', function() {
+    view.handelToggle.checked = true;
+    view.refreshCurrentValues({'min': -5 ,'max': 5});
+    expect(view.minLabel.textContent).toEqual('-5');
+    expect(view.maxLabel.textContent).toEqual('5');
+    expect(view.sideMenu.querySelector('#minSliderValue').textContent).toEqual('-5');
+    expect(view.sideMenu.querySelector('#maxSliderValue').textContent).toEqual(' - 5');
+    expect(view.sideMenu.querySelector('.customSliderMinInput').value).toEqual('-5');
+    expect(view.sideMenu.querySelector('.customSliderMaxInput').value).toEqual('5');
+  });
+
+  it(' callMaxHandelToggleChanger() modifies elements correctly when turning off the second Handel ', function() {
+    view.sliderRange.style.width = '120px';
+    view.minHandel.style.width = '20px';
+    view.minHandel.style.display = 'block';
+    document.body.append(view.sliderRange, view.maxHadnel, view.minHandel, view.sideMenu, view.maxInput, view.interval)
+    view.handelToggle.checked = false;
+    view.callMaxHandelToggleChanger(view);
+    expect(view.sliderMovement.myData.max.max).toEqual('100');
+    expect(view.maxHandel.style.left).toEqual('100px');
+    expect(view.sideMenu.querySelector('#maxSliderValue').textContent).toEqual('');
+    expect(view.maxInput.value).toEqual('');
+    expect(view.maxInput.hasAttribute('readonly')).toEqual(true);
+    expect(view.maxInput.style.opacity).toEqual('0.3');
+    expect(view.interval.style.display).toEqual('none');
+    expect(view.maxHandel.style.display).toEqual('none');
+  });
+
+  it(' callMaxHandelToggleChanger() modifies elements correctly when turning on the second Handel ', function() {
+    view.sliderRange.style.width = '120px';
+    view.minHandel.style.width = '20px';
+    view.minHandel.style.display = 'block';
+    view.maxHandel.style.width = '20px';
+    view.maxHandel.style.display = 'block';
+    document.body.append(view.sliderRange, view.maxHandel, view.minHandel, view.sideMenu, view.maxInput, view.interval)
+    view.handelToggle.checked = true;
+    view.sliderMovement.myData.min.min = '100';
+    view.callMaxHandelToggleChanger(view);
+    expect(view.maxInput.hasAttribute('readonly')).toEqual(false);
+    view.handelToggle.checked = false;
+    expect(view.interval.style.display).toEqual('block');
+    expect(view.interval.style.right).toEqual('10px');
+    expect(view.maxHandel.style.display).toEqual('block');
+    expect(view.sliderMovement.myData.min.min).toEqual('80');
+    expect(view.minHandel.style.left).toEqual('80px');
+  });
+
+  it(' refreshMaxSideMenuData() updates the side menu correctly ', function() {
+    document.body.append(view.sideMenu, view.maxInput);
+    view.refreshMaxSideMenuData(7);
+    expect(view.sideMenu.querySelector('#maxSliderValue').textContent).toEqual(' - 7');
+    expect(view.maxInput.value).toEqual('7');
+    expect(view.maxInput.style.opacity).toEqual('1');
+  });
+
+  it(' inputsPossibleRange() set the maximum and minimum values for the side menu inputs correctly ', function() {
+    document.body.append(view.maxInput, view.minInput);
+    view.inputsPossibleRange({'min': settings.min, 'max': settings.max}, view.minInput, view.maxInput);
+    expect(view.minInput.getAttribute('max')).toEqual('10');
+    expect(view.minInput.getAttribute('min')).toEqual('-10');
+    expect(view.maxInput.getAttribute('max')).toEqual('10');
   });
 
 });

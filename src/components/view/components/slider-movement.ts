@@ -17,8 +17,8 @@ export class SliderMovement {
   private minLabel: HTMLLabelElement;
   private maxLabel: HTMLLabelElement;
   private sliderRange: HTMLDivElement;
-  private handelsToggle: HTMLInputElement;
-  private planeToggle: HTMLInputElement;
+  private handelsToggle: HTMLInputElement | boolean;
+  private planeToggle: HTMLInputElement | boolean;
   private interval: HTMLDivElement;
   private step: number | string | boolean;
   private stepAmount: number;
@@ -61,11 +61,17 @@ export class SliderMovement {
     let sliderRange = this.sliderRange;
     let that = this;
     let shift: number;
-    let doubleHandels = this.handelsToggle.checked;
-    let vertical = this.planeToggle.checked;
+    let doubleHandels: boolean;
+    let vertical: boolean;
+    if (typeof this.handelsToggle === 'boolean' && typeof this.planeToggle === 'boolean') {
+      doubleHandels = this.handelsToggle;
+      vertical = this.planeToggle;
+    } else {
+      doubleHandels = this.handelsToggle.checked;
+      vertical = this.planeToggle.checked;
+    };
     let interval = this.interval;
-    let step;
-
+    let step: number;
     if (this.step !== false) {
       step = (sliderRange.offsetWidth - min.offsetWidth) / this.stepAmount * +this.step;
     }
@@ -144,11 +150,18 @@ export class SliderMovement {
     let shift: number;
     let maxLabel = this.maxLabel;
     let that = this;
-    let doubleHandels = this.handelsToggle.checked;
-    let vertical = this.planeToggle.checked;
+    let doubleHandels: boolean;
+    let vertical: boolean;
+    if (typeof this.handelsToggle === 'boolean' && typeof this.planeToggle === 'boolean') {
+      doubleHandels = this.handelsToggle;
+      vertical = this.planeToggle;
+    } else {
+      doubleHandels = this.handelsToggle.checked;
+      vertical = this.planeToggle.checked;
+    };
     let interval = this.interval;
-    let step;
-
+    
+    let step: number;
     if (this.step !== false) {
       step = (sliderRange.offsetWidth - min.offsetWidth) / this.stepAmount * +this.step;
     }
@@ -218,8 +231,8 @@ export class SliderMovement {
     }
   }
 
-  changePlane( toggle:HTMLInputElement, body: HTMLDivElement, minValue: HTMLParagraphElement, maxValue: HTMLParagraphElement): void {
-    if (toggle.checked) {
+  changePlane( toggle:HTMLInputElement | boolean, body: HTMLDivElement, minValue: HTMLParagraphElement, maxValue: HTMLParagraphElement): void {
+    if (toggle.checked || toggle === true) {
       body.style.height = body.offsetWidth + 'px';
       this.sliderRange.style.transform = 'rotate(-90deg)';
       this.sliderRange.style.top = body.offsetWidth / 2 + 'px';
@@ -252,7 +265,7 @@ export class SliderMovement {
       this.min.style.left = '0px'
       this.interval.style.left = 0 + this.min.offsetWidth / 2 + 'px';
     } else {
-      if (this.handelsToggle.checked === true) {
+      if (this.handelsToggle.checked === true || this.handelsToggle === true) {
         this.myData['max'] = {'max': `${this.sliderRange.offsetWidth - this.min.offsetWidth}`, 'sliderWidth':`${this.sliderRange.offsetWidth - this.min.offsetWidth}`};
         this.max.style.left = this.sliderRange.offsetWidth - this.min.offsetWidth + 'px';
         this.interval.style.right = (this.sliderRange.offsetWidth - this.sliderRange.offsetWidth) + this.min.offsetWidth / 2 + 'px';
