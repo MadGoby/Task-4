@@ -56,12 +56,12 @@ export function Presenter (view, facade): void {
   });
 
   view.minInput.addEventListener('change', function() {
-    let positions: number = facade.getPositionsAmount();
+    let positions: object = facade.getPositionsAmount();
     view.sliderMovement.sideMenuInputsValuesValidationChecker('min', view.minInput.value, positions['positions'], positions['minimum']);
   });
 
   view.maxInput.addEventListener('change', function() {
-    let positions: number = facade.getPositionsAmount();
+    let positions: object = facade.getPositionsAmount();
     view.sliderMovement.sideMenuInputsValuesValidationChecker('max', view.maxInput.value, positions['positions'], positions['minimum']);
   });
 

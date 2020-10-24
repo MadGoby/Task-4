@@ -103,6 +103,11 @@ export class View {
       this.planeToggle.checked = true;
       this.sliderMovement.changePlane(this.planeToggle, this.sliderContainer, this.minValue, this.maxValue);
     };
+
+    if (this.settings.step !== false && this.settings.sideMenu !== false) {
+      this.maxInput.setAttribute('step', this.settings.step + "");
+      this.minInput.setAttribute('step', this.settings.step + "");
+    };
   };
 
   refreshCurrentValues(newData: DataOfValueRefresh): void {

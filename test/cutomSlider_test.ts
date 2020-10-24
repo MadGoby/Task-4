@@ -110,9 +110,11 @@ describe('Facade', function() {
 });
 
 describe(' View ', function() {
-
+  let shell = $('<div class="MainShell"></div>')[0];
   beforeEach( function() {
-    view = new View();
+    model = new Model(modelData);
+    facade = new Facade(model);
+    view = new View(shell, settings);
   });
 
 });
@@ -504,7 +506,75 @@ describe(' View Components ', function() {
       expect(maxLabel).toHaveClass('maxSliderHandelLabel');
       expect(minValue).toHaveClass('minSliderPoint');
       expect(maxValue).toHaveClass('maxSliderPoint');
-    })
+   });
+
+    it(' selectionOfPreparedValue() if target min ', function() {
+      document.body.append(sliderRange, minHandel, interval);
+      sliderMovement.selectionOfPreparedValue('min');
+      expect(sliderMovement.myData.min).toEqual({'min': '0', 'sliderWidth': `100`});
+      expect(minHandel.style.left).toEqual('0px');
+      expect(interval.style.left).toEqual('10px');
+    });
+
+    it(' selectionOfPreparedValue() if target max, double handel ', function() {
+      document.body.append(sliderRange, maxHandel, minHandel, interval, handelToggle);
+      handelToggle.checked = true;
+      sliderMovement.selectionOfPreparedValue('max');
+      expect(sliderMovement.myData.max).toEqual({'max': `100`, 'sliderWidth': `100`});
+      expect(maxHandel.style.left).toEqual('100px');
+      expect(interval.style.right).toEqual('10px');
+      handelToggle.checked = false;
+    });
+
+    it(' selectionOfPreparedValue() if target max, one handel ', function() {
+      document.body.append(sliderRange, minHandel, interval, handelToggle);
+      sliderMovement.selectionOfPreparedValue('max');
+      expect(sliderMovement.myData.min).toEqual({'min': `100`, 'sliderWidth': `100`});
+      expect(minHandel.style.left).toEqual('100px');
+      expect(interval.style.left).toEqual('110px');
+    });
+    
+    it(' sideMenuInputsValuesValidationChecker() correctly calculates the position for Min when the second handel is Off', function() {
+      document.body.append(sliderRange, minHandel, maxHandel, interval);
+      sliderMovement.sideMenuInputsValuesValidationChecker('min', 0, 20, -10);
+      expect(sliderMovement.myData.min.min).toEqual('50');
+      expect(minHandel.style.left).toEqual('50px');
+      expect(interval.style.left).toEqual('60px');
+      sliderMovement.sideMenuInputsValuesValidationChecker('min', -20, 20, -10);
+      expect(sliderMovement.myData.min.min).toEqual('0');
+      sliderMovement.sideMenuInputsValuesValidationChecker('min', 20, 20, -10);
+      expect(sliderMovement.myData.min.min).toEqual('100');
+    });
+
+    it(' sideMenuInputsValuesValidationChecker() correctly calculates the position for Min when the second handel is On', function() {
+      document.body.append(sliderRange, minHandel, maxHandel, interval);
+      handelToggle.checked = true;
+      sliderMovement.sideMenuInputsValuesValidationChecker('min', 0, 20, -10);
+      expect(sliderMovement.myData.min.min).toEqual('50');
+      expect(minHandel.style.left).toEqual('50px');
+      expect(interval.style.left).toEqual('60px');
+      sliderMovement.sideMenuInputsValuesValidationChecker('min', -20, 20, -10);
+      expect(sliderMovement.myData.min.min).toEqual('0');
+      sliderMovement.sideMenuInputsValuesValidationChecker('max', 5, 20, -10);
+      sliderMovement.sideMenuInputsValuesValidationChecker('min', 10, 20, -10);
+      expect(sliderMovement.myData.min.min).toEqual('55');
+      handelToggle.checked = false;
+    });
+
+    it(' sideMenuInputsValuesValidationChecker() correctly calculates the position for Max', function() {
+      document.body.append(sliderRange, minHandel, maxHandel, interval);
+      handelToggle.checked = true;
+      sliderMovement.sideMenuInputsValuesValidationChecker('min', -5, 20, -10);
+      sliderMovement.sideMenuInputsValuesValidationChecker('max', 5, 20, -10);
+      expect(sliderMovement.myData.max.max).toEqual('75');
+      expect(maxHandel.style.left).toEqual('75px');
+      expect(interval.style.right).toEqual('35px');
+      sliderMovement.sideMenuInputsValuesValidationChecker('max', 30, 20, -10);
+      expect(sliderMovement.myData.max.max).toEqual('100');
+      sliderMovement.sideMenuInputsValuesValidationChecker('max', -15, 20, -10);
+      expect(sliderMovement.myData.max.max).toEqual('45');
+      handelToggle.checked = false;
+    });
 
   });
 });
