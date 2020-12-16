@@ -8,8 +8,8 @@ export class Facade {
   private model;
 
   constructor (model) {
-    this.model = model
-  }
+    this.model = model;
+  };
 
   startHandelsPosition():object {
     return this.model.getCurrentData();

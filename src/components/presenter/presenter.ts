@@ -1,89 +1,148 @@
-import { SliderMovement } from "../view/components/slider-movement.ts";
+export class Presenter {
 
-export function Presenter (view, facade): void {
-  
-  view.displayElements();
-  
-  view.sliderMovement.myData = new Proxy(view.sliderMovement.myData, {
-    set(target, prop, val) {
-      if(typeof val === 'object') {
-        target[prop] = val;
-        let modelResult = facade.refreshModelData(val, prop);
-        view.refreshCurrentValues(modelResult)
-        return true
-      } else {
-        return false
+  private viewLink;
+  private facadeLink;
+
+  constructor (view, facade) {
+    this.viewLink = view;
+    this.facadeLink = facade;
+  };
+
+  bindEventListeners(): void {
+    let view = this.viewLink;
+    let facade = this.facadeLink;
+    this.viewLink.displayElements();
+    this.trackingRecordInMyData();
+    this.recordingThePositionsValuesForView();
+    this.bindListenerForMin();
+    this.bindListenerForMax();
+    if (this.viewLink.settings['side-menu'] !== false) {
+      this.viewLink.handelLabelToggle.addEventListener('change', this.makeBindListenerForLabelToggle(view));
+    };
+    if (this.viewLink.settings['side-menu'] !== false) {
+      this.viewLink.handelToggle.addEventListener('change', this.makeBindListenerForDoubleHandels(view, facade));
+    };
+    if (this.viewLink.settings['side-menu'] !== false) {
+      this.viewLink.planeToggle.addEventListener('change', this.makeBindListenerForPlaneToggle(view));
+    };
+    this.viewLink.minValue.addEventListener('click', this.makeBindListenerForSelectionMinValue(view));
+    this.viewLink.maxValue.addEventListener('click', this.makeBindListenerForSelectionMaxValue(view));
+    if (this.viewLink.settings['side-menu'] !== false) {
+      this.viewLink.minInput.addEventListener('change', this.makeBindListenerForMinInput(view, facade));
+    };
+    if (this.viewLink.settings['side-menu'] !== false) {
+      this.viewLink.maxInput.addEventListener('change', this.makeBindListenerForMaxInput(view, facade));
+    };
+    this.possibleRangeForView();
+    this.settingStartingPositions();
+  };
+
+  trackingRecordInMyData(): void {
+    let view = this.viewLink;
+    let facade = this.facadeLink;
+    view.sliderMovement.myData = new Proxy(view.sliderMovement.myData, {
+      set(target, prop, val) {
+        if(typeof val === 'object') {
+          target[prop] = val;
+          let modelResult = facade.refreshModelData(val, prop);
+          view.refreshCurrentValues(modelResult);
+          return true;
+        } else {
+          return false;
+        };
       }
-    }
-  })
-
-  if (view.sliderMovement.step !== false) {
-    let stepAmount: object = facade.getPositionsAmount();
-    view.sliderMovement.stepAmount = stepAmount['positions'];
-  }
-  
-
-  view.minHandel.onmousedown = function( event ): void {
-    view.sliderMovement.minHandelListener( event );
-  };
-
-  view.maxHandel.onmousedown = function(event): void {
-    view.sliderMovement.maxHandelListener( event );
-  };
-
-  if (view.settings['side-menu'] !== false) {
-    view.handelLabelToggle.addEventListener('change', function() {
-      view.callHandelLabelToggleChanger(view)
     });
   };
 
-  if (view.settings['side-menu'] !== false) {
-    view.handelToggle.addEventListener('change', function() {
+  recordingThePositionsValuesForView(): void {
+    if (this.viewLink.sliderMovement.step !== false) {
+      let stepAmount: object = this.facadeLink.getPositionsAmount();
+      this.viewLink.sliderMovement.stepAmount = stepAmount['positions'];
+    };
+  };
+
+  bindListenerForMin(): void {
+    let view = this.viewLink;
+    view.minHandel.onmousedown = function( event ): void {
+      view.sliderMovement.minHandelListener( event );
+    };
+  };
+
+  bindListenerForMax(): void {
+    let view = this.viewLink;
+    view.maxHandel.onmousedown = function(event): void {
+      view.sliderMovement.maxHandelListener( event );
+    };
+  };
+
+  makeBindListenerForLabelToggle(selfView): Function {
+    let view = selfView;
+    return function () {
+      view.callHandelLabelToggleChanger(view) 
+    };
+  };
+
+  makeBindListenerForDoubleHandels(selfView, selfFacade): Function {
+    let view = selfView;
+    let facade = selfFacade;
+    return function () {
       view.callMaxHandelToggleChanger(view)
       if (view.handelToggle.checked === true) {
         let result: number = facade.getMaxData();
-        view.refreshMaxSideMenuData(result)
+        view.refreshMaxSideMenuData(result);
       };
-    });
+    };
   };
 
-  if (view.settings['side-menu'] !== false) {
-    view.planeToggle.addEventListener('change', function() {
+  makeBindListenerForPlaneToggle(selfView): Function {
+    let view = selfView;
+    return function () {
       view.sliderMovement.changePlane(view.planeToggle, view.sliderContainer, view.minValue, view.maxValue);
-    });
+    };
   };
-  
-  view.minValue.addEventListener('click', function() {
-    view.sliderMovement.selectionOfPreparedValue('min');
-  });
 
-  view.maxValue.addEventListener('click', function() {
-    view.sliderMovement.selectionOfPreparedValue('max');
-  });
+  makeBindListenerForSelectionMinValue (selfView): Function {
+    let view = selfView;
+    return function () {
+      view.sliderMovement.selectionOfPreparedValue('min');
+    };
+  };
 
-  if (view.settings['side-menu'] !== false) {
-    view.minInput.addEventListener('change', function() {
+  makeBindListenerForSelectionMaxValue(selfView): Function {
+    let view = selfView;
+    return function () {
+      view.sliderMovement.selectionOfPreparedValue('max');
+    };
+  };
+
+  makeBindListenerForMinInput(selfView, selfFacade): Function {
+    let view = selfView;
+    let facade = selfFacade;
+    return function () {
       let positions: object = facade.getPositionsAmount();
       view.sliderMovement.sideMenuInputsValuesValidationChecker('min', view.minInput.value, positions['positions'], positions['minimum']);
-    });
+    };
   };
-  
-  if (view.settings['side-menu'] !== false) {
-    view.maxInput.addEventListener('change', function() {
+
+  makeBindListenerForMaxInput(selfView, selfFacade): Function {
+    let view = selfView;
+    let facade = selfFacade;
+    return function() {
       let positions: object = facade.getPositionsAmount();
       view.sliderMovement.sideMenuInputsValuesValidationChecker('max', view.maxInput.value, positions['positions'], positions['minimum']);
-    });
+    };
   };
-  
-  if (view.settings['side-menu'] !== false) {
-    let possibleRange: object = facade.getPossibleRange();
-    view.inputsPossibleRange(possibleRange, view.minInput, view.maxInput);
-  };
-  
 
-  let startPositions: object = facade.startHandelsPosition();
-  view.sliderMovement.startHandlersPositions(startPositions);
-  view.refreshCurrentValues(startPositions);
+  possibleRangeForView(): void {
+    if (this.viewLink.settings['side-menu'] !== false) {
+      let possibleRange: object = this.facadeLink.getPossibleRange();
+      this.viewLink.inputsPossibleRange(possibleRange, this.viewLink.minInput, this.viewLink.maxInput);
+    };
+  };
+
+  settingStartingPositions(): void {
+    let startPositions: object = this.facadeLink.startHandelsPosition();
+    this.viewLink.sliderMovement.startHandlersPositions(startPositions);
+    this.viewLink.refreshCurrentValues(startPositions);
+  };
 };
-
-

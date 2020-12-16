@@ -125,7 +125,13 @@ export class View {
   };
 
   refreshCurrentValues(newData: DataOfValueRefresh): void {
-    if ('min' in newData && 'max' in newData && this.settings['range'] === true) {
+    let sett: boolean | string = this.settings['range'];
+    
+    function refreshCurrentValuesMultiCheck(settings: boolean | string) {
+      return 'min' in newData && 'max' in newData && settings === true;
+    }
+
+    if (refreshCurrentValuesMultiCheck(sett)) {
       if(this.settings['side-menu'] !== false && this.handelToggle.checked === true) {
         this.sideMenu.querySelector('#minSliderValue').textContent = newData.min;
         this.sideMenu.querySelector('#maxSliderValue').textContent = ` - ${newData.max}`;

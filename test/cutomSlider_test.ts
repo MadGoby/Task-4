@@ -1,5 +1,4 @@
 import { IData } from '../src/components/model/dataInterface.ts';
-
 import { Model } from '../src/components/model/model.ts';
 import { Facade } from '../src/components/model/facade.ts';
 import { View } from '../src/components/view/view.ts';
