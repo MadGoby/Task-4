@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "module": "CommonJS",
+    "strict": true,
     "noImplicitAny": true,
     "noImplicitThis": false,
     "removeComments": false,
@@ -12,7 +13,7 @@
   ],
   "files": [
     "src/jquery.ui.customSlider.ts",
-    "src/components/view/view.ts"
+    "src/*"
     ],
   "typeRoots": ["node_modules/@types"]
 }

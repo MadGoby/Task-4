@@ -1,9 +1,5 @@
 import {Model} from './model.ts'
 
-interface MyDataObject {
-  [key: string]: string
-};
-
 export class Facade {
   private model;
 

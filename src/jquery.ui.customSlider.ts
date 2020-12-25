@@ -35,6 +35,11 @@ import { Presenter } from './components/presenter/presenter.ts';
     let facade = new Facade(model)
     
     let presenter = new Presenter(view, facade);
-    presenter.bindEventListeners();
+
+    presenter.startViewMonitoring();
+    view.displayElements();
+    view.bindEventListeners();
+    view.bindEventHandelsMovement();
+
   };
 })(jQuery);

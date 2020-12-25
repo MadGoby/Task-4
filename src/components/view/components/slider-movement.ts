@@ -1,11 +1,12 @@
 interface Handels {
   [key: string]: HTMLLabelElement | HTMLInputElement | HTMLDivElement;
 }
-interface MyDataObject {
+
+interface CurrentHandelsPositions {
   [key: string]: {
     [key: string]: string
   };
-}
+};
 
 interface StartHandelsPositionsData {
   [key: string]: string
@@ -35,7 +36,7 @@ export class SliderMovement {
     this.step = handels.step;
   }
 
-  myData: MyDataObject = {
+  currentHandelsPositions: CurrentHandelsPositions = {
     'min': {},
     'max': {}
   }
@@ -44,8 +45,8 @@ export class SliderMovement {
     let min: string = ((this.sliderRange.offsetWidth - this.min.offsetWidth) / +positionValues.positions) * (+positionValues['min'] - +positionValues['minimum']) + '';
     let max: string = ((this.sliderRange.offsetWidth - this.min.offsetWidth) / +positionValues.positions) * (+positionValues['max'] - +positionValues['minimum']) + '';
     
-    this.myData.min.min = min;
-    this.myData.max.max = max;
+    this.currentHandelsPositions.min.min = min;
+    this.currentHandelsPositions.max.max = max;
     
     this.min.style.left = min + 'px';
     this.max.style.left = max + 'px';
@@ -101,9 +102,9 @@ export class SliderMovement {
       let rightEdge = sliderRange.offsetWidth - min.offsetWidth;
       
       if (that.step !== false) {
-        if (newLeft >= +that.myData.min.min + step || newLeft <= +that.myData.min.min - step) {
-          newLeft >= +that.myData.min.min + step ? newLeft = +that.myData.min.min + step : false;
-          newLeft <= +that.myData.min.min - step ? newLeft = +that.myData.min.min - step : false;
+        if (newLeft >= +that.currentHandelsPositions.min.min + step || newLeft <= +that.currentHandelsPositions.min.min - step) {
+          newLeft >= +that.currentHandelsPositions.min.min + step ? newLeft = +that.currentHandelsPositions.min.min + step : false;
+          newLeft <= +that.currentHandelsPositions.min.min - step ? newLeft = +that.currentHandelsPositions.min.min - step : false;
           renewalOfPosition();
         }
       } else {
@@ -117,8 +118,8 @@ export class SliderMovement {
         };
         
         if (doubleHandels) { 
-          if (newLeft >= +that.myData.max['max'] - max.offsetWidth) {
-            newLeft = +that.myData.max['max'] - max.offsetWidth
+          if (newLeft >= +that.currentHandelsPositions.max['max'] - max.offsetWidth) {
+            newLeft = +that.currentHandelsPositions.max['max'] - max.offsetWidth
           };
         } else {
           if (newLeft > rightEdge) {
@@ -130,7 +131,7 @@ export class SliderMovement {
         interval.style.left = newLeft + min.offsetWidth / 2 + 'px';
         
         if (newLeft !== undefined || rightEdge !== undefined) {
-          that.myData['min'] = {'min': `${newLeft}`, 'sliderWidth': `${sliderRange.offsetWidth - min.offsetWidth}`}
+          that.currentHandelsPositions['min'] = {'min': `${newLeft}`, 'sliderWidth': `${sliderRange.offsetWidth - min.offsetWidth}`}
         };
         
         minLabel.style.left = ((min.offsetWidth - minLabel.offsetWidth) - 1) / 2 + 'px';
@@ -191,9 +192,9 @@ export class SliderMovement {
       let rightEdge = sliderRange.offsetWidth - max.offsetWidth;
 
       if (that.step !== false) {
-        if (newLeft >= +that.myData.max.max + step || newLeft <= +that.myData.max.max - step) {
-          newLeft >= +that.myData.max.max + step ? newLeft = +that.myData.max.max + step : false;
-          newLeft <= +that.myData.max.max - step ? newLeft = +that.myData.max.max - step : false;
+        if (newLeft >= +that.currentHandelsPositions.max.max + step || newLeft <= +that.currentHandelsPositions.max.max - step) {
+          newLeft >= +that.currentHandelsPositions.max.max + step ? newLeft = +that.currentHandelsPositions.max.max + step : false;
+          newLeft <= +that.currentHandelsPositions.max.max - step ? newLeft = +that.currentHandelsPositions.max.max - step : false;
           renewalOfPosition();
         }
       } else {
@@ -210,15 +211,15 @@ export class SliderMovement {
           newLeft = rightEdge;
         };
   
-        if (newLeft <= +that.myData.min['min'] + min.offsetWidth) {
-          newLeft = +that.myData.min['min'] + min.offsetWidth
+        if (newLeft <= +that.currentHandelsPositions.min['min'] + min.offsetWidth) {
+          newLeft = +that.currentHandelsPositions.min['min'] + min.offsetWidth
         };
         
         max.style.left = newLeft + 'px';
         interval.style.right = (sliderRange.offsetWidth - newLeft) - max.offsetWidth / 2 + 'px';
   
         if (newLeft !== undefined || rightEdge !== undefined) {
-          that.myData['max'] = {'max': `${newLeft}`, 'sliderWidth': `${sliderRange.offsetWidth - max.offsetWidth}`}
+          that.currentHandelsPositions['max'] = {'max': `${newLeft}`, 'sliderWidth': `${sliderRange.offsetWidth - max.offsetWidth}`}
         };
         
         maxLabel.style.left = ((max.offsetWidth - maxLabel.offsetWidth) - 1) / 2 + 'px';
@@ -261,16 +262,16 @@ export class SliderMovement {
 
   selectionOfPreparedValue(target: string): void {
     if (target === 'min') {
-      this.myData['min'] = {'min': '0', 'sliderWidth':`${this.sliderRange.offsetWidth - this.min.offsetWidth}`}
+      this.currentHandelsPositions['min'] = {'min': '0', 'sliderWidth':`${this.sliderRange.offsetWidth - this.min.offsetWidth}`}
       this.min.style.left = '0px'
       this.interval.style.left = 0 + this.min.offsetWidth / 2 + 'px';
     } else {
       if (this.handelsToggle.checked === true || this.handelsToggle === true) {
-        this.myData['max'] = {'max': `${this.sliderRange.offsetWidth - this.min.offsetWidth}`, 'sliderWidth':`${this.sliderRange.offsetWidth - this.min.offsetWidth}`};
+        this.currentHandelsPositions['max'] = {'max': `${this.sliderRange.offsetWidth - this.min.offsetWidth}`, 'sliderWidth':`${this.sliderRange.offsetWidth - this.min.offsetWidth}`};
         this.max.style.left = this.sliderRange.offsetWidth - this.min.offsetWidth + 'px';
         this.interval.style.right = (this.sliderRange.offsetWidth - this.sliderRange.offsetWidth) + this.min.offsetWidth / 2 + 'px';
       } else {
-        this.myData['min'] = {'min': `${this.sliderRange.offsetWidth - this.min.offsetWidth}`, 'sliderWidth':`${this.sliderRange.offsetWidth - this.min.offsetWidth}`};
+        this.currentHandelsPositions['min'] = {'min': `${this.sliderRange.offsetWidth - this.min.offsetWidth}`, 'sliderWidth':`${this.sliderRange.offsetWidth - this.min.offsetWidth}`};
         this.min.style.left = this.sliderRange.offsetWidth - this.min.offsetWidth + 'px';
         this.interval.style.left = (this.sliderRange.offsetWidth - this.min.offsetWidth) + this.min.offsetWidth / 2 +'px';
       }
@@ -282,13 +283,13 @@ export class SliderMovement {
     if (target === 'min' && this.handelsToggle.checked) {
       let min: string = ((this.sliderRange.offsetWidth - this.min.offsetWidth) / positions) * (value - minimum) + '';
 
-      if (+min >= +this.myData.max.max - this.min.offsetWidth) {
-        min = +this.myData.max.max - this.min.offsetWidth + '';
+      if (+min >= +this.currentHandelsPositions.max.max - this.min.offsetWidth) {
+        min = +this.currentHandelsPositions.max.max - this.min.offsetWidth + '';
       } else if(+min < 0) {
         min = '0';
       };
 
-      this.myData['min'] = {'min': min, 'sliderWidth': `${this.sliderRange.offsetWidth - this.min.offsetWidth}`};
+      this.currentHandelsPositions['min'] = {'min': min, 'sliderWidth': `${this.sliderRange.offsetWidth - this.min.offsetWidth}`};
       this.min.style.left = min + 'px';
       this.interval.style.left = +min + this.min.offsetWidth / 2 + 'px';
     } else if (target === 'min') {
@@ -300,19 +301,19 @@ export class SliderMovement {
         min = (this.sliderRange.offsetWidth - this.min.offsetWidth) + '';
       };
 
-      this.myData['min'] = {'min': min, 'sliderWidth': `${this.sliderRange.offsetWidth - this.min.offsetWidth}`};
+      this.currentHandelsPositions['min'] = {'min': min, 'sliderWidth': `${this.sliderRange.offsetWidth - this.min.offsetWidth}`};
       this.min.style.left = min + 'px';
       this.interval.style.left = +min + this.min.offsetWidth / 2 + 'px';
     } else if (target === 'max') {
       let max: string = ((this.sliderRange.offsetWidth - this.max.offsetWidth) / positions) * (value - minimum) + '';
 
-      if (+max <= +this.myData.min.min + this.min.offsetWidth) {
-        max = +this.myData.min.min + this.max.offsetWidth + '';
+      if (+max <= +this.currentHandelsPositions.min.min + this.min.offsetWidth) {
+        max = +this.currentHandelsPositions.min.min + this.max.offsetWidth + '';
       } else if(+max > this.sliderRange.offsetWidth - this.min.offsetWidth){
         max = (this.sliderRange.offsetWidth - this.min.offsetWidth) + '';
       };
 
-      this.myData['max'] = {'max': max, 'sliderWidth': `${this.sliderRange.offsetWidth - this.max.offsetWidth}`};
+      this.currentHandelsPositions['max'] = {'max': max, 'sliderWidth': `${this.sliderRange.offsetWidth - this.max.offsetWidth}`};
       this.max.style.left = max + 'px';
       this.interval.style.right = (this.sliderRange.offsetWidth - +max) - this.min.offsetWidth / 2 + 'px';
     }

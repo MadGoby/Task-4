@@ -9,7 +9,6 @@ import { SideMenu } from '../src/components/view/components/side-menu.ts';
 import { SliderMovement } from '../src/components/view/components/slider-movement.ts';
 import { SliderRange } from '../src/components/view/components/slider-range.ts';
 import { ValueRange } from '../src/components/view/components/valueRange.ts';
-import { event } from 'jquery';
 
 let settings = {
   'min': '-10',
@@ -161,7 +160,7 @@ describe(' View ', function() {
     document.body.append(view.sliderRange, view.maxHadnel, view.minHandel, view.sideMenu, view.maxInput, view.interval)
     view.handelToggle.checked = false;
     view.callMaxHandelToggleChanger(view);
-    expect(view.sliderMovement.myData.max.max).toEqual('100');
+    expect(view.sliderMovement.currentHandelsPositions.max.max).toEqual('100');
     expect(view.maxHandel.style.left).toEqual('100px');
     expect(view.sideMenu.querySelector('#maxSliderValue').textContent).toEqual('');
     expect(view.maxInput.value).toEqual('');
@@ -179,14 +178,14 @@ describe(' View ', function() {
     view.maxHandel.style.display = 'block';
     document.body.append(view.sliderRange, view.maxHandel, view.minHandel, view.sideMenu, view.maxInput, view.interval)
     view.handelToggle.checked = true;
-    view.sliderMovement.myData.min.min = '100';
+    view.sliderMovement.currentHandelsPositions.min.min = '100';
     view.callMaxHandelToggleChanger(view);
     expect(view.maxInput.hasAttribute('readonly')).toEqual(false);
     view.handelToggle.checked = false;
     expect(view.interval.style.display).toEqual('block');
     expect(view.interval.style.right).toEqual('10px');
     expect(view.maxHandel.style.display).toEqual('block');
-    expect(view.sliderMovement.myData.min.min).toEqual('80');
+    expect(view.sliderMovement.currentHandelsPositions.min.min).toEqual('80');
     expect(view.minHandel.style.left).toEqual('80px');
   });
 
@@ -489,95 +488,95 @@ describe(' View Components ', function() {
       expect(sliderMovement.step).toEqual(settings.step);
     });
 
-    it(' myData matches pattern ', function() {
-      expect(sliderMovement.myData).toEqual({'min': {}, 'max': {}});
+    it(' currentHandelsPositions matches pattern ', function() {
+      expect(sliderMovement.currentHandelsPositions).toEqual({'min': {}, 'max': {}});
     });
 
     it(' startHandlersPositions () calculates the starting position for MinHandel correctly ', function() {
       document.body.append(sliderMovement.sliderRange, sliderMovement.min);
 
       sliderMovement.startHandlersPositions({'minimum': settings.min, 'min': modelData['current-min'], 'max': modelData['current-max'], 'positions': `20`})
-      expect(sliderMovement.myData.min.min).toEqual('25');
+      expect(sliderMovement.currentHandelsPositions.min.min).toEqual('25');
     });
 
     it(' startHandlersPositions () calculates the starting position for MaxHandel correctly ', function() {
       document.body.append(sliderMovement.sliderRange, sliderMovement.min);
 
       sliderMovement.startHandlersPositions({'minimum': settings.min, 'min': modelData['current-min'], 'max': modelData['current-max'], 'positions': `20`})
-      expect(sliderMovement.myData.max.max).toEqual('75');
+      expect(sliderMovement.currentHandelsPositions.max.max).toEqual('75');
     });
 
     it(' minHandelListener() set the position to 30px relative to the scale', function() {
-      sliderMovement.myData.min.min = '0';
-      sliderMovement.myData.max.max = '100';
+      sliderMovement.currentHandelsPositions.min.min = '0';
+      sliderMovement.currentHandelsPositions.max.max = '100';
       document.body.append(sliderRange);
       sliderRange.append(minHandel);
 
       sliderMovement.minHandelListener( {clientX: '100'}, {clientX: '130'} );
 
-      expect(sliderMovement.myData.min.min).toEqual('30');    
+      expect(sliderMovement.currentHandelsPositions.min.min).toEqual('30');    
     });
 
     it(' minHandelListener() when a value goes outside the scale range with a negative value, the position will be equal to the minimum possible ', function() {
-      sliderMovement.myData.min.min = '0';
-      sliderMovement.myData.max.max = '100';
+      sliderMovement.currentHandelsPositions.min.min = '0';
+      sliderMovement.currentHandelsPositions.max.max = '100';
       document.body.append(sliderRange);
       sliderRange.append(minHandel);
 
       sliderMovement.minHandelListener( {clientX: '100'}, {clientX: '70'} );
 
-      expect(sliderMovement.myData.min.min).toEqual('0');    
+      expect(sliderMovement.currentHandelsPositions.min.min).toEqual('0');    
     });
 
     it(' minHandelListener() when a value goes out of the scale range with a value greater than the maximum, the position is equal to the maximum possible ', function() {
-      sliderMovement.myData.min.min = '0';
-      sliderMovement.myData.max.max = '100';
+      sliderMovement.currentHandelsPositions.min.min = '0';
+      sliderMovement.currentHandelsPositions.max.max = '100';
       document.body.append(sliderRange);
       sliderRange.append(minHandel);
 
       sliderMovement.minHandelListener( {clientX: '100'}, {clientX: '250'} );
 
-      expect(sliderMovement.myData.min.min).toEqual('100');    
+      expect(sliderMovement.currentHandelsPositions.min.min).toEqual('100');    
     });
 
     it(' minHandelListener() the second Handel prevents the first one from entering it ', function() {
-      sliderMovement.myData.min.min = '0';
-      sliderMovement.myData.max.max = '50';
+      sliderMovement.currentHandelsPositions.min.min = '0';
+      sliderMovement.currentHandelsPositions.max.max = '50';
       document.body.append(sliderRange, handelToggle);
       sliderRange.append(minHandel, maxHandel);
       handelToggle.checked = true;
 
       sliderMovement.minHandelListener( {clientX: '100'}, {clientX: '170'} );
 
-      expect(sliderMovement.myData.min.min).toEqual('30');
+      expect(sliderMovement.currentHandelsPositions.min.min).toEqual('30');
 
       handelToggle.checked = false;
     });
 
     it(' maxHandelListener() the second Handel cannot go beyond the slider ', function() {
-      sliderMovement.myData.min.min = '0';
-      sliderMovement.myData.max.max = '50';
+      sliderMovement.currentHandelsPositions.min.min = '0';
+      sliderMovement.currentHandelsPositions.max.max = '50';
       document.body.append(sliderRange, handelToggle);
       sliderRange.append(minHandel, maxHandel);
       handelToggle.checked = true;
 
       sliderMovement.maxHandelListener( {clientX: '100'}, {clientX: '270'} );
 
-      expect(sliderMovement.myData.max.max).toEqual('100');
+      expect(sliderMovement.currentHandelsPositions.max.max).toEqual('100');
 
       handelToggle.checked = false;
     });
 
     it(' maxHandelListener() the first Handel does not skip the second ', function() {
-      sliderMovement.myData.min.min = '50';
-      sliderMovement.myData.max.max = '100';
+      sliderMovement.currentHandelsPositions.min.min = '50';
+      sliderMovement.currentHandelsPositions.max.max = '100';
       document.body.append(sliderRange, handelToggle);
       sliderRange.append(minHandel, maxHandel);
       handelToggle.checked = true;
 
       sliderMovement.maxHandelListener( {clientX: '100'}, {clientX: '120'} );
 
-      expect(sliderMovement.myData.max.max).toEqual('70');
+      expect(sliderMovement.currentHandelsPositions.max.max).toEqual('70');
 
       handelToggle.checked = false;
     });
@@ -600,7 +599,7 @@ describe(' View Components ', function() {
     it(' selectionOfPreparedValue() if target min ', function() {
       document.body.append(sliderRange, minHandel, interval);
       sliderMovement.selectionOfPreparedValue('min');
-      expect(sliderMovement.myData.min).toEqual({'min': '0', 'sliderWidth': `100`});
+      expect(sliderMovement.currentHandelsPositions.min).toEqual({'min': '0', 'sliderWidth': `100`});
       expect(minHandel.style.left).toEqual('0px');
       expect(interval.style.left).toEqual('10px');
     });
@@ -609,7 +608,7 @@ describe(' View Components ', function() {
       document.body.append(sliderRange, maxHandel, minHandel, interval, handelToggle);
       handelToggle.checked = true;
       sliderMovement.selectionOfPreparedValue('max');
-      expect(sliderMovement.myData.max).toEqual({'max': `100`, 'sliderWidth': `100`});
+      expect(sliderMovement.currentHandelsPositions.max).toEqual({'max': `100`, 'sliderWidth': `100`});
       expect(maxHandel.style.left).toEqual('100px');
       expect(interval.style.right).toEqual('10px');
       handelToggle.checked = false;
@@ -618,7 +617,7 @@ describe(' View Components ', function() {
     it(' selectionOfPreparedValue() if target max, one handel ', function() {
       document.body.append(sliderRange, minHandel, interval, handelToggle);
       sliderMovement.selectionOfPreparedValue('max');
-      expect(sliderMovement.myData.min).toEqual({'min': `100`, 'sliderWidth': `100`});
+      expect(sliderMovement.currentHandelsPositions.min).toEqual({'min': `100`, 'sliderWidth': `100`});
       expect(minHandel.style.left).toEqual('100px');
       expect(interval.style.left).toEqual('110px');
     });
@@ -626,27 +625,27 @@ describe(' View Components ', function() {
     it(' sideMenuInputsValuesValidationChecker() correctly calculates the position for Min when the second handel is Off', function() {
       document.body.append(sliderRange, minHandel, maxHandel, interval);
       sliderMovement.sideMenuInputsValuesValidationChecker('min', 0, 20, -10);
-      expect(sliderMovement.myData.min.min).toEqual('50');
+      expect(sliderMovement.currentHandelsPositions.min.min).toEqual('50');
       expect(minHandel.style.left).toEqual('50px');
       expect(interval.style.left).toEqual('60px');
       sliderMovement.sideMenuInputsValuesValidationChecker('min', -20, 20, -10);
-      expect(sliderMovement.myData.min.min).toEqual('0');
+      expect(sliderMovement.currentHandelsPositions.min.min).toEqual('0');
       sliderMovement.sideMenuInputsValuesValidationChecker('min', 20, 20, -10);
-      expect(sliderMovement.myData.min.min).toEqual('100');
+      expect(sliderMovement.currentHandelsPositions.min.min).toEqual('100');
     });
 
     it(' sideMenuInputsValuesValidationChecker() correctly calculates the position for Min when the second handel is On', function() {
       document.body.append(sliderRange, minHandel, maxHandel, interval);
       handelToggle.checked = true;
       sliderMovement.sideMenuInputsValuesValidationChecker('min', 0, 20, -10);
-      expect(sliderMovement.myData.min.min).toEqual('50');
+      expect(sliderMovement.currentHandelsPositions.min.min).toEqual('50');
       expect(minHandel.style.left).toEqual('50px');
       expect(interval.style.left).toEqual('60px');
       sliderMovement.sideMenuInputsValuesValidationChecker('min', -20, 20, -10);
-      expect(sliderMovement.myData.min.min).toEqual('0');
+      expect(sliderMovement.currentHandelsPositions.min.min).toEqual('0');
       sliderMovement.sideMenuInputsValuesValidationChecker('max', 5, 20, -10);
       sliderMovement.sideMenuInputsValuesValidationChecker('min', 10, 20, -10);
-      expect(sliderMovement.myData.min.min).toEqual('55');
+      expect(sliderMovement.currentHandelsPositions.min.min).toEqual('55');
       handelToggle.checked = false;
     });
 
@@ -655,13 +654,13 @@ describe(' View Components ', function() {
       handelToggle.checked = true;
       sliderMovement.sideMenuInputsValuesValidationChecker('min', -5, 20, -10);
       sliderMovement.sideMenuInputsValuesValidationChecker('max', 5, 20, -10);
-      expect(sliderMovement.myData.max.max).toEqual('75');
+      expect(sliderMovement.currentHandelsPositions.max.max).toEqual('75');
       expect(maxHandel.style.left).toEqual('75px');
       expect(interval.style.right).toEqual('35px');
       sliderMovement.sideMenuInputsValuesValidationChecker('max', 30, 20, -10);
-      expect(sliderMovement.myData.max.max).toEqual('100');
+      expect(sliderMovement.currentHandelsPositions.max.max).toEqual('100');
       sliderMovement.sideMenuInputsValuesValidationChecker('max', -15, 20, -10);
-      expect(sliderMovement.myData.max.max).toEqual('45');
+      expect(sliderMovement.currentHandelsPositions.max.max).toEqual('45');
       handelToggle.checked = false;
     });
 
