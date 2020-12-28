@@ -1,7 +1,6 @@
 export class HandelsLabels {
   minLabel: HTMLLabelElement;
   maxLabel: HTMLLabelElement;
-  labelInput: HTMLInputElement;
 
   constructor() {
     let min:HTMLLabelElement = document.createElement('label');

@@ -1,21 +1,22 @@
 export class SideMenu {
-
   customSliderMenuContainer: HTMLDivElement;
   handelToggle: HTMLInputElement;
   handelLabelToggle: HTMLInputElement;
   planeToggle: HTMLInputElement;
   minInput: HTMLInputElement;
   maxInput: HTMLInputElement;
-
+  minSliderValueOutput: HTMLOutputElement;
+  maxSliderValueOutput: HTMLOutputElement;
+  
   constructor() {
     let sliderValueP:HTMLParagraphElement = document.createElement('p');
     sliderValueP.classList.add('customSliderParagVal');
     sliderValueP.innerText = 'Текущее занчение: ';
     
-    let minSliderValueOutput:HTMLOutputElement = document.createElement('output');
+    let minSliderValueOutput: HTMLOutputElement = document.createElement('output');
     minSliderValueOutput.classList.add('sliderValue');
     minSliderValueOutput.id = 'minSliderValue';
-    let maxSliderValueOutput:HTMLOutputElement = document.createElement('output');
+    let maxSliderValueOutput: HTMLOutputElement = document.createElement('output');
     maxSliderValueOutput.classList.add('sliderValue');
     maxSliderValueOutput.id = 'maxSliderValue';
     
@@ -123,16 +124,7 @@ export class SideMenu {
     this.planeToggle = toggleForPlaneInput;
     this.minInput = customSliderInputsMin;
     this.maxInput = customSliderInputsMax;
-  };
-
-  getElements(): object {
-    return {
-      menu: this.customSliderMenuContainer,
-      handelToggle: this.handelToggle,
-      handelLabelToggle: this.handelLabelToggle,
-      planeToggle: this.planeToggle,
-      minInput: this.minInput,
-      maxInput: this.maxInput
-    };
+    this.minSliderValueOutput = minSliderValueOutput;
+    this.maxSliderValueOutput = maxSliderValueOutput;
   };
 };

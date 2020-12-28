@@ -1,7 +1,7 @@
 export class Handels {
 
-  private minHandel: HTMLSpanElement;
-  private maxHandel: HTMLSpanElement;
+  readonly minHandel: HTMLSpanElement;
+  readonly maxHandel: HTMLSpanElement;
 
   constructor() {
     let min: HTMLSpanElement = document.createElement('span');

@@ -1,14 +1,15 @@
-import { IData } from '../src/components/model/dataInterface.ts';
-import { Model } from '../src/components/model/model.ts';
-import { Facade } from '../src/components/model/facade.ts';
-import { View } from '../src/components/view/view.ts';
-import { HandelsLabels } from '../src/components/view/components/handels-labels.ts';
-import { Handels } from '../src/components/view/components/handels.ts';
-import { SelectedRange } from '../src/components/view/components/selected-range.ts';
-import { SideMenu } from '../src/components/view/components/side-menu.ts';
-import { SliderMovement } from '../src/components/view/components/slider-movement.ts';
-import { SliderRange } from '../src/components/view/components/slider-range.ts';
-import { ValueRange } from '../src/components/view/components/valueRange.ts';
+import { IData } from '../src/components/model/model';
+import { Model } from '../src/components/model/model';
+import { Facade } from '../src/components/model/facade';
+import { View } from '../src/components/view/view';
+import { HandelsLabels } from '../src/components/view/components/handels-labels';
+import { Handels } from '../src/components/view/components/handels';
+import { SelectedRange } from '../src/components/view/components/selected-range';
+import { SideMenu } from '../src/components/view/components/side-menu';
+import { SliderMovement } from '../src/components/view/components/slider-movement';
+import { SliderRange } from '../src/components/view/components/slider-range';
+import { ValueRange } from '../src/components/view/components/valueRange';
+import { Settings } from 'jquery.ui.customSlider';
 
 let settings = {
   'min': '-10',
@@ -21,10 +22,10 @@ let settings = {
 };
 
 let modelData: IData = {
-  min: -10,
-  max: 10,
-  'current-min': -5,
-  'current-max': 5
+  'min': '-10',
+  'max': '10',
+  'current-min': '-5',
+  'current-max': '5'
 };
 
 let model: Model;
@@ -34,7 +35,7 @@ let view: View;
 describe('Model', function() {
 
   beforeEach(function(){
-    model = new Model(modelData);
+    model = new Model({'min': modelData['min'], 'max': modelData['max'], 'current-min': modelData['current-min'] ? modelData['current-min'] : '', 'current-max': modelData['current-max'] ? modelData['current-max'] : ''});
   });
     
   it(' Model can be create ', function() {
@@ -46,7 +47,7 @@ describe('Model', function() {
   });
 
   it(' getCurrentData() returns an object with correct data ', function() {
-    expect(model.getCurrentData()).toEqual({'minimum': -10, 'min': -5, 'max': 5, 'positions': `20`});
+    expect(model.getCurrentData()).toEqual({'minimum': '-10', 'min': '-5', 'max': '5', 'positions': `20`});
   });
 
 });
@@ -54,7 +55,7 @@ describe('Model', function() {
 describe('Facade', function() {
 
   beforeEach( function(){
-    model = new Model(modelData);
+    model = new Model({'min': modelData['min'], 'max': modelData['max'], 'current-min': modelData['current-min'] ? modelData['current-min'] : '', 'current-max': modelData['current-max'] ? modelData['current-max'] : ''});
     facade = new Facade(model);
   });
 
@@ -71,25 +72,25 @@ describe('Facade', function() {
   });
 
   it(' refreshModelData() calculates the new Min value correctly and overwrites the model ', function() {
-    facade.refreshModelData({min: "35", sliderWidth: "100"}, "min");
-    expect(facade.model.data['current-min']).toEqual(-3);
+    facade.refreshModelData({min: "35", sliderWidth: "100", max : ''}, "min");
+    expect(facade.model.data['current-min']).toEqual('-3');
   });
 
   it(' refreshModelData() returns an object with a Min value after overwrites ', function() {
-    expect(facade.refreshModelData({min: "35", sliderWidth: "100"}, "min")).toEqual({'min': -3});
+    expect(facade.refreshModelData({min: "35", sliderWidth: "100", 'max': ''}, "min")).toEqual({'min': '-3'});
   });
 
   it(' refreshModelData() calculates the new Max value correctly and overwrites the model ', function() {
-    facade.refreshModelData({max: "65", sliderWidth: "100"}, "max");
-    expect(facade.model.data['current-max']).toEqual(3);
+    facade.refreshModelData({max: "65", sliderWidth: "100", 'min': ''}, "max");
+    expect(facade.model.data['current-max']).toEqual('3');
   });
 
   it(' refreshModelData() returns an object with a Max value after overwrites ', function() {
-    expect(facade.refreshModelData({max: "65", sliderWidth: "100"}, "max")).toEqual({'max': 3});
+    expect(facade.refreshModelData({max: "65", sliderWidth: "100", min: ''}, "max")).toEqual({'max': '3'});
   });
 
   it(' getModelData() returns the selected values ', function() {
-    expect(facade.getModelData()).toEqual({'max': 5, 'min': -5});
+    expect(facade.getModelData()).toEqual({'max': '5', 'min': '-5'});
   });
 
   it(' getMaxData() returns the maximum possible value ', function() {
@@ -97,23 +98,23 @@ describe('Facade', function() {
   });
 
   it(' getPossibleRange() returns a range of possible values ', function() {
-    expect(facade.getPossibleRange()).toEqual({'max': 10, 'min': -10});
+    expect(facade.getPossibleRange()).toEqual({'max': '10', 'min': '-10'});
   });
 
   it(' getPositionsAmount() returns the number of positions and the minimum possible value', function() {
-    expect(facade.getPositionsAmount()).toEqual({'positions': 20, 'minimum': -10});
+    expect(facade.getPositionsAmount()).toEqual({'positions': '20', 'minimum': '-10'});
   });
 
 });
 
 describe(' View ', function() {
   let view: View;
-  let shell = $('<div class="MainShell" ></div>')[0];
+  let shell = (<HTMLDivElement>$('<div class="MainShell" ></div>')[0]);
   let sideMenuShell = $('<div id="sideMenuShell" ></div>')[0];
   document.body.append(shell);
   shell.append(sideMenuShell);
 
-  let settings = {
+  let settings: Settings = {
     'min': '-10',
     'max': '10',
     'range': true,
@@ -129,43 +130,47 @@ describe(' View ', function() {
   });
 
   it(' refreshCurrentValues() correctly updates View for Min value ', function() {
-    view.refreshCurrentValues({'min': 5});
+    view.refreshCurrentValues({'min': '5'});
     expect(view.minLabel.textContent).toEqual('5');
-    expect(view.sideMenu.querySelector('#minSliderValue').textContent).toEqual('5');
-    expect(view.sideMenu.querySelector('.customSliderMinInput').value).toEqual('5');
+    view.minSliderValueOutput ? expect(view.minSliderValueOutput.textContent).toEqual('5') : false;
+    view.minInput ? expect(view.minInput.value).toEqual('5') : false;
   });
 
   it(' refreshCurrentValues() correctly updates View for Max value ', function() {
-    view.refreshCurrentValues({'max': 5});
+    view.refreshCurrentValues({'max': '5'});
     expect(view.maxLabel.textContent).toEqual('5');
-    expect(view.sideMenu.querySelector('#maxSliderValue').textContent).toEqual(' - 5');
-    expect(view.sideMenu.querySelector('.customSliderMaxInput').value).toEqual('5');
+    view.maxSliderValueOutput ? expect(view.maxSliderValueOutput.textContent).toEqual(' - 5') : false;
+    view.maxInput ? expect(view.maxInput.value).toEqual('5') : false;
   });
 
   it(' refreshCurrentValues() correctly updates View for Max and Min value ', function() {
-    view.handelToggle.checked = true;
-    view.refreshCurrentValues({'min': -5 ,'max': 5});
+    view.handelToggle ? view.handelToggle.checked = true : false;
+    view.refreshCurrentValues({'min': '-5' ,'max': '5'});
     expect(view.minLabel.textContent).toEqual('-5');
     expect(view.maxLabel.textContent).toEqual('5');
-    expect(view.sideMenu.querySelector('#minSliderValue').textContent).toEqual('-5');
-    expect(view.sideMenu.querySelector('#maxSliderValue').textContent).toEqual(' - 5');
-    expect(view.sideMenu.querySelector('.customSliderMinInput').value).toEqual('-5');
-    expect(view.sideMenu.querySelector('.customSliderMaxInput').value).toEqual('5');
+    view.minSliderValueOutput ? expect(view.minSliderValueOutput.textContent).toEqual('-5') : false;
+    view.maxSliderValueOutput ? expect(view.maxSliderValueOutput.textContent).toEqual(' - 5') : false;
+    view.minInput ? expect(view.minInput.value).toEqual('-5') : false;
+    view.maxInput ? expect(view.maxInput.value).toEqual('5') : false;
   });
 
   it(' callMaxHandelToggleChanger() modifies elements correctly when turning off the second Handel ', function() {
     view.sliderRange.style.width = '120px';
     view.minHandel.style.width = '20px';
     view.minHandel.style.display = 'block';
-    document.body.append(view.sliderRange, view.maxHadnel, view.minHandel, view.sideMenu, view.maxInput, view.interval)
-    view.handelToggle.checked = false;
-    view.callMaxHandelToggleChanger(view);
+    if (view.sideMenu && view.maxInput) {
+      document.body.append(view.sliderRange, view.maxHandel, view.minHandel, view.interval,  view.sideMenu, view.maxInput)
+    }
+    view.handelToggle ? view.handelToggle.checked = false : false;
+    view.callMaxHandelToggleChanger();
     expect(view.sliderMovement.currentHandelsPositions.max.max).toEqual('100');
     expect(view.maxHandel.style.left).toEqual('100px');
-    expect(view.sideMenu.querySelector('#maxSliderValue').textContent).toEqual('');
-    expect(view.maxInput.value).toEqual('');
-    expect(view.maxInput.hasAttribute('readonly')).toEqual(true);
-    expect(view.maxInput.style.opacity).toEqual('0.3');
+    view.maxSliderValueOutput ? expect(view.maxSliderValueOutput.textContent).toEqual('') : false;
+    if (view.maxInput) {
+      expect(view.maxInput.value).toEqual('');
+      expect(view.maxInput.hasAttribute('readonly')).toEqual(true);
+      expect(view.maxInput.style.opacity).toEqual('0.3');
+    };
     expect(view.interval.style.display).toEqual('none');
     expect(view.maxHandel.style.display).toEqual('none');
   });
@@ -176,12 +181,14 @@ describe(' View ', function() {
     view.minHandel.style.display = 'block';
     view.maxHandel.style.width = '20px';
     view.maxHandel.style.display = 'block';
-    document.body.append(view.sliderRange, view.maxHandel, view.minHandel, view.sideMenu, view.maxInput, view.interval)
-    view.handelToggle.checked = true;
+    if (view.sideMenu && view.maxInput) {
+      document.body.append(view.sliderRange, view.maxHandel, view.minHandel, view.sideMenu, view.maxInput, view.interval)
+    };
+    view.handelToggle ? view.handelToggle.checked = true : false;
     view.sliderMovement.currentHandelsPositions.min.min = '100';
-    view.callMaxHandelToggleChanger(view);
-    expect(view.maxInput.hasAttribute('readonly')).toEqual(false);
-    view.handelToggle.checked = false;
+    view.callMaxHandelToggleChanger();
+    view.maxInput ? expect(view.maxInput.hasAttribute('readonly')).toEqual(false) : false;
+    view.handelToggle ? view.handelToggle.checked = false : false;
     expect(view.interval.style.display).toEqual('block');
     expect(view.interval.style.right).toEqual('10px');
     expect(view.maxHandel.style.display).toEqual('block');
@@ -190,19 +197,23 @@ describe(' View ', function() {
   });
 
   it(' refreshMaxSideMenuData() updates the side menu correctly ', function() {
-    document.body.append(view.sideMenu, view.maxInput);
-    view.refreshMaxSideMenuData(7);
-    expect(view.sideMenu.querySelector('#maxSliderValue').textContent).toEqual(' - 7');
-    expect(view.maxInput.value).toEqual('7');
-    expect(view.maxInput.style.opacity).toEqual('1');
+    if (view.sideMenu && view.maxInput) {
+      document.body.append(view.sideMenu, view.maxInput);
+      view.refreshMaxSideMenuData(7);
+      view.maxSliderValueOutput ? expect(view.maxSliderValueOutput.textContent).toEqual(' - 7') : false;
+      expect(view.maxInput.value).toEqual('7');
+      expect(view.maxInput.style.opacity).toEqual('1');
+    };
   });
 
   it(' inputsPossibleRange() set the maximum and minimum values for the side menu inputs correctly ', function() {
-    document.body.append(view.maxInput, view.minInput);
-    view.inputsPossibleRange({'min': settings.min, 'max': settings.max}, view.minInput, view.maxInput);
-    expect(view.minInput.getAttribute('max')).toEqual('10');
-    expect(view.minInput.getAttribute('min')).toEqual('-10');
-    expect(view.maxInput.getAttribute('max')).toEqual('10');
+    if(view.maxInput && view.minInput) {
+      document.body.append(view.maxInput, view.minInput);
+      view.inputsPossibleRange({'min': settings.min, 'max': settings.max}, view.minInput, view.maxInput);
+      expect(view.minInput.getAttribute('max')).toEqual('10');
+      expect(view.minInput.getAttribute('min')).toEqual('-10');
+      expect(view.maxInput.getAttribute('max')).toEqual('10');
+    };
   });
 
 });
@@ -222,11 +233,11 @@ describe(' View Components ', function() {
     });
 
     it(' MinLabel matches pattern ', function() {
-      expect(handelsLabel.minLabel).toEqual($('<label class="minSliderHandelLabel">')[0])
+      expect(handelsLabel.minLabel).toEqual((<HTMLLabelElement>$('<label class="minSliderHandelLabel">')[0]))
     });
 
     it(' MaxLabel matches pattern ', function() {
-      expect(handelsLabel.maxLabel).toEqual($('<label class="maxSliderHandelLabel">')[0])
+      expect(handelsLabel.maxLabel).toEqual(<HTMLLabelElement>($('<label class="maxSliderHandelLabel">')[0]))
     });
 
     it(' getElements() returns elements ', function() {
@@ -237,27 +248,27 @@ describe(' View Components ', function() {
     });
 
     it(' displayController(ON) change display state of element depending on input ', function() {
-      let toggleON = $('<input type="checkbox" checked>')[0];
+      let toggleON = (<HTMLInputElement>$('<input type="checkbox" checked>')[0]);
       handelsLabel.displayController(toggleON, handelsLabel.minLabel, handelsLabel.maxLabel);
       expect(handelsLabel.minLabel.style.display == 'inline' && handelsLabel.maxLabel.style.display == 'inline').toBeTrue();
     });
 
     it(' displayController(OFF) change display state of element depending on input ', function() {
-      let toggleON = $('<input type="checkbox">')[0];
+      let toggleON = (<HTMLInputElement>$('<input type="checkbox">')[0]);
       handelsLabel.displayController(toggleON, handelsLabel.minLabel, handelsLabel.maxLabel);
       expect(handelsLabel.minLabel.style.display == 'none' && handelsLabel.maxLabel.style.display == 'none').toBeTrue();
     });
 
     it(' centeringRelativeToHandles() centered MinLabel relatively MinHandel based on the width of the text', function() {
-      let minLabel = handelsLabel.getElements().min;
-      let maxLabel = handelsLabel.getElements().max;
+      let minLabel = handelsLabel.minLabel;
+      let maxLabel = handelsLabel.maxLabel;
       handelsLabel.centeringRelativeToHandles(20, 10, 10, 30, minLabel, maxLabel)
       expect(minLabel.style.left).toEqual('5px');
     });
 
     it(' centeringRelativeToHandles() centered MaxLabel relatively MaxHandel based on the width of the text', function() {
-      let minLabel = handelsLabel.getElements().min;
-      let maxLabel = handelsLabel.getElements().max;
+      let minLabel = handelsLabel.minLabel;
+      let maxLabel = handelsLabel.maxLabel;
       handelsLabel.centeringRelativeToHandles(20, 10, 10, 30, minLabel, maxLabel)
       expect(maxLabel.style.left).toEqual('-10px');
     });
@@ -287,13 +298,13 @@ describe(' View Components ', function() {
     });
 
     it(' displayController(block) change display state of maxHandel ', function() {
-      let toggle = $('<input type="checkbox" checked>')[0];
+      let toggle = (<HTMLInputElement>$('<input type="checkbox" checked>')[0]);
       handels.displayController(toggle, handels.maxHandel);
       expect(handels.maxHandel.style.display).toEqual('block');
     });
 
     it(' displayController(none) change display state of maxHandel ', function() {
-      let toggle = $('<input type="checkbox">')[0];
+      let toggle = (<HTMLInputElement>$('<input type="checkbox">')[0]);
       handels.displayController(toggle, handels.maxHandel);
       expect(handels.maxHandel.style.display).toEqual('none');
     });
@@ -312,11 +323,11 @@ describe(' View Components ', function() {
     });
 
     it(' interval matches pattern ', function() {
-      expect(selectedRange.interval).toEqual($('<div class="mainInterval"></div>')[0]);
+      expect(selectedRange.interval).toEqual((<HTMLDivElement>$('<div class="mainInterval"></div>')[0]));
     });
 
     it(' getElements() returns elements ', function() {
-      expect(selectedRange.getElements()).toEqual($('<div class="mainInterval"></div>')[0]);
+      expect(selectedRange.getElements()).toEqual((<HTMLDivElement>$('<div class="mainInterval"></div>')[0]));
     });
   });
 
@@ -332,11 +343,11 @@ describe(' View Components ', function() {
     });
 
     it(' range matches pattern ', function() {
-      expect(sliderRange.range).toEqual($('<div class="sliderRange"></div>')[0]);
+      expect(sliderRange.range).toEqual((<HTMLDivElement>$('<div class="sliderRange"></div>')[0]));
     });
 
     it(' getElements() returns elements ', function() {
-      expect(sliderRange.getElements()).toEqual($('<div class="sliderRange"></div>')[0]);
+      expect(sliderRange.getElements()).toEqual((<HTMLDivElement>$('<div class="sliderRange"></div>')[0]));
     });
   });
 
@@ -352,11 +363,11 @@ describe(' View Components ', function() {
     });
 
     it(' minValue matches pattern ', function() {
-      expect(valueRange.minValue).toEqual($('<p class="minSliderPoint">-10</p>')[0]);
+      expect(valueRange.minValue).toEqual((<HTMLParagraphElement>$('<p class="minSliderPoint">-10</p>')[0]));
     });
 
     it(' maxValue matches pattern ', function() {
-      expect(valueRange.maxValue).toEqual($('<p class="maxSliderPoint">10</p>')[0]);
+      expect(valueRange.maxValue).toEqual((<HTMLParagraphElement>$('<p class="maxSliderPoint">10</p>')[0]));
     });
 
     it(' getElements() returns elements ', function() {
@@ -368,12 +379,12 @@ describe(' View Components ', function() {
 
   describe(' SideMenu ', function() {
     let sideMenu: SideMenu;
-    let customSliderMenuContainerPattern = $('<div class="sliderMenuContainer"><p class="customSliderParagVal">Текущее занчение: <output class="sliderValue" id="minSliderValue"></output><output class="sliderValue" id="maxSliderValue"></output></p><p class="customSliderParag">Включить второй ползунок: </p><label class="customSliderToggle"><input class="maxSliderHandelToggle" id="maxSliderHandelToggle" type="checkbox"><span class="customToggleSliderBorder"></span></label><div class="customSliderInputs"><p class="customSliderParag">Изменить значение: </p><label class="customSliderInputlabel" for="customSliderMinInput">Min: </label><input class="customSliderMinInput" id="customSliderMinInput" type="number"><label class="customSliderInputlabel" for="customSliderMaxInput">Max: </label><input class="customSliderMaxInput" id="customSliderMaxInput" type="number"></div><div><p class="customSliderParag">Включить значения под ползунками: </p><label class="customSliderToggle"><input type="checkbox" class="showValueToggle" id="showValueToggle"><span class="customToggleSliderBorder"></span></label></div><div><p class="customSliderParag">Изменить плоскость: </p><label class="customSliderToggle"><input type="checkbox" class="planeToggle" id="planeToggle"><span class="customToggleSliderBorder"></span></label></div></div>')[0];
-    let handelTogglePattern = $('<input class="maxSliderHandelToggle" id="maxSliderHandelToggle" type="checkbox">')[0];
-    let handelLabelTogglePattern = $('<input type="checkbox" class="showValueToggle" id="showValueToggle">')[0];
-    let planeTogglePattern = $('<input type="checkbox" class="planeToggle" id="planeToggle">')[0];
-    let minInputPattern = $('<input class="customSliderMinInput" id="customSliderMinInput" type="number">')[0];
-    let maxInputPattern = $('<input class="customSliderMaxInput" id="customSliderMaxInput" type="number">')[0];
+    let customSliderMenuContainerPattern = (<HTMLDivElement>$('<div class="sliderMenuContainer"><p class="customSliderParagVal">Текущее занчение: <output class="sliderValue" id="minSliderValue"></output><output class="sliderValue" id="maxSliderValue"></output></p><p class="customSliderParag">Включить второй ползунок: </p><label class="customSliderToggle"><input class="maxSliderHandelToggle" id="maxSliderHandelToggle" type="checkbox"><span class="customToggleSliderBorder"></span></label><div class="customSliderInputs"><p class="customSliderParag">Изменить значение: </p><label class="customSliderInputlabel" for="customSliderMinInput">Min: </label><input class="customSliderMinInput" id="customSliderMinInput" type="number"><label class="customSliderInputlabel" for="customSliderMaxInput">Max: </label><input class="customSliderMaxInput" id="customSliderMaxInput" type="number"></div><div><p class="customSliderParag">Включить значения под ползунками: </p><label class="customSliderToggle"><input type="checkbox" class="showValueToggle" id="showValueToggle"><span class="customToggleSliderBorder"></span></label></div><div><p class="customSliderParag">Изменить плоскость: </p><label class="customSliderToggle"><input type="checkbox" class="planeToggle" id="planeToggle"><span class="customToggleSliderBorder"></span></label></div></div>')[0]);
+    let handelTogglePattern = (<HTMLInputElement>$('<input class="maxSliderHandelToggle" id="maxSliderHandelToggle" type="checkbox">')[0]);
+    let handelLabelTogglePattern = (<HTMLInputElement>$('<input type="checkbox" class="showValueToggle" id="showValueToggle">')[0]);
+    let planeTogglePattern = (<HTMLInputElement>$('<input type="checkbox" class="planeToggle" id="planeToggle">')[0]);
+    let minInputPattern = (<HTMLInputElement>$('<input class="customSliderMinInput" id="customSliderMinInput" type="number">')[0]);
+    let maxInputPattern = (<HTMLInputElement>$('<input class="customSliderMaxInput" id="customSliderMaxInput" type="number">')[0]);
 
     beforeEach( function() {
       sideMenu = new SideMenu();
@@ -406,33 +417,22 @@ describe(' View Components ', function() {
     it(' customSliderMenuContainer matches pattern ', function() {
       expect(sideMenu.customSliderMenuContainer).toEqual(customSliderMenuContainerPattern);
     });
-
-    it(' getElements() returns elements ', function() {
-      expect(sideMenu.getElements()).toEqual({
-          menu: customSliderMenuContainerPattern,
-          handelToggle: handelTogglePattern,
-          handelLabelToggle: handelLabelTogglePattern,
-          planeToggle: planeTogglePattern,
-          minInput: minInputPattern,
-          maxInput: maxInputPattern
-      });
-    });
   });
 
   describe(' SliderMovement ', function() {
 
     let sliderMovement: SliderMovement;
-    let minHandel = $('<span class="minSliderHandel" style="width: 20px; display: block;">')[0];
-    let maxHandel = $('<span class="maxSliderHandel" style="width: 20px; display: block;">')[0];
-    let minLabel = $('<label class="minSliderHandelLabel">')[0];
-    let maxLabel = $('<label class="maxSliderHandelLabel">')[0];
-    let sliderRange = $('<div class="sliderRange" style="width: 120px; position: absolute; left: 100px;"></div>')[0];
-    let planeToggle = $('<input type="checkbox" class="planeToggle" id="planeToggle">')[0];
-    let handelToggle = $('<input class="maxSliderHandelToggle" id="maxSliderHandelToggle" type="checkbox">')[0];
-    let interval = $('<div class="mainInterval"></div>')[0];
-    let container = $('<div></div>')[0];
-    let minValue = $('<p class="minSliderPoint"></p>')[0];
-    let maxValue = $('<p class="maxSliderPoint"></p>')[0];
+    let minHandel:HTMLSpanElement = (<HTMLSpanElement>$('<span class="minSliderHandel" style="width: 20px; display: block;">')[0]);
+    let maxHandel:HTMLSpanElement = (<HTMLSpanElement>$('<span class="maxSliderHandel" style="width: 20px; display: block;">')[0]);
+    let minLabel: HTMLLabelElement = (<HTMLLabelElement>$('<label class="minSliderHandelLabel">')[0]);
+    let maxLabel: HTMLLabelElement = (<HTMLLabelElement>$('<label class="maxSliderHandelLabel">')[0]);
+    let sliderRange:HTMLDivElement = (<HTMLDivElement>$('<div class="sliderRange" style="width: 120px; position: absolute; left: 100px;"></div>')[0]);
+    let planeToggle: HTMLInputElement = (<HTMLInputElement>$('<input type="checkbox" class="planeToggle" id="planeToggle">')[0]);
+    let handelToggle: HTMLInputElement = (<HTMLInputElement>$('<input class="maxSliderHandelToggle" id="maxSliderHandelToggle" type="checkbox">')[0]);
+    let interval:HTMLDivElement = (<HTMLDivElement>$('<div class="mainInterval"></div>')[0]);
+    let container:HTMLDivElement = (<HTMLDivElement>$('<div></div>')[0]);
+    let minValue: HTMLParagraphElement = (<HTMLParagraphElement>$('<p class="minSliderPoint"></p>')[0]);
+    let maxValue: HTMLParagraphElement = (<HTMLParagraphElement>$('<p class="maxSliderPoint"></p>')[0]);
 
     beforeEach( function() {
       sliderMovement = new SliderMovement({
@@ -495,14 +495,14 @@ describe(' View Components ', function() {
     it(' startHandlersPositions () calculates the starting position for MinHandel correctly ', function() {
       document.body.append(sliderMovement.sliderRange, sliderMovement.min);
 
-      sliderMovement.startHandlersPositions({'minimum': settings.min, 'min': modelData['current-min'], 'max': modelData['current-max'], 'positions': `20`})
+      sliderMovement.startHandlersPositions({'minimum': settings.min, 'min': modelData['current-min'] ? modelData['current-min']: '', 'max': modelData['current-max'] ? modelData['current-max'] : '', 'positions': `20`})
       expect(sliderMovement.currentHandelsPositions.min.min).toEqual('25');
     });
 
     it(' startHandlersPositions () calculates the starting position for MaxHandel correctly ', function() {
       document.body.append(sliderMovement.sliderRange, sliderMovement.min);
 
-      sliderMovement.startHandlersPositions({'minimum': settings.min, 'min': modelData['current-min'], 'max': modelData['current-max'], 'positions': `20`})
+      sliderMovement.startHandlersPositions({'minimum': settings.min, 'min': modelData['current-min'] ? modelData['current-min'] : '', 'max': modelData['current-max'] ? modelData['current-max'] : '', 'positions': `20`})
       expect(sliderMovement.currentHandelsPositions.max.max).toEqual('75');
     });
 
@@ -512,7 +512,7 @@ describe(' View Components ', function() {
       document.body.append(sliderRange);
       sliderRange.append(minHandel);
 
-      sliderMovement.minHandelListener( {clientX: '100'}, {clientX: '130'} );
+      sliderMovement.minHandelListener({clientX: 0, clientY : 0} , {clientX: 30, clientY: 0} );
 
       expect(sliderMovement.currentHandelsPositions.min.min).toEqual('30');    
     });
@@ -523,7 +523,7 @@ describe(' View Components ', function() {
       document.body.append(sliderRange);
       sliderRange.append(minHandel);
 
-      sliderMovement.minHandelListener( {clientX: '100'}, {clientX: '70'} );
+      sliderMovement.minHandelListener( {clientX: 100, clientY: 0}, {clientX: 70, clientY: 0} );
 
       expect(sliderMovement.currentHandelsPositions.min.min).toEqual('0');    
     });
@@ -534,7 +534,7 @@ describe(' View Components ', function() {
       document.body.append(sliderRange);
       sliderRange.append(minHandel);
 
-      sliderMovement.minHandelListener( {clientX: '100'}, {clientX: '250'} );
+      sliderMovement.minHandelListener( {clientX: 100, clientY: 0}, {clientX: 250, clientY: 0} );
 
       expect(sliderMovement.currentHandelsPositions.min.min).toEqual('100');    
     });
@@ -546,7 +546,7 @@ describe(' View Components ', function() {
       sliderRange.append(minHandel, maxHandel);
       handelToggle.checked = true;
 
-      sliderMovement.minHandelListener( {clientX: '100'}, {clientX: '170'} );
+      sliderMovement.minHandelListener( {clientX: 100, clientY: 0}, {clientX: 170, clientY: 0} );
 
       expect(sliderMovement.currentHandelsPositions.min.min).toEqual('30');
 
@@ -560,7 +560,7 @@ describe(' View Components ', function() {
       sliderRange.append(minHandel, maxHandel);
       handelToggle.checked = true;
 
-      sliderMovement.maxHandelListener( {clientX: '100'}, {clientX: '270'} );
+      sliderMovement.maxHandelListener( {clientX: 100, clientY: 0}, {clientX: 270 , clientY: 0} );
 
       expect(sliderMovement.currentHandelsPositions.max.max).toEqual('100');
 
@@ -574,7 +574,7 @@ describe(' View Components ', function() {
       sliderRange.append(minHandel, maxHandel);
       handelToggle.checked = true;
 
-      sliderMovement.maxHandelListener( {clientX: '100'}, {clientX: '120'} );
+      sliderMovement.maxHandelListener( {clientX: 100, clientY: 0}, {clientX: 120, clientY: 0} );
 
       expect(sliderMovement.currentHandelsPositions.max.max).toEqual('70');
 

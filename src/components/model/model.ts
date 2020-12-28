@@ -1,18 +1,33 @@
-import { IData } from './dataInterface.ts';
+interface TarnsferedSettings {
+  'min': string;
+  'max': string;
+  'current-min': string;
+  'current-max': string;
+}
 
-interface Settings {
-  [key: string]: string | boolean
+export interface StartHandelsPosition {
+  'minimum': string, 
+  'min': string,
+  'max': string, 
+  'positions': string
+}
+
+export interface IData {
+  'min': string;
+  'max': string;
+  'current-min': string;
+  'current-max': string;
 }
 
 export class Model {
 
   data: IData;
   
-  constructor( settings: Settings ) { 
+  constructor( settings: TarnsferedSettings ) { 
     this.data = Object.assign({}, settings);
   }
 
-  getCurrentData(): object {
-    return {'minimum': this.data.min, 'min': this.data['current-min'], 'max': this.data['current-max'], 'positions': `${this.data.max - this.data.min}`}
+  getCurrentData(): StartHandelsPosition {
+    return {'minimum': this.data.min, 'min': this.data['current-min'], 'max': this.data['current-max'], 'positions': `${+this.data.max - +this.data.min}`}
   }
 }

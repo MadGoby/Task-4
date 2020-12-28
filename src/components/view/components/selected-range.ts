@@ -1,6 +1,6 @@
 export class SelectedRange {
 
-  private interval: HTMLDivElement;
+  readonly interval: HTMLDivElement;
 
   constructor() {
     let interval: HTMLDivElement = document.createElement('div');
