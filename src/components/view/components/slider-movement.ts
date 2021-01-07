@@ -291,9 +291,9 @@ export class SliderMovement {
         this.currentHandelsPositions['min'] = {'min': `${this.sliderRange.offsetWidth - this.min.offsetWidth}`, 'sliderWidth':`${this.sliderRange.offsetWidth - this.min.offsetWidth}`};
         this.min.style.left = this.sliderRange.offsetWidth - this.min.offsetWidth + 'px';
         this.interval.style.left = (this.sliderRange.offsetWidth - this.min.offsetWidth) + this.min.offsetWidth / 2 +'px';
-      }
-    }
-  }
+      };
+    };
+  };
 
   sideMenuInputsValuesValidationChecker(target: string, value: number, positions: number, minimum: number): void {
     let toggleResult: boolean;
@@ -335,5 +335,31 @@ export class SliderMovement {
       this.max.style.left = max + 'px';
       this.interval.style.right = (this.sliderRange.offsetWidth - +max) - this.min.offsetWidth / 2 + 'px';
     }
+  };
+
+  centeredHandelByValueScale(target: string, value: string, positions: string, minimum: string): void {
+    if (target === 'min') {
+      let min: string = String(((this.sliderRange.offsetWidth - this.min.offsetWidth) / +positions) * (+value - +minimum));
+
+      if(+min < 0) {
+        min = '0';
+      } else if (+min > this.sliderRange.offsetWidth - this.min.offsetWidth) {
+        min = String((this.sliderRange.offsetWidth - this.min.offsetWidth));
+      };
+
+      this.min.style.left = min + 'px';
+      this.interval.style.left = +min + this.min.offsetWidth / 2 + 'px';
+    } else if (target === 'max') {
+      let max: string = String(((this.sliderRange.offsetWidth - this.max.offsetWidth) / +positions) * (+value - +minimum));
+
+      if (+max <= +this.currentHandelsPositions.min.min + this.min.offsetWidth) {
+        max = String(+this.currentHandelsPositions.min.min + this.max.offsetWidth);
+      } else if(+max > this.sliderRange.offsetWidth - this.min.offsetWidth){
+        max = String((this.sliderRange.offsetWidth - this.min.offsetWidth));
+      };
+
+      this.max.style.left = max + 'px';
+      this.interval.style.right = (this.sliderRange.offsetWidth - +max) - this.min.offsetWidth / 2 + 'px';
+    };
   };
 };

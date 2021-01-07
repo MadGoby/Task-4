@@ -1,13 +1,14 @@
 $("#slider").testSlider(
   {
-    'min': -100,
-    'max': 100,
-    'current-min': -70,
-    'current-max': 70, //Only if range = true
+    'min': -1000,
+    'max': -100,
+    'current-min': -900,
+    'current-max': -200, //Only if range = true
     'range': true,
     'handelsLabel': true,
     'vertical': true,
-    'step': 10,
+    'valueScale': false,
+    'step': 50,
     'side-menu': true,
     'sideMenuContainer': '#sliderMenu', //Only if side-menu = true
   }
@@ -20,8 +21,9 @@ $("#slider2").testSlider(
     'current-min': 3000,
     'current-max': 7000, //Only if range = true
     'range': true,
-    'handelsLabel': true,
+    'handelsLabel': false,
     'vertical': false,
+    'valueScale': true,
     'step': 1000,
     'side-menu': true,
     'sideMenuContainer': '#sliderMenu2', //Only if side-menu = true
@@ -37,6 +39,7 @@ $("#slider3").testSlider(
     'range': true,
     'handelsLabel': true,
     'vertical': false,
+    'valueScale': true,
     'step': false,
     'side-menu': true,
     'sideMenuContainer': '#sliderMenu3', //Only if side-menu = true
@@ -50,6 +53,7 @@ $("#slider4").testSlider(
     'range': false,
     'handelsLabel': false,
     'vertical': false,
+    'valueScale': true,
     'step': false,
     'side-menu': true,
     'sideMenuContainer': '#sliderMenu4', //Only if side-menu = true
@@ -65,6 +69,7 @@ $("#slider5").testSlider(
     'range': true,
     'handelsLabel': true,
     'vertical': true,
+    'valueScale': false,
     'step': 100,
     'side-menu': true,
     'sideMenuContainer': '#sliderMenu5', //Only if side-menu = true

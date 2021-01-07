@@ -7,6 +7,7 @@ export class SideMenu {
   maxInput: HTMLInputElement;
   minSliderValueOutput: HTMLOutputElement;
   maxSliderValueOutput: HTMLOutputElement;
+  valueScaleToggle: HTMLInputElement;
   
   constructor() {
     let sliderValueP:HTMLParagraphElement = document.createElement('p');
@@ -61,7 +62,7 @@ export class SideMenu {
     customSliderInputsMax.classList.add('customSliderMaxInput');
     customSliderInputsMax.id = 'customSliderMaxInput';
     customSliderInputsMax.setAttribute('type', 'number');
-
+    
     let toggleForValuesContainer: HTMLDivElement = document.createElement('div');
 
     let toggleForValuesP: HTMLParagraphElement = document.createElement('p');
@@ -79,6 +80,40 @@ export class SideMenu {
     let toggleForValuesSpan: HTMLSpanElement = document.createElement('span');
     toggleForValuesSpan.classList.add('customToggleSliderBorder');
     
+    let stepContainer: HTMLDivElement = document.createElement('div');
+    stepContainer.classList.add('customSliderStepContainer');
+
+    let stepInputP: HTMLParagraphElement = document.createElement('p');
+    stepInputP.classList.add('customSliderParag');
+    stepInputP.innerText = 'Изменить шаг ползунка: ';
+
+    let forStepInputLabel: HTMLLabelElement = document.createElement('label');
+    forStepInputLabel.classList.add('customSliderInputlabel');
+    forStepInputLabel.setAttribute('for', 'customSliderStepInput');
+    forStepInputLabel.innerText = 'Step: ';
+
+    let stepInput: HTMLInputElement = document.createElement('input');
+    stepInput.classList.add('customSliderStepInput');
+    stepInput.id = 'customSliderStepInput';
+    stepInput.setAttribute('type', 'number');
+
+    let valueScaleContainer: HTMLDivElement = document.createElement('div');
+
+    let toggleForValueScaleP: HTMLParagraphElement = document.createElement('p');
+    toggleForValueScaleP.classList.add('customSliderParag');
+    toggleForValueScaleP.innerText = 'Включить шкалу значений: ';
+
+    let toggleForValueScaleLabel: HTMLLabelElement = document.createElement('label');
+    toggleForValueScaleLabel.classList.add('customSliderToggle');
+
+    let toggleForValueScaleInput: HTMLInputElement = document.createElement('input');
+    toggleForValueScaleInput.setAttribute('type', 'checkbox');
+    toggleForValueScaleInput.classList.add('valueScaleToggle');
+    toggleForValueScaleInput.id = 'valueScaleToggle';
+
+    let toggleForValueScaleSpan: HTMLSpanElement = document.createElement('span');
+    toggleForValueScaleSpan.classList.add('customToggleSliderBorder');
+
     let toggleForPlaneContainer: HTMLDivElement = document.createElement('div');
 
     let toggleForPlaneP: HTMLParagraphElement = document.createElement('p');
@@ -96,7 +131,6 @@ export class SideMenu {
     let toggleForPlaneSpan: HTMLSpanElement = document.createElement('span');
     toggleForPlaneSpan.classList.add('customToggleSliderBorder');
 
-
     let mainSliderContainer: HTMLDivElement = document.createElement('div');
 
     mainSliderContainer.classList.add('sliderMenuContainer');
@@ -105,18 +139,30 @@ export class SideMenu {
     sliderValueP.append(maxSliderValueOutput);
     mainSliderContainer.append(sliderToggleP);
     mainSliderContainer.append(sliderToggleLabel);
+    
     sliderToggleLabel.append(maxSliderHandelToggle, customSliderBorder);
 
     customSliderInputs.append(customSliderInputsP, customSliderInputsMinLabel, customSliderInputsMin, customSliderInputsMaxLabel, customSliderInputsMax);
     mainSliderContainer.append(customSliderInputs);
 
+    stepContainer.append(stepInputP, forStepInputLabel, stepInput)
+    mainSliderContainer.append(stepContainer);
+
     toggleForValuesContainer.append(toggleForValuesP, toggleForValuesLabel);
     toggleForValuesLabel.append(toggleForValuesInput, toggleForValuesSpan);
     mainSliderContainer.append(toggleForValuesContainer);
+    
+    valueScaleContainer.append(toggleForValueScaleP, toggleForValueScaleLabel);
+    toggleForValueScaleLabel.append(toggleForValueScaleInput, toggleForValueScaleSpan);
+    mainSliderContainer.append(valueScaleContainer);
 
     toggleForPlaneContainer.append(toggleForPlaneP, toggleForPlaneLabel);
     toggleForPlaneLabel.append(toggleForPlaneInput, toggleForPlaneSpan);
     mainSliderContainer.append(toggleForPlaneContainer);
+
+    stepContainer.append(stepInputP, forStepInputLabel, stepInput)
+    mainSliderContainer.append(stepContainer);
+
 
     this.customSliderMenuContainer = mainSliderContainer;
     this.handelToggle = maxSliderHandelToggle;
@@ -126,5 +172,6 @@ export class SideMenu {
     this.maxInput = customSliderInputsMax;
     this.minSliderValueOutput = minSliderValueOutput;
     this.maxSliderValueOutput = maxSliderValueOutput;
+    this.valueScaleToggle = toggleForValueScaleInput;
   };
 };

@@ -3,6 +3,9 @@ import { View } from '../view/view';
 import { GetPositionsAmount } from '../model/facade';
 import { GetPossibleRange } from '../model/facade';
 import { StartHandelsPosition } from '../model/model';
+import { GetValuesForValueScale } from '../model/facade';
+import { SelectHandleForValueScale } from '../model/facade';
+import { DataOfValueRefresh } from '../view/view';
 
 export class Presenter {
 
@@ -44,7 +47,7 @@ export class Presenter {
 
     view.dataRequestStatus = new Proxy(view.dataRequestStatus, {
       set(target, prop, val) {
-        if(typeof val === 'boolean' && val === true) {
+        if(typeof val === 'boolean' || typeof val === 'string') {
 
           if(prop === 'getMaxData') {
             let result: number = facade.getMaxData();
@@ -71,12 +74,41 @@ export class Presenter {
             let startPositions: StartHandelsPosition = facade.startHandelsPosition();
             view.sliderMovement.startHandlersPositions(startPositions);
             view.refreshCurrentValues(startPositions);
-          }
+          };
 
           if(prop === 'getStepPositionsAmount') {
             let stepAmount: GetPositionsAmount = facade.getPositionsAmount();
             view.sliderMovement.stepAmount = +stepAmount['positions'];
-          }
+          };
+
+          if(prop === 'getValuesForValueScale') {
+            let valueScaleValues: GetValuesForValueScale = facade.getValuesForValueScale();
+            view.valueScale.refreshValues(valueScaleValues);
+            view.valueScale.centersValuesPositions(view.sliderRange, view.minHandel);
+          };
+
+          if(prop === 'selectHandleForValueScale') {
+            if (typeof val === 'string') {
+              let positions: GetPositionsAmount = facade.getPositionsAmount();
+              
+              let selectedHandel: SelectHandleForValueScale = facade.selectHandleForValueScale(val, view.handelToggle);
+
+              view.sliderMovement.centeredHandelByValueScale(selectedHandel['target'], selectedHandel['value'], positions['positions'], positions['minimum']);
+              
+              if (selectedHandel['target'] === 'min') {
+                let adaptedObjectForRefresh: DataOfValueRefresh = {
+                  'min': selectedHandel['value']
+                };
+                view.refreshCurrentValues(adaptedObjectForRefresh);
+              } else {
+                let adaptedObjectForRefresh: DataOfValueRefresh = {
+                  'max': selectedHandel['value']
+                };
+                view.refreshCurrentValues(adaptedObjectForRefresh);
+              };
+            };
+
+          };
           return true;
         } else {
           return false;

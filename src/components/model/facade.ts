@@ -7,6 +7,19 @@ interface NewPosition {
   'sliderWidth': string;
 };
 
+export interface SelectHandleForValueScale {
+  'target': string;
+  'value': string;
+};
+
+export interface GetValuesForValueScale {
+  '15': string;
+  '30': string;
+  '50': string;
+  '70': string;
+  '85': string;
+};
+
 export interface GetPositionsAmount {
   'positions': string;
   'minimum': string;
@@ -53,4 +66,54 @@ export class Facade {
   getPositionsAmount(): GetPositionsAmount {
     return {'positions': String(+this.model.data.max - +this.model.data.min), 'minimum': this.model.data.min};
   }
+
+  getValuesForValueScale(): GetValuesForValueScale {
+    return {
+      '15': String(+this.model.data.min + ((+this.model.data.max - +this.model.data.min) * 0.15)),
+      '30': String(+this.model.data.min + ((+this.model.data.max - +this.model.data.min) * 0.30)),
+      '50': String(+this.model.data.min + ((+this.model.data.max - +this.model.data.min) * 0.50)),
+      '70': String(+this.model.data.min + ((+this.model.data.max - +this.model.data.min) * 0.70)),
+      '85': String(+this.model.data.min + ((+this.model.data.max - +this.model.data.min) * 0.85))
+    };
+  };
+
+  selectHandleForValueScale(value: string, doubleToggle: HTMLInputElement): SelectHandleForValueScale {
+    let minDifference: string;
+    let maxDifference: string;
+    if(doubleToggle.checked) {
+      if (+this.model.data['current-min'] > +value || +this.model.data['current-min'] === +value) {
+        minDifference = String(+this.model.data['current-min'] - +value);
+      } else {
+        minDifference = String(+value - +this.model.data['current-min']);
+      };
+      
+      if (+this.model.data['current-max'] > +value || +this.model.data['current-max'] === +value ) {
+        maxDifference = String(+this.model.data['current-max'] - +value);
+      } else {
+        maxDifference = String(+value - +this.model.data['current-max']);
+      };
+  
+      if(+minDifference < +maxDifference || +minDifference == +maxDifference) {
+        this.model.data['current-min'] = value;
+        return {
+          'target': 'min',
+          'value': value
+        };
+      } else {
+        this.model.data['current-max'] = value;
+        return {
+          'target': 'max',
+          'value': value
+        };
+      };
+    } else {
+
+      this.model.data['current-min'] = value;
+      return {
+        'target': 'min',
+        'value': value
+      };
+      
+    };
+  };
 };

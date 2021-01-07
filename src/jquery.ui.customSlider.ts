@@ -22,6 +22,7 @@ export interface Settings {
   'vertical': boolean;
   'step': boolean | string;
   'sideMenuContainer': string;
+  'valueScale': boolean;
   'current-min'?: string;
   'current-max'?: string;
 }
@@ -37,6 +38,7 @@ export interface Settings {
       'handelsLabel': false,
       'vertical': false,
       'step': false,
+      'valueScale': false,
       'sideMenuContainer': 'false'
     }, options);
 
@@ -60,8 +62,9 @@ export interface Settings {
     let presenter: Presenter = new Presenter(view, facade);
 
     presenter.startViewMonitoring();
-    view.displayElements();
     view.bindEventListeners();
+    view.displayElements();
     view.bindEventHandelsMovement();
+    
   };
 })(jQuery);

@@ -33,7 +33,7 @@ body {
   width: 500px;
   min-height: 30px;
   border-radius: 10px;
-  padding: 30px 30px;
+  padding: 50px 30px;
   margin: auto;
   position: relative;
 }
@@ -84,7 +84,7 @@ body {
 .customSliderMinInput, .customSliderMaxInput  {
   color: gray;
 }
-.minSliderPoint, .maxSliderPoint {
+.minSliderPoint, .maxSliderPoint, .customSliderStepInput, .customSlider__valueScalelabel {
   color: grey;
   font-family: 'Mukta', sans-serif;
 }
