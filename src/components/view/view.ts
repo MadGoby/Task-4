@@ -26,12 +26,14 @@ interface DataRequestStatus {
   "getPossibleRange": boolean;
   "getStepPositionsAmount": boolean;
   "getValuesForValueScale": boolean;
+  "getMinStep": boolean;
+  "checksNewStepForValidity": string;
   "selectHandleForValueScale": string;
 };
 
 export class View {
   private that: HTMLDivElement;
-  private settings: Settings;
+  readonly settings: Settings;
   readonly sliderRange: HTMLDivElement;
   private sliderContainer: HTMLDivElement;
   readonly minHandel: HTMLSpanElement;
@@ -51,6 +53,7 @@ export class View {
   private valueScaleToggle: HTMLInputElement | undefined;
   readonly minInput: HTMLInputElement| undefined;
   readonly maxInput: HTMLInputElement| undefined;
+  readonly stepInput:HTMLInputElement | undefined;
   readonly minSliderValueOutput: HTMLOutputElement | undefined;
   readonly maxSliderValueOutput: HTMLOutputElement | undefined;
   
@@ -75,6 +78,7 @@ export class View {
       this.planeToggle = sideMenu.planeToggle;
       this.minInput = sideMenu.minInput;
       this.maxInput = sideMenu.maxInput;
+      this.stepInput = sideMenu.stepInput;
       this.minSliderValueOutput = sideMenu.minSliderValueOutput;
       this.maxSliderValueOutput = sideMenu.maxSliderValueOutput;
       this.valueScaleToggle = sideMenu.valueScaleToggle;
@@ -105,6 +109,8 @@ export class View {
     "getPossibleRange": false,
     "getStepPositionsAmount": false,
     "getValuesForValueScale": false,
+    "getMinStep": false,
+    "checksNewStepForValidity": '',
     "selectHandleForValueScale": ''
   };
 
@@ -178,6 +184,11 @@ export class View {
       this.valueScaleToggle ? this.valueScale.displayController(this.valueScaleToggle) : false;
     };
 
+    if (this.stepInput && typeof this.settings.step === 'string') {
+      this.dataRequestStatus["checksNewStepForValidity"] = this.settings.step;
+    } else if (this.settings.step === false) {
+      this.dataRequestStatus["getMinStep"] = true;
+    };
     
     this.dataRequestStatus["startHandelsPosition"] = true;
   };
@@ -203,6 +214,10 @@ export class View {
 
     if (this.settings['side-menu'] === true && this.valueScaleToggle) {
       this.valueScaleToggle.addEventListener('change', this.makeBindForValueScaleToggle.bind(this));
+    };
+
+    if(this.settings['side-menu'] === true && this.stepInput) {
+      this.stepInput.addEventListener('change', this.makeBindStepInput.bind(this));
     };
 
     this.valueScale.valueScale15.addEventListener('click', this.makeBindForValueScale.bind(this, this.valueScale.valueScale15));
@@ -319,6 +334,10 @@ export class View {
 
   makeBindHandelToggle(): void {
     this.callMaxHandelToggleChanger();
+  };
+
+  makeBindStepInput(): void {
+    this.stepInput ? this.dataRequestStatus['checksNewStepForValidity'] = this.stepInput.value : false;
   };
   
   makeBindForValueScaleToggle(): void {

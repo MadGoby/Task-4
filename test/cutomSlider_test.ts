@@ -122,6 +122,7 @@ describe(' View ', function() {
     'handelsLabel': true,
     'vertical': false,
     'step': '2',
+    'valueScale': false,
     'sideMenuContainer': '#sideMenuShell'
   };
 

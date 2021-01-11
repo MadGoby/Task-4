@@ -5,6 +5,7 @@ export class SideMenu {
   planeToggle: HTMLInputElement;
   minInput: HTMLInputElement;
   maxInput: HTMLInputElement;
+  stepInput: HTMLInputElement;
   minSliderValueOutput: HTMLOutputElement;
   maxSliderValueOutput: HTMLOutputElement;
   valueScaleToggle: HTMLInputElement;
@@ -173,5 +174,6 @@ export class SideMenu {
     this.minSliderValueOutput = minSliderValueOutput;
     this.maxSliderValueOutput = maxSliderValueOutput;
     this.valueScaleToggle = toggleForValueScaleInput;
+    this.stepInput = stepInput;
   };
 };

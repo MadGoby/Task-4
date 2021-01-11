@@ -77,10 +77,10 @@ export class Facade {
     };
   };
 
-  selectHandleForValueScale(value: string, doubleToggle: HTMLInputElement): SelectHandleForValueScale {
+  selectHandleForValueScale(value: string, doubleToggle: boolean): SelectHandleForValueScale {
     let minDifference: string;
     let maxDifference: string;
-    if(doubleToggle.checked) {
+    if(doubleToggle) {
       if (+this.model.data['current-min'] > +value || +this.model.data['current-min'] === +value) {
         minDifference = String(+this.model.data['current-min'] - +value);
       } else {
@@ -113,7 +113,7 @@ export class Facade {
         'target': 'min',
         'value': value
       };
-      
+
     };
   };
 };

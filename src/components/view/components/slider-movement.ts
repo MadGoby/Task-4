@@ -338,6 +338,7 @@ export class SliderMovement {
   };
 
   centeredHandelByValueScale(target: string, value: string, positions: string, minimum: string): void {
+    console.log(target, value)
     if (target === 'min') {
       let min: string = String(((this.sliderRange.offsetWidth - this.min.offsetWidth) / +positions) * (+value - +minimum));
 
@@ -348,6 +349,7 @@ export class SliderMovement {
       };
 
       this.min.style.left = min + 'px';
+      this.currentHandelsPositions['min'] = {'min': `${min}`, 'sliderWidth': `${this.sliderRange.offsetWidth - this.min.offsetWidth}`};
       this.interval.style.left = +min + this.min.offsetWidth / 2 + 'px';
     } else if (target === 'max') {
       let max: string = String(((this.sliderRange.offsetWidth - this.max.offsetWidth) / +positions) * (+value - +minimum));
@@ -357,9 +359,33 @@ export class SliderMovement {
       } else if(+max > this.sliderRange.offsetWidth - this.min.offsetWidth){
         max = String((this.sliderRange.offsetWidth - this.min.offsetWidth));
       };
-
+      this.currentHandelsPositions['max'] = {'max': `${max}`, 'sliderWidth': `${this.sliderRange.offsetWidth - this.max.offsetWidth}`}
       this.max.style.left = max + 'px';
       this.interval.style.right = (this.sliderRange.offsetWidth - +max) - this.min.offsetWidth / 2 + 'px';
+    };
+  };
+
+  checkValidityOfChangedStep(value: string, input: HTMLInputElement, positions: string): void {
+    let pixelsPerUnit: number = this.sliderRange.offsetWidth / +positions
+    let minStep: number = Math.round(1 / pixelsPerUnit);
+    if (minStep < 1) {
+      minStep = 1;
+    };
+    input.setAttribute('min', String(minStep));
+    input.setAttribute('max', String(+positions / 2));
+    if (value === 'min') {
+      input.value = String(minStep);
+    } else {
+      if (+value <= minStep) {
+        input.value = String(minStep);
+        this.step = false;
+      } else if (+value > +positions / 2) {
+        input.value = String(+positions / 2);
+        this.step = String(+positions / 2);
+      } else {
+        input.value = value;
+        this.step = value;
+      };
     };
   };
 };

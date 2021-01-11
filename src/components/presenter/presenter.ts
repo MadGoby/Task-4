@@ -88,10 +88,11 @@ export class Presenter {
           };
 
           if(prop === 'selectHandleForValueScale') {
-            if (typeof val === 'string') {
+
+            function checkDoublehandels(double: boolean): void {
               let positions: GetPositionsAmount = facade.getPositionsAmount();
               
-              let selectedHandel: SelectHandleForValueScale = facade.selectHandleForValueScale(val, view.handelToggle);
+              let selectedHandel: SelectHandleForValueScale = facade.selectHandleForValueScale(val, double);
 
               view.sliderMovement.centeredHandelByValueScale(selectedHandel['target'], selectedHandel['value'], positions['positions'], positions['minimum']);
               
@@ -108,7 +109,23 @@ export class Presenter {
               };
             };
 
+            if (typeof val === 'string' && view.handelToggle) {
+              checkDoublehandels(view.handelToggle.checked);
+            } else {
+              checkDoublehandels(view.settings.range);
+            };
           };
+
+          if (prop === "getMinStep" && view.stepInput) {
+            let positions: string = facade.getPositionsAmount().positions;
+            view.sliderMovement.checkValidityOfChangedStep('min', view.stepInput, positions);
+          };
+
+          if (prop === "checksNewStepForValidity" && typeof val === 'string') {
+            let positions: string = facade.getPositionsAmount().positions;
+            view.stepInput ? view.sliderMovement.checkValidityOfChangedStep(val, view.stepInput, positions) : false;
+          };
+
           return true;
         } else {
           return false;
