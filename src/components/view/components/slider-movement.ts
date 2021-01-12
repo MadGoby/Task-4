@@ -1,4 +1,4 @@
-import { StartHandelsPosition } from '../../model/model';
+import { getStartHandelsPosition } from '../../model/model';
 
 interface Handels {
   min: HTMLSpanElement;
@@ -52,7 +52,7 @@ export class SliderMovement {
     'max': {}
   }
 
-  startHandlersPositions(positionValues: StartHandelsPosition ): void {
+  startHandlersPositions(positionValues: getStartHandelsPosition ): void {
     let min: string = ((this.sliderRange.offsetWidth - this.min.offsetWidth) / +positionValues.positions) * (+positionValues['min'] - +positionValues['minimum']) + '';
     let max: string = ((this.sliderRange.offsetWidth - this.min.offsetWidth) / +positionValues.positions) * (+positionValues['max'] - +positionValues['minimum']) + '';
     

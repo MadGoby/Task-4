@@ -2,7 +2,7 @@ import { Facade } from '../model/facade';
 import { View } from '../view/view';
 import { GetPositionsAmount } from '../model/facade';
 import { GetPossibleRange } from '../model/facade';
-import { StartHandelsPosition } from '../model/model';
+import { getStartHandelsPosition } from '../model/model';
 import { GetValuesForValueScale } from '../model/facade';
 import { SelectHandleForValueScale } from '../model/facade';
 import { DataOfValueRefresh } from '../view/view';
@@ -70,8 +70,8 @@ export class Presenter {
             view.minInput && view.maxInput? view.inputsPossibleRange(possibleRange, view.minInput, view.maxInput ): false;
           };
 
-          if(prop === 'startHandelsPosition') {
-            let startPositions: StartHandelsPosition = facade.startHandelsPosition();
+          if(prop === 'getStartHandelsPosition') {
+            let startPositions: getStartHandelsPosition = facade.getStartHandelsPosition();
             view.sliderMovement.startHandlersPositions(startPositions);
             view.refreshCurrentValues(startPositions);
           };

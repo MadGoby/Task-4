@@ -1,5 +1,5 @@
 import { Model } from './model';
-import { StartHandelsPosition } from './model';
+import { getStartHandelsPosition } from './model';
 
 interface NewPosition {
   'min': string;
@@ -37,7 +37,7 @@ export class Facade {
     this.model = model;
   };
 
-  startHandelsPosition(): StartHandelsPosition {
+  getStartHandelsPosition(): getStartHandelsPosition {
     return this.model.getCurrentData();
   };
   
@@ -113,7 +113,7 @@ export class Facade {
         'target': 'min',
         'value': value
       };
-
+      
     };
   };
 };

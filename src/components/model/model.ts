@@ -5,7 +5,7 @@ interface TarnsferedSettings {
   'current-max': string;
 }
 
-export interface StartHandelsPosition {
+export interface getStartHandelsPosition {
   'minimum': string, 
   'min': string,
   'max': string, 
@@ -27,7 +27,7 @@ export class Model {
     this.data = Object.assign({}, settings);
   }
 
-  getCurrentData(): StartHandelsPosition {
+  getCurrentData(): getStartHandelsPosition {
     return {'minimum': this.data.min, 'min': this.data['current-min'], 'max': this.data['current-max'], 'positions': `${+this.data.max - +this.data.min}`}
   }
 }

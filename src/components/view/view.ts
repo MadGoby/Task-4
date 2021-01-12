@@ -19,7 +19,7 @@ export interface DataOfValueRefresh {
 };
 
 interface DataRequestStatus {
-  "startHandelsPosition": boolean;
+  "getStartHandelsPosition": boolean;
   "getMaxData": boolean;
   "getMinPositionsAmount": boolean;
   "getMaxPositionsAmount": boolean;
@@ -102,7 +102,7 @@ export class View {
   };
 
   dataRequestStatus: DataRequestStatus = {
-    "startHandelsPosition": false,
+    "getStartHandelsPosition": false,
     "getMaxData": false,
     "getMinPositionsAmount": false,
     "getMaxPositionsAmount": false,
@@ -190,7 +190,7 @@ export class View {
       this.dataRequestStatus["getMinStep"] = true;
     };
     
-    this.dataRequestStatus["startHandelsPosition"] = true;
+    this.dataRequestStatus["getStartHandelsPosition"] = true;
   };
 
   bindEventListeners(): void {
