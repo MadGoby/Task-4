@@ -1,11 +1,12 @@
-import { View } from './components/view/view';
-import { Model } from './components/model/model';
-import { Facade } from './components/model/facade';
-import { Presenter } from './components/presenter/presenter';
+import { BasicModelSettings } from "./components/model/interfaces/ModelInterfaces";
+import { BasicViewSettings } from "./components/view/interfaces/ViewInterfaces";
+import { Model } from "./components/model/model";
+import { View } from "./components/view/view"; 
+import { Presenter } from "./components/presenter/presenter";
 
 declare global {
   interface JQuery {
-    testSlider( options: SliderOptions):void;
+    customSlider( options: SliderOptions):void;
   }
 };
 
@@ -14,57 +15,61 @@ interface SliderOptions {
 };
 
 export interface Settings {
-  'min': string;
-  'max': string;
-  'range': boolean;
-  'side-menu': boolean;
-  'handelsLabel': boolean;
-  'vertical': boolean;
-  'step': boolean | string;
-  'sideMenuContainer': string;
-  'valueScale': boolean;
-  'current-min'?: string;
-  'current-max'?: string;
+  "min": string,
+  "max": string,
+  "double": boolean,
+  "side-menu": boolean | string,
+  "handelsValues": boolean,
+  "vertical": boolean,
+  "step": boolean | number,
+  "valueScale": boolean,
+  "from"?: string,
+  "to"?: string
 }
 
 (function( $ ) {
-  $.fn.testSlider = function( options: SliderOptions ) {
+  $.fn.customSlider = function( options: SliderOptions ) {
 
     let settings: Settings = $.extend( {
-      'min': '0',
-      'max': '10',
-      'range': false,
-      'side-menu': false,
-      'handelsLabel': false,
-      'vertical': false,
-      'step': false,
-      'valueScale': false,
-      'sideMenuContainer': 'false'
+      "min": "0",
+      "max": "10",
+      "double": false,
+      "handelsValues": false,
+      "vertical": false,
+      "step": false,
+      "valueScale": false,
+      "side-menu": false
     }, options);
 
-    let that: HTMLDivElement = this;
-    
-    let model: Model;
-    if ('current-min' in settings && 'current-max' in settings) {
-      model = new Model({'min': settings['min'], max: settings['max'], 'current-min': settings['current-min'] ? settings['current-min'] : '', 'current-max': settings['current-max'] ? settings['current-max'] : ''});
-    } else if ('current-min' in settings) {
-      model = new Model({'min': settings['min'], max: settings['max'], 'current-min': settings['current-min'] ? settings['current-min'] : '', 'current-max': settings['max']});
-    } else if ('current-max' in settings) {
-      model = new Model({'min': settings['min'], max: settings['max'], 'current-min': settings['min'], 'current-max': settings['current-max'] ? settings['current-max'] : ''});
-    } else {
-      model = new Model({'min': settings['min'], max: settings['max'], 'current-min': settings['min'], 'current-max': settings['max']});
-    }
-    
-    let view: View = new View(that, settings);
-    
-    let facade: Facade = new Facade(model)
-    
-    let presenter: Presenter = new Presenter(view, facade);
+    const modelSettings: BasicModelSettings = {
+      min: settings.min,
+      max: settings.max,
+      from: "",
+      to: ""
+    };
+  
+    const viewSettings: BasicViewSettings = {
+      "double": settings.double,
+      "side-menu": settings["side-menu"],
+      "handelsValues": settings.handelsValues,
+      "vertical": settings.vertical,
+      "step": Number(settings.step),
+      "valueScale": settings.valueScale,
+    };
 
-    presenter.startViewMonitoring();
+    settings.from ? modelSettings.from = settings.from : modelSettings.from = settings.min;
+    settings.to ? modelSettings.to = settings.to : modelSettings.to = settings.max;
+
+    const that: HTMLElement = this;
+
+    const model: Model = new Model(modelSettings);
+    const view: View = new View(viewSettings, that);
+    const presenter: Presenter = new Presenter(view, model);
+
+    presenter.bindProxyToView();
+    presenter.bindProxyToModel();
+    view.bindMovementOnHandels();
+    view.prepareSliderForUse();
     view.bindEventListeners();
-    view.displayElements();
-    view.bindEventHandelsMovement();
-    
   };
 })(jQuery);

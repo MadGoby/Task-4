@@ -1,8 +1,6 @@
 {
   "compilerOptions": {
     "module": "CommonJS",
-    "outDir": "./dist/",
-    "baseUrl": "./src/",
     "strict": true,
     "noImplicitAny": true,
     "noImplicitThis": false,
@@ -15,7 +13,8 @@
     "moduleResolution": "Node"
   },
   "exclude": [
-    "node_modules"
+    "./node_modules",
+    "./test/coverage"
   ],
   "include": ["src/**/*", "test/**/*"],
 }

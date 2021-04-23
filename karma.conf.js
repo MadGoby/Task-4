@@ -1,35 +1,33 @@
-const webpackConfig = require('./webpack.config');
+const webpackConfig = require("./webpack.config");
+const path = require('path');
 
-module.exports = function(config) {
-    config.set({
-        basePath: '',
-        frameworks: ['jasmine'],
-        files: [
-            'node_modules/jquery/dist/jquery.js',
-            'test/*.ts',
-        ],
-        exclude: [],
-        preprocessors: {
-            'test/**/*.ts': 'webpack',
-            'src/**/*.ts': 'coverage'
-        },
-        webpack: {
-            module: webpackConfig.module,
-            resolve: webpackConfig.resolve,
-            mode: webpackConfig.mode,
-            devtool: 'inline-source-map',
-        },
-        coverageReporter: {
-            type : 'html',
-            dir : 'test/coverage/'
-        },
-        reporters: ['spec', 'coverage'],
-        port: 9876,
-        colors: true,
-        logLevel: config.LOG_INFO,
-        autoWatch: true,
-        browsers: ['Chrome'],
-        singleRun: false,
-        concurrency: Infinity,
-    });
+delete webpackConfig.entry
+
+module.exports = (config) => {
+  config.set({
+    browsers: ["ChromeHeadless"],
+    frameworks: ["jasmine", "webpack"],
+    reporters: ["spec", 'coverage-istanbul'],
+    files: [
+      "test/indexSpec.ts"
+    ],
+    preprocessors: {
+      "test/indexSpec.ts": ["webpack"]
+    },
+    mime: {
+      "text/x-typescript": ["ts", "tsx"],
+    },
+    webpack: webpackConfig,
+    webpackMiddleware: {
+      noInfo: true
+    },
+    coverageIstanbulReporter: {
+      reports: [ 'html', 'text-summary', 'lcovonly' ],
+      dir: path.join(__dirname, 'test/coverage'),
+      fixWebpackSourcePaths: true,
+      'report-config': {
+        html: { outdir: 'html' }
+      }
+    }
+  })
 };

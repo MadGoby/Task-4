@@ -1,48 +1,32 @@
-const path = require('path')
-const CopyWebpackPlugin = require('copy-webpack-plugin')
+const path = require("path");
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   mode: 'development',
-  devtool: 'inline-source-map',
   entry: './src/jquery.ui.customSlider.ts',
   output: {
     filename: '[name].js',
     path: path.resolve(__dirname,'./dist/plugin')
   },
+  resolve: {
+    extensions: ['.js', '.ts', '.json']
+  },
+  devtool: "inline-source-map",
   module: {
-    rules: 
-    [
-      { 
-        test: /\.js$/,
-        exclude: /node_modules/,
-        loader: {
-          loader: 'babel-loader',
-          options: {
-            presets: [
-              '@babel/preset-env',
-            ],
-            plugins: [
-              '@babel/plugin-proposal-class-properties'
-            ],
-          }
-        } 
-      },
-      { 
+    rules: [
+      {
         test: /\.ts$/,
-        exclude: /node_modules/,
-        loader: {
-          loader: 'babel-loader',
-          options: {
-            presets: [
-              '@babel/preset-env',
-              '@babel/preset-typescript'
-            ],
-            plugins: [
-              '@babel/plugin-proposal-class-properties'
-            ],
-          }
-        } 
+        use: 'ts-loader'
       },
+      {
+        test: /\.ts$/,
+        exclude: [ path.resolve(__dirname, "test") ],
+        enforce: 'post',
+        use: {
+          loader: 'istanbul-instrumenter-loader',
+          options: { esModules: true }
+        }
+      }
     ],
   },
   plugins: [
@@ -55,7 +39,4 @@ module.exports = {
       ],
     })
   ],
-  resolve: {
-    extensions: ['.ts', '.tsx', '.js', '.json']
-  },
-}
+};

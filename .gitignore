@@ -1,4 +1,7 @@
-node_modules/
-.vscode/
+logs
 *.log
-test/coverage/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+node_modules/
+

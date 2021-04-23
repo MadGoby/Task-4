@@ -1,130 +1,25 @@
-@font-face {
-  font-family: "Mukta";
-  src: url('fonts/Mukta.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
+.main {
+  padding: 60px 0;
 }
-@font-face {
-  font-family: "Mukta";
-  src: url('fonts/Mukta-Bold.ttf') format('truetype');
-  font-weight: 700;
-  font-style: bold;
-}
-body {
-  background-color: grey;
-  position: relative;
-  height: 3000px;
-  min-width: 1500px;
-  margin: 0px;
-}
-.mainH1 {
-  color: gray;
-  font-family: 'Mukta', sans-serif;
+.js-slider__header {
+  font-family: 'Lucida Console', 'Lucida Sans Typewriter', monaco, 'Bitstream Vera Sans Mono', monospace;
   text-align: center;
-  margin-bottom: 20px;
-  font-size: 60px;
-  user-select: none;
-  background-color: white;
-  margin: 0px;
-  height: 100px;
-}
-.slider, .slider2, .slider3, .slider4, .slider5 {
-  background-color: white;
-  width: 500px;
-  min-height: 30px;
-  border-radius: 10px;
-  padding: 50px 30px;
-  margin: auto;
-  position: relative;
-}
-.headerh2 {
+  font-size: 35px;
+  font-weight: bold;
+  color: rgb(2, 114, 82);
+  padding-bottom: 15px;
+  border-bottom: 3px solid rgb(2, 114, 82);
   margin: 0;
-  user-select: none;
+  margin-bottom: 40px;
 }
-.sliderMenu, .sliderMenu2, .sliderMenu3, .sliderMenu4, .sliderMenu5 {
-  font-family: 'Mukta', sans-serif;
-  color: white;
-  width: 440px;
-  padding: 10px;
+.slider-wrapper {
+  width: 586px;
+  margin: auto;
+  min-height: 185px;
   box-sizing: border-box;
-  position: absolute;
-}
-.sliderMenu {
-  top: 124px;
-}
-.sliderMenu2 {
-  top: 757px
-}
-.sliderMenu3 {
-  top: 1391px
-}
-.sliderMenu4 {
-  top: 2026px
-}
-.sliderMenu5 {
-  top: 2659px
-}
-.sliderMenuContainer {
-  border-top-color: white;
-  border-bottom-color: white;
-  width: 430px;
-}
-.customToggleSliderBorder {
-  border-color: white;
-}
-.customToggleSliderBorder::before {
-  background-color: white;;
-}
-.customSliderToggle input:checked + .customToggleSliderBorder::before { 
-  background-color: rgb(229, 255, 0);
-}
-.customSliderToggle input:checked + .customToggleSliderBorder{ 
-  border-color: rgb(229, 255, 0);
-}
-.customSliderMinInput, .customSliderMaxInput  {
-  color: gray;
-}
-.minSliderPoint, .maxSliderPoint, .customSliderStepInput, .customSlider__valueScalelabel {
-  color: grey;
-  font-family: 'Mukta', sans-serif;
-}
-.sliderValue {
-  color: rgb(229, 255, 0);
-}
-.minSliderHandelLabel, .maxSliderHandelLabel {
-  color: gray;
-  font-family: 'Mukta', sans-serif;
-}
-.minSliderPointVertical, .maxSliderPointVertical {
-  font-family: 'Mukta', sans-serif;
-}
-.minSliderHandelLabelVertical, .maxSliderHandelLabelVertical {
-  font-family: 'Mukta', sans-serif;
-  line-height: 26px;
-}
-.mainInterval {
-  background-color: rgb(229, 255, 0);
-}
-.sliderCustomContainer {
-  width: 560px;
-  height: 560px;
-  margin: auto;
+  padding: 40px 40px;
   position: relative;
-  margin-top: 74px;
-}
-.footer {
-  width: 100%;
-  height: 100px;
-  background-color: white;
-  position: relative;
-  top: 100px;
-}
-.footerText {
-  font-family: 'Mukta', sans-serif;
-  color: grey;
-  font: bolder;
-  font-size: 60px;
-  margin: auto;
-  width: 220px;
-  text-align: center;
+  border: 3px solid rgb(2, 114, 82);
+  border-radius: 20px;
+  margin-bottom: 40px;
 }
