@@ -81,11 +81,8 @@ export class Movement {
       function isStepSetCorrectly(): boolean {
         return that.settings.step !== false && typeof that.stepWidth == "string" && +that.stepWidth >= 1;
       }
-      function isStepWidthPassedPositively(targetPosition: number): boolean {
-        return newPosition >= targetPosition + Number(that.stepWidth);
-      };
-      function isStepWidthPassedNegatively(targetPosition: number): boolean {
-        return newPosition <= targetPosition - Number(that.stepWidth);
+      function isStepWidthPassed(difference: number): boolean {
+        return Math.abs(difference) >= +that.stepWidth;
       };
       function correctsImpossiblePosition(): void {
         if (newPosition < 0) newPosition = 0;
@@ -99,7 +96,7 @@ export class Movement {
      
       correctsImpossiblePosition();
 
-      function appliesNewPosition(): void {
+      function applyNewPosition(): void {
         target.style.left = newPosition + "px";  
         target == that.from ? that.positions.from = newPosition : that.positions.to = newPosition;
         that.interval.style.left = String(that.positions.from + (target.offsetWidth / 2)) + "px";
@@ -108,18 +105,18 @@ export class Movement {
       
       if (isStepSetCorrectly()) {
         if (newPosition == 0 || newPosition == that.slider.offsetWidth - target.offsetWidth) {
-          appliesNewPosition();
+          applyNewPosition();
         } else {
-          if (isStepWidthPassedPositively(targetPosition)) {
-            target == that.from ? newPosition = that.positions.from + +that.stepWidth : newPosition = that.positions.to + +that.stepWidth;
-            appliesNewPosition();
-          } else if (isStepWidthPassedNegatively(targetPosition)) {
-            target == that.from ? newPosition = that.positions.from - +that.stepWidth : newPosition = that.positions.to - +that.stepWidth;
-            appliesNewPosition();
+          let difference = newPosition - targetPosition;
+          if (isStepWidthPassed(difference)) {
+            if(Math.abs(difference) > +that.stepWidth) {
+              newPosition = targetPosition + +that.stepWidth * (Math.trunc(difference / +that.stepWidth))
+              applyNewPosition();
+            }
           };
         };
       } else {
-        appliesNewPosition()
+        applyNewPosition()
       };
       
     };

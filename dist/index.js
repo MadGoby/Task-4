@@ -1,15 +1,15 @@
 $(".js-slider_1").customSlider(
   {
-    "min": "0",
-    "max": "100",
+    "min": "-10000",
+    "max": "10000",
     "double": true,
     "side-menu": true,
     "handelsValues": true,
     "vertical": false,
-    "step": false,
+    "step": 50,
     "valueScale": true,
-    "from": "30",
-    "to": "70"
+    "from": "-3000",
+    "to": "7000"
     }
 );
 $(".js-slider_2").customSlider(
