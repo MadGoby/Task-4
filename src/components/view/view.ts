@@ -41,7 +41,8 @@ export class View {
     needDataForStartPosition: false,
     needStepWidth: false,
     needApplyValueFromScale: "",
-    needApplyNewValue: {name: "", value: ""}
+    needApplyNewValue: {name: "", value: ""},
+    needChangeSliderValuesRange: {name: "", value: ""}
   };
 
   public prepareSliderForUse(): void {
@@ -141,6 +142,8 @@ export class View {
     this.sideMenu.handelValuesToggle.addEventListener("change", this.handelValuesChanger.bind(null, this));
     this.sideMenu.fromInput.addEventListener("change", this.sendNewValueFromInput.bind(null, this));
     this.sideMenu.toInput.addEventListener("change", this.sendNewValueFromInput.bind(null, this));
+    this.sideMenu.minimumInput.addEventListener("change", this.changeSliderValuesRange.bind(null, this));
+    this.sideMenu.maximumInput.addEventListener("change", this.changeSliderValuesRange.bind(null, this));
     this.sideMenu.stepInput.addEventListener("change", this.sendNewStepFromInput.bind(null, this));
   };
 
@@ -179,8 +182,14 @@ export class View {
 
   private sendNewValueFromInput(viewLink: View, event: Event): void {
     let element: HTMLInputElement = event.target as HTMLInputElement;
-    let target: string; 
-    element == viewLink.sideMenu.fromInput ? target = "from": target = "to";
+    let target: string;
+
+    if (element == viewLink.sideMenu.fromInput) {
+      target = "from"
+    } else {
+      target = "to"
+    };
+    
     viewLink.dataRequestFromModel.needApplyNewValue = {name: target, value: element.value};
   };
 
@@ -188,5 +197,18 @@ export class View {
     let element: HTMLInputElement = event.target as HTMLInputElement;
     viewLink.basicSettings.step = Number(element.value);
     viewLink.dataRequestFromModel.needStepWidth = true;
+  };
+
+  private changeSliderValuesRange(viewLink: View, event: Event): void {
+    let element: HTMLInputElement = event.target as HTMLInputElement;
+    let target: string;
+
+    if (element == viewLink.sideMenu.minimumInput) {
+      target = "min"
+    } else {
+      target = "max"
+    };
+
+    viewLink.dataRequestFromModel.needChangeSliderValuesRange = {name: target, value: element.value};
   };
 };

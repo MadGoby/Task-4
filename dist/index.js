@@ -6,9 +6,9 @@ $(".js-slider_1").customSlider(
     "side-menu": true,
     "handelsValues": true,
     "vertical": false,
-    "step": 50,
+    "step": 300,
     "valueScale": true,
-    "from": "-3000",
+    "from": "-7000",
     "to": "7000"
     }
 );

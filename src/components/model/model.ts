@@ -96,4 +96,17 @@ export class Model {
     this.writeDataToModel({target: data.name, value: data.value});
     return {target: data.name, value: data.value, totalValues: +this.values.max - +this.values.min, minValue: this.values.min};
   };
+
+  public changeSliderValuesRange(name: string, value: string) {
+    if(name == "min") {
+      if (value >= this.values["max"]) value = String(+this.values["max"] - 1)
+      this.values["min"] = value;
+    } 
+    if(name == "max") {
+      if (value <= this.values["min"]) value = String(+this.values["min"] + 1)
+      this.values["max"] = value;
+    }
+    if(+this.values.from < +this.values.min) this.values.from = this.values.min
+    if(+this.values.to > +this.values.max) this.values.to = this.values.max
+  };
 };

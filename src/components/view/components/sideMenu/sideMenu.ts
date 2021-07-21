@@ -17,9 +17,13 @@ export class SideMenu {
   readonly toInputWrapper: HTMLLabelElement;
   readonly fromInputWrapper: HTMLLabelElement;
   readonly stepInputWrapper: HTMLLabelElement;
+  readonly minInputWrapper: HTMLLabelElement;
+  readonly maxInputWrapper: HTMLLabelElement;
   readonly fromInput: HTMLInputElement;
   readonly toInput: HTMLInputElement;
   readonly stepInput: HTMLInputElement;
+  readonly minimumInput: HTMLInputElement;
+  readonly maximumInput: HTMLInputElement;
   readonly handelValuesWrapper: HTMLDivElement;
   readonly handelValuesObjective: HTMLSpanElement;
   readonly handelValuesToggleWrapper: HTMLLabelElement;
@@ -35,6 +39,7 @@ export class SideMenu {
   readonly planeToggleWrapper: HTMLLabelElement;
   readonly planeToggle: HTMLInputElement;
   readonly planeToggleBorder: HTMLSpanElement;
+  
 
   constructor () {
     function createElement(elementParams: ElementParams): HTMLSpanElement {
@@ -121,6 +126,16 @@ export class SideMenu {
       cssClases: ["cs-side-menu__input-wrapper"],
       text: "Шаг: "
     }) as HTMLLabelElement;
+    this.minInputWrapper = createElement({
+      name: "label", 
+      cssClases: ["cs-side-menu__input-wrapper"],
+      text: "Мин: "
+    }) as HTMLLabelElement;
+    this.maxInputWrapper = createElement({
+      name: "label", 
+      cssClases: ["cs-side-menu__input-wrapper"],
+      text: "Макс: "
+    }) as HTMLLabelElement;
     this.fromInput = createElement({
       name: "input", 
       cssClases: ["cs-side-menu__input"],
@@ -132,6 +147,16 @@ export class SideMenu {
       attr: {name: "type", value: "number"}
     }) as HTMLInputElement;
     this.stepInput = createElement({
+      name: "input", 
+      cssClases: ["cs-side-menu__input"],
+      attr: {name: "type", value: "number"}
+    }) as HTMLInputElement;
+    this.minimumInput = createElement({
+      name: "input", 
+      cssClases: ["cs-side-menu__input"],
+      attr: {name: "type", value: "number"}
+    }) as HTMLInputElement;
+    this.maximumInput = createElement({
       name: "input", 
       cssClases: ["cs-side-menu__input"],
       attr: {name: "type", value: "number"}
@@ -213,7 +238,9 @@ export class SideMenu {
     this.fromInputWrapper.append(this.fromInput)
     this.toInputWrapper.append(this.toInput);
     this.stepInputWrapper.append(this.stepInput);
-    this.inputWrapper.append(this.inputObjective, this.fromInputWrapper, this.toInputWrapper, this.stepInputWrapper);
+    this.minInputWrapper.append(this.minimumInput);
+    this.maxInputWrapper.append(this.maximumInput);
+    this.inputWrapper.append(this.inputObjective, this.fromInputWrapper, this.toInputWrapper, this.stepInputWrapper, this.minInputWrapper, this.maxInputWrapper);
 
     this.toToggleWrapper.append(this.toToggle, this.toToggleBorder);
     this.toWraper.append(this.toToggleObjective, this.toToggleWrapper);
@@ -245,11 +272,17 @@ export class SideMenu {
     if(refreshData.target == "to") {
       this.toOutput.value = ` - ${refreshData.value}`;
       this.toInput.value = refreshData.value;
-    }; 
+    };
+    if(refreshData.target == "min") {
+      this.minimumInput.value = refreshData.value;
+    };
+    if(refreshData.target == "max") {
+      this.maximumInput.value = refreshData.value;
+    };
   };
 
-  public hideToValues(ishideToValues: boolean): void {
-    if (ishideToValues == false) {
+  public hideToValues(isHideToValues: boolean): void {
+    if (isHideToValues == false) {
       this.toInputWrapper.style.display = "none";
       this.toOutput.style.display = "none";
     } else {

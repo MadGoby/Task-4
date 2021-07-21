@@ -6,5 +6,9 @@ export interface DataRequestFromModel {
   needApplyNewValue: {
     name: string, 
     value: string
-  }
+  },
+  needChangeSliderValuesRange: {
+    name: string, 
+    value: string
+  },
 }

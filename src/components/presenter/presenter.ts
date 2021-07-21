@@ -47,6 +47,8 @@ export class Presenter {
             view.interval.adjustPositionRelativeValue(startTo);
             view.movement.positions.from = Number(startFrom.position);
             view.movement.positions.to = Number(startTo.position);
+            model.values.min = model.values.min;
+            model.values.max = model.values.max;
           };
           if (prop == "needStepWidth") {
             if(typeof view.basicSettings.step == "number") {
@@ -79,6 +81,11 @@ export class Presenter {
             if(newPosition.target == "from") view.movement.positions.from = Number(newPosition.position);
             if(newPosition.target == "to") view.movement.positions.to = Number(newPosition.position);
           }
+          if (prop == "needChangeSliderValuesRange") {
+            model.changeSliderValuesRange(val.name, val.value);
+            view.dataRequestFromModel.needDataForStartPosition = true;
+            view.dataRequestFromModel.needDataForScale = true;
+          }
           return true;
         } else {
           return false;
@@ -97,7 +104,7 @@ export class Presenter {
         if(prop == "to") target.to = val;
         if(prop == "min") target.min = val;
         if(prop == "max") target.max = val;
-
+        
         view.refreshAllComponents({
           value: val,
           target: String(prop)
