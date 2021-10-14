@@ -20,7 +20,7 @@ npm install
 
 ## Github pages
 
-[Demo Page](https://madgoby.github.io/Task-4/dist/index.html)
+[Demo Page](https://madgoby.github.io/Task-4/gh-pages/index.html)
 
 ## Глобальные библиотеки
 
