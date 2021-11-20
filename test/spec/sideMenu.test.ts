@@ -12,7 +12,7 @@ describe("SideMenu", () => {
   });
 
   it("SideMenu can be collect", () => {
-    sideMenu.colectSideMenu();
+    sideMenu.collectSideMenu();
     expect(sideMenu.sideMenuContainer).toBeTruthy();
   });
 

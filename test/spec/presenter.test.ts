@@ -35,7 +35,7 @@ describe("Presenter", () => {
 
     presenter.bindProxyToView();
     presenter.bindProxyToModel();
-    view.bindMovementOnHandels();
+    view.bindMovementOnHandles();
     view.prepareSliderForUse();
     view.bindEventListeners();
   });

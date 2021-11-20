@@ -1,11 +1,11 @@
-import { Handels } from "../../src/components/view/components/handels/handels";
+import { Handles } from "../../src/components/view/components/handels/handles";
 import { RefreshIntervalPositions } from "../../src/components/view/components/selectedInterval/interfaces.ts/RefreshIntervalPositions";
 
 describe("Handels", () => {
-  let handels: Handels;
+  let handels: Handles;
 
   beforeEach(() => {
-    handels = new Handels();
+    handels = new Handles();
   });
 
   it("Handels can be create", () => {
@@ -23,13 +23,13 @@ describe("Handels", () => {
   });
 
   it("adjustPositionRelativeValue() adjust from position correctly and return correct settings", () => {
-    let result: RefreshIntervalPositions = handels.adjustPositionRelativeValue({target: "from", minValue: "0", totalValues: 10, value: "5"}, 100);
+    let result: RefreshIntervalPositions = handels.adjustPositions({target: "from", minValue: "0", totalValues: 10, value: "5"}, 100);
     expect(handels.fromHandel.style.left).toEqual("50px");
     expect(result).toEqual({target: "from", position: "50", sliderWidth: 100, handelWidth: 0});
   });
 
   it("adjustPositionRelativeValue() adjust to position correctly and return correct settings", () => {
-    let result: RefreshIntervalPositions = handels.adjustPositionRelativeValue({target: "to", minValue: "0", totalValues: 10, value: "5"}, 100);
+    let result: RefreshIntervalPositions = handels.adjustPositions({target: "to", minValue: "0", totalValues: 10, value: "5"}, 100);
     expect(handels.toHandel.style.left).toEqual("50px");
     expect(result).toEqual({target: "to", position: "50", sliderWidth: 100, handelWidth: 0});
   });
@@ -53,20 +53,20 @@ describe("Handels", () => {
   });
 
   it("hideToHandel() if need to hide", () => {
-    handels.hideToHandel(false, {from: 30, to: 70}, 100);
+    handels.controlHandlesDisplay(false, {from: 30, to: 70}, 100);
     expect(handels.toHandel.style.display).toEqual("none");
   });
 
   it("hideToHandel() if need to show", () => {
     handels.toHandel.style.display = "none";
-    handels.hideToHandel(true, {from: 30, to: 70}, 100);
+    handels.controlHandlesDisplay(true, {from: 30, to: 70}, 100);
     expect(handels.toHandel.style.display).toEqual("inline-block");
     expect(handels.toHandel.style.left).toEqual("100px");
   });
 
   it("hideToHandel() if need to show ane from bigger than to", () => {
     handels.toHandel.style.display = "none";
-    handels.hideToHandel(true, {from: 101, to: 70}, 100);
+    handels.controlHandlesDisplay(true, {from: 101, to: 70}, 100);
     expect(handels.toHandel.style.display).toEqual("inline-block");
     expect(handels.toHandel.style.left).toEqual("100px");
     expect(handels.fromHandel.style.left).toEqual("100px");

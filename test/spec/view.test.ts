@@ -50,7 +50,7 @@ describe("View", () => {
   });
 
   it("updateSliderView() call plane changers to make vertical", () => {
-    view.updateSliderView({vertical: true, sideMenu: true});
+    view.updateView({vertical: true, sideMenu: true});
     expect(view.slider.slider).toHaveClass("cs-slider_vertical");
     expect(view.handels.fromValue).toHaveClass("cs-slider__handel-value_vertical");
     expect(view.handels.toValue).toHaveClass("cs-slider__handel-value_vertical");
@@ -58,7 +58,7 @@ describe("View", () => {
   });
 
   it("updateSliderView() call plane changers to make horizontall", () => {
-    view.updateSliderView({vertical: false, sideMenu: true});
+    view.updateView({vertical: false, sideMenu: true});
     expect(view.slider.slider).not.toHaveClass("cs-slider_vertical");
     expect(view.handels.fromValue).not.toHaveClass("cs-slider__handel-value_vertical");
     expect(view.handels.toValue).not.toHaveClass("cs-slider__handel-value_vertical");
@@ -67,7 +67,7 @@ describe("View", () => {
 
   it("updateSliderView() call display changers to hide to handel", () => {
     view.basicSettings.double = false;
-    view.updateSliderView({vertical: false, sideMenu: true, double: false});
+    view.updateView({vertical: false, sideMenu: true, double: false});
     expect(view.handels.toHandel.style.display).toEqual("none");
     expect(view.interval.interval.style.display).toEqual("none");
     expect(view.sideMenu.toInputWrapper.style.display).toEqual("none");
@@ -75,20 +75,20 @@ describe("View", () => {
 
   it("updateSliderView() call display changers to hide valueScale", () => {
     view.basicSettings.valueScale = false;
-    view.updateSliderView({vertical: false, sideMenu: true, valueScale: false});
+    view.updateView({vertical: false, sideMenu: true, valueScale: false});
     expect(view.valuesScale.minValue.style.display).toEqual("none");
   });
 
   it("updateSliderView() call display changers to hide handelsValues", () => {
     view.basicSettings.handelsValues = false;
-    view.updateSliderView({vertical: false, sideMenu: true, handelsValues: false});
+    view.updateView({vertical: false, sideMenu: true, handelsValues: false});
     expect(view.handels.fromValue.style.display).toEqual("none");
     expect(view.handels.toValue.style.display).toEqual("none");
   });
 
   it("updateSliderView() check inputs in side-menu", () => {
     view.basicSettings["side-menu"] = true;
-    view.updateSliderView({vertical: true, sideMenu: true, double: true, handelsValues: true, valueScale: true});
+    view.updateView({vertical: true, sideMenu: true, double: true, handelsValues: true, valueScale: true});
     expect(view.sideMenu.toToggle).toBeChecked();
     expect(view.sideMenu.valueScaleToggle).toBeChecked();
     expect(view.sideMenu.handelValuesToggle).toBeChecked();

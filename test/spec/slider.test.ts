@@ -1,4 +1,4 @@
-import { Handels } from "../../src/components/view/components/handels/handels";
+import { Handles } from "../../src/components/view/components/handels/handles";
 import { SelectedInterval } from "../../src/components/view/components/selectedInterval/selectedInterval";
 import { SliderAssemblerSettings } from "../../src/components/view/components/slider/interfaces/sliderInterfaces";
 import { Slider } from "../../src/components/view/components/slider/slider";
@@ -16,7 +16,7 @@ describe("Sldier", () => {
   });
 
   it("collectSlider() can collect elements", () => {
-    let settings: SliderAssemblerSettings = {from: new Handels().fromHandel, to: new Handels().toHandel, interval: new SelectedInterval().interval, valueScale: new ValuesScale()}
+    let settings: SliderAssemblerSettings = {from: new Handles().fromHandel, to: new Handles().toHandel, interval: new SelectedInterval().interval, valueScale: new ValuesScale()}
     slider.collectSlider(settings);
     expect(slider.slider).toBeTruthy();
   });

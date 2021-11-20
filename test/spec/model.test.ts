@@ -1,7 +1,7 @@
 import { DataForValueScale } from "../../src/components/model/interfaces/DataForValueScale";
 import { StepInfoFromModel } from "../../src/components/model/interfaces/StepInfoFromModel";
 import { Model } from "../../src/components/model/model";
-import { DataForAdjustPosition } from "../../src/components/view/components/handels/interfaces/DataForAdjustPosition";
+import { DataForAdjustPosition } from "../../src/components/view/components/handels/types";
 
 
 describe("Model", () => {

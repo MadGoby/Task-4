@@ -1,4 +1,4 @@
-import { Handels } from "../../src/components/view/components/handels/handels";
+import { Handles } from "../../src/components/view/components/handels/handles";
 import { Movement } from "../../src/components/view/components/movement/movement";
 import { SelectedInterval } from "../../src/components/view/components/selectedInterval/selectedInterval";
 import { Slider } from "../../src/components/view/components/slider/slider";
@@ -16,8 +16,8 @@ describe("Movement", () => {
         valueScale: true,
         vertical: false
       },
-      fromHandel: new Handels().fromHandel,
-      toHandel: new Handels().toHandel,
+      fromHandel: new Handles().fromHandel,
+      toHandel: new Handles().toHandel,
       slider: new Slider().slider,
       interval: new SelectedInterval().interval,
     });
