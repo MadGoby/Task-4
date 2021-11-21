@@ -10,11 +10,13 @@
     "jsx": "react",
     "allowJs": true,
     "sourceMap": true,
-    "moduleResolution": "Node"
+    "moduleResolution": "Node",
+    "experimentalDecorators": true
   },
   "exclude": [
     "./node_modules",
-    "./test/coverage"
+    "./test/**/*",
+    "./dist/**/*"
   ],
-  "include": ["src/**/*", "test/**/*"],
+  "include": ["src/**/*"]
 }

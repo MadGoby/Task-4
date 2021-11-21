@@ -1,13 +1,31 @@
 'use strict';
 
-export interface DataForAdjustPosition {
+import { HandlesPosition } from '../movement/types';
+
+type DataForAdjustPosition = {
   target: string;
   value: string;
   totalValues: number;
   minValue: string;
-}
+};
 
-export interface HandlesElementsInfo {
+type HandlesElementsInfo = {
   cssClasses: Array<string>,
-  attr?: { name: string, value: string }
-}
+  name: string,
+  value: string
+};
+
+type HandleHideData = {
+  isDouble: boolean,
+  positions: HandlesPosition,
+  sliderWidth: number
+};
+
+type StaticElementsDescription = Array<HandlesElementsInfo>;
+
+export {
+  DataForAdjustPosition,
+  HandlesElementsInfo,
+  StaticElementsDescription,
+  HandleHideData,
+};

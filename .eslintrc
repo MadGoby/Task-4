@@ -1,9 +1,23 @@
 {
-    "extends": [ "airbnb", "prettier" ],
-    "plugins": [ "fsd", "prettier" ],
+    "extends": [
+        "prettier",
+        "airbnb-base/legacy",
+        "airbnb-typescript/base"
+    ],
+    "plugins": [
+        "fsd",
+        "prettier",
+        "@typescript-eslint",
+        "import"
+    ],
     "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "project": ["./tsconfig.json"]
+    },
+    "ignorePatterns": ["**/*.css", "**/*.test.ts"],
     "rules": {
         "linebreak-style": ["error", "windows"],
+        "max-len": ["error", { "code":  121}],
         "fsd/hof-name-prefix": "error",
         "fsd/no-heavy-constructor": "error",
         "fsd/jq-cache-dom-elements": "error",
@@ -15,5 +29,8 @@
         "browser": true,
         "node": true,
         "jquery": true
+    },
+    "globals": {
+      "autobind": "readonly"
     }
 }

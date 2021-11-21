@@ -1,4 +1,5 @@
 const path = require("path");
+const webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
@@ -44,6 +45,11 @@ module.exports = {
           to: path.resolve(__dirname, './dist/plugin')
         }
       ],
+    }),
+    new webpack.ProvidePlugin({
+      $: 'jquery',
+      jQuery: 'jquery',
+      autobind: 'autobind-decorator',
     })
   ],
 };

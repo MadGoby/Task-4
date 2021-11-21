@@ -775,7 +775,7 @@ BRF:10
 BRH:9
 end_of_record
 TN:
-SF:src\components\view\components\selectedInterval\interfaces.ts\RefreshIntervalPositions.ts
+SF:src\components\view\components\selectedInterval\types.ts\RefreshIntervalPositions.ts
 FNF:0
 FNH:0
 LF:0

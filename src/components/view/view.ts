@@ -1,214 +1,258 @@
-import { Slider } from "./components/slider/slider";
-import { Handels } from "./components/handels/handels";
-import { Movement } from "./components/movement/movement";
-import { BasicViewSettings } from "./interfaces/ViewInterfaces";
-import { RefreshData } from "./interfaces/RefreshData";
-import { SelectedInterval } from "./components/selectedInterval/selectedInterval";
-import { ValuesScale } from "./components/valuesScale/valuesScale";
-import { DataRequestFromModel } from "./interfaces/DataRequestFromModel";
-import { TargetsForViewUpdate } from "./interfaces/TargetsForViewUpdate";
-import { SideMenu } from "./components/sideMenu/sideMenu";
+'use strict';
 
+import autobind from 'autobind-decorator';
+import { Slider } from './components/slider/slider';
+import { Handles } from './components/handels/handles';
+import { Movement } from './components/movement/movement';
+import { SelectedInterval } from './components/selectedInterval/selectedInterval';
+import { ValuesScale } from './components/valuesScale/valuesScale';
+import { SideMenu } from './components/sideMenu/sideMenu';
+import {
+  RefreshData,
+  BasicViewSettings,
+  DataRequestFromModel,
+  TargetsForViewUpdate,
+} from './types';
+
+@autobind
 export class View {
   readonly target: HTMLElement;
+
   readonly slider: Slider;
-  readonly handels: Handels;
+
+  readonly handles: Handles;
+
   readonly movement: Movement;
+
   readonly interval: SelectedInterval;
+
   readonly valuesScale: ValuesScale;
+
   readonly sideMenu: SideMenu;
+
   public basicSettings: BasicViewSettings;
 
-  constructor (settings: BasicViewSettings, target: HTMLElement) {
+  public dataRequestFromModel: DataRequestFromModel = {
+    needDataForScale: false,
+    needDataForStartPosition: false,
+    needStepWidth: false,
+    needApplyValueFromScale: '',
+    needApplyNewValue: { name: '', value: '' },
+    needChangeSliderValuesRange: { name: '', value: '' },
+  };
+
+  constructor(settings: BasicViewSettings, target: HTMLElement) {
     this.target = target;
     this.slider = new Slider();
-    this.handels = new Handels();
+    this.handles = new Handles();
     this.interval = new SelectedInterval();
     this.valuesScale = new ValuesScale();
     this.sideMenu = new SideMenu();
     this.basicSettings = settings;
     this.movement = new Movement({
       slider: this.slider.slider,
-      fromHandel: this.handels.fromHandel,
-      toHandel: this.handels.toHandel,
+      fromHandel: this.handles.fromHandel,
+      toHandel: this.handles.toHandel,
       interval: this.interval.interval,
-      basicSettings: this.basicSettings
+      basicSettings: this.basicSettings,
     });
-  };
+  }
 
-  dataRequestFromModel: DataRequestFromModel= {
-    needDataForScale: false,
-    needDataForStartPosition: false,
-    needStepWidth: false,
-    needApplyValueFromScale: "",
-    needApplyNewValue: {name: "", value: ""},
-    needChangeSliderValuesRange: {name: "", value: ""}
-  };
+  private addSliderToDOM(): void {
+    this.slider.collectSlider({
+      from: this.handles.fromHandel,
+      to: this.handles.toHandel,
+      interval: this.interval.interval,
+      valueScale: this.valuesScale,
+    });
+    this.target.append(this.slider.sliderWrapper);
+  }
+
+  private addSideMenuToDOM(): void {
+    this.sideMenu.collectSideMenu();
+
+    if (typeof this.basicSettings['side-menu'] === 'string') {
+      document.querySelector(this.basicSettings['side-menu'])?.append(this.sideMenu.sideMenuElements.sideMenuContainer!);
+    } else {
+      this.target.append(this.sideMenu.sideMenuElements.sideMenuContainer!);
+    }
+  }
 
   public prepareSliderForUse(): void {
-    let that = this;
+    const isStepRequired = (this.basicSettings.step) && (typeof this.basicSettings.step === 'number');
 
-    function addSliderToDOM(): void {
-      that.slider.collectSlider({
-        from: that.handels.fromHandel,
-        to: that.handels.toHandel,
-        interval: that.interval.interval,
-        valueScale: that.valuesScale
-      });
-      that.target.append(that.slider.sliderWrapper);
-    };
+    this.addSliderToDOM();
 
-    function addSideMenuToDOM(): void {
-      that.sideMenu.colectSideMenu();
-      if (typeof that.basicSettings["side-menu"] == "string") {
-        document.querySelector(that.basicSettings["side-menu"])?.append(that.sideMenu.sideMenuContainer);
-      } else {
-        that.target.append(that.sideMenu.sideMenuContainer);
-      }
-    };
-    addSliderToDOM();
-    if(that.basicSettings["side-menu"]) addSideMenuToDOM();
+    if (this.basicSettings['side-menu']) this.addSideMenuToDOM();
 
     this.dataRequestFromModel.needDataForScale = true;
     this.dataRequestFromModel.needDataForStartPosition = true;
-    if((this.basicSettings.step) && (typeof this.basicSettings.step == "number")) this.dataRequestFromModel.needStepWidth = true;
-    this.updateSliderView({
+
+    if (isStepRequired) this.dataRequestFromModel.needStepWidth = true;
+
+    this.updateView({
       vertical: this.basicSettings.vertical,
       double: this.basicSettings.double,
-      sideMenu: this.basicSettings["side-menu"],
-      handelsValues: this.basicSettings.handelsValues,
-      valueScale: this.basicSettings.valueScale
+      sideMenu: this.basicSettings['side-menu'],
+      handlesValues: this.basicSettings.handlesValues,
+      valueScale: this.basicSettings.valueScale,
     });
-  };
+  }
 
-  public updateSliderView(targets: TargetsForViewUpdate): void {
+  private turnOnMenuToggles(targets: TargetsForViewUpdate): void {
+    if (targets.vertical) this.sideMenu.sideMenuElements.planeToggle!.checked = true;
+    if (targets.double) this.sideMenu.sideMenuElements.toToggle!.checked = true;
+    if (targets.handlesValues) this.sideMenu.sideMenuElements.handelValuesToggle!.checked = true;
+    if (targets.valueScale) this.sideMenu.sideMenuElements.valueScaleToggle!.checked = true;
+  }
+
+  public updateView(targets: TargetsForViewUpdate): void {
     if (targets.vertical) {
       this.slider.changePlane(targets.vertical);
-      this.handels.changePlane(targets.vertical);
+      this.handles.changePlane(targets.vertical);
       this.valuesScale.changePlane(targets.vertical);
-    };
-    if (targets.double == false) {
-      this.handels.hideToHandel(this.basicSettings.double, this.movement.positions, this.slider.slider.offsetWidth);
-      this.interval.hideSelectedInterval(this.basicSettings.double, this.movement.positions, this.handels.fromHandel.offsetWidth);
-      this.sideMenu.hideToValues(this.basicSettings.double);
-    };
-    if (targets.valueScale == false) this.valuesScale.hideValueScale(this.basicSettings.valueScale);
-    if (targets.handelsValues == false) this.handels.hideHandelValues(this.basicSettings.handelsValues);
-    if(targets.sideMenu) {
-      if (targets.vertical) this.sideMenu.planeToggle.checked = true;
-      if (targets.double) this.sideMenu.toToggle.checked = true;
-      if (targets.handelsValues) this.sideMenu.handelValuesToggle.checked = true;
-      if (targets.valueScale) this.sideMenu.valueScaleToggle.checked = true;
     }
-  };
+    if (!targets.double) {
+      this.handles.controlHandlesDisplay({
+        isDouble: this.basicSettings.double,
+        positions: this.movement.positions,
+        sliderWidth: this.slider.slider.offsetWidth,
+      });
+      this.interval.hideSelectedInterval({
+        isDouble: this.basicSettings.double,
+        handleWidth: this.handles.fromHandel.offsetWidth,
+      });
+      this.sideMenu.hideToValues(this.basicSettings.double);
+    }
+    if (!targets.valueScale) this.valuesScale.hideValueScale(this.basicSettings.valueScale);
+    if (!targets.handlesValues) this.handles.hideHandelValues(this.basicSettings.handlesValues);
+    if (targets.sideMenu) {
+      this.turnOnMenuToggles(targets);
+    }
+  }
 
-  public bindMovementOnHandels(): void {
-    let that = this;
-    this.handels.fromHandel.onmousedown = function(event): void {
+  public bindMovementOnHandles(): void {
+    this.handles.fromHandel.onmousedown = (event): void => {
       if (event.target) {
-        that.movement.handelListener({
-          target: event.target,
-          x: event.clientX,
-          y: event.clientY
+        this.movement.handelListener({
+          eventInfo: {
+            target: event.target,
+            x: event.clientX,
+            y: event.clientY,
+          },
         });
-      };
+      }
     };
-    this.handels.toHandel.onmousedown = function(event): void {
+    this.handles.toHandel.onmousedown = (event): void => {
       if (event.target) {
-        that.movement.handelListener({
-          target: event.target,
-          x: event.clientX,
-          y: event.clientY
-        }); 
-      };
+        this.movement.handelListener({
+          eventInfo: {
+            target: event.target,
+            x: event.clientX,
+            y: event.clientY,
+          },
+        });
+      }
     };
-  };
+  }
 
   public refreshAllComponents(settings: RefreshData): void {
-    this.handels.refreshValues(settings);
-    if(this.basicSettings["side-menu"])this.sideMenu.refreshValues(settings);
-  };
+    this.handles.refreshValues(settings);
+    if (this.basicSettings['side-menu']) this.sideMenu.refreshValues(settings);
+  }
 
   public bindEventListeners(): void {
-    this.valuesScale.minValue.addEventListener("click", this.forValueScaleClick.bind(null, this));
-    this.valuesScale.maxValue.addEventListener("click", this.forValueScaleClick.bind(null, this));
-    this.valuesScale[20].addEventListener("click", this.forValueScaleClick.bind(null, this));
-    this.valuesScale[40].addEventListener("click", this.forValueScaleClick.bind(null, this));
-    this.valuesScale[60].addEventListener("click", this.forValueScaleClick.bind(null, this));
-    this.valuesScale[80].addEventListener("click", this.forValueScaleClick.bind(null, this));
-    this.sideMenu.toToggle.addEventListener("change", this.toToggleChange.bind(null, this));
-    this.sideMenu.planeToggle.addEventListener("change", this.planeChange.bind(null, this));
-    this.sideMenu.valueScaleToggle.addEventListener("change", this.valueScaleChange.bind(null, this));
-    this.sideMenu.handelValuesToggle.addEventListener("change", this.handelValuesChanger.bind(null, this));
-    this.sideMenu.fromInput.addEventListener("change", this.sendNewValueFromInput.bind(null, this));
-    this.sideMenu.toInput.addEventListener("change", this.sendNewValueFromInput.bind(null, this));
-    this.sideMenu.minimumInput.addEventListener("change", this.changeSliderValuesRange.bind(null, this));
-    this.sideMenu.maximumInput.addEventListener("change", this.changeSliderValuesRange.bind(null, this));
-    this.sideMenu.stepInput.addEventListener("change", this.sendNewStepFromInput.bind(null, this));
-  };
+    this.valuesScale.minValue.addEventListener('click', this.forValueScaleClick);
+    this.valuesScale.maxValue.addEventListener('click', this.forValueScaleClick);
+    this.valuesScale[20].addEventListener('click', this.forValueScaleClick);
+    this.valuesScale[40].addEventListener('click', this.forValueScaleClick);
+    this.valuesScale[60].addEventListener('click', this.forValueScaleClick);
+    this.valuesScale[80].addEventListener('click', this.forValueScaleClick);
+    this.sideMenu.sideMenuElements.toToggle!.addEventListener('change', this.toToggleChange);
+    this.sideMenu.sideMenuElements.planeToggle!.addEventListener('change', this.planeChange);
+    this.sideMenu.sideMenuElements.valueScaleToggle!.addEventListener('change', this.valueScaleChange);
+    this.sideMenu.sideMenuElements.handelValuesToggle!.addEventListener('change', this.handleValuesChanger);
+    this.sideMenu.sideMenuElements.fromInput!.addEventListener('change', this.sendNewInputValue);
+    this.sideMenu.sideMenuElements.toInput!.addEventListener('change', this.sendNewInputValue);
+    this.sideMenu.sideMenuElements.minimumInput!.addEventListener('change', this.changeSliderValuesRange);
+    this.sideMenu.sideMenuElements.maximumInput!.addEventListener('change', this.changeSliderValuesRange);
+    this.sideMenu.sideMenuElements.stepInput!.addEventListener('change', this.sendNewStep);
+  }
 
-  private forValueScaleClick(viewLink: View, event: Event): void {
+  private forValueScaleClick(event: Event): void {
     let element: HTMLSpanElement = event.target as HTMLSpanElement;
-    viewLink.dataRequestFromModel.needApplyValueFromScale = element.innerText;
-  };
+    this.dataRequestFromModel.needApplyValueFromScale = element.innerText;
+  }
 
-  private toToggleChange(viewLink: View, event: Event):void {
-    let element: HTMLInputElement = event.target as HTMLInputElement;
-    element.checked ? viewLink.basicSettings.double = true : viewLink.basicSettings.double = false;
-    viewLink.handels.hideToHandel(viewLink.basicSettings.double, viewLink.movement.positions, viewLink.slider.slider.offsetWidth);
-    viewLink.interval.hideSelectedInterval(viewLink.basicSettings.double, viewLink.movement.positions, viewLink.handels.fromHandel.offsetWidth);
-    viewLink.sideMenu.hideToValues(viewLink.basicSettings.double);
-  };
+  private toToggleChange(event: Event): void {
+    const element: HTMLInputElement = event.target as HTMLInputElement;
 
-  private planeChange(viewLink: View, event: Event): void {
-    let element: HTMLInputElement = event.target as HTMLInputElement;
-    element.checked ? viewLink.basicSettings.vertical = true : viewLink.basicSettings.vertical = false;
-    viewLink.slider.changePlane(viewLink.basicSettings.vertical);
-    viewLink.handels.changePlane(viewLink.basicSettings.vertical);
-    viewLink.valuesScale.changePlane(viewLink.basicSettings.vertical);
-  };
+    this.basicSettings.double = element.checked;
+    this.handles.controlHandlesDisplay({
+      isDouble: this.basicSettings.double,
+      positions: this.movement.positions,
+      sliderWidth: this.slider.slider.offsetWidth,
+    });
+    this.interval.hideSelectedInterval({
+      isDouble: this.basicSettings.double,
+      handleWidth: this.handles.fromHandel.offsetWidth,
+    });
+    this.sideMenu.hideToValues(this.basicSettings.double);
+  }
 
-  private valueScaleChange(viewLink: View, event: Event): void {
-    let element: HTMLInputElement = event.target as HTMLInputElement;
-    element.checked ? viewLink.basicSettings.valueScale = true : viewLink.basicSettings.valueScale = false;
-    viewLink.valuesScale.hideValueScale(viewLink.basicSettings.valueScale);
-  };
+  private planeChange(event: Event): void {
+    const element: HTMLInputElement = event.target as HTMLInputElement;
 
-  private handelValuesChanger(viewLink: View, event: Event): void {
-    let element: HTMLInputElement = event.target as HTMLInputElement;
-    element.checked ? viewLink.basicSettings.handelsValues = true : viewLink.basicSettings.handelsValues = false;
-    viewLink.handels.hideHandelValues(viewLink.basicSettings.handelsValues);
-  };
+    this.basicSettings.vertical = element.checked;
+    this.slider.changePlane(this.basicSettings.vertical);
+    this.handles.changePlane(this.basicSettings.vertical);
+    this.valuesScale.changePlane(this.basicSettings.vertical);
+  }
 
-  private sendNewValueFromInput(viewLink: View, event: Event): void {
+  private valueScaleChange(event: Event): void {
+    const element: HTMLInputElement = event.target as HTMLInputElement;
+
+    this.basicSettings.valueScale = element.checked;
+    this.valuesScale.hideValueScale(this.basicSettings.valueScale);
+  }
+
+  private handleValuesChanger(event: Event): void {
+    const element: HTMLInputElement = event.target as HTMLInputElement;
+
+    this.basicSettings.handlesValues = element.checked;
+    this.handles.hideHandelValues(this.basicSettings.handlesValues);
+  }
+
+  private sendNewInputValue(event: Event): void {
+    const element: HTMLInputElement = event.target as HTMLInputElement;
+    let target: string;
+
+    if (element === this.sideMenu.sideMenuElements.fromInput) {
+      target = 'from';
+    } else {
+      target = 'to';
+    }
+
+    this.dataRequestFromModel.needApplyNewValue = { name: target, value: element.value };
+  }
+
+  private sendNewStep(event: Event): void {
+    const element: HTMLInputElement = event.target as HTMLInputElement;
+
+    this.basicSettings.step = Number(element.value);
+    this.dataRequestFromModel.needStepWidth = true;
+  }
+
+  private changeSliderValuesRange(event: Event): void {
     let element: HTMLInputElement = event.target as HTMLInputElement;
     let target: string;
 
-    if (element == viewLink.sideMenu.fromInput) {
-      target = "from"
+    if (element === this.sideMenu.sideMenuElements.minimumInput) {
+      target = 'min';
     } else {
-      target = "to"
-    };
-    
-    viewLink.dataRequestFromModel.needApplyNewValue = {name: target, value: element.value};
-  };
+      target = 'max';
+    }
 
-  private sendNewStepFromInput(viewLink: View, event: Event): void {
-    let element: HTMLInputElement = event.target as HTMLInputElement;
-    viewLink.basicSettings.step = Number(element.value);
-    viewLink.dataRequestFromModel.needStepWidth = true;
-  };
-
-  private changeSliderValuesRange(viewLink: View, event: Event): void {
-    let element: HTMLInputElement = event.target as HTMLInputElement;
-    let target: string;
-
-    if (element == viewLink.sideMenu.minimumInput) {
-      target = "min"
-    } else {
-      target = "max"
-    };
-
-    viewLink.dataRequestFromModel.needChangeSliderValuesRange = {name: target, value: element.value};
-  };
-};
+    this.dataRequestFromModel.needChangeSliderValuesRange = { name: target, value: element.value };
+  }
+}
