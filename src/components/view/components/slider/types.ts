@@ -1,5 +1,3 @@
-'use strict';
-
 import { IValuesScale } from '../valuesScale/interfaces';
 
 type SliderAssemblerSettings = {

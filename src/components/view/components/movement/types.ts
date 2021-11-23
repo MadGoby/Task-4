@@ -1,5 +1,3 @@
-'use strict';
-
 import { BasicViewSettings } from '../../types';
 
 type EventInfo = {

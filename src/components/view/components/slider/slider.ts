@@ -1,5 +1,3 @@
-'use strict';
-
 import { SliderAssemblerSettings } from './types';
 
 export class Slider {

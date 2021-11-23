@@ -8,13 +8,15 @@
     "build": "webpack --mode production",
     "watch": "webpack --mode development --watch",
     "test": "karma start karma.conf.js --watch",
-    "start": "webpack-dev-server --mode development --open",
+    "start": "webpack-dev-server --config webpack.config.js --open",
     "eslint": "eslint ./src/**"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@babel/core": "^7.16.0",
+    "@babel/eslint-parser": "^7.16.3",
     "@types/jasmine": "^3.6.9",
     "@types/jasmine-jquery": "^1.5.33",
     "@types/jquery": "^3.5.5",
@@ -24,7 +26,8 @@
     "@webpack-cli/serve": "^1.6.0",
     "codecov": "^3.8.1",
     "copy-webpack-plugin": "^8.1.1",
-    "eslint": "^7.2.0",
+    "css-loader": "^6.5.1",
+    "eslint": "^7.32.0",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-config-airbnb-typescript": "^14.0.1",
@@ -35,6 +38,7 @@
     "eslint-plugin-jsx-a11y": "^6.4.1",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.26.1",
+    "html-webpack-plugin": "^5.5.0",
     "istanbul-instrumenter-loader": "^3.0.1",
     "jasmine": "^3.7.0",
     "jasmine-jquery": "^2.1.1",
@@ -44,6 +48,7 @@
     "karma-jasmine": "^4.0.1",
     "karma-spec-reporter": "0.0.32",
     "karma-webpack": "^5.0.0",
+    "mini-css-extract-plugin": "^2.4.5",
     "prettier": "^2.4.1",
     "prettier-eslint": "^8.2.2",
     "ts-loader": "^9.1.0",
@@ -56,6 +61,7 @@
   "dependencies": {
     "autobind-decorator": "^2.4.0",
     "jquery": "^3.6.0",
+    "jquery-ui": "^1.13.0",
     "run": "^1.4.0"
   }
 }

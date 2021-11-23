@@ -1,5 +1,3 @@
-'use strict';
-
 import autobind from 'autobind-decorator';
 import { Slider } from './components/slider/slider';
 import { Handles } from './components/handels/handles';

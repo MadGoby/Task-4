@@ -1,5 +1,3 @@
-'use strict';
-
 import { IntervalDisplayData, RefreshIntervalPositions } from './types';
 
 export class SelectedInterval {

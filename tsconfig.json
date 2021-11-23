@@ -13,10 +13,9 @@
     "moduleResolution": "Node",
     "experimentalDecorators": true
   },
+  "include": ["**/*.ts"],
   "exclude": [
     "./node_modules",
-    "./test/**/*",
-    "./dist/**/*"
-  ],
-  "include": ["src/**/*"]
+    "./test"
+  ]
 }

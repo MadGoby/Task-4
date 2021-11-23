@@ -1,5 +1,3 @@
-'use strict';
-
 import { BasicViewSettings } from '../../types';
 import {
   HandlesPosition,
@@ -38,9 +36,8 @@ export class Movement {
   }
 
   public handleDocumentMouseMove(event: MouseEvent | TestMouseEvent): void {
-    console.log(event, this);
-    // const x = event.clientX;
-    // const y = event.clientY;
+    const x = event.clientX;
+    const y = event.clientY;
     // const rightSliderEdge: number = this.slider.offsetWidth - target.offsetWidth;
     // let newPosition: number;
     // let targetPosition: number;

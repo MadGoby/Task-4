@@ -1,5 +1,3 @@
-'use strict';
-
 import { RefreshData } from '../../types';
 import { ElementParams, SideMenuElements } from './types';
 

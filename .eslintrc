@@ -1,21 +1,33 @@
 {
-    "extends": [
-        "prettier",
-        "airbnb-base/legacy",
-        "airbnb-typescript/base"
-    ],
-    "plugins": [
-        "fsd",
-        "prettier",
-        "@typescript-eslint",
-        "import"
-    ],
-    "parser": "@typescript-eslint/parser",
-    "parserOptions": {
-        "project": ["./tsconfig.json"]
-    },
-    "ignorePatterns": ["**/*.css", "**/*.test.ts"],
-    "rules": {
+  "extends": [
+    "prettier",
+    "airbnb-base/legacy",
+    "airbnb-typescript/base"
+  ],
+  "plugins": [
+    "fsd",
+    "prettier",
+    "@typescript-eslint",
+    "import"
+  ],
+  "env": {
+    "browser": true,
+    "node": true,
+    "jquery": true
+  },
+  "globals": {
+    "autobind": "readonly"
+  },
+  "overrides": [
+    {
+      "files": ["./src/**/*.ts"],
+      "parser": "@typescript-eslint/parser",
+      "parserOptions": {
+        "ecmaVersion": 2018,
+        "sourceType": "module",
+        "project": "./tsconfig.eslint.json"
+      },
+      "rules": {
         "linebreak-style": ["error", "windows"],
         "max-len": ["error", { "code":  121}],
         "fsd/hof-name-prefix": "error",
@@ -23,14 +35,10 @@
         "fsd/jq-cache-dom-elements": "error",
         "fsd/jq-use-js-prefix-in-selector": "error",
         "fsd/no-function-declaration-in-event-listener": "error",
-        "fsd/split-conditionals": "error"
-    },
-    "env": {
-        "browser": true,
-        "node": true,
-        "jquery": true
-    },
-    "globals": {
-      "autobind": "readonly"
+        "fsd/split-conditionals": "error",
+        "no-undef": "off",
+        "import/prefer-default-export": "off"
+      }
     }
+  ]
 }

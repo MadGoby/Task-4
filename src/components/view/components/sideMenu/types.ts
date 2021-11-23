@@ -1,5 +1,3 @@
-'use strict';
-
 type ElementParams = {
   name: string;
   cssClasses: Array<string>;

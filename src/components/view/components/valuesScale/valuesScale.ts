@@ -1,5 +1,3 @@
-'use strict';
-
 import { DataForValueScale } from '../../../model/types';
 import { IValuesScale } from './interfaces';
 

@@ -1,5 +1,3 @@
-'use strict';
-
 type RefreshIntervalPositions = {
   target: string;
   position: string;

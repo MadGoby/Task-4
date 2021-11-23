@@ -1,5 +1,3 @@
-'use strict';
-
 import { BasicModelSettings } from './components/model/types';
 import { BasicViewSettings } from './components/view/types';
 import { Model } from './components/model/model';

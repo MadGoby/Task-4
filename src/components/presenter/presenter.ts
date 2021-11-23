@@ -1,5 +1,3 @@
-'use strict';
-
 import { DataForValueScale } from '../model/types';
 import { Model } from '../model/model';
 import { DataForAdjustPosition } from '../view/components/handels/types';

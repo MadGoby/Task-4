@@ -1,5 +1,3 @@
-'use strict';
-
 import { HandlesPosition } from '../movement/types';
 
 type DataForAdjustPosition = {

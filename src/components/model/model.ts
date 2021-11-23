@@ -1,5 +1,3 @@
-'use strict';
-
 import { DataForAdjustPosition } from '../view/components/handels/types';
 import {
   CalculationData,
@@ -12,7 +10,7 @@ import {
   ValuesRangeData,
 } from './types';
 
-export class Model {
+class Model {
   public values: BasicModelSettings;
 
   constructor(settings: BasicModelSettings) {
@@ -34,7 +32,7 @@ export class Model {
 
     function calculateValues(calculationData: CalculationData): string {
       return String(Math.round(+that.values.min + (+calculationData.position / (
-          +calculationData.sliderWidth / (+that.values.max - +that.values.min))
+        +calculationData.sliderWidth / (+that.values.max - +that.values.min))
       )));
     }
 
@@ -148,3 +146,5 @@ export class Model {
     if (+this.values.to > +this.values.max) this.values.to = this.values.max;
   }
 }
+
+export { Model };

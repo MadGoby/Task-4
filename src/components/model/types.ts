@@ -1,5 +1,3 @@
-'use strict';
-
 type CalculationData = {
   target: string;
   position: string;

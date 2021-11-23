@@ -34,7 +34,7 @@ npm install
   ```
   <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
   <script src="./plugin/main.js"></script>
-  <script src="index.js"></script>
+  <script src="index.ts"></script>
   ``` 
 ### Инициализация
   1. Вызовете у контейнера для слайдера метод `.customSlider()`

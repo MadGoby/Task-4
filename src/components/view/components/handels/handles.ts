@@ -1,5 +1,3 @@
-'use strict';
-
 import { RefreshData } from '../../types';
 import { RefreshIntervalPositions } from '../selectedInterval/types';
 import {

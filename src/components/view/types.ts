@@ -1,5 +1,3 @@
-'use strict';
-
 type BasicViewSettings = {
   'double': boolean,
   'side-menu': boolean | string,
