@@ -172,7 +172,7 @@ export class SideMenu {
   }
 
   private static createElement(elementParams: ElementParams): HTMLSpanElement {
-    let element: HTMLElement = document.createElement(elementParams.name);
+    const element: HTMLElement = document.createElement(elementParams.name);
 
     elementParams.cssClasses.forEach((cssClass: string): void => {
       element.classList.add(cssClass);

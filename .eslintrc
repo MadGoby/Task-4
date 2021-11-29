@@ -1,7 +1,7 @@
 {
   "extends": [
     "prettier",
-    "airbnb-base/legacy",
+    "airbnb-base",
     "airbnb-typescript/base"
   ],
   "plugins": [

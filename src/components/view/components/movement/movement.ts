@@ -1,3 +1,4 @@
+import autobind from 'autobind-decorator';
 import { BasicViewSettings } from '../../types';
 import {
   HandleClickData,
@@ -6,7 +7,6 @@ import {
   MovementSettings,
   TestMouseEvent,
 } from './types';
-import autobind from 'autobind-decorator';
 
 @autobind
 export class Movement {
@@ -93,16 +93,15 @@ export class Movement {
   }
 
   applyNewPosition(newPosition: number): void {
-    this.dataForMovement.target.style.left = newPosition + 'px';
+    this.dataForMovement.target.style.left = `${newPosition}px`;
     if (this.dataForMovement.target === this.from) {
       this.positions.from = newPosition;
     } else {
       this.positions.to = newPosition;
     }
-    this.interval.style.left = String(this.positions.from + (this.dataForMovement.target.offsetWidth / 2)) + 'px';
-    this.interval.style.right = String(
-      (this.slider.offsetWidth - this.positions.to) - (this.dataForMovement.target.offsetWidth / 2),
-    ) + 'px';
+    this.interval.style.left = `${(this.positions.from + (this.dataForMovement.target.offsetWidth / 2))}px`;
+    this.interval.style.right = `${(this.slider.offsetWidth - this.positions.to)
+      - (this.dataForMovement.target.offsetWidth / 2)}px`;
   }
 
   isEdgePosition(newPosition: number): boolean {
@@ -185,8 +184,8 @@ export class Movement {
     }
 
     this.dataForMovement = {
-      target: target,
-      distanceToCursor: distanceToCursor,
+      target,
+      distanceToCursor,
     };
 
     this.bindEventListeners();

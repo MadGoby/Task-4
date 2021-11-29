@@ -29,7 +29,7 @@ export interface Settings {
 
 (function ($) {
   $.fn.customSlider = function (options: SliderOptions) {
-    let settings: Settings = $.extend({
+    const settings: Settings = $.extend({
       min: '0',
       max: '10',
       double: false,

@@ -38,8 +38,8 @@ export class Slider {
   public changePlane(isVertical: boolean): void {
     if (this.isNeedToMakeVertical(isVertical)) {
       this.slider.classList.toggle('cs-slider_vertical');
-      this.slider.style.top = this.slider.offsetWidth / 2 + 'px';
-      this.sliderWrapper.style.height = this.slider.offsetWidth + 'px';
+      this.slider.style.top = `${this.slider.offsetWidth / 2}px`;
+      this.sliderWrapper.style.height = `${this.slider.offsetWidth}px`;
     } else if (this.isNeedToMakeHorizontally(isVertical)) {
       this.slider.classList.toggle('cs-slider_vertical');
       this.slider.style.top = '';

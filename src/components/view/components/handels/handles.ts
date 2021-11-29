@@ -93,8 +93,8 @@ export class Handles {
       target = this.toHandel;
     }
 
-    let newPosition: string = calculateNewPosition();
-    target.style.left = newPosition + 'px';
+    const newPosition: string = calculateNewPosition();
+    target.style.left = `${newPosition}px`;
 
     return {
       target: dataToRefresh.target,
@@ -144,12 +144,12 @@ export class Handles {
       const newPosition: number = sliderWidth - this.toHandel.offsetWidth;
 
       this.toHandel.style.display = 'inline-block';
-      this.toHandel.style.left = String(newPosition) + 'px';
+      this.toHandel.style.left = `${newPosition}px`;
       positions.to = newPosition;
 
       if (positions.from > sliderWidth - this.toHandel.offsetWidth - this.fromHandel.offsetWidth) {
         const extremeFromPosition = String(sliderWidth - this.toHandel.offsetWidth - this.fromHandel.offsetWidth);
-        this.fromHandel.style.left = extremeFromPosition + 'px';
+        this.fromHandel.style.left = `${extremeFromPosition}px`;
         positions.from = sliderWidth - this.toHandel.offsetWidth - this.fromHandel.offsetWidth;
       }
     }

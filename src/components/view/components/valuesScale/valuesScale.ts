@@ -24,7 +24,7 @@ export class ValuesScale implements IValuesScale {
   }
 
   private static createElement(cssClasses: Array<string>): HTMLSpanElement {
-    let element: HTMLSpanElement = document.createElement('span');
+    const element: HTMLSpanElement = document.createElement('span');
 
     cssClasses.forEach((cssClass: string) => {
       element.classList.add(cssClass);
@@ -34,21 +34,23 @@ export class ValuesScale implements IValuesScale {
   }
 
   public refreshValueScale(values: DataForValueScale): void {
-    this.minValue.innerText = values.min;
-    this.maxValue.innerText = values.max;
-    this[20].innerText = values[20];
-    this[40].innerText = values[40];
-    this[60].innerText = values[60];
-    this[80].innerText = values[80];
+    ({
+      min: this.minValue.innerText,
+      max: this.maxValue.innerText,
+      20: this[20].innerText,
+      40: this[40].innerText,
+      60: this[60].innerText,
+      80: this[80].innerText,
+    } = values);
   }
 
   public centersValues(sliderWidth: number, handelWidth: number): void {
-    this.minValue.style.left = String(0 - ((this.minValue.offsetWidth - handelWidth) / 2)) + 'px';
-    this.maxValue.style.right = String(0 - ((this.maxValue.offsetWidth - handelWidth) / 2)) + 'px';
-    this[20].style.left = String(sliderWidth * 0.2 - ((this[20].offsetWidth - handelWidth) / 2)) + 'px';
-    this[40].style.left = String(sliderWidth * 0.4 - ((this[40].offsetWidth - handelWidth) / 2)) + 'px';
-    this[60].style.left = String(sliderWidth * 0.6 - ((this[60].offsetWidth - handelWidth) / 2)) + 'px';
-    this[80].style.left = String(sliderWidth * 0.8 - ((this[80].offsetWidth - handelWidth) / 2)) + 'px';
+    this.minValue.style.left = `${0 - ((this.minValue.offsetWidth - handelWidth) / 2)}px`;
+    this.maxValue.style.right = `${0 - ((this.maxValue.offsetWidth - handelWidth) / 2)}px`;
+    this[20].style.left = `${sliderWidth * 0.2 - ((this[20].offsetWidth - handelWidth) / 2)}px`;
+    this[40].style.left = `${sliderWidth * 0.4 - ((this[40].offsetWidth - handelWidth) / 2)}px`;
+    this[60].style.left = `${sliderWidth * 0.6 - ((this[60].offsetWidth - handelWidth) / 2)}px`;
+    this[80].style.left = `${sliderWidth * 0.8 - ((this[80].offsetWidth - handelWidth) / 2)}px`;
   }
 
   private isNeedToMakeHorizontally(isVertical: boolean): boolean {

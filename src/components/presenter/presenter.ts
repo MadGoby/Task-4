@@ -15,8 +15,7 @@ export class Presenter {
   }
 
   public bindProxyToView(): void {
-    let view = this.view;
-    let model = this.model;
+    const { view, model } = this;
 
     view.movement.positions = new Proxy(view.movement.positions, {
       set(target, prop, val) {
@@ -36,7 +35,7 @@ export class Presenter {
       set(target, prop, val) {
         if (val) {
           if (prop === 'needDataForScale') {
-            let values: DataForValueScale = model.calculateDataForValueScale();
+            const values: DataForValueScale = model.calculateDataForValueScale();
             view.valuesScale.refreshValueScale(values);
             view.valuesScale.centersValues(
               view.slider.slider.offsetWidth - view.handles.fromHandel.offsetWidth,
@@ -44,23 +43,23 @@ export class Presenter {
             );
           }
           if (prop === 'needDataForStartPosition') {
-            let dataForFrom: DataForAdjustPosition = {
+            const dataForFrom: DataForAdjustPosition = {
               target: 'from',
               value: model.values.from,
-              totalValues: +model.values.max - +model.values.min,
+              totalValues: Number(model.values.max) - Number(model.values.min),
               minValue: model.values.min,
             };
-            let dataForTo: DataForAdjustPosition = {
+            const dataForTo: DataForAdjustPosition = {
               target: 'to',
               value: model.values.to,
-              totalValues: +model.values.max - +model.values.min,
+              totalValues: Number(model.values.max) - Number(model.values.min),
               minValue: model.values.min,
             };
-            let startFrom: RefreshIntervalPositions = view.handles.adjustPositions(
+            const startFrom: RefreshIntervalPositions = view.handles.adjustPositions(
               dataForFrom,
               view.slider.slider.offsetWidth,
             );
-            let startTo: RefreshIntervalPositions = view.handles.adjustPositions(
+            const startTo: RefreshIntervalPositions = view.handles.adjustPositions(
               dataForTo,
               view.slider.slider.offsetWidth,
             );
@@ -73,7 +72,7 @@ export class Presenter {
           }
           if (prop === 'needStepWidth') {
             if (typeof view.basicSettings.step === 'number') {
-              let { stepWidth, step } = model.calculateStepWidth({
+              const { stepWidth, step } = model.calculateStepWidth({
                 step: view.basicSettings.step,
                 sliderWidth: view.slider.slider.offsetWidth,
                 handelWidth: view.handles.toHandel.offsetWidth,
@@ -83,7 +82,7 @@ export class Presenter {
             }
           }
           if (prop === 'needApplyNewValue') {
-            let result: DataForAdjustPosition = model.prepareInputValueForRecord({
+            const result: DataForAdjustPosition = model.prepareInputValueForRecord({
               name: val.name,
               value: val.value,
               isDouble: view.basicSettings.double,
@@ -94,7 +93,7 @@ export class Presenter {
               handelWidth: view.handles.toHandel.offsetWidth,
               sliderWidth: view.slider.slider.offsetWidth,
             });
-            let newPosition: RefreshIntervalPositions = view.handles.adjustPositions(
+            const newPosition: RefreshIntervalPositions = view.handles.adjustPositions(
               result,
               view.slider.slider.offsetWidth,
             );
@@ -103,8 +102,8 @@ export class Presenter {
             if (newPosition.target === 'to') view.movement.positions.to = Number(newPosition.position);
           }
           if (prop === 'needApplyValueFromScale') {
-            let result: DataForAdjustPosition = model.assignValueFromScale(val, view.basicSettings.double);
-            let newPosition: RefreshIntervalPositions = view.handles.adjustPositions(
+            const result: DataForAdjustPosition = model.assignValueFromScale(val, view.basicSettings.double);
+            const newPosition: RefreshIntervalPositions = view.handles.adjustPositions(
               result,
               view.slider.slider.offsetWidth,
             );
@@ -128,8 +127,7 @@ export class Presenter {
   }
 
   public bindProxyToModel(): void {
-    let view = this.view;
-    let model = this.model;
+    const { view, model } = this;
 
     model.values = new Proxy(model.values, {
       set(target, prop, val) {

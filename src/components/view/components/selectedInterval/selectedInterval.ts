@@ -11,10 +11,10 @@ export class SelectedInterval {
 
   public adjustPositionRelativeValue(dataToRefresh: RefreshIntervalPositions): void {
     if (dataToRefresh.target === 'from') {
-      this.interval.style.left = String(Number(dataToRefresh.position) + (dataToRefresh.handelWidth / 2)) + 'px';
+      this.interval.style.left = `${Number(dataToRefresh.position) + (dataToRefresh.handelWidth / 2)}px`;
     } else {
-      this.interval.style.right = String(dataToRefresh.sliderWidth - Number(dataToRefresh.position)
-        + (dataToRefresh.handelWidth / 2)) + 'px';
+      this.interval.style.right = `${dataToRefresh.sliderWidth - Number(dataToRefresh.position)
+        + (dataToRefresh.handelWidth / 2)}px`;
     }
   }
 
@@ -33,7 +33,7 @@ export class SelectedInterval {
       this.interval.style.display = 'none';
     } else if (this.isIntervalNeedShow(isDouble)) {
       this.interval.style.display = 'block';
-      this.interval.style.right = String((handleWidth / 2)) + 'px';
+      this.interval.style.right = `${handleWidth / 2}px`;
     }
   }
 }

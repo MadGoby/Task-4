@@ -28,13 +28,10 @@ class Model {
   }
 
   public calculateValuesByPosition(settings: CalculationData): void {
-    let that = this;
-
-    function calculateValues(calculationData: CalculationData): string {
-      return String(Math.round(+that.values.min + (+calculationData.position / (
-        +calculationData.sliderWidth / (+that.values.max - +that.values.min))
-      )));
-    }
+    const calculateValues = (calculationData: CalculationData): string => `${
+      Math.round(Number(this.values.min) + (Number(calculationData.position) / (
+        Number(calculationData.sliderWidth) / (Number(this.values.max) - Number(this.values.min)))
+      ))}`;
 
     this.writeDataToModel({ target: settings.target, value: calculateValues(settings) });
   }
@@ -57,9 +54,9 @@ class Model {
     let result: DataForRefreshingModel;
 
     if (isFromDifferenceLess) {
-      result = { target: 'from', value: value };
+      result = { target: 'from', value };
     } else {
-      result = { target: 'to', value: value };
+      result = { target: 'to', value };
     }
 
     this.writeDataToModel(result);
@@ -81,7 +78,7 @@ class Model {
 
     const stepWidth: number = ((sliderWidth - handelWidth) / (+this.values.max - +this.values.min)) * +step;
 
-    return { stepWidth: String(stepWidth), step: step };
+    return { stepWidth: String(stepWidth), step };
   }
 
   private isValueSmallerThanMin(value: string): boolean {
@@ -106,7 +103,7 @@ class Model {
     if (this.isValueSmallerThanMin(data.value)) data.value = this.values.min;
     if (this.isValueBiggerThanMax(data.value)) data.value = this.values.max;
     if (data.isDouble) {
-      let step: StepInfoFromModel = this.calculateStepWidth({
+      const step: StepInfoFromModel = this.calculateStepWidth({
         step: 1,
         sliderWidth: data.sliderWidth,
         handelWidth: data.handelWidth,

@@ -178,7 +178,7 @@ export class View {
   }
 
   private forValueScaleClick(event: Event): void {
-    let element: HTMLSpanElement = event.target as HTMLSpanElement;
+    const element: HTMLSpanElement = event.target as HTMLSpanElement;
     this.dataRequestFromModel.needApplyValueFromScale = element.innerText;
   }
 
@@ -242,7 +242,7 @@ export class View {
   }
 
   private changeSliderValuesRange(event: Event): void {
-    let element: HTMLInputElement = event.target as HTMLInputElement;
+    const element: HTMLInputElement = event.target as HTMLInputElement;
     let target: string;
 
     if (element === this.sideMenu.sideMenuElements.minimumInput) {
