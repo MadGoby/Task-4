@@ -1,11 +1,14 @@
 import { BasicViewSettings } from '../../types';
 import {
+  HandleClickData,
   HandlesPosition,
   MovementEvent,
   MovementSettings,
   TestMouseEvent,
 } from './types';
+import autobind from 'autobind-decorator';
 
+@autobind
 export class Movement {
   readonly slider: HTMLDivElement;
 
@@ -21,6 +24,8 @@ export class Movement {
 
   public positions: HandlesPosition;
 
+  private dataForMovement: HandleClickData;
+
   constructor(settings: MovementSettings) {
     this.slider = settings.slider;
     this.from = settings.fromHandel;
@@ -33,80 +38,117 @@ export class Movement {
     } else {
       this.stepWidth = '';
     }
+    this.dataForMovement = {
+      distanceToCursor: 0,
+      target: this.from,
+    };
+  }
+
+  isToBiggerThanRightEdge(rightSliderEdge: number, newPosition: number): boolean {
+    return newPosition > rightSliderEdge && this.dataForMovement.target === this.to;
+  }
+
+  isFromBiggerThanRightEdge(rightSliderEdge: number, newPosition: number): boolean {
+    return newPosition > rightSliderEdge && this.dataForMovement.target === this.from;
+  }
+
+  isDouble(): boolean {
+    return this.settings.double;
+  }
+
+  isFromBiggerThanTo(newPosition: number): boolean {
+    return (this.dataForMovement.target === this.from)
+      && (newPosition > this.positions.to - this.dataForMovement.target.offsetWidth);
+  }
+
+  isToSmallerThanFrom(newPosition: number): boolean {
+    return (this.dataForMovement.target === this.to)
+      && (newPosition < this.positions.from + this.dataForMovement.target.offsetWidth);
+  }
+
+  isStepSetCorrectly(): boolean {
+    return (this.settings.step !== false) && (typeof this.stepWidth === 'string') && (Number(this.stepWidth) >= 1);
+  }
+
+  isStepWidthPassed(difference: number): boolean {
+    return Math.abs(difference) >= Number(this.stepWidth);
+  }
+
+  correctsImpossiblePosition(rightSliderEdge: number, newPosition: number): number {
+    let value: number = newPosition;
+
+    const correctDoublePositions = (): void => {
+      if (this.isFromBiggerThanTo(newPosition)) value = this.positions.to - this.dataForMovement.target.offsetWidth;
+      if (this.isToSmallerThanFrom(newPosition)) value = this.positions.from + this.dataForMovement.target.offsetWidth;
+      if (this.isToBiggerThanRightEdge(rightSliderEdge, newPosition)) value = rightSliderEdge;
+    };
+
+    if (newPosition < 0) value = 0;
+    if (this.isFromBiggerThanRightEdge(rightSliderEdge, newPosition)) value = rightSliderEdge;
+    if (this.isDouble()) {
+      correctDoublePositions();
+    }
+
+    return value;
+  }
+
+  applyNewPosition(newPosition: number): void {
+    this.dataForMovement.target.style.left = newPosition + 'px';
+    if (this.dataForMovement.target === this.from) {
+      this.positions.from = newPosition;
+    } else {
+      this.positions.to = newPosition;
+    }
+    this.interval.style.left = String(this.positions.from + (this.dataForMovement.target.offsetWidth / 2)) + 'px';
+    this.interval.style.right = String(
+      (this.slider.offsetWidth - this.positions.to) - (this.dataForMovement.target.offsetWidth / 2),
+    ) + 'px';
+  }
+
+  isEdgePosition(newPosition: number): boolean {
+    return (newPosition === 0) || (newPosition === this.slider.offsetWidth - this.dataForMovement.target.offsetWidth);
+  }
+
+  controlStepMovement(newPosition: number, targetPosition: number): void {
+    const difference = newPosition - targetPosition;
+
+    if (this.isEdgePosition(newPosition)) {
+      this.applyNewPosition(newPosition);
+    } else if (this.isStepWidthPassed(difference)) {
+      const stepPosition = targetPosition + Number(this.stepWidth) * (Math.trunc(difference / Number(this.stepWidth)));
+      this.applyNewPosition(stepPosition);
+    }
   }
 
   public handleDocumentMouseMove(event: MouseEvent | TestMouseEvent): void {
     const x = event.clientX;
     const y = event.clientY;
-    // const rightSliderEdge: number = this.slider.offsetWidth - target.offsetWidth;
-    // let newPosition: number;
-    // let targetPosition: number;
-    //
-    // if (target == this.from) ? targetPosition = that.positions.from : targetPosition = that.positions.to;
-    //
-    // if (that.settings.vertical) {
-    //   newPosition = that.slider.offsetWidth - (y - distanceToCursor - that.slider.getBoundingClientRect().top);
-    // } else {
-    //   newPosition = x - distanceToCursor - that.slider.getBoundingClientRect().left;
-    // }
-    //
-    // function isToBiggerThanRightEdge(): boolean {
-    //   return newPosition > rightSliderEdge && target == that.to;
-    // }
-    // function isFromBiggerThanRightEdge(): boolean {
-    //   return newPosition > rightSliderEdge && target == that.from;
-    // }
-    // function isDouble(): boolean {
-    //   return that.settings.double;
-    // }
-    // function isFromBiggerThanTo(): boolean {
-    //   return target == that.from && newPosition > that.positions.to - target.offsetWidth;
-    // }
-    // function isToSmallerThanFrom(): boolean {
-    //   return target == that.to && newPosition < that.positions.from + target.offsetWidth;
-    // }
-    // function isStepSetCorrectly(): boolean {
-    //   return that.settings.step !== false && typeof that.stepWidth === 'string' && +that.stepWidth >= 1;
-    // }
-    // function isStepWidthPassed(difference: number): boolean {
-    //   return Math.abs(difference) >= +that.stepWidth;
-    // }
-    // function correctsImpossiblePosition(): void {
-    //   if (newPosition < 0) newPosition = 0;
-    //   if (isFromBiggerThanRightEdge()) newPosition = rightSliderEdge;
-    //   if (isDouble()) {
-    //     if (isFromBiggerThanTo()) newPosition = that.positions.to - target.offsetWidth;
-    //     if (isToSmallerThanFrom()) newPosition = that.positions.from + target.offsetWidth;
-    //     if (isToBiggerThanRightEdge()) newPosition = rightSliderEdge;
-    //   }
-    // }
-    //
-    // correctsImpossiblePosition();
-    //
-    // function applyNewPosition(): void {
-    //   target.style.left = newPosition + 'px';
-    //   target == that.from ? that.positions.from = newPosition : that.positions.to = newPosition;
-    //   that.interval.style.left = String(that.positions.from + (target.offsetWidth / 2)) + 'px';
-    //   that.interval.style.right = String(
-    //   (that.slider.offsetWidth - that.positions.to) - (target.offsetWidth / 2)
-    //   ) + 'px';
-    // }
-    //
-    // if (isStepSetCorrectly()) {
-    //   if (newPosition == 0 || newPosition == that.slider.offsetWidth - target.offsetWidth) {
-    //     applyNewPosition();
-    //   } else {
-    //     let difference = newPosition - targetPosition;
-    //     if (isStepWidthPassed(difference)) {
-    //       if (Math.abs(difference) > +that.stepWidth) {
-    //         newPosition = targetPosition + +that.stepWidth * (Math.trunc(difference / +that.stepWidth));
-    //         applyNewPosition();
-    //       }
-    //     }
-    //   }
-    // } else {
-    //   applyNewPosition();
-    // }
+    const rightSliderEdge: number = this.slider.offsetWidth - this.dataForMovement.target.offsetWidth;
+    let targetPosition: number;
+
+    if (this.dataForMovement.target === this.from) {
+      targetPosition = this.positions.from;
+    } else {
+      targetPosition = this.positions.to;
+    }
+
+    let newPosition: number;
+
+    if (this.settings.vertical) {
+      newPosition = this.slider.offsetWidth - (
+        y - this.dataForMovement.distanceToCursor - this.slider.getBoundingClientRect().top
+      );
+    } else {
+      newPosition = x - this.dataForMovement.distanceToCursor - this.slider.getBoundingClientRect().left;
+    }
+
+    newPosition = this.correctsImpossiblePosition(rightSliderEdge, newPosition);
+
+    if (this.isStepSetCorrectly()) {
+      this.controlStepMovement(newPosition, targetPosition);
+    } else {
+      this.applyNewPosition(newPosition);
+    }
   }
 
   public handelListener(setting: MovementEvent): void {
@@ -141,6 +183,11 @@ export class Movement {
         clientY: test.y,
       });
     }
+
+    this.dataForMovement = {
+      target: target,
+      distanceToCursor: distanceToCursor,
+    };
 
     this.bindEventListeners();
   }

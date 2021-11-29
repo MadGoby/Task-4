@@ -34,10 +34,16 @@ type MovementEvent = {
   },
 };
 
+type HandleClickData = {
+  target: HTMLSpanElement,
+  distanceToCursor: number,
+};
+
 export {
   EventInfo,
   HandlesPosition,
   MovementSettings,
   TestMouseEvent,
   MovementEvent,
+  HandleClickData,
 };
