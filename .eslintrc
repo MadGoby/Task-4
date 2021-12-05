@@ -18,27 +18,22 @@
   "globals": {
     "autobind": "readonly"
   },
-  "overrides": [
-    {
-      "files": ["./src/**/*.ts"],
-      "parser": "@typescript-eslint/parser",
-      "parserOptions": {
-        "ecmaVersion": 2018,
-        "sourceType": "module",
-        "project": "./tsconfig.eslint.json"
-      },
-      "rules": {
-        "linebreak-style": ["error", "windows"],
-        "max-len": ["error", { "code":  121}],
-        "fsd/hof-name-prefix": "error",
-        "fsd/no-heavy-constructor": "error",
-        "fsd/jq-cache-dom-elements": "error",
-        "fsd/jq-use-js-prefix-in-selector": "error",
-        "fsd/no-function-declaration-in-event-listener": "error",
-        "fsd/split-conditionals": "error",
-        "no-undef": "off",
-        "import/prefer-default-export": "off"
-      }
-    }
-  ]
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": 2018,
+    "sourceType": "module",
+    "project": "./tsconfig.json"
+  },
+  "rules": {
+    "linebreak-style": ["error", "windows"],
+    "max-len": ["error", { "code":  121}],
+    "fsd/hof-name-prefix": "error",
+    "fsd/no-heavy-constructor": "error",
+    "fsd/jq-cache-dom-elements": "error",
+    "fsd/jq-use-js-prefix-in-selector": "error",
+    "fsd/no-function-declaration-in-event-listener": "error",
+    "fsd/split-conditionals": "error",
+    "no-undef": "off",
+    "import/prefer-default-export": "off"
+  }
 }

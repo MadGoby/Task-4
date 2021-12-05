@@ -6,39 +6,39 @@ const HTMLWebpackPlugin = require('html-webpack-plugin');
 module.exports = {
   mode: 'development',
   entry: {
-    slider: './src/jquery.ui.customSlider.ts',
-    index: './src/pages/index.ts'
+    slider: './src/gobySlider.ts',
+    index: './src/pages/index.ts',
   },
   output: {
     filename: '[name].js',
-    path: path.resolve(__dirname,'./dist')
+    path: path.resolve(__dirname, './dist'),
   },
   resolve: {
-    extensions: ['.js', '.ts', '.json']
+    extensions: ['.js', '.ts', '.json'],
   },
-  devtool: "inline-source-map",
+  devtool: 'inline-source-map',
   devServer: {
     static: {
-      directory: path.join(__dirname, './dist/index.html')
+      directory: path.join(__dirname, './dist/index.html'),
     },
     compress: true,
-    port: 9000
+    port: 9000,
   },
   module: {
     rules: [
       {
         test: /\.css$/,
-        use: [MiniCssExtractPlugin.loader, 'css-loader']
+        use: [MiniCssExtractPlugin.loader, 'css-loader'],
       },
       {
         test: /\.ts$/,
-        use: 'ts-loader'
+        use: 'ts-loader',
       },
     ],
   },
   plugins: [
     new MiniCssExtractPlugin({
-      filename: '[name].css'
+      filename: '[name].css',
     }),
     new HTMLWebpackPlugin({
       template: './src/pages/index.html',
@@ -46,14 +46,14 @@ module.exports = {
     }),
     new webpack.ProvidePlugin({
       autoBind: 'auto-bind',
-      $: "jquery",
-      jQuery: "jquery",
-      "window.jQuery": "jquery'",
-      "window.$": "jquery",
-      "window.autobind": "autobind-decorator",
-    })
+      $: 'jquery',
+      jQuery: 'jquery',
+      'window.jQuery': "jquery'",
+      'window.$': 'jquery',
+      'window.autobind': 'autobind-decorator',
+    }),
   ],
   optimization: {
-    runtimeChunk: 'single'
+    runtimeChunk: 'single',
   },
 };
