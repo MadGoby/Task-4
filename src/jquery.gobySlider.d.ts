@@ -1,3 +1,3 @@
 interface JQuery {
-  gobySlider: any;
+  gobySlider: Function;
 }

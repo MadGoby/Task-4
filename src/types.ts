@@ -7,8 +7,10 @@ type SliderOptions = {
   'vertical': boolean;
   'step': boolean | number;
   'valueScale': boolean;
-  'from'?: string;
-  'to'?: string;
+  fromPosition?: string;
+  toPosition?: string;
+  from: string;
+  to: string;
 };
 
 export { SliderOptions };
