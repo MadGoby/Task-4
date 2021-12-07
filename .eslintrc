@@ -34,6 +34,7 @@
     "fsd/no-function-declaration-in-event-listener": "error",
     "fsd/split-conditionals": "error",
     "no-undef": "off",
-    "import/prefer-default-export": "off"
+    "import/prefer-default-export": "off",
+    "no-param-reassign": 0
   }
 }

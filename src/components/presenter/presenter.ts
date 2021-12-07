@@ -1,4 +1,4 @@
-import { DataForValueScale } from '../model/types';
+import { CalculationData, DataForValueScale } from '../model/types';
 import { Model } from '../model/model';
 import { DataForAdjustPosition } from '../view/components/handels/types';
 import { RefreshIntervalPositions } from '../view/components/selectedInterval/types';
@@ -18,16 +18,14 @@ export class Presenter {
     const { view, model } = this;
 
     view.movement.positions = new Proxy(view.movement.positions, {
-      set(target, prop, val) {
-        const positions = target;
-
-        if (prop === 'from') positions.from = val;
-        if (prop === 'to') positions.to = val;
-        model.calculateValuesByPosition({
+      set(target, prop: 'from' | 'to', val) {
+        target[prop] = val;
+        const settings: CalculationData = {
           position: String(val),
-          target: String(prop),
+          target: prop,
           sliderWidth: view.slider.slider.offsetWidth - view.handles.fromHandel.offsetWidth,
-        });
+        };
+        model.calculateValuesByPosition(settings);
         return true;
       },
     });
