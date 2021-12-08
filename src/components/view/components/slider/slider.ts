@@ -7,8 +7,8 @@ export class Slider {
 
   constructor() {
     this.slider = document.createElement('div');
-    this.sliderWrapper = document.createElement('div');
     this.slider.classList.add('cs-slider');
+    this.sliderWrapper = document.createElement('div');
     this.sliderWrapper.classList.add('cs-slider-wrapper');
     this.sliderWrapper.append(this.slider);
   }
@@ -27,23 +27,28 @@ export class Slider {
     );
   }
 
-  private isNeedToMakeHorizontally(isVertical: boolean): boolean {
+  private checkIsNeedToMakeHorizontally(isVertical: boolean): boolean {
     return ((this.slider.classList.contains('cs-slider_vertical')) && (!isVertical));
   }
 
-  private isNeedToMakeVertical(isVertical: boolean): boolean {
+  private checkIsNeedToMakeVertical(isVertical: boolean): boolean {
     return ((!this.slider.classList.contains('cs-slider_vertical')) && (isVertical));
   }
 
   public changePlane(isVertical: boolean): void {
-    if (this.isNeedToMakeVertical(isVertical)) {
-      this.slider.classList.toggle('cs-slider_vertical');
-      this.slider.style.top = `${this.slider.offsetWidth / 2}px`;
-      this.sliderWrapper.style.height = `${this.slider.offsetWidth}px`;
-    } else if (this.isNeedToMakeHorizontally(isVertical)) {
-      this.slider.classList.toggle('cs-slider_vertical');
-      this.slider.style.top = '';
-      this.sliderWrapper.style.height = '';
+    switch (true) {
+      case this.checkIsNeedToMakeVertical(isVertical):
+        this.slider.classList.toggle('cs-slider_vertical');
+        this.slider.style.top = `${this.slider.offsetWidth / 2}px`;
+        this.sliderWrapper.style.height = `${this.slider.offsetWidth}px`;
+        break;
+      case this.checkIsNeedToMakeHorizontally(isVertical):
+        this.slider.classList.toggle('cs-slider_vertical');
+        this.slider.style.top = '';
+        this.sliderWrapper.style.height = '';
+        break;
+      default:
+        break;
     }
   }
 }

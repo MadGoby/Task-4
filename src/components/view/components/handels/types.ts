@@ -1,7 +1,7 @@
 import { HandlesPosition } from '../movement/types';
 
 type DataForAdjustPosition = {
-  target: string;
+  target: 'from' | 'to';
   value: string;
   totalValues: number;
   minValue: string;

@@ -44,33 +44,33 @@ export class Movement {
     };
   }
 
-  isToBiggerThanRightEdge(rightSliderEdge: number, newPosition: number): boolean {
+  checkIsToBiggerThanRightEdge(rightSliderEdge: number, newPosition: number): boolean {
     return newPosition > rightSliderEdge && this.dataForMovement.target === this.to;
   }
 
-  isFromBiggerThanRightEdge(rightSliderEdge: number, newPosition: number): boolean {
+  checkIsFromBiggerThanRightEdge(rightSliderEdge: number, newPosition: number): boolean {
     return newPosition > rightSliderEdge && this.dataForMovement.target === this.from;
   }
 
-  isDouble(): boolean {
+  checkIsDouble(): boolean {
     return this.settings.double;
   }
 
-  isFromBiggerThanTo(newPosition: number): boolean {
+  checkIsFromBiggerThanTo(newPosition: number): boolean {
     return (this.dataForMovement.target === this.from)
       && (newPosition > this.positions.to - this.dataForMovement.target.offsetWidth);
   }
 
-  isToSmallerThanFrom(newPosition: number): boolean {
+  checkIsToSmallerThanFrom(newPosition: number): boolean {
     return (this.dataForMovement.target === this.to)
       && (newPosition < this.positions.from + this.dataForMovement.target.offsetWidth);
   }
 
-  isStepSetCorrectly(): boolean {
+  checkIsStepSetCorrectly(): boolean {
     return (this.settings.step !== false) && (typeof this.stepWidth === 'string') && (Number(this.stepWidth) >= 1);
   }
 
-  isStepWidthPassed(difference: number): boolean {
+  checkIsStepWidthPassed(difference: number): boolean {
     return Math.abs(difference) >= Number(this.stepWidth);
   }
 
@@ -78,14 +78,16 @@ export class Movement {
     let value: number = newPosition;
 
     const correctDoublePositions = (): void => {
-      if (this.isFromBiggerThanTo(newPosition)) value = this.positions.to - this.dataForMovement.target.offsetWidth;
-      if (this.isToSmallerThanFrom(newPosition)) value = this.positions.from + this.dataForMovement.target.offsetWidth;
-      if (this.isToBiggerThanRightEdge(rightSliderEdge, newPosition)) value = rightSliderEdge;
+      if (this.checkIsFromBiggerThanTo(newPosition)) value = this.positions.to - this.dataForMovement.target.offsetWidth;
+      if (this.checkIsToSmallerThanFrom(newPosition)) {
+        value = this.positions.from + this.dataForMovement.target.offsetWidth;
+      }
+      if (this.checkIsToBiggerThanRightEdge(rightSliderEdge, newPosition)) value = rightSliderEdge;
     };
 
     if (newPosition < 0) value = 0;
-    if (this.isFromBiggerThanRightEdge(rightSliderEdge, newPosition)) value = rightSliderEdge;
-    if (this.isDouble()) {
+    if (this.checkIsFromBiggerThanRightEdge(rightSliderEdge, newPosition)) value = rightSliderEdge;
+    if (this.checkIsDouble()) {
       correctDoublePositions();
     }
 

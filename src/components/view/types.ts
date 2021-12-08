@@ -17,7 +17,7 @@ type TargetsForViewUpdate = {
 
 type RefreshData = {
   value: string;
-  target: string;
+  target: 'from' | 'to' | 'min' | 'max';
 };
 
 type DataRequestFromModel = {

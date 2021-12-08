@@ -69,28 +69,24 @@ export class Handles {
       element.classList.add(cssClass);
     });
 
-    if (name && value) element.setAttribute(name, value);
+    const isAssignValuesNeed = name && value;
+    if (isAssignValuesNeed) element.setAttribute(name, value);
 
     return element;
   }
 
   public refreshValues(data: RefreshData): void {
-    if (data.target === 'from') this.fromValue.innerText = data.value;
-    if (data.target === 'to') this.toValue.innerText = data.value;
+    const target: 'fromValue' | 'toValue' = `${data.target}Value`;
+    this[target].innerText = data.value;
   }
 
   public adjustPositions(dataToRefresh: DataForAdjustPosition, sliderWidth: number): RefreshIntervalPositions {
-    let target: HTMLSpanElement;
+    const handelLink: 'fromHandel' | 'toHandel' = `${dataToRefresh.target}Handel`;
+    const target = this[handelLink];
 
     function calculateNewPosition(): string {
       return String(((sliderWidth - target.offsetWidth) / dataToRefresh.totalValues)
-        * (Number(dataToRefresh.value) - +dataToRefresh.minValue));
-    }
-
-    if (dataToRefresh.target === 'from') {
-      target = this.fromHandel;
-    } else {
-      target = this.toHandel;
+        * (Number(dataToRefresh.value) - Number(dataToRefresh.minValue)));
     }
 
     const newPosition: string = calculateNewPosition();
@@ -104,54 +100,65 @@ export class Handles {
     };
   }
 
-  private isNeedToMakeVertical(isVertical: boolean): boolean {
+  private checkIsNeedToMakeVertical(isVertical: boolean): boolean {
     return (!this.fromValue.classList.contains('cs-slider__handel-value_vertical'))
       && (!this.toValue.classList.contains('cs-slider__handel-value_vertical')) && (isVertical);
   }
 
-  private isNeedToMakeHorizontally(isVertical: boolean): boolean {
+  private checkIsNeedToMakeHorizontally(isVertical: boolean): boolean {
     return (this.fromValue.classList.contains('cs-slider__handel-value_vertical'))
       && (this.toValue.classList.contains('cs-slider__handel-value_vertical')) && (!isVertical);
   }
 
-  private isToNeedHide(isDouble: boolean): boolean {
+  private checkIsToNeedHide(isDouble: boolean): boolean {
     return (!isDouble) && (this.toHandel.style.display === 'inline-block');
   }
 
-  private isToNeedShow(isDouble: boolean): boolean {
+  private checkIsToNeedShow(isDouble: boolean): boolean {
     return (isDouble) && (this.toHandel.style.display === 'none');
   }
 
   public changePlane(isVertical: boolean): void {
-    function classChanger(from: HTMLSpanElement, to: HTMLSpanElement) {
+    function changeVerticalClass(from: HTMLSpanElement, to: HTMLSpanElement) {
       from.classList.toggle('cs-slider__handel-value_vertical');
       to.classList.toggle('cs-slider__handel-value_vertical');
     }
 
-    if (this.isNeedToMakeVertical(isVertical)) {
-      classChanger(this.fromValue, this.toValue);
-    } else if (this.isNeedToMakeHorizontally(isVertical)) {
-      classChanger(this.fromValue, this.toValue);
+    switch (true) {
+      case this.checkIsNeedToMakeVertical(isVertical):
+        changeVerticalClass(this.fromValue, this.toValue);
+        break;
+      case this.checkIsNeedToMakeHorizontally(isVertical):
+        changeVerticalClass(this.fromValue, this.toValue);
+        break;
+      default:
+        break;
+    }
+  }
+
+  private controlHandlesPosition(settings: HandleHideData) {
+    const { sliderWidth, positions } = settings;
+
+    const newPosition: number = sliderWidth - this.toHandel.offsetWidth;
+    this.toHandel.style.left = `${newPosition}px`;
+    positions.to = newPosition;
+    const isWrongFromPosition = positions.from > sliderWidth - this.toHandel.offsetWidth - this.fromHandel.offsetWidth;
+
+    if (isWrongFromPosition) {
+      const extremeFromPosition = String(sliderWidth - this.toHandel.offsetWidth - this.fromHandel.offsetWidth);
+      this.fromHandel.style.left = `${extremeFromPosition}px`;
+      positions.from = Number(extremeFromPosition);
     }
   }
 
   public controlHandlesDisplay(settings: HandleHideData): void {
-    const { isDouble, sliderWidth, positions } = settings;
+    const { isDouble } = settings;
 
-    if (this.isToNeedHide(isDouble)) {
+    if (this.checkIsToNeedHide(isDouble)) {
       this.toHandel.style.display = 'none';
-    } else if (this.isToNeedShow(isDouble)) {
-      const newPosition: number = sliderWidth - this.toHandel.offsetWidth;
-
+    } else if (this.checkIsToNeedShow(isDouble)) {
       this.toHandel.style.display = 'inline-block';
-      this.toHandel.style.left = `${newPosition}px`;
-      positions.to = newPosition;
-
-      if (positions.from > sliderWidth - this.toHandel.offsetWidth - this.fromHandel.offsetWidth) {
-        const extremeFromPosition = String(sliderWidth - this.toHandel.offsetWidth - this.fromHandel.offsetWidth);
-        this.fromHandel.style.left = `${extremeFromPosition}px`;
-        positions.from = sliderWidth - this.toHandel.offsetWidth - this.fromHandel.offsetWidth;
-      }
+      this.controlHandlesPosition(settings);
     }
   }
 

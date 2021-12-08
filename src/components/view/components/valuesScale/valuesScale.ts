@@ -15,20 +15,18 @@ export class ValuesScale implements IValuesScale {
   readonly 80: HTMLSpanElement;
 
   constructor() {
-    this.minValue = ValuesScale.createElement(['cs-slider__value', 'cs-slider__value_min']);
-    this.maxValue = ValuesScale.createElement(['cs-slider__value', 'cs-slider__value_max']);
-    this[20] = ValuesScale.createElement(['cs-slider__value', 'cs-slider__value_20']);
-    this[40] = ValuesScale.createElement(['cs-slider__value', 'cs-slider__value_40']);
-    this[60] = ValuesScale.createElement(['cs-slider__value', 'cs-slider__value_60']);
-    this[80] = ValuesScale.createElement(['cs-slider__value', 'cs-slider__value_80']);
+    this.minValue = ValuesScale.createElement('min');
+    this.maxValue = ValuesScale.createElement('max');
+    this[20] = ValuesScale.createElement('20');
+    this[40] = ValuesScale.createElement('40');
+    this[60] = ValuesScale.createElement('60');
+    this[80] = ValuesScale.createElement('80');
   }
 
-  private static createElement(cssClasses: Array<string>): HTMLSpanElement {
+  private static createElement(classModifier: string): HTMLSpanElement {
     const element: HTMLSpanElement = document.createElement('span');
 
-    cssClasses.forEach((cssClass: string) => {
-      element.classList.add(cssClass);
-    });
+    element.classList.add('cs-slider__value', `cs-slider__value_${classModifier}`);
 
     return element;
   }
@@ -45,15 +43,22 @@ export class ValuesScale implements IValuesScale {
   }
 
   public centersValues(sliderWidth: number, handelWidth: number): void {
-    this.minValue.style.left = `${0 - ((this.minValue.offsetWidth - handelWidth) / 2)}px`;
-    this.maxValue.style.right = `${0 - ((this.maxValue.offsetWidth - handelWidth) / 2)}px`;
-    this[20].style.left = `${sliderWidth * 0.2 - ((this[20].offsetWidth - handelWidth) / 2)}px`;
-    this[40].style.left = `${sliderWidth * 0.4 - ((this[40].offsetWidth - handelWidth) / 2)}px`;
-    this[60].style.left = `${sliderWidth * 0.6 - ((this[60].offsetWidth - handelWidth) / 2)}px`;
-    this[80].style.left = `${sliderWidth * 0.8 - ((this[80].offsetWidth - handelWidth) / 2)}px`;
+    const calculateExtremeValuePosition = (element: HTMLSpanElement): string => `${
+      0 - ((element.offsetWidth - handelWidth) / 2)
+    }px`;
+    const calculateValuePosition = (coefficient: number, element: HTMLSpanElement): string => `${
+      sliderWidth * coefficient - ((element.offsetWidth - handelWidth) / 2)
+    }px`;
+
+    this.minValue.style.left = calculateExtremeValuePosition(this.minValue);
+    this.maxValue.style.right = calculateExtremeValuePosition(this.maxValue);
+    this[20].style.left = calculateValuePosition(0.2, this[20]);
+    this[40].style.left = calculateValuePosition(0.4, this[40]);
+    this[60].style.left = calculateValuePosition(0.6, this[60]);
+    this[80].style.left = calculateValuePosition(0.8, this[80]);
   }
 
-  private isNeedToMakeHorizontally(isVertical: boolean): boolean {
+  private checkIsNeedToMakeHorizontally(isVertical: boolean): boolean {
     return (this.minValue.classList.contains('cs-slider__value_vertical'))
       && (this.maxValue.classList.contains('cs-slider__value_vertical'))
       && (this[20].classList.contains('cs-slider__value_vertical'))
@@ -63,7 +68,7 @@ export class ValuesScale implements IValuesScale {
       && (!isVertical);
   }
 
-  private isNeedToMakeVertical(isVertical: boolean): boolean {
+  private checkIsNeedToMakeVertical(isVertical: boolean): boolean {
     return (!this.minValue.classList.contains('cs-slider__value_vertical'))
       && (!this.maxValue.classList.contains('cs-slider__value_vertical'))
       && (!this[20].classList.contains('cs-slider__value_vertical'))
@@ -83,26 +88,26 @@ export class ValuesScale implements IValuesScale {
       this[80].classList.toggle('cs-slider__value_vertical');
     };
 
-    const isNeedToChangeClasses = this.isNeedToMakeVertical(isVertical) || this.isNeedToMakeHorizontally(isVertical);
+    const isNeedToChangeClasses = this.checkIsNeedToMakeVertical(isVertical)
+      || this.checkIsNeedToMakeHorizontally(isVertical);
 
     if (isNeedToChangeClasses) changeClasses();
   }
 
   public hideValueScale(isValueScale: boolean): void {
+    const changeDisplay = (value: string): void => {
+      this.minValue.style.display = value;
+      this.maxValue.style.display = value;
+      this[20].style.display = value;
+      this[40].style.display = value;
+      this[60].style.display = value;
+      this[80].style.display = value;
+    };
+
     if (!isValueScale) {
-      this.minValue.style.display = 'none';
-      this.maxValue.style.display = 'none';
-      this[20].style.display = 'none';
-      this[40].style.display = 'none';
-      this[60].style.display = 'none';
-      this[80].style.display = 'none';
+      changeDisplay('none');
     } else {
-      this.minValue.style.display = 'inline-block';
-      this.maxValue.style.display = 'inline-block';
-      this[20].style.display = 'inline-block';
-      this[40].style.display = 'inline-block';
-      this[60].style.display = 'inline-block';
-      this[80].style.display = 'inline-block';
+      changeDisplay('inline-block');
     }
   }
 }

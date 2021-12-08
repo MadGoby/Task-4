@@ -18,22 +18,27 @@ export class SelectedInterval {
     }
   }
 
-  private isIntervalNeedHide(isDouble: boolean): boolean {
+  private checkIsIntervalNeedHide(isDouble: boolean): boolean {
     return (!isDouble) && (this.interval.style.display === 'block');
   }
 
-  private isIntervalNeedShow(isDouble: boolean): boolean {
+  private checkIsIntervalNeedShow(isDouble: boolean): boolean {
     return (isDouble) && (this.interval.style.display === 'none');
   }
 
   public hideSelectedInterval(settings: IntervalDisplayData): void {
     const { isDouble, handleWidth } = settings;
 
-    if (this.isIntervalNeedHide(isDouble)) {
-      this.interval.style.display = 'none';
-    } else if (this.isIntervalNeedShow(isDouble)) {
-      this.interval.style.display = 'block';
-      this.interval.style.right = `${handleWidth / 2}px`;
+    switch (true) {
+      case this.checkIsIntervalNeedHide(isDouble):
+        this.interval.style.display = 'none';
+        break;
+      case this.checkIsIntervalNeedShow(isDouble):
+        this.interval.style.display = 'block';
+        this.interval.style.right = `${handleWidth / 2}px`;
+        break;
+      default:
+        break;
     }
   }
 }
