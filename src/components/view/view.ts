@@ -100,7 +100,7 @@ export class View {
   private turnOnMenuToggles(targets: TargetsForViewUpdate): void {
     if (targets.vertical) this.sideMenu.sideMenuElements.planeToggle!.checked = true;
     if (targets.double) this.sideMenu.sideMenuElements.toToggle!.checked = true;
-    if (targets.handlesValues) this.sideMenu.sideMenuElements.handelValuesToggle!.checked = true;
+    if (targets.handlesValues) this.sideMenu.sideMenuElements.handleValuesToggle!.checked = true;
     if (targets.valueScale) this.sideMenu.sideMenuElements.valueScaleToggle!.checked = true;
   }
 
@@ -129,60 +129,52 @@ export class View {
     }
   }
 
-  public bindMovementOnHandles(): void {
-    this.handles.fromHandel.onmousedown = (event): void => {
-      if (event.target) {
-        this.movement.handelListener({
-          eventInfo: {
-            target: event.target,
-            x: event.clientX,
-            y: event.clientY,
-          },
-        });
-      }
-    };
-    this.handles.toHandel.onmousedown = (event): void => {
-      if (event.target) {
-        this.movement.handelListener({
-          eventInfo: {
-            target: event.target,
-            x: event.clientX,
-            y: event.clientY,
-          },
-        });
-      }
-    };
-  }
-
   public refreshAllComponents(settings: RefreshData): void {
     this.handles.refreshValues(settings);
     if (this.basicSettings['side-menu']) this.sideMenu.refreshValues(settings);
   }
 
   public bindEventListeners(): void {
-    this.valuesScale.minValue.addEventListener('click', this.forValueScaleClick);
-    this.valuesScale.maxValue.addEventListener('click', this.forValueScaleClick);
-    this.valuesScale[20].addEventListener('click', this.forValueScaleClick);
-    this.valuesScale[40].addEventListener('click', this.forValueScaleClick);
-    this.valuesScale[60].addEventListener('click', this.forValueScaleClick);
-    this.valuesScale[80].addEventListener('click', this.forValueScaleClick);
-    this.sideMenu.sideMenuElements.toToggle!.addEventListener('change', this.toToggleChange);
-    this.sideMenu.sideMenuElements.planeToggle!.addEventListener('change', this.planeChange);
-    this.sideMenu.sideMenuElements.valueScaleToggle!.addEventListener('change', this.valueScaleChange);
-    this.sideMenu.sideMenuElements.handelValuesToggle!.addEventListener('change', this.handleValuesChanger);
-    this.sideMenu.sideMenuElements.fromInput!.addEventListener('change', this.sendNewInputValue);
-    this.sideMenu.sideMenuElements.toInput!.addEventListener('change', this.sendNewInputValue);
-    this.sideMenu.sideMenuElements.minimumInput!.addEventListener('change', this.changeSliderValuesRange);
-    this.sideMenu.sideMenuElements.maximumInput!.addEventListener('change', this.changeSliderValuesRange);
-    this.sideMenu.sideMenuElements.stepInput!.addEventListener('change', this.sendNewStep);
+    Object.values(this.valuesScale).forEach((scaleValue: HTMLSpanElement): void => {
+      scaleValue.addEventListener('click', this.handleScaleValueClick);
+    });
+    this.sideMenu.sideMenuElements.toToggle!.addEventListener('change', this.handleToToggleChange);
+    this.sideMenu.sideMenuElements.planeToggle!.addEventListener('change', this.handlePlaneToggleChange);
+    this.sideMenu.sideMenuElements.valueScaleToggle!.addEventListener('change', this.handleValueScaleToggleChange);
+    this.sideMenu.sideMenuElements.handleValuesToggle!.addEventListener('change', this.handleHandleValuesChange);
+    [this.sideMenu.sideMenuElements.fromInput, this.sideMenu.sideMenuElements.toInput].forEach(
+      (valueInput: HTMLInputElement | undefined): void => {
+        valueInput!.addEventListener('change', this.handleValueInputChange);
+      },
+    );
+    [this.sideMenu.sideMenuElements.minimumInput, this.sideMenu.sideMenuElements.maximumInput].forEach(
+      (rangeInput: HTMLInputElement | undefined): void => {
+        rangeInput!.addEventListener('change', this.handleRangeInputChange);
+      },
+    );
+    this.sideMenu.sideMenuElements.stepInput!.addEventListener('change', this.handleStepInputChange);
+    [this.handles.fromHandel, this.handles.toHandel].forEach((handle: HTMLSpanElement):void => {
+      handle.addEventListener('mousedown', this.handleHandleClick);
+    });
   }
 
-  private forValueScaleClick(event: Event): void {
+  private handleHandleClick(event: MouseEvent): void {
+    const target: HTMLSpanElement = event.target as HTMLSpanElement;
+    this.movement.handleListener({
+      eventInfo: {
+        target,
+        x: event.clientX,
+        y: event.clientY,
+      },
+    });
+  }
+
+  private handleScaleValueClick(event: Event): void {
     const element: HTMLSpanElement = event.target as HTMLSpanElement;
     this.dataRequestFromModel.needApplyValueFromScale = element.innerText;
   }
 
-  private toToggleChange(event: Event): void {
+  private handleToToggleChange(event: Event): void {
     const element: HTMLInputElement = event.target as HTMLInputElement;
 
     this.basicSettings.double = element.checked;
@@ -198,7 +190,7 @@ export class View {
     this.sideMenu.hideToValues(this.basicSettings.double);
   }
 
-  private planeChange(event: Event): void {
+  private handlePlaneToggleChange(event: Event): void {
     const element: HTMLInputElement = event.target as HTMLInputElement;
 
     this.basicSettings.vertical = element.checked;
@@ -207,21 +199,21 @@ export class View {
     this.valuesScale.changePlane(this.basicSettings.vertical);
   }
 
-  private valueScaleChange(event: Event): void {
+  private handleValueScaleToggleChange(event: Event): void {
     const element: HTMLInputElement = event.target as HTMLInputElement;
 
     this.basicSettings.valueScale = element.checked;
     this.valuesScale.hideValueScale(this.basicSettings.valueScale);
   }
 
-  private handleValuesChanger(event: Event): void {
+  private handleHandleValuesChange(event: Event): void {
     const element: HTMLInputElement = event.target as HTMLInputElement;
 
     this.basicSettings.handlesValues = element.checked;
     this.handles.hideHandelValues(this.basicSettings.handlesValues);
   }
 
-  private sendNewInputValue(event: Event): void {
+  private handleValueInputChange(event: Event): void {
     const element: HTMLInputElement = event.target as HTMLInputElement;
     let target: string;
 
@@ -234,14 +226,14 @@ export class View {
     this.dataRequestFromModel.needApplyNewValue = { name: target, value: element.value };
   }
 
-  private sendNewStep(event: Event): void {
+  private handleStepInputChange(event: Event): void {
     const element: HTMLInputElement = event.target as HTMLInputElement;
 
     this.basicSettings.step = Number(element.value);
     this.dataRequestFromModel.needStepWidth = true;
   }
 
-  private changeSliderValuesRange(event: Event): void {
+  private handleRangeInputChange(event: Event): void {
     const element: HTMLInputElement = event.target as HTMLInputElement;
     let target: string;
 

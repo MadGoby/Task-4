@@ -77,7 +77,7 @@ export class SideMenu {
       attr: { name: 'style', value: 'display: block' },
     }) as HTMLLabelElement;
 
-    this.sideMenuElements.handelValuesWrapper = SideMenu.createElement({
+    this.sideMenuElements.handleValuesWrapper = SideMenu.createElement({
       name: 'div',
       cssClasses: ['cs-side-menu__item-wrapper'],
     }) as HTMLDivElement;
@@ -93,7 +93,7 @@ export class SideMenu {
     }) as HTMLDivElement;
 
     const labelElement: Node = this.sideMenuElements.toToggleWrapper.cloneNode();
-    this.sideMenuElements.handelValuesToggleWrapper = labelElement.cloneNode() as HTMLLabelElement;
+    this.sideMenuElements.handleValuesToggleWrapper = labelElement.cloneNode() as HTMLLabelElement;
     this.sideMenuElements.valueScaleToggleWrapper = labelElement.cloneNode() as HTMLLabelElement;
     this.sideMenuElements.planeToggleWrapper = labelElement.cloneNode() as HTMLLabelElement;
   }
@@ -144,7 +144,7 @@ export class SideMenu {
       attr: { name: 'type', value: 'checkbox' },
     }) as HTMLInputElement;
     const inputElement: Node = this.sideMenuElements!.toToggleWrapper!.cloneNode();
-    this.sideMenuElements.handelValuesToggle = inputElement.cloneNode() as HTMLInputElement;
+    this.sideMenuElements.handleValuesToggle = inputElement.cloneNode() as HTMLInputElement;
     this.sideMenuElements.valueScaleToggle = inputElement.cloneNode() as HTMLInputElement;
 
     this.sideMenuElements.toToggleBorder = SideMenu.createElement({
@@ -152,7 +152,7 @@ export class SideMenu {
       cssClasses: ['cs-side-menu__item-toggle-border'],
     }) as HTMLSpanElement;
 
-    this.sideMenuElements.handelValuesToggleBorder = SideMenu.createElement({
+    this.sideMenuElements.handleValuesToggleBorder = SideMenu.createElement({
       name: 'span',
       cssClasses: ['cs-side-menu__item-toggle-border'],
     }) as HTMLSpanElement;
@@ -175,7 +175,7 @@ export class SideMenu {
   }
 
   private createObjectives(): void {
-    this.sideMenuElements.handelValuesObjective = SideMenu.createElement({
+    this.sideMenuElements.handleValuesObjective = SideMenu.createElement({
       name: 'span',
       cssClasses: ['cs-side-menu__item-objective'],
       text: 'Включить значения под ползунками: ',
@@ -256,13 +256,13 @@ export class SideMenu {
   }
 
   private wrapsHandlesValuesToggle(): void {
-    this.sideMenuElements.handelValuesToggleWrapper!.append(
-      this.sideMenuElements.handelValuesToggle!,
-      this.sideMenuElements.handelValuesToggleBorder!,
+    this.sideMenuElements.handleValuesToggleWrapper!.append(
+      this.sideMenuElements.handleValuesToggle!,
+      this.sideMenuElements.handleValuesToggleBorder!,
     );
-    this.sideMenuElements.handelValuesWrapper!.append(
-      this.sideMenuElements.handelValuesObjective!,
-      this.sideMenuElements.handelValuesToggleWrapper!,
+    this.sideMenuElements.handleValuesWrapper!.append(
+      this.sideMenuElements.handleValuesObjective!,
+      this.sideMenuElements.handleValuesToggleWrapper!,
     );
   }
 
@@ -300,7 +300,7 @@ export class SideMenu {
       this.sideMenuElements.currentValuesWrapper!,
       this.sideMenuElements.inputWrapper!,
       this.sideMenuElements.toWrapper!,
-      this.sideMenuElements.handelValuesWrapper!,
+      this.sideMenuElements.handleValuesWrapper!,
       this.sideMenuElements.valueScaleWrapper!,
       this.sideMenuElements.planeWrapper!,
     );

@@ -106,24 +106,30 @@ export class Movement {
       - (this.dataForMovement.target.offsetWidth / 2)}px`;
   }
 
-  isEdgePosition(newPosition: number): boolean {
+  checkIsEdgePosition(newPosition: number): boolean {
     return (newPosition === 0) || (newPosition === this.slider.offsetWidth - this.dataForMovement.target.offsetWidth);
   }
 
   controlStepMovement(newPosition: number, targetPosition: number): void {
     const difference = newPosition - targetPosition;
 
-    if (this.isEdgePosition(newPosition)) {
-      this.applyNewPosition(newPosition);
-    } else if (this.isStepWidthPassed(difference)) {
-      const stepPosition = targetPosition + Number(this.stepWidth) * (Math.trunc(difference / Number(this.stepWidth)));
-      this.applyNewPosition(stepPosition);
+    switch (true) {
+      case this.checkIsEdgePosition(newPosition):
+        this.applyNewPosition(newPosition);
+        break;
+      case this.checkIsEdgePosition(difference):
+        this.applyNewPosition(
+          targetPosition + Number(this.stepWidth) * (Math.trunc(difference / Number(this.stepWidth))),
+        );
+        break;
+      default:
+        break;
     }
   }
 
   public handleDocumentMouseMove(event: MouseEvent | TestMouseEvent): void {
-    const x = event.clientX;
-    const y = event.clientY;
+    const x: number = event.clientX;
+    const y: number = event.clientY;
     const rightSliderEdge: number = this.slider.offsetWidth - this.dataForMovement.target.offsetWidth;
     let targetPosition: number;
 
@@ -145,14 +151,14 @@ export class Movement {
 
     newPosition = this.correctsImpossiblePosition(rightSliderEdge, newPosition);
 
-    if (this.isStepSetCorrectly()) {
+    if (this.checkIsStepSetCorrectly()) {
       this.controlStepMovement(newPosition, targetPosition);
     } else {
       this.applyNewPosition(newPosition);
     }
   }
 
-  public handelListener(setting: MovementEvent): void {
+  public handleListener(setting: MovementEvent): void {
     const {
       eventInfo = {
         x: 0,
@@ -161,11 +167,9 @@ export class Movement {
       },
       test = false,
     } = setting;
-    const isTargetFrom = (eventInfo.target === this.from);
 
     let target: HTMLSpanElement;
-
-    if (isTargetFrom) {
+    if (eventInfo.target === this.from) {
       target = this.from;
     } else {
       target = this.to;

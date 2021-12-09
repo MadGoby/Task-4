@@ -31,11 +31,11 @@ type SideMenuElements = {
   stepInput?: HTMLInputElement;
   minimumInput?: HTMLInputElement;
   maximumInput?: HTMLInputElement;
-  handelValuesWrapper?: HTMLDivElement;
-  handelValuesObjective?: HTMLSpanElement;
-  handelValuesToggleWrapper?: HTMLLabelElement;
-  handelValuesToggle?: HTMLInputElement;
-  handelValuesToggleBorder?: HTMLSpanElement;
+  handleValuesWrapper?: HTMLDivElement;
+  handleValuesObjective?: HTMLSpanElement;
+  handleValuesToggleWrapper?: HTMLLabelElement;
+  handleValuesToggle?: HTMLInputElement;
+  handleValuesToggleBorder?: HTMLSpanElement;
   valueScaleWrapper?: HTMLDivElement;
   valueScaleObjective?: HTMLSpanElement;
   valueScaleToggleWrapper?: HTMLLabelElement;
