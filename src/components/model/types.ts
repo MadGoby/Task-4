@@ -5,7 +5,7 @@ type CalculationData = {
 };
 
 type DataForPrepareValue = {
-  name: 'from' | 'to' | 'min' | 'max';
+  name: 'from' | 'to';
   value: string;
   isDouble: boolean;
   positions: {

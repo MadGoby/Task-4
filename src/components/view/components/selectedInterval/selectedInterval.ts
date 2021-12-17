@@ -1,5 +1,7 @@
+import autobind from 'autobind-decorator';
 import { IntervalDisplayData, RefreshIntervalPositions } from './types';
 
+@autobind
 export class SelectedInterval {
   readonly interval: HTMLDivElement;
 

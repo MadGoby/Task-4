@@ -70,9 +70,9 @@ export class Movement {
     return (this.settings.step !== false) && (typeof this.stepWidth === 'string') && (Number(this.stepWidth) >= 1);
   }
 
-  checkIsStepWidthPassed(difference: number): boolean {
-    return Math.abs(difference) >= Number(this.stepWidth);
-  }
+  // checkIsStepWidthPassed(difference: number): boolean {
+  //   return Math.abs(difference) >= Number(this.stepWidth);
+  // }
 
   correctsImpossiblePosition(rightSliderEdge: number, newPosition: number): number {
     let value: number = newPosition;

@@ -1,11 +1,11 @@
-import { RefreshData } from '../../types';
 import { RefreshIntervalPositions } from '../selectedInterval/types';
 import {
   DataForAdjustPosition,
   HandlesElementsInfo,
   StaticElementsDescription,
-  HandleHideData,
+  HandleHideData, RefreshHandlesData,
 } from './types';
+import { RefreshData } from '../../types';
 
 export class Handles {
   readonly fromHandel: HTMLSpanElement;
@@ -76,7 +76,8 @@ export class Handles {
   }
 
   public refreshValues(data: RefreshData): void {
-    const target: 'fromValue' | 'toValue' = `${data.target}Value`;
+    const handlesData = data as RefreshHandlesData;
+    const target: 'fromValue' | 'toValue' = `${handlesData.target}Value`;
     this[target].innerText = data.value;
   }
 

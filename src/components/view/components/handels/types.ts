@@ -1,8 +1,11 @@
 import { HandlesPosition } from '../movement/types';
 
-type DataForAdjustPosition = {
+type DataForAdjustPositionBasic = {
   target: 'from' | 'to';
   value: string;
+};
+
+type DataForAdjustPosition = DataForAdjustPositionBasic & {
   totalValues: number;
   minValue: string;
 };
@@ -19,6 +22,11 @@ type HandleHideData = {
   sliderWidth: number
 };
 
+type RefreshHandlesData = {
+  value: string;
+  target: 'from' | 'to';
+};
+
 type StaticElementsDescription = Array<HandlesElementsInfo>;
 
 export {
@@ -26,4 +34,6 @@ export {
   HandlesElementsInfo,
   StaticElementsDescription,
   HandleHideData,
+  DataForAdjustPositionBasic,
+  RefreshHandlesData,
 };

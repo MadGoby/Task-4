@@ -143,7 +143,7 @@ export class SideMenu {
       cssClasses: ['cs-side-menu__item-toggle'],
       attr: { name: 'type', value: 'checkbox' },
     }) as HTMLInputElement;
-    const inputElement: Node = this.sideMenuElements!.toToggleWrapper!.cloneNode();
+    const inputElement: Node = this.sideMenuElements!.toToggle!.cloneNode();
     this.sideMenuElements.handleValuesToggle = inputElement.cloneNode() as HTMLInputElement;
     this.sideMenuElements.valueScaleToggle = inputElement.cloneNode() as HTMLInputElement;
 

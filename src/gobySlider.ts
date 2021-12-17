@@ -19,9 +19,7 @@ Plugin.prototype.init = (element: HTMLElement, options: SliderOptions): void => 
   const view: View = new View(options, element);
   const presenter: Presenter = new Presenter(view, model);
 
-  presenter.bindProxyToView();
-  presenter.bindProxyToModel();
-  view.bindMovementOnHandles();
+  presenter.initialize();
   view.prepareSliderForUse();
   view.bindEventListeners();
 };

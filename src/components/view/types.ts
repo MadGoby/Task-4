@@ -20,24 +20,20 @@ type RefreshData = {
   target: 'from' | 'to' | 'min' | 'max';
 };
 
-type DataRequestFromModel = {
-  needDataForScale: boolean;
-  needDataForStartPosition: Boolean;
-  needStepWidth: boolean;
-  needApplyValueFromScale: string;
-  needApplyNewValue: {
-    name: string,
-    value: string
-  },
-  needChangeSliderValuesRange: {
-    name: string,
-    value: string
-  },
-};
+type DataRequestValue = { 'name': string, 'value': string };
 
+type DataRequestToModel = {
+  needDataForScale: DataRequestValue;
+  needDataForStartPosition: DataRequestValue;
+  needStepWidth: DataRequestValue;
+  needApplyValueFromScale: DataRequestValue;
+  needApplyNewValue: DataRequestValue,
+  needChangeSliderValuesRange: DataRequestValue,
+};
 export {
   BasicViewSettings,
   TargetsForViewUpdate,
   RefreshData,
-  DataRequestFromModel,
+  DataRequestToModel,
+  DataRequestValue,
 };
