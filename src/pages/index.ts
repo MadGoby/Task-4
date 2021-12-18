@@ -2,18 +2,18 @@ import '../gobySlider.css';
 import './index.css';
 
 $('.js-slider_1').gobySlider(
-  // {
-  //   min: '-10000',
-  //   max: '10000',
-  //   double: true,
-  //   'side-menu': true,
-  //   handlesValues: true,
-  //   vertical: false,
-  //   step: 300,
-  //   valueScale: true,
-  //   from: '-7000',
-  //   to: '7000',
-  // },
+  {
+    min: '-100',
+    max: '100',
+    double: false,
+    'side-menu': true,
+    handlesValues: true,
+    vertical: false,
+    step: 10,
+    valueScale: true,
+    from: '-80',
+    to: '80',
+  },
 );
 
 // $('.js-slider_2').gobySlider(

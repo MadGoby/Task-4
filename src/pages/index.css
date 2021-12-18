@@ -10,6 +10,7 @@
   padding-bottom: 15px;
   border-bottom: 3px solid rgb(2, 114, 82);
   margin: 0 0 40px 0;
+  user-select: none;
 }
 .slider-wrapper {
   width: 586px;

@@ -125,8 +125,8 @@ export class Presenter {
       name: value?.name,
       value: value.value,
     });
-    this.view.dataRequestToModel.needDataForStartPosition.value = 'true';
-    this.view.dataRequestToModel.needDataForScale.value = 'true';
+    this.view.dataRequestToModel.needDataForStartPosition = { name: '', value: 'true' };
+    this.view.dataRequestToModel.needDataForScale = { name: '', value: 'true' };
   }
 
   private handlesRequestsFromView(property: string, value: DataRequestValue): void {
