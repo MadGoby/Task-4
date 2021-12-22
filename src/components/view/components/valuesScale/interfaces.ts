@@ -8,7 +8,7 @@ interface IValuesScale {
   60: HTMLSpanElement;
   80: HTMLSpanElement;
   refreshValueScale: (values: DataForValueScale) => void;
-  centersValues: (sliderWidth: number, handelWidth: number) => void;
+  centersValues: (sliderWidth: number, handleWidth: number) => void;
   changePlane: (isVertical: boolean) => void;
   hideValueScale: (isValueScale: boolean) => void;
 }

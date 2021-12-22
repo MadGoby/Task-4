@@ -1,6 +1,6 @@
 import autobind from 'autobind-decorator';
 import { Slider } from './components/slider/slider';
-import { Handles } from './components/handels/handles';
+import { Handles } from './components/handles/handles';
 import { Movement } from './components/movement/movement';
 import { SelectedInterval } from './components/selectedInterval/selectedInterval';
 import { ValuesScale } from './components/valuesScale/valuesScale';
@@ -49,8 +49,8 @@ export class View {
     this.basicSettings = settings;
     this.movement = new Movement({
       slider: this.slider.slider,
-      fromHandel: this.handles.fromHandel,
-      toHandel: this.handles.toHandel,
+      fromHandle: this.handles.fromHandle,
+      toHandle: this.handles.toHandle,
       interval: this.interval.interval,
       basicSettings: this.basicSettings,
     });
@@ -58,8 +58,8 @@ export class View {
 
   private addSliderToDOM(): void {
     this.slider.collectSlider({
-      from: this.handles.fromHandel,
-      to: this.handles.toHandel,
+      from: this.handles.fromHandle,
+      to: this.handles.toHandle,
       interval: this.interval.interval,
       valueScale: this.valuesScale,
     });
@@ -118,12 +118,12 @@ export class View {
       });
       this.interval.hideSelectedInterval({
         isDouble: this.basicSettings.double,
-        handleWidth: this.handles.fromHandel.offsetWidth,
+        handleWidth: this.handles.fromHandle.offsetWidth,
       });
       this.sideMenu.hideToValues(this.basicSettings.double);
     }
     if (!targets.valueScale) this.valuesScale.hideValueScale(this.basicSettings.valueScale);
-    if (!targets.handlesValues) this.handles.hideHandelValues(this.basicSettings.handlesValues);
+    if (!targets.handlesValues) this.handles.hideHandleValues(this.basicSettings.handlesValues);
     if (targets.sideMenu) {
       this.turnOnMenuToggles(targets);
     }
@@ -154,7 +154,7 @@ export class View {
       },
     );
     this.sideMenu.sideMenuElements.stepInput!.addEventListener('change', this.handleStepInputChange);
-    [this.handles.fromHandel, this.handles.toHandel].forEach((handle: HTMLSpanElement):void => {
+    [this.handles.fromHandle, this.handles.toHandle].forEach((handle: HTMLSpanElement):void => {
       handle.addEventListener('mousedown', this.handleHandleClick);
     });
   }
@@ -186,7 +186,7 @@ export class View {
     });
     this.interval.hideSelectedInterval({
       isDouble: this.basicSettings.double,
-      handleWidth: this.handles.fromHandel.offsetWidth,
+      handleWidth: this.handles.fromHandle.offsetWidth,
     });
     this.sideMenu.hideToValues(this.basicSettings.double);
   }
@@ -211,7 +211,7 @@ export class View {
     const element: HTMLInputElement = event.target as HTMLInputElement;
 
     this.basicSettings.handlesValues = element.checked;
-    this.handles.hideHandelValues(this.basicSettings.handlesValues);
+    this.handles.hideHandleValues(this.basicSettings.handlesValues);
   }
 
   private handleValueInputChange(event: Event): void {

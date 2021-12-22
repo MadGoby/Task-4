@@ -8,9 +8,9 @@ import {
 import { RefreshData } from '../../types';
 
 export class Handles {
-  readonly fromHandel: HTMLSpanElement;
+  readonly fromHandle: HTMLSpanElement;
 
-  readonly toHandel: HTMLSpanElement;
+  readonly toHandle: HTMLSpanElement;
 
   readonly fromValue: HTMLSpanElement;
 
@@ -18,40 +18,40 @@ export class Handles {
 
   readonly staticElementsDescription: StaticElementsDescription = [
     {
-      cssClasses: ['cs-slider__handel', 'cs-slider__handel_from'],
+      cssClasses: ['cs-slider__handle', 'cs-slider__handle_from'],
       name: 'style',
       value: 'display: inline-block',
     },
     {
-      cssClasses: ['cs-slider__handel', 'cs-slider__handel_to'],
+      cssClasses: ['cs-slider__handle', 'cs-slider__handle_to'],
       name: 'style',
       value: 'display: inline-block',
     },
     {
-      cssClasses: ['cs-slider__handel-value', 'cs-slider__handel-value_from'],
+      cssClasses: ['cs-slider__handle-value', 'cs-slider__handle-value_from'],
       name: 'style',
       value: 'display: inline-block',
     },
     {
-      cssClasses: ['cs-slider__handel-value', 'cs-slider__handel-value_to'],
+      cssClasses: ['cs-slider__handle-value', 'cs-slider__handle-value_to'],
       name: 'style',
       value: 'display: inline-block',
     },
   ];
 
   constructor() {
-    this.fromHandel = Handles.createElement(this.staticElementsDescription[0]);
-    this.toHandel = Handles.createElement(this.staticElementsDescription[1]);
+    this.fromHandle = Handles.createElement(this.staticElementsDescription[0]);
+    this.toHandle = Handles.createElement(this.staticElementsDescription[1]);
     this.fromValue = Handles.createElement(this.staticElementsDescription[2]);
     this.toValue = Handles.createElement(this.staticElementsDescription[3]);
-    this.fromHandel.append(this.fromValue);
-    this.toHandel.append(this.toValue);
+    this.fromHandle.append(this.fromValue);
+    this.toHandle.append(this.toValue);
     this.prepareClassElements();
   }
 
   private prepareClassElements(): void {
-    this.fromHandel.append(this.fromValue);
-    this.toHandel.append(this.toValue);
+    this.fromHandle.append(this.fromValue);
+    this.toHandle.append(this.toValue);
   }
 
   static createElement(settings: HandlesElementsInfo): HTMLSpanElement {
@@ -82,8 +82,8 @@ export class Handles {
   }
 
   public adjustPositions(dataToRefresh: DataForAdjustPosition, sliderWidth: number): RefreshIntervalPositions {
-    const handelLink: 'fromHandel' | 'toHandel' = `${dataToRefresh.target}Handel`;
-    const target = this[handelLink];
+    const handleLink: 'fromHandle' | 'toHandle' = `${dataToRefresh.target}Handle`;
+    const target = this[handleLink];
 
     function calculateNewPosition(): string {
       return String(((sliderWidth - target.offsetWidth) / dataToRefresh.totalValues)
@@ -97,32 +97,32 @@ export class Handles {
       target: dataToRefresh.target,
       position: newPosition,
       sliderWidth: sliderWidth - target.offsetWidth,
-      handelWidth: target.offsetWidth,
+      handleWidth: target.offsetWidth,
     };
   }
 
   private checkIsNeedToMakeVertical(isVertical: boolean): boolean {
-    return (!this.fromValue.classList.contains('cs-slider__handel-value_vertical'))
-      && (!this.toValue.classList.contains('cs-slider__handel-value_vertical')) && (isVertical);
+    return (!this.fromValue.classList.contains('cs-slider__handle-value_vertical'))
+      && (!this.toValue.classList.contains('cs-slider__handle-value_vertical')) && (isVertical);
   }
 
   private checkIsNeedToMakeHorizontally(isVertical: boolean): boolean {
-    return (this.fromValue.classList.contains('cs-slider__handel-value_vertical'))
-      && (this.toValue.classList.contains('cs-slider__handel-value_vertical')) && (!isVertical);
+    return (this.fromValue.classList.contains('cs-slider__handle-value_vertical'))
+      && (this.toValue.classList.contains('cs-slider__handle-value_vertical')) && (!isVertical);
   }
 
   private checkIsToNeedHide(isDouble: boolean): boolean {
-    return (!isDouble) && (this.toHandel.style.display === 'inline-block');
+    return (!isDouble) && (this.toHandle.style.display === 'inline-block');
   }
 
   private checkIsToNeedShow(isDouble: boolean): boolean {
-    return (isDouble) && (this.toHandel.style.display === 'none');
+    return (isDouble) && (this.toHandle.style.display === 'none');
   }
 
   public changePlane(isVertical: boolean): void {
     function changeVerticalClass(from: HTMLSpanElement, to: HTMLSpanElement) {
-      from.classList.toggle('cs-slider__handel-value_vertical');
-      to.classList.toggle('cs-slider__handel-value_vertical');
+      from.classList.toggle('cs-slider__handle-value_vertical');
+      to.classList.toggle('cs-slider__handle-value_vertical');
     }
 
     switch (true) {
@@ -140,14 +140,14 @@ export class Handles {
   private controlHandlesPosition(settings: HandleHideData) {
     const { sliderWidth, positions } = settings;
 
-    const newPosition: number = sliderWidth - this.toHandel.offsetWidth;
-    this.toHandel.style.left = `${newPosition}px`;
+    const newPosition: number = sliderWidth - this.toHandle.offsetWidth;
+    this.toHandle.style.left = `${newPosition}px`;
     positions.to = newPosition;
-    const isWrongFromPosition = positions.from > sliderWidth - this.toHandel.offsetWidth - this.fromHandel.offsetWidth;
+    const isWrongFromPosition = positions.from > sliderWidth - this.toHandle.offsetWidth - this.fromHandle.offsetWidth;
 
     if (isWrongFromPosition) {
-      const extremeFromPosition = String(sliderWidth - this.toHandel.offsetWidth - this.fromHandel.offsetWidth);
-      this.fromHandel.style.left = `${extremeFromPosition}px`;
+      const extremeFromPosition = String(sliderWidth - this.toHandle.offsetWidth - this.fromHandle.offsetWidth);
+      this.fromHandle.style.left = `${extremeFromPosition}px`;
       positions.from = Number(extremeFromPosition);
     }
   }
@@ -156,15 +156,15 @@ export class Handles {
     const { isDouble } = settings;
 
     if (this.checkIsToNeedHide(isDouble)) {
-      this.toHandel.style.display = 'none';
+      this.toHandle.style.display = 'none';
     } else if (this.checkIsToNeedShow(isDouble)) {
-      this.toHandel.style.display = 'inline-block';
+      this.toHandle.style.display = 'inline-block';
       this.controlHandlesPosition(settings);
     }
   }
 
-  public hideHandelValues(isHandelValues: boolean): void {
-    if (!isHandelValues) {
+  public hideHandleValues(isHandleValues: boolean): void {
+    if (!isHandleValues) {
       this.toValue.style.display = 'none';
       this.fromValue.style.display = 'none';
     } else {

@@ -42,12 +42,12 @@ export class ValuesScale implements IValuesScale {
     } = values);
   }
 
-  public centersValues(sliderWidth: number, handelWidth: number): void {
+  public centersValues(sliderWidth: number, handleWidth: number): void {
     const calculateExtremeValuePosition = (element: HTMLSpanElement): string => `${
-      0 - ((element.offsetWidth - handelWidth) / 2)
+      0 - ((element.offsetWidth - handleWidth) / 2)
     }px`;
     const calculateValuePosition = (coefficient: number, element: HTMLSpanElement): string => `${
-      sliderWidth * coefficient - ((element.offsetWidth - handelWidth) / 2)
+      sliderWidth * coefficient - ((element.offsetWidth - handleWidth) / 2)
     }px`;
 
     this.minValue.style.left = calculateExtremeValuePosition(this.minValue);

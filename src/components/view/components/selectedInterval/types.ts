@@ -2,7 +2,7 @@ type RefreshIntervalPositions = {
   target: string;
   position: string;
   sliderWidth: number;
-  handelWidth: number;
+  handleWidth: number;
 };
 
 type IntervalDisplayData = {

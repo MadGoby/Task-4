@@ -13,10 +13,10 @@ export class SelectedInterval {
 
   public adjustPositionRelativeValue(dataToRefresh: RefreshIntervalPositions): void {
     if (dataToRefresh.target === 'from') {
-      this.interval.style.left = `${Number(dataToRefresh.position) + (dataToRefresh.handelWidth / 2)}px`;
+      this.interval.style.left = `${Number(dataToRefresh.position) + (dataToRefresh.handleWidth / 2)}px`;
     } else {
       this.interval.style.right = `${dataToRefresh.sliderWidth - Number(dataToRefresh.position)
-        + (dataToRefresh.handelWidth / 2)}px`;
+        + (dataToRefresh.handleWidth / 2)}px`;
     }
   }
 

@@ -12,7 +12,7 @@ type DataForPrepareValue = {
     from: number;
     to: number;
   };
-  handelWidth: number;
+  handleWidth: number;
   sliderWidth: number;
 };
 
@@ -45,7 +45,7 @@ type StepInfoFromModel = {
 type StepCalculateData = {
   step: number,
   sliderWidth: number,
-  handelWidth: number,
+  handleWidth: number,
 };
 
 type ValuesRangeData = {

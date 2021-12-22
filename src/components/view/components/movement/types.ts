@@ -13,8 +13,8 @@ type HandlesPosition = {
 
 type MovementSettings = {
   slider: HTMLDivElement;
-  fromHandel: HTMLSpanElement;
-  toHandel: HTMLSpanElement;
+  fromHandle: HTMLSpanElement;
+  toHandle: HTMLSpanElement;
   basicSettings: BasicViewSettings;
   interval: HTMLDivElement;
   positions?: HandlesPosition;

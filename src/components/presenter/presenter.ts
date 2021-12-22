@@ -1,7 +1,7 @@
 import autobind from 'autobind-decorator';
 import { BasicModelSettings, CalculationData, DataForValueScale } from '../model/types';
 import { Model } from '../model/model';
-import { DataForAdjustPosition } from '../view/components/handels/types';
+import { DataForAdjustPosition } from '../view/components/handles/types';
 import { RefreshIntervalPositions } from '../view/components/selectedInterval/types';
 import { View } from '../view/view';
 import { HandlesPosition } from '../view/components/movement/types';
@@ -25,7 +25,7 @@ export class Presenter {
         const settings: CalculationData = {
           position: String(val),
           target: prop,
-          sliderWidth: view.slider.slider.offsetWidth - view.handles.fromHandel.offsetWidth,
+          sliderWidth: view.slider.slider.offsetWidth - view.handles.fromHandle.offsetWidth,
         };
         model.calculateValuesByPosition(settings);
         return true;
@@ -37,8 +37,8 @@ export class Presenter {
     const values: DataForValueScale = this.model.calculateDataForValueScale();
     this.view.valuesScale.refreshValueScale(values);
     this.view.valuesScale.centersValues(
-      this.view.slider.slider.offsetWidth - this.view.handles.fromHandel.offsetWidth,
-      this.view.handles.fromHandel.offsetWidth,
+      this.view.slider.slider.offsetWidth - this.view.handles.fromHandle.offsetWidth,
+      this.view.handles.fromHandle.offsetWidth,
     );
   }
 
@@ -68,10 +68,14 @@ export class Presenter {
     adjustPositions(startTo);
     this.view.movement.positions.from = Number(startFrom.position);
     this.view.movement.positions.to = Number(startTo.position);
-    // eslint-disable-next-line no-self-assign
-    this.model.values.min = this.model.values.min;
-    // eslint-disable-next-line no-self-assign
-    this.model.values.max = this.model.values.max;
+    this.view.refreshAllComponents({
+      value: this.model.values.min,
+      target: 'min',
+    });
+    this.view.refreshAllComponents({
+      value: this.model.values.max,
+      target: 'max',
+    });
   }
 
   private distributeStepWidth(): void {
@@ -79,7 +83,7 @@ export class Presenter {
       const { stepWidth, step } = this.model.calculateStepWidth({
         step: Number(this.view.basicSettings.step),
         sliderWidth: this.view.slider.slider.offsetWidth,
-        handelWidth: this.view.handles.toHandel.offsetWidth,
+        handleWidth: this.view.handles.toHandle.offsetWidth,
       });
       this.view.movement.stepWidth = stepWidth;
       if (this.view.basicSettings['side-menu']) this.view.sideMenu.sideMenuElements.stepInput!.value = String(step);
@@ -97,7 +101,7 @@ export class Presenter {
         from: this.view.movement.positions.from,
         to: this.view.movement.positions.to,
       },
-      handelWidth: this.view.handles.toHandel.offsetWidth,
+      handleWidth: this.view.handles.toHandle.offsetWidth,
       sliderWidth: this.view.slider.slider.offsetWidth,
     });
     const newPosition: RefreshIntervalPositions = this.view.handles.adjustPositions(

@@ -1,7 +1,7 @@
 import {
   DataForAdjustPosition,
   DataForAdjustPositionBasic,
-} from '../view/components/handels/types';
+} from '../view/components/handles/types';
 import {
   CalculationData,
   DataForPrepareValue,
@@ -75,17 +75,17 @@ class Model {
   }
 
   public calculateStepWidth(settings: StepCalculateData): StepInfoFromModel {
-    const { sliderWidth, handelWidth } = settings;
+    const { sliderWidth, handleWidth } = settings;
     let { step } = settings;
     let minStep: number = Math.round(
-      (Number(this.values.max) - Number(this.values.min)) / (sliderWidth - handelWidth),
+      (Number(this.values.max) - Number(this.values.min)) / (sliderWidth - handleWidth),
     );
 
     if (minStep < 1) minStep = 1;
     if (step < minStep) step = minStep;
 
     const stepWidth: number = (
-      (sliderWidth - handelWidth) / (Number(this.values.max) - Number(this.values.min))
+      (sliderWidth - handleWidth) / (Number(this.values.max) - Number(this.values.min))
     ) * Number(step);
 
     return { stepWidth: String(stepWidth), step };
@@ -99,31 +99,31 @@ class Model {
     return Number(value) > Number(this.values.max);
   }
 
-  private checkIsFromValueBiggerThanTo(name: string, value: string, step: string, handelWidth: number): boolean {
-    return (name === 'from') && (Number(value) > Number(this.values.to) - (handelWidth / Number(step)));
+  private checkIsFromValueBiggerThanTo(name: string, value: string, step: string, handleWidth: number): boolean {
+    return (name === 'from') && (Number(value) > Number(this.values.to) - (handleWidth / Number(step)));
   }
 
-  private checkIsToValueSmallerThanFrom(name: string, value: string, step: string, handelWidth: number): boolean {
-    return (name === 'to') && (Number(value) < Number(this.values.from) + (handelWidth / Number(step)));
+  private checkIsToValueSmallerThanFrom(name: string, value: string, step: string, handleWidth: number): boolean {
+    return (name === 'to') && (Number(value) < Number(this.values.from) + (handleWidth / Number(step)));
   }
 
   private correctsDoubleValues(settings: DataForPrepareValue): string {
     const step: StepInfoFromModel = this.calculateStepWidth({
       step: 1,
       sliderWidth: settings.sliderWidth,
-      handelWidth: settings.handelWidth,
+      handleWidth: settings.handleWidth,
     });
     let { value } = settings;
 
-    if (this.checkIsFromValueBiggerThanTo(settings.name, settings.value, step.stepWidth, settings.handelWidth)) {
+    if (this.checkIsFromValueBiggerThanTo(settings.name, settings.value, step.stepWidth, settings.handleWidth)) {
       value = String(
-        Math.round(Number(this.values.to) - (settings.handelWidth / Number(step.stepWidth))),
+        Math.round(Number(this.values.to) - (settings.handleWidth / Number(step.stepWidth))),
       );
     }
 
-    if (this.checkIsToValueSmallerThanFrom(settings.name, settings.value, step.stepWidth, settings.handelWidth)) {
+    if (this.checkIsToValueSmallerThanFrom(settings.name, settings.value, step.stepWidth, settings.handleWidth)) {
       value = String(
-        Math.round(Number(this.values.from) + (settings.handelWidth / Number(step.stepWidth))),
+        Math.round(Number(this.values.from) + (settings.handleWidth / Number(step.stepWidth))),
       );
     }
 

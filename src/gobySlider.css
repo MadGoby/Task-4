@@ -10,7 +10,7 @@
 .cs-slider-wrapper {
   min-height: 105px;
 }
-.cs-slider__handel {
+.cs-slider__handle {
   height: 20px;
   width: 20px;
   top: -5px;
@@ -22,7 +22,7 @@
   cursor: pointer;
   z-index: 3;
 }
-.cs-slider__handel-value {
+.cs-slider__handle-value {
   position: absolute;
   width: 100%;
   text-align: center;
@@ -36,10 +36,10 @@
   left: -40px;
   min-width: 100px;
 }
-.cs-slider__handel-value_from {
+.cs-slider__handle-value_from {
   top: -20px;
 }
-.cs-slider__handel-value_to {
+.cs-slider__handle-value_to {
   top: 20px;
 }
 .cs-slider__interval {
@@ -165,7 +165,7 @@
 .cs-slider_vertical {
   transform: rotate(-90deg);
 }
-.cs-slider__handel-value_vertical {
+.cs-slider__handle-value_vertical {
   transform: rotate(90deg);
   top: 65px;
   text-align: left;

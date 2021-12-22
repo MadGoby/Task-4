@@ -28,8 +28,8 @@ export class Movement {
 
   constructor(settings: MovementSettings) {
     this.slider = settings.slider;
-    this.from = settings.fromHandel;
-    this.to = settings.toHandel;
+    this.from = settings.fromHandle;
+    this.to = settings.toHandle;
     this.settings = settings.basicSettings;
     this.interval = settings.interval;
     this.positions = { from: 0, to: 0 };
