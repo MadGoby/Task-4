@@ -1,6 +1,6 @@
-import { Model } from './components/model/model';
-import { View } from './components/view/view';
-import { Presenter } from './components/presenter/presenter';
+import { Model } from './components/model/Model';
+import { View } from './components/view/View';
+import { Presenter } from './components/presenter/Presenter';
 import { SliderOptions } from './types';
 import { gobyDefaults } from './common/defaultSettings';
 

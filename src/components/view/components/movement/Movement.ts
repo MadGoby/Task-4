@@ -24,7 +24,7 @@ export class Movement {
 
   public positions: HandlesPosition;
 
-  private dataForMovement: HandleClickData;
+  public dataForMovement: HandleClickData;
 
   constructor(settings: MovementSettings) {
     this.slider = settings.slider;
@@ -70,11 +70,11 @@ export class Movement {
     return (this.settings.step !== false) && (typeof this.stepWidth === 'string') && (Number(this.stepWidth) >= 1);
   }
 
-  checkIsStepWidthPassed(difference: number): boolean {
+  private checkIsStepWidthPassed(difference: number): boolean {
     return Math.abs(difference) >= Number(this.stepWidth);
   }
 
-  private correctsImpossiblePosition(rightSliderEdge: number, newPosition: number): number {
+  public correctsImpossiblePosition(rightSliderEdge: number, newPosition: number): number {
     let value: number = newPosition;
 
     const correctDoublePositions = (): void => {
@@ -94,7 +94,7 @@ export class Movement {
     return value;
   }
 
-  private correctsIntervalPosition(): void {
+  public correctsIntervalPosition(): void {
     this.interval.style.left = `${(this.positions.from + (this.dataForMovement.target.offsetWidth / 2))}px`;
     this.interval.style.right = `${(this.slider.offsetWidth - this.positions.to)
     - (this.dataForMovement.target.offsetWidth / 2)}px`;

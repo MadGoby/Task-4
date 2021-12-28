@@ -1,5 +1,5 @@
 TN:
-SF:src\components\model\model.ts
+SF:src\components\model\Model.ts
 FN:12,(anonymous_0)
 FN:21,(anonymous_1)
 FN:26,(anonymous_2)
@@ -144,7 +144,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\components\presenter\presenter.ts
+SF:src\components\presenter\Presenter.ts
 FN:12,(anonymous_0)
 FN:17,(anonymous_1)
 FN:90,(anonymous_2)
@@ -248,7 +248,7 @@ BRF:36
 BRH:31
 end_of_record
 TN:
-SF:src\components\view\view.ts
+SF:src\components\view\View.ts
 FN:22,(anonymous_0)
 FN:47,(anonymous_1)
 FN:50,addSliderToDOM
@@ -547,7 +547,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\components\view\components\movement\movement.ts
+SF:src\components\view\components\movement\Movement.ts
 FN:17,(anonymous_0)
 FN:27,(anonymous_1)
 FN:45,bindEventListeners
@@ -732,7 +732,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\components\view\components\selectedInterval\selectedInterval.ts
+SF:src\components\view\components\selectedInterval\SelectedInterval.ts
 FN:7,(anonymous_0)
 FN:13,(anonymous_1)
 FN:21,(anonymous_2)
@@ -784,7 +784,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\components\view\components\sideMenu\sideMenu.ts
+SF:src\components\view\components\sideMenu\SideMenu.ts
 FN:39,(anonymous_0)
 FN:40,createElement
 FN:43,(anonymous_2)
@@ -889,7 +889,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\components\view\components\slider\slider.ts
+SF:src\components\view\components\slider\Slider.ts
 FN:7,(anonymous_0)
 FN:15,(anonymous_1)
 FN:29,(anonymous_2)
@@ -942,7 +942,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\components\view\components\valuesScale\valuesScale.ts
+SF:src\components\view\components\valuesScale\ValuesScale.ts
 FN:11,(anonymous_0)
 FN:12,createElement
 FN:14,(anonymous_2)

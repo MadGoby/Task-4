@@ -6,6 +6,9 @@ import {
   HandleHideData, RefreshHandlesData,
 } from './types';
 import { RefreshData } from '../../types';
+import { HandlesPosition } from '../movement/types';
+import { valueToNode } from "@babel/types";
+import set = Reflect.set;
 
 export class Handles {
   readonly fromHandle: HTMLSpanElement;
@@ -170,6 +173,36 @@ export class Handles {
     } else {
       this.toValue.style.display = 'inline-block';
       this.fromValue.style.display = 'inline-block';
+    }
+  }
+
+  public selectsHandleToMove(settings: {
+    targetPosition: number,
+    positions: HandlesPosition,
+    isDouble: boolean,
+  }): HTMLSpanElement {
+    const { targetPosition, positions, isDouble } = settings;
+    const fromDifference = Math.abs(Number(positions.from) - Number(targetPosition));
+    const toDifference = Math.abs(Number(positions.to) - Number(targetPosition));
+    const isFromDifferenceLess = fromDifference < toDifference || !isDouble;
+
+    if (isFromDifferenceLess) return this.fromHandle;
+    return this.toHandle;
+  }
+
+  public acceptNewPosition(settings: {
+    target: HTMLSpanElement,
+    value: number,
+    positions: HandlesPosition,
+  }): void {
+    const { target, value, positions } = settings;
+
+    if (target === this.fromHandle) {
+      this.fromHandle.style.left = `${value}px`;
+      positions.from = value;
+    } else {
+      this.toHandle.style.left = `${value}px`;
+      positions.to = value;
     }
   }
 }

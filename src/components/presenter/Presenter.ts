@@ -1,9 +1,9 @@
 import autobind from 'autobind-decorator';
 import { BasicModelSettings, CalculationData, DataForValueScale } from '../model/types';
-import { Model } from '../model/model';
+import { Model } from '../model/Model';
 import { DataForAdjustPosition } from '../view/components/handles/types';
 import { RefreshIntervalPositions } from '../view/components/selectedInterval/types';
-import { View } from '../view/view';
+import { View } from '../view/View';
 import { HandlesPosition } from '../view/components/movement/types';
 import { DataRequestToModel, DataRequestValue } from '../view/types';
 

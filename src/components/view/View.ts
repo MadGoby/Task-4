@@ -1,10 +1,10 @@
 import autobind from 'autobind-decorator';
-import { Slider } from './components/slider/slider';
-import { Handles } from './components/handles/handles';
-import { Movement } from './components/movement/movement';
-import { SelectedInterval } from './components/selectedInterval/selectedInterval';
-import { ValuesScale } from './components/valuesScale/valuesScale';
-import { SideMenu } from './components/sideMenu/sideMenu';
+import { Slider } from './components/slider/Slider';
+import { Handles } from './components/handles/Handles';
+import { Movement } from './components/movement/Movement';
+import { SelectedInterval } from './components/selectedInterval/SelectedInterval';
+import { ValuesScale } from './components/valuesScale/ValuesScale';
+import { SideMenu } from './components/sideMenu/SideMenu';
 import {
   RefreshData,
   BasicViewSettings,
@@ -157,6 +157,7 @@ export class View {
     [this.handles.fromHandle, this.handles.toHandle].forEach((handle: HTMLSpanElement):void => {
       handle.addEventListener('mousedown', this.handleHandleClick);
     });
+    this.slider.slider.addEventListener('click', this.handleSliderClick);
   }
 
   private handleHandleClick(event: MouseEvent): void {
@@ -245,5 +246,28 @@ export class View {
     }
 
     this.dataRequestToModel.needChangeSliderValuesRange = { name: target, value: element.value };
+  }
+
+  private handleSliderClick(event: MouseEvent): void {
+    const isNotSliderBody = event.target !== this.interval.interval && event.target !== this.slider.slider;
+    if (isNotSliderBody) return;
+
+    const targetPosition: number = event.clientX - this.slider.slider.getBoundingClientRect().x;
+    const targetHandle: HTMLSpanElement = this.handles.selectsHandleToMove({
+      targetPosition: event.clientX - this.slider.slider.getBoundingClientRect().x,
+      positions: this.movement.positions,
+      isDouble: this.basicSettings.double,
+    });
+    this.movement.dataForMovement.target = targetHandle;
+    const correctedValue: number = this.movement.correctsImpossiblePosition(
+      this.slider.slider.offsetWidth - targetHandle.offsetWidth,
+      targetPosition,
+    );
+    this.handles.acceptNewPosition({
+      target: targetHandle,
+      value: correctedValue,
+      positions: this.movement.positions,
+    });
+    this.movement.correctsIntervalPosition();
   }
 }

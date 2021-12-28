@@ -1,4 +1,4 @@
-import '../gobySlider.css';
+import '../slider.css';
 import './index.css';
 
 $('.js-slider_1').gobySlider(
