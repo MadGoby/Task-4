@@ -12,6 +12,7 @@ import {
   StepCalculateData,
   ValuesRangeData,
 } from './types';
+import { switchCase } from "@babel/types";
 
 class Model {
   public values: BasicModelSettings;
@@ -29,20 +30,45 @@ class Model {
     this.values[data.target] = data.value;
   }
 
+  private truncatesNumbersAfterDot(value: number): string {
+    if (!Number.isInteger(value)) return value.toFixed(2);
+    return String(value);
+  }
+
   public calculateValuesByPosition(settings: CalculationData): void {
-    const calculateValues = (calculationData: CalculationData): string => `${
-      Math.round(Number(this.values.min) + (Number(calculationData.position) / (
+    const calculateValues = (calculationData: CalculationData): string => {
+      const value: number = (Number(this.values.min) + (Number(calculationData.position) / (
         Number(calculationData.sliderWidth) / (Number(this.values.max) - Number(this.values.min)))
-      ))}`;
+      ));
+      return this.truncatesNumbersAfterDot(value);
+    };
 
     this.writesDataToModel({ target: settings.target, value: calculateValues(settings) });
   }
 
-  public calculateDataForValueScale(): DataForValueScale {
-    const calculatePosition = (ratio: number) => String(
-      Math.round((
-        Number(this.values.max) - Number(this.values.min)) * ratio) + Number(this.values.min),
+  private calculateDifferenceBetweenMinAndMax(): number {
+    return Math.abs(
+      Math.abs(Number(this.values.min)) - Math.abs(Number(this.values.max)),
     );
+  }
+
+  public calculateDataForValueScale(): DataForValueScale {
+    const differenceBetweenFromAndTo: number = this.calculateDifferenceBetweenMinAndMax();
+
+    const calculatePosition = (ratio: number) => {
+      let value: string = (
+        ((Number(this.values.max) - Number(this.values.min)) * ratio) + Number(this.values.min)
+      ).toFixed(2);
+
+      if (differenceBetweenFromAndTo >= 5) {
+        value = String(Math.round(Number(value)));
+      }
+
+      console.log(differenceBetweenFromAndTo);
+
+      return String(value);
+    };
+
     return {
       min: this.values.min,
       max: this.values.max,
@@ -81,7 +107,7 @@ class Model {
       (Number(this.values.max) - Number(this.values.min)) / (sliderWidth - handleWidth),
     );
 
-    if (minStep < 1) minStep = 1;
+    if (minStep <= 0) minStep = 0.1;
     if (step < minStep) step = minStep;
 
     const stepWidth: number = (

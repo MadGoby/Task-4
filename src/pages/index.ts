@@ -3,16 +3,16 @@ import './index.css';
 
 $('.js-slider_1').gobySlider(
   {
-    min: '-100',
-    max: '100',
+    min: '0',
+    max: '5',
     double: false,
     'side-menu': true,
     handlesValues: true,
     vertical: false,
-    step: 10,
+    step: false,
     valueScale: true,
-    from: '-80',
-    to: '80',
+    from: '0.1',
+    to: '8',
   },
 );
 
