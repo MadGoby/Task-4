@@ -1,3 +1,5 @@
+import { RangeFractional } from '../model/types';
+
 type BasicViewSettings = {
   'double': boolean,
   'side-menu': boolean | string,
@@ -5,6 +7,7 @@ type BasicViewSettings = {
   'vertical': boolean,
   'step': boolean | number,
   'valueScale': boolean,
+  'integer': boolean,
 };
 
 type TargetsForViewUpdate = {
@@ -13,11 +16,14 @@ type TargetsForViewUpdate = {
   vertical?: boolean;
   valueScale?: boolean;
   sideMenu: boolean | string;
+  integer: boolean;
 };
 
 type RefreshData = {
   value: string;
   target: 'from' | 'to' | 'min' | 'max';
+  isToFixed: boolean;
+  isRangeInteger: RangeFractional;
 };
 
 type DataRequestValue = { 'name': string, 'value': string };

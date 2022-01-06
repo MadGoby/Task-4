@@ -12,7 +12,6 @@ import {
   StepCalculateData,
   ValuesRangeData,
 } from './types';
-import { switchCase } from "@babel/types";
 
 class Model {
   public values: BasicModelSettings;
@@ -30,9 +29,17 @@ class Model {
     this.values[data.target] = data.value;
   }
 
-  private truncatesNumbersAfterDot(value: number): string {
-    if (!Number.isInteger(value)) return value.toFixed(2);
-    return String(value);
+  private static truncatesNumbersAfterDot(value: number): string {
+    const isLastZero = !Number.isInteger(value) && `${value.toFixed(2)}`.slice(-1) === '0';
+
+    switch (true) {
+      case Number.isInteger(value):
+        return value.toFixed(0);
+      case isLastZero:
+        return value.toFixed(1);
+      default:
+        return value.toFixed(2);
+    }
   }
 
   public calculateValuesByPosition(settings: CalculationData): void {
@@ -40,13 +47,13 @@ class Model {
       const value: number = (Number(this.values.min) + (Number(calculationData.position) / (
         Number(calculationData.sliderWidth) / (Number(this.values.max) - Number(this.values.min)))
       ));
-      return this.truncatesNumbersAfterDot(value);
+      return Model.truncatesNumbersAfterDot(value);
     };
 
     this.writesDataToModel({ target: settings.target, value: calculateValues(settings) });
   }
 
-  private calculateDifferenceBetweenMinAndMax(): number {
+  public calculateDifferenceBetweenMinAndMax(): number {
     return Math.abs(
       Math.abs(Number(this.values.min)) - Math.abs(Number(this.values.max)),
     );
@@ -63,8 +70,6 @@ class Model {
       if (differenceBetweenFromAndTo >= 5) {
         value = String(Math.round(Number(value)));
       }
-
-      console.log(differenceBetweenFromAndTo);
 
       return String(value);
     };
@@ -186,11 +191,15 @@ class Model {
 
     switch (name) {
       case 'min':
-        value = this.correctsValueBiggerThanMax(value);
+        value = Model.truncatesNumbersAfterDot(Number(
+          this.correctsValueBiggerThanMax(value),
+        ));
         this.values.min = value;
         break;
       case 'max':
-        value = this.correctsValueLessThanMin(value);
+        value = Model.truncatesNumbersAfterDot(Number(
+          this.correctsValueLessThanMin(value),
+        ));
         this.values.max = value;
         break;
       default:

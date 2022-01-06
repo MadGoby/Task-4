@@ -53,6 +53,11 @@ type ValuesRangeData = {
   value: string,
 };
 
+type RangeFractional = {
+  min: boolean,
+  max: boolean,
+};
+
 export {
   CalculationData,
   DataForPrepareValue,
@@ -62,4 +67,5 @@ export {
   StepInfoFromModel,
   StepCalculateData,
   ValuesRangeData,
+  RangeFractional,
 };

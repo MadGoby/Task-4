@@ -1,5 +1,5 @@
 type RefreshIntervalPositions = {
-  target: string;
+  target: 'from' | 'to';
   position: string;
   sliderWidth: number;
   handleWidth: number;

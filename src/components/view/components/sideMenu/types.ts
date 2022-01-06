@@ -46,6 +46,11 @@ type SideMenuElements = {
   planeToggleWrapper?: HTMLLabelElement;
   planeToggle?: HTMLInputElement;
   planeToggleBorder?: HTMLSpanElement;
+  integerToggle?: HTMLInputElement;
+  integerToggleBorder?: HTMLSpanElement;
+  integerObjective?: HTMLSpanElement;
+  integerWrapper?: HTMLDivElement;
+  integerToggleWrapper?: HTMLLabelElement;
 };
 
 export {

@@ -4,15 +4,16 @@ import './index.css';
 $('.js-slider_1').gobySlider(
   {
     min: '0',
-    max: '5',
+    max: '10',
     double: false,
     'side-menu': true,
     handlesValues: true,
     vertical: false,
     step: false,
     valueScale: true,
-    from: '0.1',
+    from: '0',
     to: '8',
+    integer: true,
   },
 );
 

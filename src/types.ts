@@ -11,6 +11,7 @@ type SliderOptions = {
   toPosition?: string;
   from: string;
   to: string;
+  integer: boolean;
 };
 
 export { SliderOptions };

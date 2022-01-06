@@ -94,6 +94,7 @@ export class View {
       sideMenu: this.basicSettings['side-menu'],
       handlesValues: this.basicSettings.handlesValues,
       valueScale: this.basicSettings.valueScale,
+      integer: this.basicSettings.integer,
     });
   }
 
@@ -102,6 +103,7 @@ export class View {
     if (targets.double) this.sideMenu.sideMenuElements.toToggle!.checked = true;
     if (targets.handlesValues) this.sideMenu.sideMenuElements.handleValuesToggle!.checked = true;
     if (targets.valueScale) this.sideMenu.sideMenuElements.valueScaleToggle!.checked = true;
+    if (targets.integer) this.sideMenu.sideMenuElements.integerToggle!.checked = true;
   }
 
   public updateView(targets: TargetsForViewUpdate): void {
@@ -143,6 +145,7 @@ export class View {
     this.sideMenu.sideMenuElements.planeToggle!.addEventListener('change', this.handlePlaneToggleChange);
     this.sideMenu.sideMenuElements.valueScaleToggle!.addEventListener('change', this.handleValueScaleToggleChange);
     this.sideMenu.sideMenuElements.handleValuesToggle!.addEventListener('change', this.handleHandleValuesChange);
+    this.sideMenu.sideMenuElements.integerToggle!.addEventListener('change', this.handleIntegerToggleChange);
     [this.sideMenu.sideMenuElements.fromInput, this.sideMenu.sideMenuElements.toInput].forEach(
       (valueInput: HTMLInputElement | undefined): void => {
         valueInput!.addEventListener('change', this.handleValueInputChange);
@@ -157,7 +160,7 @@ export class View {
     [this.handles.fromHandle, this.handles.toHandle].forEach((handle: HTMLSpanElement):void => {
       handle.addEventListener('mousedown', this.handleHandleClick);
     });
-    this.slider.slider.addEventListener('click', this.handleSliderClick);
+    this.slider.slider.addEventListener('mousedown', this.handleSliderClick);
   }
 
   private handleHandleClick(event: MouseEvent): void {
@@ -232,7 +235,12 @@ export class View {
     const element: HTMLInputElement = event.target as HTMLInputElement;
 
     this.basicSettings.step = Number(element.value);
-    this.dataRequestToModel.needStepWidth = { name: '', value: 'true' };
+    if (element.value === '0') {
+      this.sideMenu.sideMenuElements.stepInput!.value = '';
+      this.basicSettings.step = false;
+    } else {
+      this.dataRequestToModel.needStepWidth = { name: '', value: 'true' };
+    }
   }
 
   private handleRangeInputChange(event: Event): void {
@@ -246,6 +254,12 @@ export class View {
     }
 
     this.dataRequestToModel.needChangeSliderValuesRange = { name: target, value: element.value };
+  }
+
+  private handleIntegerToggleChange(event: Event): void {
+    const element: HTMLInputElement = event.target as HTMLInputElement;
+    this.basicSettings.integer = element.checked;
+    this.dataRequestToModel.needDataForStartPosition = { name: '', value: 'true' };
   }
 
   private handleSliderClick(event: MouseEvent): void {

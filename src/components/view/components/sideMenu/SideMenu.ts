@@ -4,6 +4,8 @@ import { ElementParams, SideMenuElements } from './types';
 export class SideMenu {
   readonly sideMenuElements: SideMenuElements;
 
+  public isInputChanges = false;
+
   constructor() {
     this.sideMenuElements = {};
     this.initializeSideMenu();
@@ -92,10 +94,16 @@ export class SideMenu {
       cssClasses: ['cs-side-menu__item-wrapper'],
     }) as HTMLDivElement;
 
+    this.sideMenuElements.integerWrapper = SideMenu.createElement({
+      name: 'div',
+      cssClasses: ['cs-side-menu__item-wrapper'],
+    }) as HTMLDivElement;
+
     const labelElement: Node = this.sideMenuElements.toToggleWrapper.cloneNode();
     this.sideMenuElements.handleValuesToggleWrapper = labelElement.cloneNode() as HTMLLabelElement;
     this.sideMenuElements.valueScaleToggleWrapper = labelElement.cloneNode() as HTMLLabelElement;
     this.sideMenuElements.planeToggleWrapper = labelElement.cloneNode() as HTMLLabelElement;
+    this.sideMenuElements.integerToggleWrapper = labelElement.cloneNode() as HTMLLabelElement;
   }
 
   private createInputs(): void {
@@ -146,6 +154,7 @@ export class SideMenu {
     const inputElement: Node = this.sideMenuElements!.toToggle!.cloneNode();
     this.sideMenuElements.handleValuesToggle = inputElement.cloneNode() as HTMLInputElement;
     this.sideMenuElements.valueScaleToggle = inputElement.cloneNode() as HTMLInputElement;
+    this.sideMenuElements.integerToggle = inputElement.cloneNode() as HTMLInputElement;
 
     this.sideMenuElements.toToggleBorder = SideMenu.createElement({
       name: 'span',
@@ -158,6 +167,11 @@ export class SideMenu {
     }) as HTMLSpanElement;
 
     this.sideMenuElements.valueScaleToggleBorder = SideMenu.createElement({
+      name: 'span',
+      cssClasses: ['cs-side-menu__item-toggle-border'],
+    }) as HTMLSpanElement;
+
+    this.sideMenuElements.integerToggleBorder = SideMenu.createElement({
       name: 'span',
       cssClasses: ['cs-side-menu__item-toggle-border'],
     }) as HTMLSpanElement;
@@ -191,6 +205,12 @@ export class SideMenu {
       name: 'span',
       cssClasses: ['cs-side-menu__item-objective'],
       text: 'Изменить плоскость: ',
+    }) as HTMLSpanElement;
+
+    this.sideMenuElements.integerObjective = SideMenu.createElement({
+      name: 'span',
+      cssClasses: ['cs-side-menu__item-objective'],
+      text: 'Только целые числа: ',
     }) as HTMLSpanElement;
   }
 
@@ -288,6 +308,17 @@ export class SideMenu {
     );
   }
 
+  private wrapsIntegerToggle(): void {
+    this.sideMenuElements.integerToggleWrapper!.append(
+      this.sideMenuElements.integerToggle!,
+      this.sideMenuElements.integerToggleBorder!,
+    );
+    this.sideMenuElements.integerWrapper!.append(
+      this.sideMenuElements.integerObjective!,
+      this.sideMenuElements.integerToggleWrapper!,
+    );
+  }
+
   public collectSideMenu(): void {
     this.wrapsOutputs();
     this.wrapsElementsInWrappers();
@@ -295,6 +326,7 @@ export class SideMenu {
     this.wrapsHandlesValuesToggle();
     this.wrapsValuesScaleToggle();
     this.wrapsPlaneToggle();
+    this.wrapsIntegerToggle();
 
     this.sideMenuElements.sideMenuContainer!.append(
       this.sideMenuElements.currentValuesWrapper!,
@@ -303,18 +335,24 @@ export class SideMenu {
       this.sideMenuElements.handleValuesWrapper!,
       this.sideMenuElements.valueScaleWrapper!,
       this.sideMenuElements.planeWrapper!,
+      this.sideMenuElements.integerWrapper!,
     );
   }
 
   public refreshValues(refreshData: RefreshData): void {
+    const isRoundUpNeed = refreshData.isToFixed && !this.isInputChanges;
+    const bringsValuesToForm = (value: string): string => (
+      isRoundUpNeed ? `${Math.round(Number(value))}` : value
+    );
+
     switch (refreshData.target) {
       case 'from':
-        this.sideMenuElements.fromOutput!.value = refreshData.value;
-        this.sideMenuElements.fromInput!.value = refreshData.value;
+        this.sideMenuElements.fromOutput!.value = bringsValuesToForm(refreshData.value);
+        this.sideMenuElements.fromInput!.value = bringsValuesToForm(refreshData.value);
         break;
       case 'to':
-        this.sideMenuElements.toOutput!.value = ` - ${refreshData.value}`;
-        this.sideMenuElements.toInput!.value = refreshData.value;
+        this.sideMenuElements.toOutput!.value = ` - ${bringsValuesToForm(refreshData.value)}`;
+        this.sideMenuElements.toInput!.value = bringsValuesToForm(refreshData.value);
         break;
       case 'min':
         this.sideMenuElements.minimumInput!.value = refreshData.value;
@@ -325,6 +363,8 @@ export class SideMenu {
       default:
         break;
     }
+
+    this.isInputChanges = false;
   }
 
   public hideToValues(isHideToValues: boolean): void {

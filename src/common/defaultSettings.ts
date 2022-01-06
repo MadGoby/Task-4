@@ -23,6 +23,7 @@ const gobyDefaults: SliderOptions = {
   set to(value: string) {
     this.toPosition = value;
   },
+  integer: true,
 };
 
 export { gobyDefaults };

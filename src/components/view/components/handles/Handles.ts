@@ -7,8 +7,6 @@ import {
 } from './types';
 import { RefreshData } from '../../types';
 import { HandlesPosition } from '../movement/types';
-import { valueToNode } from "@babel/types";
-import set = Reflect.set;
 
 export class Handles {
   readonly fromHandle: HTMLSpanElement;
@@ -18,6 +16,8 @@ export class Handles {
   readonly fromValue: HTMLSpanElement;
 
   readonly toValue: HTMLSpanElement;
+
+  public isInputChanges = false;
 
   readonly staticElementsDescription: StaticElementsDescription = [
     {
@@ -81,7 +81,10 @@ export class Handles {
   public refreshValues(data: RefreshData): void {
     const handlesData = data as RefreshHandlesData;
     const target: 'fromValue' | 'toValue' = `${handlesData.target}Value`;
-    this[target].innerText = data.value;
+    const isRoundUpNeed = data.isToFixed && !this.isInputChanges;
+
+    this[target].innerText = isRoundUpNeed ? `${Math.round(Number(data.value))}` : data.value;
+    this.isInputChanges = false;
   }
 
   public adjustPositions(dataToRefresh: DataForAdjustPosition, sliderWidth: number): RefreshIntervalPositions {

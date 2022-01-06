@@ -21,13 +21,21 @@ export class Presenter {
   private bindProxyToHandlesMovement(view: View, model: Model): HandlesPosition {
     return new Proxy(this.view.movement.positions, {
       set(target, prop: 'from' | 'to', val) {
-        target[prop] = val;
+        const isExtraRange = val === 0 || val === view.slider.slider.offsetWidth - view.handles.fromHandle.offsetWidth;
         const settings: CalculationData = {
           position: String(val),
           target: prop,
           sliderWidth: view.slider.slider.offsetWidth - view.handles.fromHandle.offsetWidth,
         };
+
+        if (isExtraRange) {
+          view.handles.isInputChanges = true;
+          view.sideMenu.isInputChanges = true;
+        }
+
+        target[prop] = val;
         model.calculateValuesByPosition(settings);
+
         return true;
       },
     });
@@ -71,10 +79,14 @@ export class Presenter {
     this.view.refreshAllComponents({
       value: this.model.values.min,
       target: 'min',
+      isToFixed: this.view.basicSettings.integer,
+      isRangeInteger: this.model.checksRangeNumbersForFractional(this.model.values.max),
     });
     this.view.refreshAllComponents({
       value: this.model.values.max,
       target: 'max',
+      isToFixed: this.view.basicSettings.integer,
+      isRangeInteger: this.model.checksRangeNumbersForFractional(this.model.values.max),
     });
   }
 
@@ -108,9 +120,10 @@ export class Presenter {
       result,
       this.view.slider.slider.offsetWidth,
     );
+    this.view.handles.isInputChanges = true;
+    this.view.sideMenu.isInputChanges = true;
     this.view.interval.adjustPositionRelativeValue(newPosition);
-    if (newPosition.target === 'from') this.view.movement.positions.from = Number(newPosition.position);
-    if (newPosition.target === 'to') this.view.movement.positions.to = Number(newPosition.position);
+    this.view.movement.positions[newPosition.target] = Number(newPosition.position);
   }
 
   private distributeValueFromScaleToApply(value: string): void {
@@ -169,7 +182,7 @@ export class Presenter {
     });
   }
 
-  private bindProxyToModel(view: View): BasicModelSettings {
+  private bindProxyToModel(view: View, model: Model): BasicModelSettings {
     return new Proxy(this.model.values, {
       set(target: BasicModelSettings, property: 'min' | 'max' | 'from' | 'to', value: string) {
         target[property] = value;
@@ -177,6 +190,8 @@ export class Presenter {
         view.refreshAllComponents({
           value,
           target: property,
+          isToFixed: view.basicSettings.integer,
+          isRangeInteger: model.checksRangeNumbersForFractional(value),
         });
 
         return true;
@@ -189,6 +204,6 @@ export class Presenter {
 
     view.movement.positions = this.bindProxyToHandlesMovement(view, model);
     view.dataRequestToModel = this.bindProxyToViewRequests();
-    model.values = this.bindProxyToModel(view);
+    model.values = this.bindProxyToModel(view, model);
   }
 }
