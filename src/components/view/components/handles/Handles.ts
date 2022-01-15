@@ -3,7 +3,7 @@ import {
   DataForAdjustPosition,
   HandlesElementsInfo,
   StaticElementsDescription,
-  HandleHideData, RefreshHandlesData,
+  HandleHideData, RefreshHandlesData, HandlesOverlaps,
 } from './types';
 import { RefreshData } from '../../types';
 import { HandlesPosition } from '../movement/types';
@@ -78,13 +78,38 @@ export class Handles {
     return element;
   }
 
-  public refreshValues(data: RefreshData): void {
-    const handlesData = data as RefreshHandlesData;
-    const target: 'fromValue' | 'toValue' = `${handlesData.target}Value`;
-    const isRoundUpNeed = data.isToFixed && !this.isInputChanges;
+  private correctsHandlesOverlaps(settings: HandlesOverlaps) {
+    const { positions, sliderWidth } = settings;
+    const isToNotInExtra: boolean = positions.to < sliderWidth - this.toHandle.offsetWidth;
 
-    this[target].innerText = isRoundUpNeed ? `${Math.round(Number(data.value))}` : data.value;
-    this.isInputChanges = false;
+    if (isToNotInExtra) {
+      this.toHandle.style.left = `${positions.from + this.fromHandle.offsetWidth}px`;
+      positions.to = positions.from + this.fromHandle.offsetWidth;
+    } else {
+      this.fromHandle.style.left = `${positions.to - this.fromHandle.offsetWidth}px`;
+      positions.from = positions.to - this.fromHandle.offsetWidth;
+    }
+  }
+
+  public refreshValues(data: RefreshData, positions: HandlesOverlaps): boolean {
+    const handlesData: RefreshHandlesData = data as RefreshHandlesData;
+    const target: 'fromValue' | 'toValue' = `${handlesData.target}Value`;
+    const isRoundUpNeed: boolean = data.isToFixed && !this.isInputChanges;
+    const differenceBetweenPositions: number = positions.positions.to - positions.positions.from;
+    const isExtraPosition = positions.positions.from === 0
+      || positions.positions.to === positions.sliderWidth - this.fromHandle.offsetWidth;
+    const isHandlesOverlaps: boolean = isExtraPosition && positions.isDouble
+      && differenceBetweenPositions < this.fromHandle.offsetWidth;
+
+    let result: boolean = true;
+    if (isHandlesOverlaps) {
+      this.correctsHandlesOverlaps(positions);
+      result = false;
+    } else {
+      this[target].innerText = isRoundUpNeed ? `${Math.round(Number(data.value))}` : data.value;
+      if (this.isInputChanges) this.isInputChanges = false;
+    }
+    return result;
   }
 
   public adjustPositions(dataToRefresh: DataForAdjustPosition, sliderWidth: number): RefreshIntervalPositions {

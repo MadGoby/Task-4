@@ -1,5 +1,3 @@
-import { RangeFractional } from '../model/types';
-
 type BasicViewSettings = {
   'double': boolean,
   'side-menu': boolean | string,
@@ -23,7 +21,6 @@ type RefreshData = {
   value: string;
   target: 'from' | 'to' | 'min' | 'max';
   isToFixed: boolean;
-  isRangeInteger: RangeFractional;
 };
 
 type DataRequestValue = { 'name': string, 'value': string };

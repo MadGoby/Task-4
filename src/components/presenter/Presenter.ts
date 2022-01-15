@@ -80,13 +80,11 @@ export class Presenter {
       value: this.model.values.min,
       target: 'min',
       isToFixed: this.view.basicSettings.integer,
-      isRangeInteger: this.model.checksRangeNumbersForFractional(this.model.values.max),
     });
     this.view.refreshAllComponents({
       value: this.model.values.max,
       target: 'max',
       isToFixed: this.view.basicSettings.integer,
-      isRangeInteger: this.model.checksRangeNumbersForFractional(this.model.values.max),
     });
   }
 
@@ -95,7 +93,7 @@ export class Presenter {
       const { stepWidth, step } = this.model.calculateStepWidth({
         step: Number(this.view.basicSettings.step),
         sliderWidth: this.view.slider.slider.offsetWidth,
-        handleWidth: this.view.handles.toHandle.offsetWidth,
+        handleWidth: this.view.handles.fromHandle.offsetWidth,
       });
       this.view.movement.stepWidth = stepWidth;
       if (this.view.basicSettings['side-menu']) this.view.sideMenu.sideMenuElements.stepInput!.value = String(step);
@@ -116,6 +114,7 @@ export class Presenter {
       handleWidth: this.view.handles.toHandle.offsetWidth,
       sliderWidth: this.view.slider.slider.offsetWidth,
     });
+
     const newPosition: RefreshIntervalPositions = this.view.handles.adjustPositions(
       result,
       this.view.slider.slider.offsetWidth,
@@ -132,6 +131,8 @@ export class Presenter {
       result,
       this.view.slider.slider.offsetWidth,
     );
+    this.view.handles.isInputChanges = true;
+    this.view.sideMenu.isInputChanges = true;
     this.view.interval.adjustPositionRelativeValue(newPosition);
     if (newPosition.target === 'from') this.view.movement.positions.from = Number(newPosition.position);
     if (newPosition.target === 'to') this.view.movement.positions.to = Number(newPosition.position);
@@ -144,6 +145,7 @@ export class Presenter {
     });
     this.view.dataRequestToModel.needDataForStartPosition = { name: '', value: 'true' };
     this.view.dataRequestToModel.needDataForScale = { name: '', value: 'true' };
+    this.view.dataRequestToModel.needStepWidth = { name: '', value: 'true' };
   }
 
   private handlesRequestsFromView(property: string, value: DataRequestValue): void {
@@ -182,7 +184,7 @@ export class Presenter {
     });
   }
 
-  private bindProxyToModel(view: View, model: Model): BasicModelSettings {
+  private bindProxyToModel(view: View): BasicModelSettings {
     return new Proxy(this.model.values, {
       set(target: BasicModelSettings, property: 'min' | 'max' | 'from' | 'to', value: string) {
         target[property] = value;
@@ -191,7 +193,6 @@ export class Presenter {
           value,
           target: property,
           isToFixed: view.basicSettings.integer,
-          isRangeInteger: model.checksRangeNumbersForFractional(value),
         });
 
         return true;
@@ -204,6 +205,6 @@ export class Presenter {
 
     view.movement.positions = this.bindProxyToHandlesMovement(view, model);
     view.dataRequestToModel = this.bindProxyToViewRequests();
-    model.values = this.bindProxyToModel(view, model);
+    model.values = this.bindProxyToModel(view);
   }
 }

@@ -133,8 +133,18 @@ export class View {
 
   public refreshAllComponents(settings: RefreshData): void {
     const isTargetNotRange = settings.target !== 'min' && settings.target !== 'max';
-    if (isTargetNotRange) this.handles.refreshValues(settings);
-    if (this.basicSettings['side-menu']) this.sideMenu.refreshValues(settings);
+    let handlesRefreshResult: boolean = true;
+
+    if (isTargetNotRange) {
+      handlesRefreshResult = this.handles.refreshValues(settings, {
+        positions: this.movement.positions,
+        isDouble: this.basicSettings.double,
+        sliderWidth: this.slider.slider.offsetWidth,
+      });
+    }
+
+    const isNeedSideMenuUpdate = handlesRefreshResult && this.basicSettings['side-menu'];
+    if (isNeedSideMenuUpdate) this.sideMenu.refreshValues(settings);
   }
 
   public bindEventListeners(): void {

@@ -27,6 +27,12 @@ type RefreshHandlesData = {
   target: 'from' | 'to';
 };
 
+type HandlesOverlaps = {
+  positions: HandlesPosition,
+  isDouble: boolean,
+  sliderWidth: number,
+};
+
 type StaticElementsDescription = Array<HandlesElementsInfo>;
 
 export {
@@ -36,4 +42,5 @@ export {
   HandleHideData,
   DataForAdjustPositionBasic,
   RefreshHandlesData,
+  HandlesOverlaps,
 };

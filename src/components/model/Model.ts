@@ -1,15 +1,12 @@
+import { DataForAdjustPosition, DataForAdjustPositionBasic } from '../view/components/handles/types';
 import {
-  DataForAdjustPosition,
-  DataForAdjustPositionBasic,
-} from '../view/components/handles/types';
-import {
+  BasicModelSettings,
   CalculationData,
   DataForPrepareValue,
   DataForRefreshingModel,
   DataForValueScale,
-  BasicModelSettings,
-  StepInfoFromModel,
   StepCalculateData,
+  StepInfoFromModel,
   ValuesRangeData,
 } from './types';
 
@@ -18,10 +15,10 @@ class Model {
 
   constructor(settings: BasicModelSettings) {
     this.values = {
-      min: settings.min,
-      max: settings.max,
-      from: settings.from,
-      to: settings.to,
+      min: Model.truncatesNumbersAfterDot(Number(settings.min)),
+      max: Model.truncatesNumbersAfterDot(Number(settings.max)),
+      from: Model.truncatesNumbersAfterDot(Number(settings.from)),
+      to: Model.truncatesNumbersAfterDot(Number(settings.to)),
     };
   }
 
@@ -53,34 +50,18 @@ class Model {
     this.writesDataToModel({ target: settings.target, value: calculateValues(settings) });
   }
 
-  public calculateDifferenceBetweenMinAndMax(): number {
-    return Math.abs(
-      Math.abs(Number(this.values.min)) - Math.abs(Number(this.values.max)),
-    );
-  }
-
   public calculateDataForValueScale(): DataForValueScale {
-    const differenceBetweenFromAndTo: number = this.calculateDifferenceBetweenMinAndMax();
-
-    const calculatePosition = (ratio: number) => {
-      let value: string = (
-        ((Number(this.values.max) - Number(this.values.min)) * ratio) + Number(this.values.min)
-      ).toFixed(2);
-
-      if (differenceBetweenFromAndTo >= 5) {
-        value = String(Math.round(Number(value)));
-      }
-
-      return String(value);
-    };
+    const calculatePosition = (ratio: number) => (
+      ((Number(this.values.max) - Number(this.values.min)) * ratio) + Number(this.values.min)
+    );
 
     return {
-      min: this.values.min,
-      max: this.values.max,
-      20: calculatePosition(0.2),
-      40: calculatePosition(0.4),
-      60: calculatePosition(0.6),
-      80: calculatePosition(0.8),
+      min: Model.truncatesNumbersAfterDot(Number(this.values.min)),
+      max: Model.truncatesNumbersAfterDot(Number(this.values.max)),
+      20: Model.truncatesNumbersAfterDot(calculatePosition(0.2)),
+      40: Model.truncatesNumbersAfterDot(calculatePosition(0.4)),
+      60: Model.truncatesNumbersAfterDot(calculatePosition(0.6)),
+      80: Model.truncatesNumbersAfterDot(calculatePosition(0.8)),
     };
   }
 
@@ -112,13 +93,12 @@ class Model {
       (Number(this.values.max) - Number(this.values.min)) / (sliderWidth - handleWidth),
     );
 
-    if (minStep <= 0) minStep = 0.1;
+    if (minStep <= 0) minStep = 0.01;
     if (step < minStep) step = minStep;
 
     const stepWidth: number = (
       (sliderWidth - handleWidth) / (Number(this.values.max) - Number(this.values.min))
     ) * Number(step);
-
     return { stepWidth: String(stepWidth), step };
   }
 
@@ -148,13 +128,13 @@ class Model {
 
     if (this.checkIsFromValueBiggerThanTo(settings.name, settings.value, step.stepWidth, settings.handleWidth)) {
       value = String(
-        Math.round(Number(this.values.to) - (settings.handleWidth / Number(step.stepWidth))),
+        Model.truncatesNumbersAfterDot(Number(this.values.to) - (settings.handleWidth / Number(step.stepWidth))),
       );
     }
 
     if (this.checkIsToValueSmallerThanFrom(settings.name, settings.value, step.stepWidth, settings.handleWidth)) {
       value = String(
-        Math.round(Number(this.values.from) + (settings.handleWidth / Number(step.stepWidth))),
+        Model.truncatesNumbersAfterDot(Number(this.values.from) + (settings.handleWidth / Number(step.stepWidth))),
       );
     }
 
