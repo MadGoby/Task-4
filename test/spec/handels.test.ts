@@ -1,74 +1,98 @@
-// import { Handles } from "../../src/components/view/components/handels/handles";
-// import { RefreshIntervalPositions } from "../../src/components/view/components/selectedInterval/interfaces.ts/RefreshIntervalPositions";
-//
-// describe("Handels", () => {
-//   let handels: Handles;
-//
-//   beforeEach(() => {
-//     handels = new Handles();
-//   });
-//
-//   it("Handels can be create", () => {
-//     expect(handels).toBeTruthy();
-//   });
-//
-//   it("refreshValues() refresh value for from", () => {
-//     handels.refreshValues({target: "from", value: "5"})
-//     expect(handels.fromValue.innerText).toEqual("5");
-//   });
-//
-//   it("refreshValues() refresh value for to", () => {
-//     handels.refreshValues({target: "to", value: "5"})
-//     expect(handels.toHandel.innerText).toEqual("5");
-//   });
-//
-//   it("adjustPositionRelativeValue() adjust from position correctly and return correct settings", () => {
-//     let result: RefreshIntervalPositions = handels.adjustPositions({target: "from", minValue: "0", totalValues: 10, value: "5"}, 100);
-//     expect(handels.fromHandel.style.left).toEqual("50px");
-//     expect(result).toEqual({target: "from", position: "50", sliderWidth: 100, handelWidth: 0});
-//   });
-//
-//   it("adjustPositionRelativeValue() adjust to position correctly and return correct settings", () => {
-//     let result: RefreshIntervalPositions = handels.adjustPositions({target: "to", minValue: "0", totalValues: 10, value: "5"}, 100);
-//     expect(handels.toHandel.style.left).toEqual("50px");
-//     expect(result).toEqual({target: "to", position: "50", sliderWidth: 100, handelWidth: 0});
-//   });
-//
-//   it("changePlane() change classes correctly", () => {
-//     handels.changePlane(true);
-//     expect(handels.fromValue).toHaveClass("cs-slider__handel-value_vertical");
-//     expect(handels.toValue).toHaveClass("cs-slider__handel-value_vertical");
-//     handels.changePlane(false);
-//     expect(handels.fromValue).not.toHaveClass("cs-slider__handel-value_vertical");
-//     expect(handels.toValue).not.toHaveClass("cs-slider__handel-value_vertical");
-//   });
-//
-//   it("hideHandelValues() manage display correctly", () => {
-//     handels.hideHandelValues(false);
-//     expect(handels.fromValue.style.display).toEqual("none");
-//     expect(handels.toValue.style.display).toEqual("none");
-//     handels.hideHandelValues(true);
-//     expect(handels.fromValue.style.display).toEqual("inline-block");
-//     expect(handels.toValue.style.display).toEqual("inline-block");
-//   });
-//
-//   it("hideToHandel() if need to hide", () => {
-//     handels.controlHandlesDisplay(false, {from: 30, to: 70}, 100);
-//     expect(handels.toHandel.style.display).toEqual("none");
-//   });
-//
-//   it("hideToHandel() if need to show", () => {
-//     handels.toHandel.style.display = "none";
-//     handels.controlHandlesDisplay(true, {from: 30, to: 70}, 100);
-//     expect(handels.toHandel.style.display).toEqual("inline-block");
-//     expect(handels.toHandel.style.left).toEqual("100px");
-//   });
-//
-//   it("hideToHandel() if need to show ane from bigger than to", () => {
-//     handels.toHandel.style.display = "none";
-//     handels.controlHandlesDisplay(true, {from: 101, to: 70}, 100);
-//     expect(handels.toHandel.style.display).toEqual("inline-block");
-//     expect(handels.toHandel.style.left).toEqual("100px");
-//     expect(handels.fromHandel.style.left).toEqual("100px");
-//   });
-// });
+import { Handles } from '../../src/components/view/components/handles/Handles';
+import { RefreshIntervalPositions } from '../../src/components/view/components/selectedInterval/types';
+
+describe('Handles', () => {
+  let handles: Handles;
+
+  beforeEach(() => {
+    handles = new Handles();
+  });
+
+  it('Handles can be create', () => {
+    expect(handles).toBeTruthy();
+  });
+
+  it('refreshValues() refresh value for from', () => {
+    handles.refreshValues({
+      target: 'from',
+      value: '5',
+      isToFixed: false,
+    }, {
+      positions: { from: 0, to: 0 },
+      sliderWidth: 0,
+      isDouble: false,
+    });
+    expect(handles.fromValue.innerText).toEqual('5');
+  });
+
+  it('refreshValues() refresh value for to', () => {
+    handles.refreshValues({
+      target: 'to',
+      value: '5',
+      isToFixed: false,
+    }, {
+      positions: { from: 0, to: 0 },
+      sliderWidth: 0,
+      isDouble: false,
+    });
+    expect(handles.toHandle.innerText).toEqual('5');
+  });
+
+  it('adjustPositionRelativeValue() adjust from position correctly and return correct settings', () => {
+    const result: RefreshIntervalPositions = handles.adjustPositions({
+      target: 'from', minValue: '0', totalValues: 10, value: '5',
+    }, 100);
+    expect(handles.fromHandle.style.left).toEqual('50px');
+    expect(result).toEqual({
+      target: 'from', position: '50', sliderWidth: 100, handleWidth: 0,
+    });
+  });
+
+  it('adjustPositionRelativeValue() adjust to position correctly and return correct settings', () => {
+    const result: RefreshIntervalPositions = handles.adjustPositions({
+      target: 'to', minValue: '0', totalValues: 10, value: '5',
+    }, 100);
+    expect(handles.toHandle.style.left).toEqual('50px');
+    expect(result).toEqual({
+      target: 'to', position: '50', sliderWidth: 100, handleWidth: 0,
+    });
+  });
+
+  it('changePlane() change classes correctly', () => {
+    handles.changePlane(true);
+    expect(handles.fromValue).toHaveClass('cs-slider__handel-value_vertical');
+    expect(handles.toValue).toHaveClass('cs-slider__handel-value_vertical');
+    handles.changePlane(false);
+    expect(handles.fromValue).not.toHaveClass('cs-slider__handel-value_vertical');
+    expect(handles.toValue).not.toHaveClass('cs-slider__handel-value_vertical');
+  });
+
+  it('hideHandleValues() manage display correctly', () => {
+    handles.hideHandleValues(false);
+    expect(handles.fromValue.style.display).toEqual('none');
+    expect(handles.toValue.style.display).toEqual('none');
+    handles.hideHandleValues(true);
+    expect(handles.fromValue.style.display).toEqual('inline-block');
+    expect(handles.toValue.style.display).toEqual('inline-block');
+  });
+
+  it('hideToHandel() if need to hide', () => {
+    handles.controlHandlesDisplay({ isDouble: false, positions: { from: 30, to: 70 }, sliderWidth: 100 });
+    expect(handles.toHandle.style.display).toEqual('none');
+  });
+
+  it('hideToHandel() if need to show', () => {
+    handles.toHandle.style.display = 'none';
+    handles.controlHandlesDisplay({ isDouble: true, positions: { from: 30, to: 70 }, sliderWidth: 100 });
+    expect(handles.toHandle.style.display).toEqual('inline-block');
+    expect(handles.toHandle.style.left).toEqual('100px');
+  });
+
+  it('hideToHandel() if need to show ane from bigger than to', () => {
+    handles.toHandle.style.display = 'none';
+    handles.controlHandlesDisplay({ isDouble: true, positions: { from: 101, to: 70 }, sliderWidth: 100 });
+    expect(handles.toHandle.style.display).toEqual('inline-block');
+    expect(handles.toHandle.style.left).toEqual('100px');
+    expect(handles.fromHandle.style.left).toEqual('100px');
+  });
+});

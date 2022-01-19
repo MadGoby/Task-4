@@ -24,6 +24,7 @@
     "sourceType": "module",
     "project": "./tsconfig.json"
   },
+  "ignorePatterns": ["**/*.css", "**/*.html"],
   "rules": {
     "linebreak-style": ["error", "windows"],
     "max-len": ["error", { "code":  121}],

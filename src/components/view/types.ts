@@ -1,11 +1,11 @@
 type BasicViewSettings = {
-  'double': boolean,
-  'side-menu': boolean | string,
-  'handlesValues': boolean,
-  'vertical': boolean,
-  'step': boolean | number,
-  'valueScale': boolean,
-  'integer': boolean,
+  'double': boolean;
+  'side-menu': boolean | string;
+  'handlesValues': boolean;
+  'vertical': boolean;
+  'step': boolean | number;
+  'valueScale': boolean;
+  'integer': boolean;
 };
 
 type TargetsForViewUpdate = {
@@ -23,15 +23,18 @@ type RefreshData = {
   isToFixed: boolean;
 };
 
-type DataRequestValue = { 'name': string, 'value': string };
+type DataRequestValue = {
+  'name': string;
+  'value': string;
+};
 
 type DataRequestToModel = {
   needDataForScale: DataRequestValue;
   needDataForStartPosition: DataRequestValue;
   needStepWidth: DataRequestValue;
   needApplyValueFromScale: DataRequestValue;
-  needApplyNewValue: DataRequestValue,
-  needChangeSliderValuesRange: DataRequestValue,
+  needApplyNewValue: DataRequestValue;
+  needChangeSliderValuesRange: DataRequestValue;
 };
 export {
   BasicViewSettings,

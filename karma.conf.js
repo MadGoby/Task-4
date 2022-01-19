@@ -1,33 +1,33 @@
-const webpackConfig = require("./webpack.config");
 const path = require('path');
+const webpackConfig = require('./webpack.config');
 
-delete webpackConfig.entry
+delete webpackConfig.entry;
 
 module.exports = (config) => {
   config.set({
-    browsers: ["ChromeHeadless"],
-    frameworks: ["jasmine", "webpack"],
-    reporters: ["spec", 'coverage-istanbul'],
+    browsers: ['Firefox'],
+    frameworks: ['jasmine', 'webpack'],
+    reporters: ['spec', 'coverage-istanbul'],
     files: [
-      "test/indexSpec.ts"
+      'test/index.test.ts',
     ],
     preprocessors: {
-      "test/indexSpec.ts": ["webpack"]
+      'test/index.test.ts': ['webpack'],
     },
     mime: {
-      "text/x-typescript": ["ts", "tsx"],
+      'text/x-typescript': ['ts', 'tsx'],
     },
     webpack: webpackConfig,
     webpackMiddleware: {
-      noInfo: true
+      noInfo: true,
     },
     coverageIstanbulReporter: {
-      reports: [ 'html', 'text-summary', 'lcovonly' ],
+      reports: ['html', 'text-summary', 'lcovonly'],
       dir: path.join(__dirname, 'test/coverage'),
       fixWebpackSourcePaths: true,
       'report-config': {
-        html: { outdir: 'html' }
-      }
-    }
-  })
+        html: { outdir: 'html' },
+      },
+    },
+  });
 };

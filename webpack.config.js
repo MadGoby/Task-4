@@ -2,6 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
+const ESLintPlugin = require('eslint-webpack-plugin');
 
 module.exports = {
   mode: 'development',
@@ -44,6 +45,7 @@ module.exports = {
       template: './src/pages/index.html',
       filename: 'index.html',
     }),
+    new ESLintPlugin(),
     new webpack.ProvidePlugin({
       autoBind: 'auto-bind',
       $: 'jquery',
