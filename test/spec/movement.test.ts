@@ -48,21 +48,6 @@ describe('Movement', () => {
     expect(movement).toBeTruthy();
   });
 
-  it('handelListener() move from and interval to correct position and record the position', () => {
-    movement.handleListener({ eventInfo: { target: movement.from, x: 50, y: 0 }, test: { x: 60, y: 0 } });
-    expect(movement.from.style.left).toEqual('10px');
-    expect(movement.interval.style.left).toEqual('20px');
-    expect(movement.positions.from).toEqual(10);
-  });
-
-  it('handelListener() move to and interval to correct position'
-    + ' and record the position', () => {
-    movement.handleListener({ eventInfo: { target: movement.to, x: 50, y: 0 }, test: { x: 140, y: 0 } });
-    expect(movement.to.style.left).toEqual('90px');
-    expect(movement.interval.style.right).toEqual('20px');
-    expect(movement.positions.to).toEqual(90);
-  });
-
   it('handelListener() move from and interval to '
     + 'position bigger than right edge and record the position after fixing', () => {
     movement.settings.double = false;
@@ -83,15 +68,6 @@ describe('Movement', () => {
     expect(movement.positions.from).toEqual(0);
   });
 
-  it('handelListener() move to and interval to position less than left edge '
-    + 'and record the position after fixing', () => {
-    movement.handleListener({ eventInfo: { target: movement.to, x: 50, y: 0 }, test: { x: 200, y: 0 } });
-
-    expect(movement.to.style.left).toEqual('100px');
-    expect(movement.interval.style.right).toEqual('10px');
-    expect(movement.positions.to).toEqual(100);
-  });
-
   it('handelListener() move from and interval to position bigger than to position'
     + ' and record the position after fixing', () => {
     movement.handleListener({ eventInfo: { target: movement.from, x: 50, y: 0 }, test: { x: 200, y: 0 } });
@@ -99,61 +75,5 @@ describe('Movement', () => {
     expect(movement.from.style.left).toEqual('50px');
     expect(movement.interval.style.left).toEqual('60px');
     expect(movement.positions.from).toEqual(50);
-  });
-
-  it('handelListener() move to and interval to position less than from position '
-    + 'and record the position after fixing', () => {
-    movement.handleListener({ eventInfo: { target: movement.to, x: 50, y: 0 }, test: { x: -200, y: 0 } });
-
-    expect(movement.to.style.left).toEqual('50px');
-    expect(movement.interval.style.right).toEqual('60px');
-    expect(movement.positions.to).toEqual(50);
-  });
-
-  it('handelListener() move from and interval correctly when vertical', () => {
-    movement.settings.vertical = true;
-    movement.handleListener({ eventInfo: { target: movement.from, x: 0, y: 50 }, test: { x: 0, y: 140 } });
-
-    expect(movement.from.style.left).toEqual('10px');
-    expect(movement.interval.style.left).toEqual('20px');
-    expect(movement.positions.from).toEqual(10);
-  });
-
-  it('handelListener() move from and interval correctly when step is done', () => {
-    movement.settings.step = true;
-    movement.stepWidth = '20';
-    movement.handleListener({ eventInfo: { target: movement.from, x: 50, y: 0 }, test: { x: 60, y: 0 } });
-
-    expect(movement.from.style.left).toEqual('10px');
-    expect(movement.interval.style.left).toEqual('20px');
-    expect(movement.positions.from).toEqual(10);
-
-    movement.handleListener({ eventInfo: { target: movement.from, x: 50, y: 0 }, test: { x: 80, y: 0 } });
-
-    expect(movement.from.style.left).toEqual('30px');
-    expect(movement.interval.style.left).toEqual('40px');
-    expect(movement.positions.from).toEqual(30);
-  });
-
-  it('handelListener() move to and interval correctly when step is done negatively', () => {
-    movement.settings.step = true;
-    movement.stepWidth = '20';
-
-    movement.handleListener({ eventInfo: { target: movement.to, x: 50, y: 0 }, test: { x: 100, y: 0 } });
-
-    expect(movement.to.style.left).toEqual('50px');
-    expect(movement.interval.style.right).toEqual('60px');
-    expect(movement.positions.to).toEqual(50);
-  });
-
-  it('handelListener() move from and interval correctly when position equally left edge', () => {
-    movement.settings.step = true;
-    movement.stepWidth = '20';
-
-    movement.handleListener({ eventInfo: { target: movement.from, x: 50, y: 0 }, test: { x: 50, y: 0 } });
-
-    expect(movement.from.style.left).toEqual('0px');
-    expect(movement.interval.style.left).toEqual('10px');
-    expect(movement.positions.from).toEqual(0);
   });
 });

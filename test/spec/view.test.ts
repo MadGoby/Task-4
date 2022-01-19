@@ -45,8 +45,8 @@ describe('View', () => {
       integer: true,
     });
     expect(view.slider.slider).toHaveClass('cs-slider_vertical');
-    expect(view.handles.fromValue).toHaveClass('cs-slider__handel-value_vertical');
-    expect(view.handles.toValue).toHaveClass('cs-slider__handel-value_vertical');
+    expect(view.handles.fromValue).toHaveClass('cs-slider__handle-value_vertical');
+    expect(view.handles.toValue).toHaveClass('cs-slider__handle-value_vertical');
     expect(view.valuesScale.minValue).toHaveClass('cs-slider__value_vertical');
   });
 
@@ -57,8 +57,8 @@ describe('View', () => {
       integer: true,
     });
     expect(view.slider.slider).not.toHaveClass('cs-slider_vertical');
-    expect(view.handles.fromValue).not.toHaveClass('cs-slider__handel-value_vertical');
-    expect(view.handles.toValue).not.toHaveClass('cs-slider__handel-value_vertical');
+    expect(view.handles.fromValue).not.toHaveClass('cs-slider__handle-value_vertical');
+    expect(view.handles.toValue).not.toHaveClass('cs-slider__handle-value_vertical');
     expect(view.valuesScale.minValue).not.toHaveClass('cs-slider__value_vertical');
   });
 

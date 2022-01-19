@@ -74,7 +74,7 @@ describe('Model', () => {
       sliderWidth: 120,
       handleWidth: 20,
     });
-    expect(result).toEqual({ stepWidth: '0.01', step: 0.1 });
+    expect(result).toEqual({ stepWidth: '0.1', step: 0.01 });
   });
 
   it('prepareInputValueForRecord() allow correct from value and return correct settings', () => {

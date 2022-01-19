@@ -60,11 +60,11 @@ describe('Handles', () => {
 
   it('changePlane() change classes correctly', () => {
     handles.changePlane(true);
-    expect(handles.fromValue).toHaveClass('cs-slider__handel-value_vertical');
-    expect(handles.toValue).toHaveClass('cs-slider__handel-value_vertical');
+    expect(handles.fromValue).toHaveClass('cs-slider__handle-value_vertical');
+    expect(handles.toValue).toHaveClass('cs-slider__handle-value_vertical');
     handles.changePlane(false);
-    expect(handles.fromValue).not.toHaveClass('cs-slider__handel-value_vertical');
-    expect(handles.toValue).not.toHaveClass('cs-slider__handel-value_vertical');
+    expect(handles.fromValue).not.toHaveClass('cs-slider__handle-value_vertical');
+    expect(handles.toValue).not.toHaveClass('cs-slider__handle-value_vertical');
   });
 
   it('hideHandleValues() manage display correctly', () => {
