@@ -5,7 +5,7 @@ delete webpackConfig.entry;
 
 module.exports = (config) => {
   config.set({
-    browsers: ['Firefox'],
+    browsers: ['Chrome'],
     frameworks: ['jasmine', 'webpack'],
     reporters: ['spec', 'coverage-istanbul'],
     files: [
@@ -23,7 +23,7 @@ module.exports = (config) => {
     },
     coverageIstanbulReporter: {
       reports: ['html', 'text-summary', 'lcovonly'],
-      dir: path.join(__dirname, 'test/coverage'),
+      dir: path.join(__dirname, 'dist/coverage'),
       fixWebpackSourcePaths: true,
       'report-config': {
         html: { outdir: 'html' },

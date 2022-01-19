@@ -1,4 +1,4 @@
-import { SideMenu } from '../../src/components/view/components/sideMenu/sideMenu';
+import { SideMenu } from '../../src/components/view/components/sideMenu/SideMenu';
 
 describe('SideMenu', () => {
   let sideMenu: SideMenu;

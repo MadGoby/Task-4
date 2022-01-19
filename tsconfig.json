@@ -15,10 +15,10 @@
     "allowSyntheticDefaultImports": true
   },
   "types": ["jquery"],
-  "include": [
-    "**/*.ts", "./webpack.config.js", "**/*.d.ts", "./test"
-  ],
   "exclude": [
-    "./node_modules", "./karma.conf.js"
+    "./node_modules"
+  ],
+  "include": [
+    "src/**/*", "./webpack.config.js", "**/*.d.ts", "test/**/*", "./karma.conf.js"
   ]
 }

@@ -1,5 +1,5 @@
 import { StepInfoFromModel, DataForValueScale } from '../../src/components/model/types';
-import { Model } from '../../src/components/model/model';
+import { Model } from '../../src/components/model/Model';
 import { DataForAdjustPosition } from '../../src/components/view/components/handles/types';
 
 describe('Model', () => {

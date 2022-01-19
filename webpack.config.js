@@ -2,7 +2,6 @@ const path = require('path');
 const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
-const ESLintPlugin = require('eslint-webpack-plugin');
 
 module.exports = {
   mode: 'development',
@@ -15,7 +14,7 @@ module.exports = {
     path: path.resolve(__dirname, './dist'),
   },
   resolve: {
-    extensions: ['.js', '.ts', '.json'],
+    extensions: ['.js', '.ts', '.tsx', '.json'],
   },
   devtool: 'inline-source-map',
   devServer: {
@@ -28,12 +27,21 @@ module.exports = {
   module: {
     rules: [
       {
+        test: /\.ts$/,
+        use: 'ts-loader',
+      },
+      {
         test: /\.css$/,
         use: [MiniCssExtractPlugin.loader, 'css-loader'],
       },
       {
         test: /\.ts$/,
-        use: 'ts-loader',
+        exclude: [path.resolve(__dirname, 'test')],
+        enforce: 'post',
+        use: {
+          loader: 'istanbul-instrumenter-loader',
+          options: { esModules: true },
+        },
       },
     ],
   },
@@ -45,7 +53,6 @@ module.exports = {
       template: './src/pages/index.html',
       filename: 'index.html',
     }),
-    new ESLintPlugin(),
     new webpack.ProvidePlugin({
       autoBind: 'auto-bind',
       $: 'jquery',

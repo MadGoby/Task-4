@@ -1,8 +1,8 @@
 import { Handles } from '../../src/components/view/components/handles/Handles';
-import { SelectedInterval } from '../../src/components/view/components/selectedInterval/selectedInterval';
+import { SelectedInterval } from '../../src/components/view/components/selectedInterval/SelectedInterval';
 import { SliderAssemblerSettings } from '../../src/components/view/components/slider/types';
-import { Slider } from '../../src/components/view/components/slider/slider';
-import { ValuesScale } from '../../src/components/view/components/valuesScale/valuesScale';
+import { Slider } from '../../src/components/view/components/slider/Slider';
+import { ValuesScale } from '../../src/components/view/components/valuesScale/ValuesScale';
 
 describe('Slider', () => {
   let slider: Slider;

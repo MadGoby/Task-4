@@ -1,4 +1,4 @@
-import { ValuesScale } from '../../src/components/view/components/valuesScale/valuesScale';
+import { ValuesScale } from '../../src/components/view/components/valuesScale/ValuesScale';
 
 describe('ValueScale', () => {
   let valuesScale: ValuesScale;
