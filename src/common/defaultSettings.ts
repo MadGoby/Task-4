@@ -1,4 +1,4 @@
-import { SliderOptions } from '../types';
+import { SliderOptions } from '../plugin/types';
 
 const gobyDefaults: SliderOptions = {
   'side-menu': true,

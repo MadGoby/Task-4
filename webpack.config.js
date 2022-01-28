@@ -6,7 +6,7 @@ const HTMLWebpackPlugin = require('html-webpack-plugin');
 module.exports = {
   mode: 'development',
   entry: {
-    slider: './src/slider.ts',
+    slider: './src/plugin/slider.ts',
     index: './src/pages/index.ts',
   },
   output: {

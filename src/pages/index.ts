@@ -1,18 +1,18 @@
-import '../slider.css';
+import '../plugin/slider.css';
 import './index.css';
 
 $('.js-slider_1').gobySlider(
   {
-    min: '0.10',
-    max: '2',
+    min: '1',
+    max: '5',
     double: true,
     'side-menu': true,
     handlesValues: true,
     vertical: false,
-    step: false,
+    step: 0.2,
     valueScale: true,
-    from: '0.20',
-    to: '0.39',
+    from: '2',
+    to: '3',
     integer: false,
   },
 );
