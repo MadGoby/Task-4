@@ -274,11 +274,15 @@ export class View {
 
   private handleSliderClick(event: MouseEvent): void {
     const isNotSliderBody = event.target !== this.interval.interval && event.target !== this.slider.slider;
+    const horizontalPosition: number = event.clientX - this.slider.slider.getBoundingClientRect().x;
+    const verticalPosition: number = this.slider.slider.offsetWidth - (
+      event.clientY - this.slider.slider.getBoundingClientRect().y
+    );
     if (isNotSliderBody) return;
 
-    const targetPosition: number = event.clientX - this.slider.slider.getBoundingClientRect().x;
+    const targetPosition: number = this.basicSettings.vertical ? verticalPosition : horizontalPosition;
     const targetHandle: HTMLSpanElement = this.handles.selectsHandleToMove({
-      targetPosition: event.clientX - this.slider.slider.getBoundingClientRect().x,
+      targetPosition,
       positions: this.movement.positions,
       isDouble: this.basicSettings.double,
     });

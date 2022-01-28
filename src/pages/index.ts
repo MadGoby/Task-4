@@ -8,7 +8,7 @@ $('.js-slider_1').gobySlider(
     double: true,
     'side-menu': true,
     handlesValues: true,
-    vertical: false,
+    vertical: true,
     step: 0.2,
     valueScale: true,
     from: '2',
