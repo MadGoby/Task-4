@@ -3,13 +3,13 @@ import './index.css';
 
 $('.js-slider_1').gobySlider(
   {
-    min: '1',
+    min: '0',
     max: '5',
     double: true,
     'side-menu': true,
     handlesValues: true,
-    vertical: true,
-    step: 0.2,
+    vertical: false,
+    step: false,
     valueScale: true,
     from: '2',
     to: '3',

@@ -107,7 +107,8 @@ export class Movement {
   }
 
   private applyNewPosition(newPosition: number): void {
-    this.dataForMovement.target.style.left = `${newPosition}px`;
+    const { target } = this.dataForMovement;
+    target.style.left = `${newPosition}px`;
 
     if (this.dataForMovement.target === this.from) {
       this.positions.from = newPosition;
@@ -191,7 +192,7 @@ export class Movement {
 
     let distanceToCursor: number;
     if (this.settings.vertical) {
-      distanceToCursor = eventInfo.y - target.getBoundingClientRect().top - target.offsetWidth;
+      distanceToCursor = eventInfo.y - target.getBoundingClientRect().top - (target.offsetWidth);
     } else {
       distanceToCursor = eventInfo.x - target.getBoundingClientRect().left;
     }
