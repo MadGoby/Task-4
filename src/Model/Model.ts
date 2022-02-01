@@ -1,4 +1,4 @@
-import { DataForAdjustPosition, DataForAdjustPositionBasic } from '../view/handles/types';
+import { DataForAdjustPosition, DataForAdjustPositionBasic } from '../View/Handles/types';
 import {
   BasicModelSettings,
   CalculationData,

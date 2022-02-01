@@ -1,8 +1,8 @@
-import { BasicModelSettings } from '../model/types';
-import { Model } from '../model/Model';
+import { BasicModelSettings } from '../Model/types';
+import { Model } from '../Model/Model';
 import { Presenter } from './Presenter';
-import { BasicViewSettings } from '../view/types';
-import { View } from '../view/View';
+import { BasicViewSettings } from '../View/types';
+import { View } from '../View/View';
 
 describe('Presenter', () => {
   let presenter: Presenter;

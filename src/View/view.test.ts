@@ -26,7 +26,7 @@ describe('View', () => {
 
   it('prepareSliderForUse() work correctly', () => {
     view.prepareSliderForUse();
-    expect(target).toContainElement('div.cs-slider');
+    expect(target).toContainElement('div.goby-slider');
   });
 
   it('prepareSliderForUse() add side menu in user container', () => {
@@ -35,7 +35,7 @@ describe('View', () => {
     document.querySelector('body')?.append(testContainer);
     view.basicSettings['side-menu'] = '.sideMenuTestContainer';
     view.prepareSliderForUse();
-    expect(testContainer).toContainElement('div.cs-side-menu__container');
+    expect(testContainer).toContainElement('div.goby-side-menu__container');
   });
 
   it('updateSliderView() call plane changers to make vertical', () => {
@@ -44,10 +44,10 @@ describe('View', () => {
       sideMenu: true,
       integer: true,
     });
-    expect(view.slider.slider).toHaveClass('cs-slider_vertical');
-    expect(view.handles.fromValue).toHaveClass('cs-slider__handle-value_vertical');
-    expect(view.handles.toValue).toHaveClass('cs-slider__handle-value_vertical');
-    expect(view.valuesScale.minValue).toHaveClass('cs-slider__value_vertical');
+    expect(view.slider.slider).toHaveClass('goby-slider_state_vertical');
+    expect(view.handles.fromValue).toHaveClass('goby-slider__handle-value_state_vertical');
+    expect(view.handles.toValue).toHaveClass('goby-slider__handle-value_state_vertical');
+    expect(view.valuesScale.minValue).toHaveClass('goby-slider__value_state_vertical');
   });
 
   it('updateSliderView() call plane changers to make horizontally', () => {
@@ -56,10 +56,10 @@ describe('View', () => {
       sideMenu: true,
       integer: true,
     });
-    expect(view.slider.slider).not.toHaveClass('cs-slider_vertical');
-    expect(view.handles.fromValue).not.toHaveClass('cs-slider__handle-value_vertical');
-    expect(view.handles.toValue).not.toHaveClass('cs-slider__handle-value_vertical');
-    expect(view.valuesScale.minValue).not.toHaveClass('cs-slider__value_vertical');
+    expect(view.slider.slider).not.toHaveClass('goby-slider_state_vertical');
+    expect(view.handles.fromValue).not.toHaveClass('goby-slider__handle-value_state_vertical');
+    expect(view.handles.toValue).not.toHaveClass('goby-slider__handle-value_state_vertical');
+    expect(view.valuesScale.minValue).not.toHaveClass('goby-slider__value_state_vertical');
   });
 
   it('updateSliderView() call display changers to hide to handel', () => {
@@ -167,17 +167,17 @@ describe('View', () => {
     view.sideMenu.sideMenuElements.planeToggle!.checked = true;
     view.sideMenu.sideMenuElements.planeToggle!.dispatchEvent(new Event('change'));
     expect(view.basicSettings.vertical).toBeTrue();
-    expect(view.slider.slider).toHaveClass('cs-slider_vertical');
-    expect(view.handles.fromValue).toHaveClass('cs-slider__handle-value_vertical');
-    expect(view.handles.toValue).toHaveClass('cs-slider__handle-value_vertical');
-    expect(view.valuesScale.minValue).toHaveClass('cs-slider__value_vertical');
+    expect(view.slider.slider).toHaveClass('goby-slider_state_vertical');
+    expect(view.handles.fromValue).toHaveClass('goby-slider__handle-value_state_vertical');
+    expect(view.handles.toValue).toHaveClass('goby-slider__handle-value_state_vertical');
+    expect(view.valuesScale.minValue).toHaveClass('goby-slider__value_state_vertical');
     view.sideMenu.sideMenuElements.planeToggle!.checked = false;
     view.sideMenu.sideMenuElements.planeToggle!.dispatchEvent(new Event('change'));
     expect(view.basicSettings.vertical).toBeFalse();
-    expect(view.slider.slider).not.toHaveClass('cs-slider_vertical');
-    expect(view.handles.fromValue).not.toHaveClass('cs-slider__handle-value_vertical');
-    expect(view.handles.toValue).not.toHaveClass('cs-slider__handle-value_vertical');
-    expect(view.valuesScale.minValue).not.toHaveClass('cs-slider__value_vertical');
+    expect(view.slider.slider).not.toHaveClass('goby-slider_state_vertical');
+    expect(view.handles.fromValue).not.toHaveClass('goby-slider__handle-value_state_vertical');
+    expect(view.handles.toValue).not.toHaveClass('goby-slider__handle-value_state_vertical');
+    expect(view.valuesScale.minValue).not.toHaveClass('goby-slider__value_state_vertical');
   });
 
   it('bindEventListeners() correctly responds to valueScale input changes', () => {

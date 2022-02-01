@@ -1,4 +1,4 @@
-import { DataForValueScale } from '../../model/types';
+import { DataForValueScale } from '../../Model/types';
 import { IValuesScale } from './interfaces';
 
 export class ValuesScale implements IValuesScale {
@@ -15,18 +15,18 @@ export class ValuesScale implements IValuesScale {
   readonly 80: HTMLSpanElement;
 
   constructor() {
-    this.minValue = ValuesScale.createElement('min');
-    this.maxValue = ValuesScale.createElement('max');
-    this[20] = ValuesScale.createElement('20');
-    this[40] = ValuesScale.createElement('40');
-    this[60] = ValuesScale.createElement('60');
-    this[80] = ValuesScale.createElement('80');
+    this.minValue = ValuesScale.createElement('type_min');
+    this.maxValue = ValuesScale.createElement('type_max');
+    this[20] = ValuesScale.createElement('percent_20');
+    this[40] = ValuesScale.createElement('percent_40');
+    this[60] = ValuesScale.createElement('percent_60');
+    this[80] = ValuesScale.createElement('percent_80');
   }
 
   private static createElement(classModifier: string): HTMLSpanElement {
     const element: HTMLSpanElement = document.createElement('span');
 
-    element.classList.add('cs-slider__value', `cs-slider__value_${classModifier}`);
+    element.classList.add('goby-slider__value', `goby-slider__value_${classModifier}`);
 
     return element;
   }
@@ -59,33 +59,33 @@ export class ValuesScale implements IValuesScale {
   }
 
   private checkIsNeedToMakeHorizontally(isVertical: boolean): boolean {
-    return (this.minValue.classList.contains('cs-slider__value_vertical'))
-      && (this.maxValue.classList.contains('cs-slider__value_vertical'))
-      && (this[20].classList.contains('cs-slider__value_vertical'))
-      && (this[40].classList.contains('cs-slider__value_vertical'))
-      && (this[60].classList.contains('cs-slider__value_vertical'))
-      && (this[80].classList.contains('cs-slider__value_vertical'))
+    return (this.minValue.classList.contains('goby-slider__value_state_vertical'))
+      && (this.maxValue.classList.contains('goby-slider__value_state_vertical'))
+      && (this[20].classList.contains('goby-slider__value_state_vertical'))
+      && (this[40].classList.contains('goby-slider__value_state_vertical'))
+      && (this[60].classList.contains('goby-slider__value_state_vertical'))
+      && (this[80].classList.contains('goby-slider__value_state_vertical'))
       && (!isVertical);
   }
 
   private checkIsNeedToMakeVertical(isVertical: boolean): boolean {
-    return (!this.minValue.classList.contains('cs-slider__value_vertical'))
-      && (!this.maxValue.classList.contains('cs-slider__value_vertical'))
-      && (!this[20].classList.contains('cs-slider__value_vertical'))
-      && (!this[40].classList.contains('cs-slider__value_vertical'))
-      && (!this[60].classList.contains('cs-slider__value_vertical'))
-      && (!this[80].classList.contains('cs-slider__value_vertical'))
+    return (!this.minValue.classList.contains('goby-slider__value_state_vertical'))
+      && (!this.maxValue.classList.contains('goby-slider__value_state_vertical'))
+      && (!this[20].classList.contains('goby-slider__value_state_vertical'))
+      && (!this[40].classList.contains('goby-slider__value_state_vertical'))
+      && (!this[60].classList.contains('goby-slider__value_state_vertical'))
+      && (!this[80].classList.contains('goby-slider__value_state_vertical'))
       && (isVertical);
   }
 
   public changePlane(isVertical: boolean): void {
     const changeClasses = (): void => {
-      this.minValue.classList.toggle('cs-slider__value_vertical');
-      this.maxValue.classList.toggle('cs-slider__value_vertical');
-      this[20].classList.toggle('cs-slider__value_vertical');
-      this[40].classList.toggle('cs-slider__value_vertical');
-      this[60].classList.toggle('cs-slider__value_vertical');
-      this[80].classList.toggle('cs-slider__value_vertical');
+      this.minValue.classList.toggle('goby-slider__value_state_vertical');
+      this.maxValue.classList.toggle('goby-slider__value_state_vertical');
+      this[20].classList.toggle('goby-slider__value_state_vertical');
+      this[40].classList.toggle('goby-slider__value_state_vertical');
+      this[60].classList.toggle('goby-slider__value_state_vertical');
+      this[80].classList.toggle('goby-slider__value_state_vertical');
     };
 
     const isNeedToChangeClasses = this.checkIsNeedToMakeVertical(isVertical)

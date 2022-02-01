@@ -7,9 +7,9 @@ export class Slider {
 
   constructor() {
     this.slider = document.createElement('div');
-    this.slider.classList.add('cs-slider');
+    this.slider.classList.add('goby-slider');
     this.sliderWrapper = document.createElement('div');
-    this.sliderWrapper.classList.add('cs-slider-wrapper');
+    this.sliderWrapper.classList.add('goby-slider-wrapper');
     this.sliderWrapper.append(this.slider);
   }
 
@@ -28,22 +28,22 @@ export class Slider {
   }
 
   private checkIsNeedToMakeHorizontally(isVertical: boolean): boolean {
-    return ((this.slider.classList.contains('cs-slider_vertical')) && (!isVertical));
+    return ((this.slider.classList.contains('goby-slider_state_vertical')) && (!isVertical));
   }
 
   private checkIsNeedToMakeVertical(isVertical: boolean): boolean {
-    return ((!this.slider.classList.contains('cs-slider_vertical')) && (isVertical));
+    return ((!this.slider.classList.contains('goby-slider_state_vertical')) && (isVertical));
   }
 
   public changePlane(isVertical: boolean): void {
     switch (true) {
       case this.checkIsNeedToMakeVertical(isVertical):
-        this.slider.classList.toggle('cs-slider_vertical');
+        this.slider.classList.toggle('goby-slider_state_vertical');
         this.slider.style.top = `${this.slider.offsetWidth / 2}px`;
         this.sliderWrapper.style.height = `${this.slider.offsetWidth}px`;
         break;
       case this.checkIsNeedToMakeHorizontally(isVertical):
-        this.slider.classList.toggle('cs-slider_vertical');
+        this.slider.classList.toggle('goby-slider_state_vertical');
         this.slider.style.top = '';
         this.sliderWrapper.style.height = '';
         break;

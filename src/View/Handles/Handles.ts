@@ -1,4 +1,4 @@
-import { RefreshIntervalPositions } from '../selectedInterval/types';
+import { RefreshIntervalPositions } from '../SelectedInterval/types';
 import {
   DataForAdjustPosition,
   HandlesElementsInfo,
@@ -8,7 +8,7 @@ import {
   HandlesOverlaps,
 } from './types';
 import { RefreshData } from '../types';
-import { HandlesPosition } from '../movement/types';
+import { HandlesPosition } from '../Movement/types';
 
 export class Handles {
   readonly fromHandle: HTMLSpanElement;
@@ -23,22 +23,22 @@ export class Handles {
 
   readonly staticElementsDescription: StaticElementsDescription = [
     {
-      cssClasses: ['cs-slider__handle', 'cs-slider__handle_from'],
+      cssClasses: ['goby-slider__handle', 'goby-slider__handle_type_from'],
       name: 'style',
       value: 'display: inline-block',
     },
     {
-      cssClasses: ['cs-slider__handle', 'cs-slider__handle_to'],
+      cssClasses: ['goby-slider__handle', 'goby-slider__handle_type_to'],
       name: 'style',
       value: 'display: inline-block',
     },
     {
-      cssClasses: ['cs-slider__handle-value', 'cs-slider__handle-value_from'],
+      cssClasses: ['goby-slider__handle-value', 'goby-slider__handle-value_type_from'],
       name: 'style',
       value: 'display: inline-block',
     },
     {
-      cssClasses: ['cs-slider__handle-value', 'cs-slider__handle-value_to'],
+      cssClasses: ['goby-slider__handle-value', 'goby-slider__handle-value_type_to'],
       name: 'style',
       value: 'display: inline-block',
     },
@@ -135,13 +135,13 @@ export class Handles {
   }
 
   private checkIsNeedToMakeVertical(isVertical: boolean): boolean {
-    return (!this.fromValue.classList.contains('cs-slider__handle-value_vertical'))
-      && (!this.toValue.classList.contains('cs-slider__handle-value_vertical')) && (isVertical);
+    return (!this.fromValue.classList.contains('goby-slider__handle-value_state_vertical'))
+      && (!this.toValue.classList.contains('goby-slider__handle-value_state_vertical')) && (isVertical);
   }
 
   private checkIsNeedToMakeHorizontally(isVertical: boolean): boolean {
-    return (this.fromValue.classList.contains('cs-slider__handle-value_vertical'))
-      && (this.toValue.classList.contains('cs-slider__handle-value_vertical')) && (!isVertical);
+    return (this.fromValue.classList.contains('goby-slider__handle-value_state_vertical'))
+      && (this.toValue.classList.contains('goby-slider__handle-value_state_vertical')) && (!isVertical);
   }
 
   private checkIsToNeedHide(isDouble: boolean): boolean {
@@ -154,8 +154,8 @@ export class Handles {
 
   public changePlane(isVertical: boolean): void {
     function changeVerticalClass(from: HTMLSpanElement, to: HTMLSpanElement) {
-      from.classList.toggle('cs-slider__handle-value_vertical');
-      to.classList.toggle('cs-slider__handle-value_vertical');
+      from.classList.toggle('goby-slider__handle-value_state_vertical');
+      to.classList.toggle('goby-slider__handle-value_state_vertical');
     }
 
     switch (true) {

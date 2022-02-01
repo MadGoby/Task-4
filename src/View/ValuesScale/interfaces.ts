@@ -1,4 +1,4 @@
-import { DataForValueScale } from '../../model/types';
+import { DataForValueScale } from '../../Model/types';
 
 interface IValuesScale {
   minValue: HTMLSpanElement;

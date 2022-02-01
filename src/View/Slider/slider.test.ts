@@ -1,8 +1,8 @@
-import { Handles } from '../handles/Handles';
-import { SelectedInterval } from '../selectedInterval/SelectedInterval';
+import { Handles } from '../Handles/Handles';
+import { SelectedInterval } from '../SelectedInterval/SelectedInterval';
 import { SliderAssemblerSettings } from './types';
 import { Slider } from './Slider';
-import { ValuesScale } from '../valuesScale/ValuesScale';
+import { ValuesScale } from '../ValuesScale/ValuesScale';
 
 describe('Slider', () => {
   let slider: Slider;
@@ -28,9 +28,9 @@ describe('Slider', () => {
 
   it('changePlane() operates the display function correctly', () => {
     slider.changePlane(true);
-    expect(slider.slider).toHaveClass('cs-slider_vertical');
+    expect(slider.slider).toHaveClass('goby-slider_state_vertical');
 
     slider.changePlane(false);
-    expect(slider.slider).not.toHaveClass('cs-slider_vertical');
+    expect(slider.slider).not.toHaveClass('goby-slider_state_vertical');
   });
 });

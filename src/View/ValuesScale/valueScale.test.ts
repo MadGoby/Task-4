@@ -35,19 +35,19 @@ describe('ValueScale', () => {
 
   it('changePlane() operates the plane function correctly', () => {
     valuesScale.changePlane(true);
-    expect(valuesScale.minValue).toHaveClass('cs-slider__value_vertical');
-    expect(valuesScale.maxValue).toHaveClass('cs-slider__value_vertical');
-    expect(valuesScale[20]).toHaveClass('cs-slider__value_vertical');
-    expect(valuesScale[40]).toHaveClass('cs-slider__value_vertical');
-    expect(valuesScale[60]).toHaveClass('cs-slider__value_vertical');
-    expect(valuesScale[80]).toHaveClass('cs-slider__value_vertical');
+    expect(valuesScale.minValue).toHaveClass('goby-slider__value_state_vertical');
+    expect(valuesScale.maxValue).toHaveClass('goby-slider__value_state_vertical');
+    expect(valuesScale[20]).toHaveClass('goby-slider__value_state_vertical');
+    expect(valuesScale[40]).toHaveClass('goby-slider__value_state_vertical');
+    expect(valuesScale[60]).toHaveClass('goby-slider__value_state_vertical');
+    expect(valuesScale[80]).toHaveClass('goby-slider__value_state_vertical');
     valuesScale.changePlane(false);
-    expect(valuesScale.minValue).not.toHaveClass('cs-slider__value_vertical');
-    expect(valuesScale.maxValue).not.toHaveClass('cs-slider__value_vertical');
-    expect(valuesScale[20]).not.toHaveClass('cs-slider__value_vertical');
-    expect(valuesScale[40]).not.toHaveClass('cs-slider__value_vertical');
-    expect(valuesScale[60]).not.toHaveClass('cs-slider__value_vertical');
-    expect(valuesScale[80]).not.toHaveClass('cs-slider__value_vertical');
+    expect(valuesScale.minValue).not.toHaveClass('goby-slider__value_state_vertical');
+    expect(valuesScale.maxValue).not.toHaveClass('goby-slider__value_state_vertical');
+    expect(valuesScale[20]).not.toHaveClass('goby-slider__value_state_vertical');
+    expect(valuesScale[40]).not.toHaveClass('goby-slider__value_state_vertical');
+    expect(valuesScale[60]).not.toHaveClass('goby-slider__value_state_vertical');
+    expect(valuesScale[80]).not.toHaveClass('goby-slider__value_state_vertical');
   });
 
   it('hideValueScale() operates the display function correctly', () => {

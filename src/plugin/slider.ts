@@ -1,6 +1,6 @@
-import { Model } from '../model/Model';
-import { View } from '../view/View';
-import { Presenter } from '../presenter/Presenter';
+import { Model } from '../Model/Model';
+import { View } from '../View/View';
+import { Presenter } from '../Presenter/Presenter';
 import { SliderOptions } from './types';
 import { gobyDefaults } from '../common/defaultSettings';
 

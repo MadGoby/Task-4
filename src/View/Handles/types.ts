@@ -1,4 +1,4 @@
-import { HandlesPosition } from '../movement/types';
+import { HandlesPosition } from '../Movement/types';
 
 type DataForAdjustPositionBasic = {
   target: 'from' | 'to';

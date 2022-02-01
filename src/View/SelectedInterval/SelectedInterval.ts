@@ -7,7 +7,7 @@ export class SelectedInterval {
 
   constructor() {
     this.interval = document.createElement('div');
-    this.interval.classList.add('cs-slider__interval');
+    this.interval.classList.add('goby-slider__interval');
     this.interval.setAttribute('style', 'display: block');
   }
 

@@ -1,7 +1,7 @@
-import { Handles } from '../handles/Handles';
+import { Handles } from '../Handles/Handles';
 import { Movement } from './Movement';
-import { SelectedInterval } from '../selectedInterval/SelectedInterval';
-import { Slider } from '../slider/Slider';
+import { SelectedInterval } from '../SelectedInterval/SelectedInterval';
+import { Slider } from '../Slider/Slider';
 
 describe('Movement', () => {
   let movement: Movement;

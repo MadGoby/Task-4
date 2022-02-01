@@ -1,11 +1,11 @@
 import autobind from 'autobind-decorator';
-import { BasicModelSettings, CalculationData, DataForValueScale } from '../model/types';
-import { Model } from '../model/Model';
-import { DataForAdjustPosition } from '../view/handles/types';
-import { RefreshIntervalPositions } from '../view/selectedInterval/types';
-import { View } from '../view/View';
-import { HandlesPosition } from '../view/movement/types';
-import { DataRequestToModel, DataRequestValue } from '../view/types';
+import { BasicModelSettings, CalculationData, DataForValueScale } from '../Model/types';
+import { Model } from '../Model/Model';
+import { DataForAdjustPosition } from '../View/Handles/types';
+import { RefreshIntervalPositions } from '../View/SelectedInterval/types';
+import { View } from '../View/View';
+import { HandlesPosition } from '../View/Movement/types';
+import { DataRequestToModel, DataRequestValue } from '../View/types';
 
 @autobind
 export class Presenter {

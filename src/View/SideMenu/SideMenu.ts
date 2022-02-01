@@ -14,20 +14,20 @@ export class SideMenu {
   private createOutputs(): void {
     this.sideMenuElements.currentValuesWrapper = SideMenu.createElement({
       name: 'div',
-      cssClasses: ['cs-side-menu__item-wrapper'],
+      cssClasses: ['goby-side-menu__item-wrapper'],
     }) as HTMLDivElement;
     this.sideMenuElements.currentValuesObjective = SideMenu.createElement({
       name: 'span',
-      cssClasses: ['cs-side-menu__item-objective'],
+      cssClasses: ['goby-side-menu__item-objective'],
       text: 'Текущее занчение: ',
     }) as HTMLSpanElement;
     this.sideMenuElements.fromOutput = SideMenu.createElement({
       name: 'output',
-      cssClasses: ['cs-side-menu__value', 'cs-side-menu__value_from'],
+      cssClasses: ['goby-side-menu__value', 'goby-side-menu__value_type_from'],
     }) as HTMLOutputElement;
     this.sideMenuElements.toOutput = SideMenu.createElement({
       name: 'output',
-      cssClasses: ['cs-side-menu__value', 'cs-side-menu__value_to'],
+      cssClasses: ['goby-side-menu__value', 'goby-side-menu__value_type_to'],
       attr: { name: 'style', value: 'display: inline' },
     }) as HTMLOutputElement;
   }
@@ -35,68 +35,68 @@ export class SideMenu {
   private createWrappers(): void {
     this.sideMenuElements.toWrapper = SideMenu.createElement({
       name: 'div',
-      cssClasses: ['cs-side-menu__item-wrapper'],
+      cssClasses: ['goby-side-menu__item-wrapper'],
     }) as HTMLDivElement;
 
     this.sideMenuElements.toToggleWrapper = SideMenu.createElement({
       name: 'label',
-      cssClasses: ['cs-side-menu__item-toggle-wrapper'],
+      cssClasses: ['goby-side-menu__item-toggle-wrapper'],
     }) as HTMLLabelElement;
 
     this.sideMenuElements.inputWrapper = SideMenu.createElement({
       name: 'div',
-      cssClasses: ['cs-side-menu__item-wrapper'],
+      cssClasses: ['goby-side-menu__item-wrapper'],
     }) as HTMLDivElement;
 
     this.sideMenuElements.fromInputWrapper = SideMenu.createElement({
       name: 'label',
-      cssClasses: ['cs-side-menu__input-wrapper'],
+      cssClasses: ['goby-side-menu__input-wrapper'],
       text: 'От: ',
     }) as HTMLLabelElement;
 
     this.sideMenuElements.stepInputWrapper = SideMenu.createElement({
       name: 'label',
-      cssClasses: ['cs-side-menu__input-wrapper'],
+      cssClasses: ['goby-side-menu__input-wrapper'],
       text: 'Шаг: ',
     }) as HTMLLabelElement;
 
     this.sideMenuElements.minInputWrapper = SideMenu.createElement({
       name: 'label',
-      cssClasses: ['cs-side-menu__input-wrapper'],
+      cssClasses: ['goby-side-menu__input-wrapper'],
       text: 'Мин: ',
     }) as HTMLLabelElement;
 
     this.sideMenuElements.maxInputWrapper = SideMenu.createElement({
       name: 'label',
-      cssClasses: ['cs-side-menu__input-wrapper'],
+      cssClasses: ['goby-side-menu__input-wrapper'],
       text: 'Макс: ',
     }) as HTMLLabelElement;
 
     this.sideMenuElements.toInputWrapper = SideMenu.createElement({
       name: 'label',
-      cssClasses: ['cs-side-menu__input-wrapper'],
+      cssClasses: ['goby-side-menu__input-wrapper'],
       text: 'До: ',
       attr: { name: 'style', value: 'display: block' },
     }) as HTMLLabelElement;
 
     this.sideMenuElements.handleValuesWrapper = SideMenu.createElement({
       name: 'div',
-      cssClasses: ['cs-side-menu__item-wrapper'],
+      cssClasses: ['goby-side-menu__item-wrapper'],
     }) as HTMLDivElement;
 
     this.sideMenuElements.valueScaleWrapper = SideMenu.createElement({
       name: 'div',
-      cssClasses: ['cs-side-menu__item-wrapper'],
+      cssClasses: ['goby-side-menu__item-wrapper'],
     }) as HTMLDivElement;
 
     this.sideMenuElements.planeWrapper = SideMenu.createElement({
       name: 'div',
-      cssClasses: ['cs-side-menu__item-wrapper'],
+      cssClasses: ['goby-side-menu__item-wrapper'],
     }) as HTMLDivElement;
 
     this.sideMenuElements.integerWrapper = SideMenu.createElement({
       name: 'div',
-      cssClasses: ['cs-side-menu__item-wrapper'],
+      cssClasses: ['goby-side-menu__item-wrapper'],
     }) as HTMLDivElement;
 
     const labelElement: Node = this.sideMenuElements.toToggleWrapper.cloneNode();
@@ -109,32 +109,32 @@ export class SideMenu {
   private createInputs(): void {
     this.sideMenuElements.inputObjective = SideMenu.createElement({
       name: 'span',
-      cssClasses: ['cs-side-menu__item-objective'],
+      cssClasses: ['goby-side-menu__item-objective'],
       text: 'Изменить значение: ',
     }) as HTMLSpanElement;
     this.sideMenuElements.fromInput = SideMenu.createElement({
       name: 'input',
-      cssClasses: ['cs-side-menu__input'],
+      cssClasses: ['goby-side-menu__input'],
       attr: { name: 'type', value: 'number' },
     }) as HTMLInputElement;
     this.sideMenuElements.toInput = SideMenu.createElement({
       name: 'input',
-      cssClasses: ['cs-side-menu__input'],
+      cssClasses: ['goby-side-menu__input'],
       attr: { name: 'type', value: 'number' },
     }) as HTMLInputElement;
     this.sideMenuElements.stepInput = SideMenu.createElement({
       name: 'input',
-      cssClasses: ['cs-side-menu__input'],
+      cssClasses: ['goby-side-menu__input'],
       attr: { name: 'type', value: 'number' },
     }) as HTMLInputElement;
     this.sideMenuElements.minimumInput = SideMenu.createElement({
       name: 'input',
-      cssClasses: ['cs-side-menu__input'],
+      cssClasses: ['goby-side-menu__input'],
       attr: { name: 'type', value: 'number' },
     }) as HTMLInputElement;
     this.sideMenuElements.maximumInput = SideMenu.createElement({
       name: 'input',
-      cssClasses: ['cs-side-menu__input'],
+      cssClasses: ['goby-side-menu__input'],
       attr: { name: 'type', value: 'number' },
     }) as HTMLInputElement;
   }
@@ -142,13 +142,13 @@ export class SideMenu {
   private createToggles():void {
     this.sideMenuElements.toToggleObjective = SideMenu.createElement({
       name: 'span',
-      cssClasses: ['cs-side-menu__item-objective'],
+      cssClasses: ['goby-side-menu__item-objective'],
       text: 'Включить второй ползунок: ',
     }) as HTMLSpanElement;
 
     this.sideMenuElements.toToggle = SideMenu.createElement({
       name: 'input',
-      cssClasses: ['cs-side-menu__item-toggle'],
+      cssClasses: ['goby-side-menu__item-toggle'],
       attr: { name: 'type', value: 'checkbox' },
     }) as HTMLInputElement;
     const inputElement: Node = this.sideMenuElements!.toToggle!.cloneNode();
@@ -158,58 +158,58 @@ export class SideMenu {
 
     this.sideMenuElements.toToggleBorder = SideMenu.createElement({
       name: 'span',
-      cssClasses: ['cs-side-menu__item-toggle-border'],
+      cssClasses: ['goby-side-menu__item-toggle-border'],
     }) as HTMLSpanElement;
 
     this.sideMenuElements.handleValuesToggleBorder = SideMenu.createElement({
       name: 'span',
-      cssClasses: ['cs-side-menu__item-toggle-border'],
+      cssClasses: ['goby-side-menu__item-toggle-border'],
     }) as HTMLSpanElement;
 
     this.sideMenuElements.valueScaleToggleBorder = SideMenu.createElement({
       name: 'span',
-      cssClasses: ['cs-side-menu__item-toggle-border'],
+      cssClasses: ['goby-side-menu__item-toggle-border'],
     }) as HTMLSpanElement;
 
     this.sideMenuElements.integerToggleBorder = SideMenu.createElement({
       name: 'span',
-      cssClasses: ['cs-side-menu__item-toggle-border'],
+      cssClasses: ['goby-side-menu__item-toggle-border'],
     }) as HTMLSpanElement;
 
     this.sideMenuElements.planeToggle = SideMenu.createElement({
       name: 'input',
-      cssClasses: ['cs-side-menu__item-toggle'],
+      cssClasses: ['goby-side-menu__item-toggle'],
       attr: { name: 'type', value: 'checkbox' },
     }) as HTMLInputElement;
 
     this.sideMenuElements.planeToggleBorder = SideMenu.createElement({
       name: 'span',
-      cssClasses: ['cs-side-menu__item-toggle-border'],
+      cssClasses: ['goby-side-menu__item-toggle-border'],
     }) as HTMLSpanElement;
   }
 
   private createObjectives(): void {
     this.sideMenuElements.handleValuesObjective = SideMenu.createElement({
       name: 'span',
-      cssClasses: ['cs-side-menu__item-objective'],
+      cssClasses: ['goby-side-menu__item-objective'],
       text: 'Включить значения под ползунками: ',
     }) as HTMLSpanElement;
 
     this.sideMenuElements.valueScaleObjective = SideMenu.createElement({
       name: 'span',
-      cssClasses: ['cs-side-menu__item-objective'],
+      cssClasses: ['goby-side-menu__item-objective'],
       text: 'Включить шкалу значений: ',
     }) as HTMLSpanElement;
 
     this.sideMenuElements.planeObjective = SideMenu.createElement({
       name: 'span',
-      cssClasses: ['cs-side-menu__item-objective'],
+      cssClasses: ['goby-side-menu__item-objective'],
       text: 'Изменить плоскость: ',
     }) as HTMLSpanElement;
 
     this.sideMenuElements.integerObjective = SideMenu.createElement({
       name: 'span',
-      cssClasses: ['cs-side-menu__item-objective'],
+      cssClasses: ['goby-side-menu__item-objective'],
       text: 'Только целые числа: ',
     }) as HTMLSpanElement;
   }
@@ -223,7 +223,7 @@ export class SideMenu {
 
     this.sideMenuElements.sideMenuContainer = SideMenu.createElement({
       name: 'div',
-      cssClasses: ['cs-side-menu__container'],
+      cssClasses: ['goby-side-menu__container'],
     }) as HTMLDivElement;
   }
 

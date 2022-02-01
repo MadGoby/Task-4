@@ -1,6 +1,6 @@
 import { Handles } from './Handles';
-import { RefreshIntervalPositions } from '../selectedInterval/types';
-import { HandlesPosition } from '../movement/types';
+import { RefreshIntervalPositions } from '../SelectedInterval/types';
+import { HandlesPosition } from '../Movement/types';
 
 describe('Handles', () => {
   let handles: Handles;
@@ -61,11 +61,11 @@ describe('Handles', () => {
 
   it('changePlane() change classes correctly', () => {
     handles.changePlane(true);
-    expect(handles.fromValue).toHaveClass('cs-slider__handle-value_vertical');
-    expect(handles.toValue).toHaveClass('cs-slider__handle-value_vertical');
+    expect(handles.fromValue).toHaveClass('goby-slider__handle-value_state_vertical');
+    expect(handles.toValue).toHaveClass('goby-slider__handle-value_state_vertical');
     handles.changePlane(false);
-    expect(handles.fromValue).not.toHaveClass('cs-slider__handle-value_vertical');
-    expect(handles.toValue).not.toHaveClass('cs-slider__handle-value_vertical');
+    expect(handles.fromValue).not.toHaveClass('goby-slider__handle-value_state_vertical');
+    expect(handles.toValue).not.toHaveClass('goby-slider__handle-value_state_vertical');
   });
 
   it('hideHandleValues() manage display correctly', () => {

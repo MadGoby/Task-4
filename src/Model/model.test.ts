@@ -1,6 +1,6 @@
 import { StepInfoFromModel, DataForValueScale } from './types';
 import { Model } from './Model';
-import { DataForAdjustPosition } from '../view/handles/types';
+import { DataForAdjustPosition } from '../View/Handles/types';
 
 describe('Model', () => {
   let model: Model;

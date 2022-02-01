@@ -1,10 +1,10 @@
 import autobind from 'autobind-decorator';
-import { Slider } from './slider/Slider';
-import { Handles } from './handles/Handles';
-import { Movement } from './movement/Movement';
-import { SelectedInterval } from './selectedInterval/SelectedInterval';
-import { ValuesScale } from './valuesScale/ValuesScale';
-import { SideMenu } from './sideMenu/SideMenu';
+import { Slider } from './Slider/Slider';
+import { Handles } from './Handles/Handles';
+import { Movement } from './Movement/Movement';
+import { SelectedInterval } from './SelectedInterval/SelectedInterval';
+import { ValuesScale } from './ValuesScale/ValuesScale';
+import { SideMenu } from './SideMenu/SideMenu';
 import {
   RefreshData,
   BasicViewSettings,
