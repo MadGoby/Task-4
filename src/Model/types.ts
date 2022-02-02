@@ -14,6 +14,7 @@ type DataForPrepareValue = {
   };
   handleWidth: number;
   sliderWidth: number;
+  step: boolean | number;
 };
 
 type DataForRefreshingModel = {
@@ -38,6 +39,7 @@ type BasicModelSettings = {
 };
 
 type StepInfoFromModel = {
+  minStep: number;
   stepWidth: string;
   step: number;
 };

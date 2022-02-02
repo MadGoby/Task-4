@@ -35,7 +35,7 @@ describe('View', () => {
     document.querySelector('body')?.append(testContainer);
     view.basicSettings['side-menu'] = '.sideMenuTestContainer';
     view.prepareSliderForUse();
-    expect(testContainer).toContainElement('div.goby-side-menu__container');
+    expect(testContainer).toContainElement('div.goby-side-menu');
   });
 
   it('updateSliderView() call plane changers to make vertical', () => {

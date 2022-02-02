@@ -7,8 +7,6 @@ type SliderOptions = {
   'vertical': boolean;
   'step': boolean | number;
   'valueScale': boolean;
-  fromPosition?: string;
-  toPosition?: string;
   from: string;
   to: string;
   integer: boolean;

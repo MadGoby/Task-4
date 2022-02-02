@@ -91,9 +91,7 @@ class Model {
   public calculateStepWidth(settings: StepCalculateData): StepInfoFromModel {
     const { sliderWidth, handleWidth } = settings;
     let { step } = settings;
-    let minStep: number = Math.round(
-      (Number(this.values.max) - Number(this.values.min)) / (sliderWidth - handleWidth),
-    );
+    let minStep: number = (Number(this.values.max) - Number(this.values.min)) / (sliderWidth - handleWidth);
 
     if (minStep <= 0) minStep = 0.01;
     if (step < minStep) step = minStep;
@@ -101,7 +99,7 @@ class Model {
     const stepWidth: number = (
       (sliderWidth - handleWidth) / (Number(this.values.max) - Number(this.values.min))
     ) * Number(step);
-    return { stepWidth: String(stepWidth), step };
+    return { minStep, stepWidth: String(stepWidth), step };
   }
 
   private checkIsValueSmallerThanMin(value: string): boolean {
@@ -120,24 +118,40 @@ class Model {
     return (name === 'to') && (Number(value) < Number(this.values.from) + (handleWidth / Number(step)));
   }
 
+  private correctFromBiggerThenTo(settings: DataForPrepareValue, step: StepInfoFromModel, target: string): string {
+    let adjustOffset: number;
+
+    if (typeof settings.step === 'number') {
+      adjustOffset = settings.step;
+    } else {
+      adjustOffset = Number(Math.round(settings.handleWidth * Number(step.minStep)));
+    }
+
+    let newHandleValue: string = '';
+
+    if (target === 'to') {
+      newHandleValue = String(Model.truncatesNumbersAfterDot(Number(this.values.to) - adjustOffset));
+    } else if (target === 'from') {
+      newHandleValue = String(Model.truncatesNumbersAfterDot(Number(this.values.from) + adjustOffset));
+    }
+
+    return newHandleValue;
+  }
+
   private correctsDoubleValues(settings: DataForPrepareValue): string {
     const step: StepInfoFromModel = this.calculateStepWidth({
-      step: 1,
+      step: 0.01,
       sliderWidth: settings.sliderWidth,
       handleWidth: settings.handleWidth,
     });
     let { value } = settings;
 
     if (this.checkIsFromValueBiggerThanTo(settings.name, settings.value, step.stepWidth, settings.handleWidth)) {
-      value = String(
-        Model.truncatesNumbersAfterDot(Number(this.values.to) - (settings.handleWidth / Number(step.stepWidth))),
-      );
+      value = this.correctFromBiggerThenTo(settings, step, 'to');
     }
 
     if (this.checkIsToValueSmallerThanFrom(settings.name, settings.value, step.stepWidth, settings.handleWidth)) {
-      value = String(
-        Model.truncatesNumbersAfterDot(Number(this.values.from) + (settings.handleWidth / Number(step.stepWidth))),
-      );
+      value = this.correctFromBiggerThenTo(settings, step, 'from');
     }
 
     return value;

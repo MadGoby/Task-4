@@ -2,14 +2,13 @@ import { Model } from '../Model/Model';
 import { View } from '../View/View';
 import { Presenter } from '../Presenter/Presenter';
 import { SliderOptions } from './types';
-import { gobyDefaults } from '../common/defaultSettings';
+import { passDefaultSettings } from '../common/defaultSettings';
 
 const pluginName = 'gobySlider';
-const defaults: SliderOptions = gobyDefaults;
 
 function Plugin(element: HTMLElement, options: SliderOptions): void {
   this.element = element;
-  this.options = $.extend({}, defaults, options);
+  this.options = passDefaultSettings(options);
 
   this.init(this.element, this.options);
 }

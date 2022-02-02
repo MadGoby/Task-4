@@ -9,21 +9,16 @@ const gobyDefaults: SliderOptions = {
   vertical: false,
   step: false,
   valueScale: true,
-  get from(): string {
-    if (!this.fromPosition) return this.min;
-    return this.fromPosition;
-  },
-  set from(value: string) {
-    this.fromPosition = value;
-  },
-  get to(): string {
-    if (!this.toPosition) return this.max;
-    return this.toPosition;
-  },
-  set to(value: string) {
-    this.toPosition = value;
-  },
+  from: '0',
+  to: '100',
   integer: true,
 };
 
-export { gobyDefaults };
+function passDefaultSettings(options: SliderOptions): SliderOptions {
+  if (!options.from) options.from = options.min;
+  if (!options.to) options.to = options.max;
+
+  return $.extend({}, gobyDefaults, options);
+}
+
+export { passDefaultSettings };

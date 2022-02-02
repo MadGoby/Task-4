@@ -65,7 +65,7 @@ describe('Model', () => {
       sliderWidth: 120,
       handleWidth: 20,
     });
-    expect(result).toEqual({ stepWidth: '20', step: 2 });
+    expect(result).toEqual({ stepWidth: '20', step: 2, minStep: 0.1 });
   });
 
   it('calculateStepWidth() calculate correct step width with step less that minimum', () => {
@@ -74,7 +74,7 @@ describe('Model', () => {
       sliderWidth: 120,
       handleWidth: 20,
     });
-    expect(result).toEqual({ stepWidth: '0.1', step: 0.01 });
+    expect(result).toEqual({ stepWidth: '1', step: 0.1, minStep: 0.1 });
   });
 
   it('prepareInputValueForRecord() allow correct from value and return correct settings', () => {
@@ -85,6 +85,7 @@ describe('Model', () => {
       positions: { from: 30, to: 70 },
       handleWidth: 20,
       sliderWidth: 120,
+      step: false,
     });
 
     expect(model.values.from).toEqual('2');
@@ -101,6 +102,7 @@ describe('Model', () => {
       positions: { from: 30, to: 70 },
       handleWidth: 20,
       sliderWidth: 120,
+      step: false,
     });
 
     expect(model.values.from).toEqual('0');
@@ -117,6 +119,7 @@ describe('Model', () => {
       positions: { from: 30, to: 70 },
       handleWidth: 20,
       sliderWidth: 120,
+      step: false,
     });
 
     expect(model.values.from).toEqual('10');
@@ -133,6 +136,7 @@ describe('Model', () => {
       positions: { from: 30, to: 70 },
       handleWidth: 20,
       sliderWidth: 120,
+      step: false,
     });
 
     expect(model.values.from).toEqual('5');
@@ -149,6 +153,7 @@ describe('Model', () => {
       positions: { from: 30, to: 70 },
       handleWidth: 20,
       sliderWidth: 120,
+      step: false,
     });
 
     expect(model.values.to).toEqual('5');

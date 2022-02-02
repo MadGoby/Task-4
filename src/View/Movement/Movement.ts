@@ -32,7 +32,7 @@ export class Movement {
     this.to = settings.toHandle;
     this.settings = settings.basicSettings;
     this.interval = settings.interval;
-    this.positions = { from: 0, to: 0 };
+    this.positions = { from: 0, to: 100 };
     if (!this.settings.step) {
       this.stepWidth = false;
     } else {

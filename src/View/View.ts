@@ -76,9 +76,12 @@ export class View {
     }
   }
 
-  public prepareSliderForUse(): void {
-    const isStepRequired = (this.basicSettings.step) && (typeof this.basicSettings.step === 'number');
+  private checkIsStepRequired(): boolean {
+    return Object.prototype.hasOwnProperty.call(this.basicSettings, 'step')
+      && typeof this.basicSettings.step === 'number';
+  }
 
+  public prepareSliderForUse(): void {
     this.addSliderToDOM();
 
     if (this.basicSettings['side-menu']) this.addSideMenuToDOM();
@@ -86,7 +89,7 @@ export class View {
     this.dataRequestToModel.needDataForScale = { name: '', value: 'true' };
     this.dataRequestToModel.needDataForStartPosition = { name: '', value: 'true' };
 
-    if (isStepRequired) this.dataRequestToModel.needStepWidth = { name: '', value: 'true' };
+    if (this.checkIsStepRequired()) this.dataRequestToModel.needStepWidth = { name: '', value: 'true' };
 
     this.updateView({
       vertical: this.basicSettings.vertical,
@@ -108,7 +111,11 @@ export class View {
 
   public updateView(targets: TargetsForViewUpdate): void {
     if (targets.vertical) {
-      this.slider.changePlane(targets.vertical);
+      this.slider.changePlane({
+        isVertical: targets.vertical,
+        isStep: this.checkIsStepRequired(),
+        requests: this.dataRequestToModel,
+      });
       this.handles.changePlane(targets.vertical);
       this.valuesScale.changePlane(targets.vertical);
     }
@@ -171,6 +178,7 @@ export class View {
       handle.addEventListener('mousedown', this.handleHandleClick);
     });
     this.slider.slider.addEventListener('mousedown', this.handleSliderClick);
+    window.addEventListener('resize', this.handleWindowResize);
   }
 
   private handleHandleClick(event: MouseEvent): void {
@@ -209,7 +217,11 @@ export class View {
     const element: HTMLInputElement = event.target as HTMLInputElement;
 
     this.basicSettings.vertical = element.checked;
-    this.slider.changePlane(this.basicSettings.vertical);
+    this.slider.changePlane({
+      isVertical: this.basicSettings.vertical,
+      isStep: this.checkIsStepRequired(),
+      requests: this.dataRequestToModel,
+    });
     this.handles.changePlane(this.basicSettings.vertical);
     this.valuesScale.changePlane(this.basicSettings.vertical);
   }
@@ -299,5 +311,11 @@ export class View {
       positions: this.movement.positions,
     });
     this.movement.correctsIntervalPosition();
+  }
+
+  private handleWindowResize(): void {
+    this.dataRequestToModel.needDataForScale = { name: '', value: 'true' };
+    this.dataRequestToModel.needDataForStartPosition = { name: '', value: 'true' };
+    if (this.checkIsStepRequired()) this.dataRequestToModel.needStepWidth = { name: '', value: 'true' };
   }
 }

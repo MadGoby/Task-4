@@ -223,7 +223,7 @@ export class SideMenu {
 
     this.sideMenuElements.sideMenuContainer = SideMenu.createElement({
       name: 'div',
-      cssClasses: ['goby-side-menu__container'],
+      cssClasses: ['goby-side-menu'],
     }) as HTMLDivElement;
   }
 

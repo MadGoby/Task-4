@@ -1,4 +1,4 @@
-import { SliderAssemblerSettings } from './types';
+import { SliderAssemblerSettings, SliderPlaneSettings } from './types';
 
 export class Slider {
   readonly slider: HTMLDivElement;
@@ -35,7 +35,15 @@ export class Slider {
     return ((!this.slider.classList.contains('goby-slider_state_vertical')) && (isVertical));
   }
 
-  public changePlane(isVertical: boolean): void {
+  public changePlane(settings: SliderPlaneSettings): void {
+    const { isStep, isVertical, requests } = settings;
+
+    function refreshAfterResize(): void {
+      requests.needDataForScale = { name: '', value: 'true' };
+      requests.needDataForStartPosition = { name: '', value: 'true' };
+      if (isStep) requests.needStepWidth = { name: '', value: 'true' };
+    }
+
     switch (true) {
       case this.checkIsNeedToMakeVertical(isVertical):
         this.slider.classList.toggle('goby-slider_state_vertical');
@@ -50,5 +58,7 @@ export class Slider {
       default:
         break;
     }
+
+    refreshAfterResize();
   }
 }

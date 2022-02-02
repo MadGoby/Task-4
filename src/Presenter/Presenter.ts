@@ -106,6 +106,7 @@ export class Presenter {
     const result: DataForAdjustPosition = this.model.prepareInputValueForRecord({
       name,
       value,
+      step: this.view.basicSettings.step,
       isDouble: this.view.basicSettings.double,
       positions: {
         from: this.view.movement.positions.from,
@@ -114,11 +115,11 @@ export class Presenter {
       handleWidth: this.view.handles.toHandle.offsetWidth,
       sliderWidth: this.view.slider.slider.offsetWidth,
     });
-
     const newPosition: RefreshIntervalPositions = this.view.handles.adjustPositions(
       result,
       this.view.slider.slider.offsetWidth,
     );
+
     this.view.handles.isInputChanges = true;
     this.view.sideMenu.isInputChanges = true;
     this.view.interval.adjustPositionRelativeValue(newPosition);

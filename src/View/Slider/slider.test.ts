@@ -3,9 +3,18 @@ import { SelectedInterval } from '../SelectedInterval/SelectedInterval';
 import { SliderAssemblerSettings } from './types';
 import { Slider } from './Slider';
 import { ValuesScale } from '../ValuesScale/ValuesScale';
+import { DataRequestToModel } from '../types';
 
 describe('Slider', () => {
   let slider: Slider;
+  const requests: DataRequestToModel = {
+    needStepWidth: { value: '', name: '' },
+    needApplyNewValue: { value: '', name: '' },
+    needApplyValueFromScale: { value: '', name: '' },
+    needChangeSliderValuesRange: { value: '', name: '' },
+    needDataForScale: { value: '', name: '' },
+    needDataForStartPosition: { value: '', name: '' },
+  };
 
   beforeEach(() => {
     slider = new Slider();
@@ -27,10 +36,18 @@ describe('Slider', () => {
   });
 
   it('changePlane() operates the display function correctly', () => {
-    slider.changePlane(true);
+    slider.changePlane({
+      requests,
+      isStep: false,
+      isVertical: true,
+    });
     expect(slider.slider).toHaveClass('goby-slider_state_vertical');
 
-    slider.changePlane(false);
+    slider.changePlane({
+      requests,
+      isStep: false,
+      isVertical: false,
+    });
     expect(slider.slider).not.toHaveClass('goby-slider_state_vertical');
   });
 });

@@ -1,9 +1,26 @@
+html {
+  box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  min-width: 320px;
+}
+
 .slider-demo {
   padding: 60px 0;
 }
 
 .slider-wrapper {
-  width: 586px;
+  width: 90%;
   min-height: 185px;
   box-sizing: border-box;
   padding: 40px 40px;
@@ -23,4 +40,10 @@
   border-bottom: 3px solid rgb(2, 114, 82);
   margin: 0 0 40px 0;
   user-select: none;
+}
+
+@media screen and (max-width: 700px) {
+  .slider-wrapper__header {
+    font-size: 30px;
+  }
 }
