@@ -2,13 +2,13 @@ const path = require('path');
 const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
-const TerserPlugin = require("terser-webpack-plugin");
+const TerserPlugin = require('terser-webpack-plugin');
 
 module.exports = {
   mode: 'development',
   entry: {
     slider: './src/plugin/slider.ts',
-    index: './src/pages/index.ts',
+    index: './src/demo-page/index.ts',
   },
   output: {
     filename: '[name].js',
@@ -51,7 +51,7 @@ module.exports = {
       filename: '[name].css',
     }),
     new HTMLWebpackPlugin({
-      template: './src/pages/index.html',
+      template: './src/demo-page/index.html',
       filename: 'index.html',
     }),
     new webpack.ProvidePlugin({

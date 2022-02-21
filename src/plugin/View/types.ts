@@ -1,11 +1,11 @@
 type BasicViewSettings = {
-  'double': boolean;
-  'side-menu': boolean | string;
-  'handlesValues': boolean;
-  'vertical': boolean;
-  'step': boolean | number;
-  'valueScale': boolean;
-  'integer': boolean;
+  double: boolean;
+  sideMenu: boolean | string;
+  handlesValues: boolean;
+  vertical: boolean;
+  step: boolean | number;
+  valueScale: boolean;
+  integer: boolean;
 };
 
 type TargetsForViewUpdate = {
@@ -24,8 +24,8 @@ type RefreshData = {
 };
 
 type DataRequestValue = {
-  'name': string;
-  'value': string;
+  name: string;
+  value: string;
 };
 
 type DataRequestToModel = {

@@ -9,10 +9,10 @@ module.exports = (config) => {
     frameworks: ['jasmine', 'webpack'],
     reporters: ['spec', 'coverage-istanbul'],
     files: [
-      'src/tools/index.test.ts',
+      'src/plugin/tools/index.test.ts',
     ],
     preprocessors: {
-      'src/tools/index.test.ts': ['webpack'],
+      'src/plugin/tools/index.test.ts': ['webpack'],
     },
     mime: {
       'text/x-typescript': ['ts', 'tsx'],

@@ -1,15 +1,23 @@
 type SliderOptions = {
-  'min': string;
-  'max': string;
-  'double': boolean;
-  'side-menu': boolean | string;
-  'handlesValues': boolean;
-  'vertical': boolean;
-  'step': boolean | number;
-  'valueScale': boolean;
+  min: string;
+  max: string;
+  double: boolean;
+  sideMenu: boolean | string;
+  handlesValues: boolean;
+  vertical: boolean;
+  step: boolean | number;
+  valueScale: boolean;
+  integer: boolean;
   from: string;
   to: string;
-  integer: boolean;
 };
 
-export { SliderOptions };
+type PluginInfo = {
+  element: [HTMLElement, Object];
+  options: SliderOptions;
+};
+
+export {
+  SliderOptions,
+  PluginInfo,
+};

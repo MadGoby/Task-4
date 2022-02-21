@@ -1,12 +1,13 @@
 import '../plugin/slider.css';
 import './index.css';
+import { SliderOptions } from '../plugin/types';
 
-const sliderSettings = [
+const sliderSettings: Array<SliderOptions> = [
   {
     min: '-10000',
     max: '10000',
     double: true,
-    'side-menu': true,
+    sideMenu: true,
     handlesValues: true,
     vertical: false,
     step: 300,
@@ -18,7 +19,7 @@ const sliderSettings = [
     min: '-10000',
     max: '10000',
     double: true,
-    'side-menu': true,
+    sideMenu: true,
     handlesValues: true,
     vertical: true,
     step: false,
@@ -30,36 +31,42 @@ const sliderSettings = [
     min: '0',
     max: '10',
     double: false,
-    'side-menu': true,
+    sideMenu: true,
     handlesValues: false,
     vertical: false,
     step: false,
     valueScale: true,
     integer: true,
     from: '5',
+    to: '10',
   }, {
     min: '0',
     max: '1000',
     double: false,
-    'side-menu': true,
+    sideMenu: true,
     handlesValues: false,
     vertical: false,
     step: false,
     valueScale: false,
     integer: false,
     from: '500',
+    to: '1000',
   }, {
     min: '0',
     max: '1000',
     double: true,
-    'side-menu': true,
+    sideMenu: true,
     handlesValues: true,
     vertical: false,
     step: 10,
     valueScale: true,
+    integer: false,
+    from: '0',
+    to: '1000',
   },
 ];
 
 $('.js-slider-wrapper').each((index, element) => {
-  $(element).gobySlider(sliderSettings[index]);
+  const settings = sliderSettings[index];
+  $(element).gobySlider(settings);
 });

@@ -9,7 +9,7 @@ describe('Presenter', () => {
   let view: View;
   let model: Model;
   const viewSettings: BasicViewSettings = {
-    'side-menu': true,
+    sideMenu: true,
     double: true,
     handlesValues: true,
     step: 10,

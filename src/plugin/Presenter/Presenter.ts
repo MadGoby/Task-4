@@ -96,15 +96,28 @@ export class Presenter {
         handleWidth: this.view.handles.fromHandle.offsetWidth,
       });
       this.view.movement.stepWidth = stepWidth;
-      if (this.view.basicSettings['side-menu']) this.view.sideMenu.sideMenuElements.stepInput!.value = String(step);
+      if (this.view.basicSettings.sideMenu) this.view.sideMenu.sideMenuElements.stepInput!.value = String(step);
     };
 
     if (typeof this.view.basicSettings.step === 'number') writesNewStepWidth();
   }
 
-  private distributeNewValuesForApply(name: 'from' | 'to', value: string): void {
+  private static checkCorrectTarget(name: string): 'from' | 'to' | false {
+    let correctName: 'from' | 'to' | false = false;
+    if (name === 'from') {
+      correctName = 'from';
+    } else if (name === 'to') {
+      correctName = 'to';
+    }
+    return correctName;
+  }
+
+  private distributeNewValuesForApply(name: string, value: string): void {
+    const correctName: 'from' | 'to' | false = Presenter.checkCorrectTarget(name);
+    if (!correctName) return;
+
     const result: DataForAdjustPosition = this.model.prepareInputValueForRecord({
-      name,
+      name: correctName,
       value,
       step: this.view.basicSettings.step,
       isDouble: this.view.basicSettings.double,
@@ -161,7 +174,7 @@ export class Presenter {
         this.distributeStepWidth();
         break;
       case 'needApplyNewValue':
-        this.distributeNewValuesForApply(value.name as 'from' | 'to', value.value);
+        this.distributeNewValuesForApply(value.name, value.value);
         break;
       case 'needApplyValueFromScale':
         this.distributeValueFromScaleToApply(value.value);

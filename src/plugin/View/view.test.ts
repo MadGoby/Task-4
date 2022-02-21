@@ -7,7 +7,7 @@ describe('View', () => {
   let view: View;
   const settings: BasicViewSettings = {
     double: true,
-    'side-menu': true,
+    sideMenu: true,
     handlesValues: true,
     step: true,
     valueScale: true,
@@ -33,7 +33,7 @@ describe('View', () => {
     const testContainer: HTMLDivElement = document.createElement('div');
     testContainer.classList.add('sideMenuTestContainer');
     document.querySelector('body')?.append(testContainer);
-    view.basicSettings['side-menu'] = '.sideMenuTestContainer';
+    view.basicSettings.sideMenu = '.sideMenuTestContainer';
     view.prepareSliderForUse();
     expect(testContainer).toContainElement('div.goby-side-menu');
   });
@@ -99,7 +99,7 @@ describe('View', () => {
   });
 
   it('updateSliderView() check inputs in side-menu', () => {
-    view.basicSettings['side-menu'] = true;
+    view.basicSettings.sideMenu = true;
     view.updateView({
       vertical: true,
       sideMenu: true,

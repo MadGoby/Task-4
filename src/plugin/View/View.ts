@@ -11,6 +11,7 @@ import {
   DataRequestToModel,
   TargetsForViewUpdate,
 } from './types';
+import { RefreshHandlesData } from "./Handles/types";
 
 @autobind
 export class View {
@@ -69,8 +70,8 @@ export class View {
   private addSideMenuToDOM(): void {
     this.sideMenu.collectSideMenu();
 
-    if (typeof this.basicSettings['side-menu'] === 'string') {
-      document.querySelector(this.basicSettings['side-menu'])?.append(this.sideMenu.sideMenuElements.sideMenuContainer!);
+    if (typeof this.basicSettings.sideMenu === 'string') {
+      document.querySelector(this.basicSettings.sideMenu)?.append(this.sideMenu.sideMenuElements.sideMenuContainer!);
     } else {
       this.target.append(this.sideMenu.sideMenuElements.sideMenuContainer!);
     }
@@ -84,7 +85,7 @@ export class View {
   public prepareSliderForUse(): void {
     this.addSliderToDOM();
 
-    if (this.basicSettings['side-menu']) this.addSideMenuToDOM();
+    if (this.basicSettings.sideMenu) this.addSideMenuToDOM();
 
     this.dataRequestToModel.needDataForScale = { name: '', value: 'true' };
     this.dataRequestToModel.needDataForStartPosition = { name: '', value: 'true' };
@@ -94,7 +95,7 @@ export class View {
     this.updateView({
       vertical: this.basicSettings.vertical,
       double: this.basicSettings.double,
-      sideMenu: this.basicSettings['side-menu'],
+      sideMenu: this.basicSettings.sideMenu,
       handlesValues: this.basicSettings.handlesValues,
       valueScale: this.basicSettings.valueScale,
       integer: this.basicSettings.integer,
@@ -150,7 +151,7 @@ export class View {
       });
     }
 
-    const isNeedSideMenuUpdate = handlesRefreshResult && this.basicSettings['side-menu'];
+    const isNeedSideMenuUpdate = handlesRefreshResult && this.basicSettings.sideMenu;
     if (isNeedSideMenuUpdate) this.sideMenu.refreshValues(settings);
   }
 

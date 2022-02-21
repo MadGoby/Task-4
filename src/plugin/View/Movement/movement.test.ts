@@ -9,7 +9,7 @@ describe('Movement', () => {
   beforeEach(() => {
     movement = new Movement({
       basicSettings: {
-        'side-menu': true,
+        sideMenu: true,
         double: true,
         handlesValues: true,
         step: false,
