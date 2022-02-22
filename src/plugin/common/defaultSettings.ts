@@ -14,11 +14,4 @@ const gobyDefaults: SliderOptions = {
   integer: true,
 };
 
-function passDefaultSettings(options: SliderOptions): SliderOptions {
-  if (!options.from) options.from = options.min;
-  if (!options.to) options.to = options.max;
-
-  return $.extend({}, gobyDefaults, options);
-}
-
-export { passDefaultSettings };
+export { gobyDefaults };

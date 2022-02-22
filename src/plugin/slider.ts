@@ -6,17 +6,18 @@ import {
   SliderOptions,
 } from './types';
 import { IPlugin } from './interfaces';
+import { gobyDefaults } from './common/defaultSettings';
 
 const pluginName = 'gobySlider';
 
 class Plugin implements IPlugin {
-  readonly element;
+  readonly element: HTMLElement;
 
-  readonly options;
+  readonly options: SliderOptions;
 
   constructor(element: HTMLElement, options: SliderOptions) {
     this.element = element;
-    this.options = options;
+    this.options = $.extend({}, gobyDefaults, options);
 
     Plugin.initialize(this.element, this.options);
   }
