@@ -96,7 +96,13 @@ export class Presenter {
         handleWidth: this.view.handles.fromHandle.offsetWidth,
       });
       this.view.movement.stepWidth = stepWidth;
-      if (this.view.basicSettings.sideMenu) this.view.sideMenu.sideMenuElements.stepInput!.value = String(step);
+
+      this.view.basicSettings.integer = Number.isInteger(step);
+
+      if (this.view.basicSettings.sideMenu) {
+        this.view.sideMenu.sideMenuElements.stepInput!.value = String(step);
+        this.view.sideMenu.sideMenuElements.integerToggle!.checked = Number.isInteger(step);
+      }
     };
 
     if (typeof this.view.basicSettings.step === 'number') writesNewStepWidth();
