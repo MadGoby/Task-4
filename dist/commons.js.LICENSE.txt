@@ -1,0 +1,245 @@
+/*!
+ * Sizzle CSS Selector Engine v2.3.6
+ * https://sizzlejs.com/
+ *
+ * Copyright JS Foundation and other contributors
+ * Released under the MIT license
+ * https://js.foundation/
+ *
+ * Date: 2021-02-16
+ */
+
+/*!
+ * jQuery JavaScript Library v3.6.0
+ * https://jquery.com/
+ *
+ * Includes Sizzle.js
+ * https://sizzlejs.com/
+ *
+ * Copyright OpenJS Foundation and other contributors
+ * Released under the MIT license
+ * https://jquery.org/license
+ *
+ * Date: 2021-03-02T17:08Z
+ */
+
+/*!
+Jasmine-jQuery: a set of jQuery helpers for Jasmine tests.
+
+Version 2.1.1
+
+https://github.com/velesin/jasmine-jquery
+
+Copyright (c) 2010-2014 Wojciech Zawistowski, Travis Jeffery
+
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+"Software"), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
+
+/*! ../Handles/Handles */
+
+/*! ../Model/Model */
+
+/*! ../SelectedInterval/SelectedInterval */
+
+/*! ../Slider/Slider */
+
+/*! ../ValuesScale/ValuesScale */
+
+/*! ../View/View */
+
+/*! ./Handles */
+
+/*! ./Handles/Handles */
+
+/*! ./Model */
+
+/*! ./Movement */
+
+/*! ./Movement/Movement */
+
+/*! ./Presenter */
+
+/*! ./SelectedInterval */
+
+/*! ./SelectedInterval/SelectedInterval */
+
+/*! ./SideMenu */
+
+/*! ./SideMenu/SideMenu */
+
+/*! ./Slider */
+
+/*! ./Slider/Slider */
+
+/*! ./ValuesScale */
+
+/*! ./ValuesScale/ValuesScale */
+
+/*! ./View */
+
+/*! autobind-decorator */
+
+/*! jasmine-jquery */
+
+/*! jquery */
+
+/*!*********************************!*\
+  !*** ./src/plugin/View/View.ts ***!
+  \*********************************/
+
+/*!**********************************!*\
+  !*** ./src/plugin/View/types.ts ***!
+  \**********************************/
+
+/*!***********************************!*\
+  !*** ./src/plugin/Model/Model.ts ***!
+  \***********************************/
+
+/*!***********************************!*\
+  !*** ./src/plugin/Model/types.ts ***!
+  \***********************************/
+
+/*!************************************!*\
+  !*** ./src/plugin/View/ sync .ts$ ***!
+  \************************************/
+
+/*!*************************************!*\
+  !*** ./src/plugin/Model/ sync .ts$ ***!
+  \*************************************/
+
+/*!**************************************!*\
+  !*** ./src/plugin/View/view.test.ts ***!
+  \**************************************/
+
+/*!****************************************!*\
+  !*** ./src/plugin/Model/model.test.ts ***!
+  \****************************************/
+
+/*!****************************************!*\
+  !*** ./src/plugin/View/ sync test.ts$ ***!
+  \****************************************/
+
+/*!****************************************!*\
+  !*** ./src/plugin/tools/index.test.ts ***!
+  \****************************************/
+
+/*!*****************************************!*\
+  !*** ./src/plugin/Model/ sync test.ts$ ***!
+  \*****************************************/
+
+/*!*****************************************!*\
+  !*** ./src/plugin/Presenter/ sync .ts$ ***!
+  \*****************************************/
+
+/*!*****************************************!*\
+  !*** ./src/plugin/View/Slider/types.ts ***!
+  \*****************************************/
+
+/*!******************************************!*\
+  !*** ./src/plugin/View/Handles/types.ts ***!
+  \******************************************/
+
+/*!******************************************!*\
+  !*** ./src/plugin/View/Slider/Slider.ts ***!
+  \******************************************/
+
+/*!*******************************************!*\
+  !*** ./src/plugin/Presenter/Presenter.ts ***!
+  \*******************************************/
+
+/*!*******************************************!*\
+  !*** ./src/plugin/View/Movement/types.ts ***!
+  \*******************************************/
+
+/*!*******************************************!*\
+  !*** ./src/plugin/View/SideMenu/types.ts ***!
+  \*******************************************/
+
+/*!********************************************!*\
+  !*** ./node_modules/jquery/dist/jquery.js ***!
+  \********************************************/
+
+/*!********************************************!*\
+  !*** ./src/plugin/View/Handles/Handles.ts ***!
+  \********************************************/
+
+/*!*********************************************!*\
+  !*** ./src/plugin/Presenter/ sync test.ts$ ***!
+  \*********************************************/
+
+/*!**********************************************!*\
+  !*** ./src/plugin/View/Movement/Movement.ts ***!
+  \**********************************************/
+
+/*!**********************************************!*\
+  !*** ./src/plugin/View/SideMenu/SideMenu.ts ***!
+  \**********************************************/
+
+/*!***********************************************!*\
+  !*** ./src/plugin/View/Slider/slider.test.ts ***!
+  \***********************************************/
+
+/*!************************************************!*\
+  !*** ./src/plugin/Presenter/presenter.test.ts ***!
+  \************************************************/
+
+/*!*************************************************!*\
+  !*** ./src/plugin/View/Handles/handles.test.ts ***!
+  \*************************************************/
+
+/*!***************************************************!*\
+  !*** ./src/plugin/View/Movement/movement.test.ts ***!
+  \***************************************************/
+
+/*!***************************************************!*\
+  !*** ./src/plugin/View/SelectedInterval/types.ts ***!
+  \***************************************************/
+
+/*!***************************************************!*\
+  !*** ./src/plugin/View/SideMenu/sideMenu.test.ts ***!
+  \***************************************************/
+
+/*!***************************************************!*\
+  !*** ./src/plugin/View/ValuesScale/interfaces.ts ***!
+  \***************************************************/
+
+/*!****************************************************!*\
+  !*** ./src/plugin/View/ValuesScale/ValuesScale.ts ***!
+  \****************************************************/
+
+/*!********************************************************!*\
+  !*** ./src/plugin/View/ValuesScale/valueScale.test.ts ***!
+  \********************************************************/
+
+/*!**********************************************************!*\
+  !*** ./node_modules/autobind-decorator/lib/esm/index.js ***!
+  \**********************************************************/
+
+/*!***********************************************************!*\
+  !*** ./node_modules/jasmine-jquery/lib/jasmine-jquery.js ***!
+  \***********************************************************/
+
+/*!**************************************************************!*\
+  !*** ./src/plugin/View/SelectedInterval/SelectedInterval.ts ***!
+  \**************************************************************/
+
+/*!*******************************************************************!*\
+  !*** ./src/plugin/View/SelectedInterval/selectedInterval.test.ts ***!
+  \*******************************************************************/
