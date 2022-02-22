@@ -1,19 +1,7 @@
 import '../plugin/slider.css';
 import './index.css';
 import { SliderOptions } from '../plugin/types';
-// {
-//   min: '-10000',
-//     max: '10000',
-//   double: true,
-//   sideMenu: true,
-//   handlesValues: true,
-//   vertical: false,
-//   step: 300,
-//   valueScale: true,
-//   integer: true,
-//   from: '-7000',
-//   to: '7000',
-// },
+
 const sliderSettings: Array<SliderOptions> = [
   {
     min: '-100',
