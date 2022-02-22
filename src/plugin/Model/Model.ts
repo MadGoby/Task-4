@@ -118,13 +118,8 @@ class Model {
   }
 
   private correctFromBiggerThenTo(settings: DataForPrepareValue, step: StepInfoFromModel, target: string): string {
-    let adjustOffset: number;
-
-    if (typeof settings.step === 'number') {
-      adjustOffset = settings.step;
-    } else {
-      adjustOffset = Number(Math.round(settings.handleWidth * Number(step.minStep)));
-    }
+    const adjustOffset: number = ((Number(this.values.max) - Number(this.values.min))
+      / (settings.sliderWidth - settings.handleWidth)) * settings.handleWidth;
 
     let newHandleValue: string = '';
 
@@ -139,7 +134,7 @@ class Model {
 
   private correctsDoubleValues(settings: DataForPrepareValue): string {
     const step: StepInfoFromModel = this.calculateStepWidth({
-      step: 0.01,
+      step: 1,
       sliderWidth: settings.sliderWidth,
       handleWidth: settings.handleWidth,
     });

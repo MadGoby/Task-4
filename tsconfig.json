@@ -25,6 +25,6 @@
     "src/plugin/jquery.slider.d.ts",
     "./karma.conf.js",
     "src/demo-page/index.ts",
-    "src/plugin/**/*.test.ts"
+    "**/*.test.ts"
   ]
 }

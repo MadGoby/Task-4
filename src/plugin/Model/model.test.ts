@@ -139,9 +139,9 @@ describe('Model', () => {
       step: false,
     });
 
-    expect(model.values.from).toEqual('7');
+    expect(model.values.from).toEqual('5');
     expect(result).toEqual({
-      target: 'from', value: '7', totalValues: 10, minValue: '0',
+      target: 'from', value: '5', totalValues: 10, minValue: '0',
     });
   });
 
@@ -156,9 +156,9 @@ describe('Model', () => {
       step: false,
     });
 
-    expect(model.values.to).toEqual('3');
+    expect(model.values.to).toEqual('5');
     expect(result).toEqual({
-      target: 'to', value: '3', totalValues: 10, minValue: '0',
+      target: 'to', value: '5', totalValues: 10, minValue: '0',
     });
   });
 
