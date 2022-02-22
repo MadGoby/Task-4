@@ -91,15 +91,14 @@ class Model {
   public calculateStepWidth(settings: StepCalculateData): StepInfoFromModel {
     const { sliderWidth, handleWidth } = settings;
     let { step } = settings;
-    let minStep: number = (Number(this.values.max) - Number(this.values.min)) / (sliderWidth - handleWidth);
 
-    if (minStep <= 0) minStep = 0.01;
-    if (step < minStep) step = minStep;
+    if (step < 0.01) step = 0.01;
 
     const stepWidth: number = (
       (sliderWidth - handleWidth) / (Number(this.values.max) - Number(this.values.min))
     ) * Number(step);
-    return { minStep, stepWidth: String(stepWidth), step };
+
+    return { minStep: 0.01, stepWidth: String(stepWidth), step };
   }
 
   private checkIsValueSmallerThanMin(value: string): boolean {

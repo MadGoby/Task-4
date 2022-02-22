@@ -67,7 +67,7 @@ export class Movement {
   }
 
   private checkIsStepSetCorrectly(): boolean {
-    return (this.settings.step !== false) && (typeof this.stepWidth === 'string') && (Number(this.stepWidth) >= 1);
+    return (this.settings.step !== false) && (typeof this.stepWidth === 'string') && (Number(this.stepWidth) >= 0.01);
   }
 
   private checkIsStepWidthPassed(targetPosition: number, currentPosition: number): boolean {
