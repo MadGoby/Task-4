@@ -79,14 +79,14 @@ describe('Presenter', () => {
 
   it('needApplyNewValue() apply new value for from correctly', () => {
     view.dataRequestToModel.needApplyNewValue = { name: 'from', value: '40' };
-    expect(view.movement.positions.from).toEqual(40);
-    expect(model.values.from).toEqual('40');
+    expect(view.movement.positions.from).toEqual(60);
+    expect(model.values.from).toEqual('60');
   });
 
   it('needApplyNewValue() apply new value for to correctly', () => {
     view.dataRequestToModel.needApplyNewValue = { name: 'to', value: '60' };
-    expect(view.movement.positions.to).toEqual(60);
-    expect(model.values.to).toEqual('60');
+    expect(view.movement.positions.to).toEqual(40);
+    expect(model.values.to).toEqual('40');
   });
 
   it('needApplyValueFromScale() apply value from scale correctly', () => {
