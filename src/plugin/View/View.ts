@@ -11,7 +11,6 @@ import {
   DataRequestToModel,
   TargetsForViewUpdate,
 } from './types';
-import { RefreshHandlesData } from "./Handles/types";
 
 @autobind
 export class View {
