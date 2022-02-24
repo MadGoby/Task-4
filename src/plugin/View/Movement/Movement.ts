@@ -67,7 +67,9 @@ export class Movement {
   }
 
   private checkIsStepSetCorrectly(): boolean {
-    return (this.settings.step !== false) && (typeof this.stepWidth === 'string') && (Number(this.stepWidth) >= 0.01);
+    const minStepWidth: number = 0.01;
+    return (this.settings.step !== false)
+      && (typeof this.stepWidth === 'string') && (Number(this.stepWidth) >= minStepWidth);
   }
 
   private checkIsStepWidthPassed(targetPosition: number, currentPosition: number): boolean {
