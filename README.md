@@ -89,4 +89,4 @@ npm install
 
 ### UML Диаграмма
 
-[UML](https://madgoby.github.io/Task-4/Task4UML.html)
+[UML](https://madgoby.github.io/Task-4/uml/uml.html)
