@@ -1,5 +1,11 @@
 import { RefreshData } from '../types';
-import { ElementParams, SideMenuElements } from './types';
+import { sideMenuData } from './sideMenuData';
+import {
+  ElementParams,
+  SideMenuDataKeys,
+  SideMenuDataTypes,
+  SideMenuElements,
+} from './types';
 
 export class SideMenu {
   readonly sideMenuElements: SideMenuElements;
@@ -8,28 +14,21 @@ export class SideMenu {
 
   constructor() {
     this.sideMenuElements = {};
+    this.collectsSideMenuElements();
     this.initializeSideMenu();
   }
 
-  private createOutputs(): void {
-    this.sideMenuElements.currentValuesWrapper = SideMenu.createElement({
-      name: 'div',
-      cssClasses: ['goby-side-menu__item-wrapper'],
-    }) as HTMLDivElement;
-    this.sideMenuElements.currentValuesObjective = SideMenu.createElement({
-      name: 'span',
-      cssClasses: ['goby-side-menu__item-objective'],
-      text: 'Текущее занчение: ',
-    }) as HTMLSpanElement;
-    this.sideMenuElements.fromOutput = SideMenu.createElement({
-      name: 'output',
-      cssClasses: ['goby-side-menu__value', 'goby-side-menu__value_type_from'],
-    }) as HTMLOutputElement;
-    this.sideMenuElements.toOutput = SideMenu.createElement({
-      name: 'output',
-      cssClasses: ['goby-side-menu__value', 'goby-side-menu__value_type_to'],
-      attr: { name: 'style', value: 'display: inline' },
-    }) as HTMLOutputElement;
+  private collectsSideMenuElements(): void {
+    const createElements = (elementsData: SideMenuDataTypes): void => {
+      elementsData.forEach((elementData):void => {
+        const element: HTMLElement = document.createElement(elementData.name);
+        this.sideMenuElements[elementData.key] = elementData.getElement(element);
+      });
+    };
+
+    Object.keys(sideMenuData).forEach((key: string): void => {
+      createElements(sideMenuData[key as SideMenuDataKeys]);
+    });
   }
 
   private createWrappers(): void {
@@ -215,7 +214,6 @@ export class SideMenu {
   }
 
   private initializeSideMenu(): void {
-    this.createOutputs();
     this.createWrappers();
     this.createInputs();
     this.createToggles();
