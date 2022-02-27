@@ -2,51 +2,232 @@ import {
   SideMenuData,
 } from './types';
 
-function returnDivElement(element: HTMLElement): HTMLDivElement {
-  return element as HTMLDivElement;
-}
-
-function returnSpanElement(element: HTMLElement): HTMLSpanElement {
-  return element as HTMLSpanElement;
-}
-
-function returnOutputElement(element: HTMLElement): HTMLOutputElement {
-  return element as HTMLOutputElement;
-}
-
 const sideMenuData: SideMenuData = {
-  divElements: [
+  elements: [
     {
       key: 'currentValuesWrapper',
       name: 'div',
       cssClasses: ['goby-side-menu__item-wrapper'],
-      getElement: returnDivElement,
     },
-  ],
-  spanElements: [
     {
       key: 'currentValuesObjective',
       name: 'span',
       cssClasses: ['goby-side-menu__item-objective'],
       text: 'Текущее занчение: ',
-      getElement: returnSpanElement,
     },
-  ],
-  outputElements: [
     {
       key: 'fromOutput',
       name: 'output',
       cssClasses: ['goby-side-menu__value', 'goby-side-menu__value_type_from'],
-      getElement: returnOutputElement,
     },
     {
       key: 'toOutput',
       name: 'output',
       cssClasses: ['goby-side-menu__value', 'goby-side-menu__value_type_to'],
       attr: { name: 'style', value: 'display: inline' },
-      getElement: returnOutputElement,
+    },
+    {
+      key: 'toWrapper',
+      name: 'div',
+      cssClasses: ['goby-side-menu__item-wrapper'],
+    },
+    {
+      key: 'toToggleWrapper',
+      name: 'label',
+      cssClasses: ['goby-side-menu__item-toggle-wrapper'],
+    },
+    {
+      key: 'inputWrapper',
+      name: 'div',
+      cssClasses: ['goby-side-menu__item-wrapper'],
+    },
+    {
+      key: 'fromInputWrapper',
+      name: 'label',
+      cssClasses: ['goby-side-menu__input-wrapper'],
+      text: 'От: ',
+    },
+    {
+      key: 'stepInputWrapper',
+      name: 'label',
+      cssClasses: ['goby-side-menu__input-wrapper'],
+      text: 'Шаг: ',
+    },
+    {
+      key: 'minInputWrapper',
+      name: 'label',
+      cssClasses: ['goby-side-menu__input-wrapper'],
+      text: 'Мин: ',
+    },
+    {
+      key: 'maxInputWrapper',
+      name: 'label',
+      cssClasses: ['goby-side-menu__input-wrapper'],
+      text: 'Макс: ',
+    },
+    {
+      key: 'toInputWrapper',
+      name: 'label',
+      cssClasses: ['goby-side-menu__input-wrapper'],
+      text: 'До: ',
+      attr: { name: 'style', value: 'display: block' },
+    },
+    {
+      key: 'handleValuesWrapper',
+      name: 'div',
+      cssClasses: ['goby-side-menu__item-wrapper'],
+    },
+    {
+      key: 'valueScaleWrapper',
+      name: 'div',
+      cssClasses: ['goby-side-menu__item-wrapper'],
+    },
+    {
+      key: 'planeWrapper',
+      name: 'div',
+      cssClasses: ['goby-side-menu__item-wrapper'],
+    },
+    {
+      key: 'integerWrapper',
+      name: 'div',
+      cssClasses: ['goby-side-menu__item-wrapper'],
+    },
+    {
+      key: 'inputObjective',
+      name: 'span',
+      cssClasses: ['goby-side-menu__item-objective'],
+      text: 'Изменить значение: ',
+    },
+    {
+      key: 'fromInput',
+      name: 'input',
+      cssClasses: ['goby-side-menu__input'],
+      attr: { name: 'type', value: 'number' },
+    },
+    {
+      key: 'toInput',
+      name: 'input',
+      cssClasses: ['goby-side-menu__input'],
+      attr: { name: 'type', value: 'number' },
+    },
+    {
+      key: 'stepInput',
+      name: 'input',
+      cssClasses: ['goby-side-menu__input'],
+      attr: { name: 'type', value: 'number' },
+    },
+    {
+      key: 'minimumInput',
+      name: 'input',
+      cssClasses: ['goby-side-menu__input'],
+      attr: { name: 'type', value: 'number' },
+    },
+    {
+      key: 'maximumInput',
+      name: 'input',
+      cssClasses: ['goby-side-menu__input'],
+      attr: { name: 'type', value: 'number' },
+    },
+    {
+      key: 'toToggleObjective',
+      name: 'span',
+      cssClasses: ['goby-side-menu__item-objective'],
+      text: 'Включить второй ползунок: ',
+    },
+    {
+      key: 'toToggle',
+      name: 'input',
+      cssClasses: ['goby-side-menu__item-toggle'],
+      attr: { name: 'type', value: 'checkbox' },
+    },
+    {
+      key: 'toToggleBorder',
+      name: 'span',
+      cssClasses: ['goby-side-menu__item-toggle-border'],
+    },
+    {
+      key: 'handleValuesToggleBorder',
+      name: 'span',
+      cssClasses: ['goby-side-menu__item-toggle-border'],
+    },
+    {
+      key: 'valueScaleToggleBorder',
+      name: 'span',
+      cssClasses: ['goby-side-menu__item-toggle-border'],
+    },
+    {
+      key: 'integerToggleBorder',
+      name: 'span',
+      cssClasses: ['goby-side-menu__item-toggle-border'],
+    },
+    {
+      key: 'planeToggle',
+      name: 'input',
+      cssClasses: ['goby-side-menu__item-toggle'],
+      attr: { name: 'type', value: 'checkbox' },
+    },
+    {
+      key: 'planeToggleBorder',
+      name: 'span',
+      cssClasses: ['goby-side-menu__item-toggle-border'],
+    },
+    {
+      key: 'handleValuesObjective',
+      name: 'span',
+      cssClasses: ['goby-side-menu__item-objective'],
+      text: 'Включить значения под ползунками: ',
+    },
+    {
+      key: 'valueScaleObjective',
+      name: 'span',
+      cssClasses: ['goby-side-menu__item-objective'],
+      text: 'Включить шкалу значений: ',
+    },
+    {
+      key: 'planeObjective',
+      name: 'span',
+      cssClasses: ['goby-side-menu__item-objective'],
+      text: 'Изменить плоскость: ',
+    },
+    {
+      key: 'integerObjective',
+      name: 'span',
+      cssClasses: ['goby-side-menu__item-objective'],
+      text: 'Только целые числа: ',
+    },
+    {
+      key: 'sideMenuContainer',
+      name: 'div',
+      cssClasses: ['goby-side-menu'],
     },
   ],
+  appendList: {
+    currentValuesWrapper: ['currentValuesObjective', 'fromOutput', 'toOutput'],
+    fromInputWrapper: ['fromInput'],
+    toInputWrapper: ['toInput'],
+    stepInputWrapper: ['stepInput'],
+    minInputWrapper: ['minimumInput'],
+    maxInputWrapper: ['maximumInput'],
+    inputWrapper: ['inputObjective', 'fromInputWrapper', 'toInputWrapper', 'stepInputWrapper',
+      'minInputWrapper', 'maxInputWrapper'],
+    toToggleWrapper: ['toToggle', 'toToggleBorder'],
+    toWrapper: ['toToggleObjective', 'toToggleWrapper'],
+    handleValuesToggleWrapper: ['handleValuesToggle', 'handleValuesToggleBorder'],
+    handleValuesWrapper: ['handleValuesObjective', 'handleValuesToggleWrapper'],
+    valueScaleToggleWrapper: ['valueScaleToggle', 'valueScaleToggleBorder'],
+    valueScaleWrapper: ['valueScaleObjective', 'valueScaleToggleWrapper'],
+    planeToggleWrapper: ['planeToggle', 'planeToggleBorder'],
+    planeWrapper: ['planeObjective', 'planeToggleWrapper'],
+    integerToggleWrapper: ['integerToggle', 'integerToggleBorder'],
+    integerWrapper: ['integerObjective', 'integerToggleWrapper'],
+    sideMenuContainer: ['currentValuesWrapper', 'inputWrapper', 'toWrapper', 'handleValuesWrapper',
+      'valueScaleWrapper', 'planeWrapper', 'integerWrapper'],
+  },
+  cloneList: {
+    toToggle: ['handleValuesToggle', 'valueScaleToggle', 'integerToggle'],
+    toToggleWrapper: ['handleValuesToggleWrapper', 'valueScaleToggleWrapper', 'planeToggleWrapper',
+      'integerToggleWrapper'],
+  },
 };
 
 export {

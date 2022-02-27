@@ -100,8 +100,8 @@ export class Presenter {
       this.view.basicSettings.integer = Number.isInteger(step);
 
       if (this.view.basicSettings.sideMenu) {
-        this.view.sideMenu.sideMenuElements.stepInput!.value = String(step);
-        this.view.sideMenu.sideMenuElements.integerToggle!.checked = Number.isInteger(step);
+        (this.view.sideMenu.sideMenuElements.stepInput as HTMLInputElement).value = String(step);
+        (this.view.sideMenu.sideMenuElements.integerToggle as HTMLInputElement).checked = Number.isInteger(step);
       }
     };
 

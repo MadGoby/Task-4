@@ -70,9 +70,9 @@ export class View {
     this.sideMenu.collectSideMenu();
 
     if (typeof this.basicSettings.sideMenu === 'string') {
-      document.querySelector(this.basicSettings.sideMenu)?.append(this.sideMenu.sideMenuElements.sideMenuContainer!);
+      document.querySelector(this.basicSettings.sideMenu)?.append(this.sideMenu.sideMenuElements.sideMenuContainer);
     } else {
-      this.target.append(this.sideMenu.sideMenuElements.sideMenuContainer!);
+      this.target.append(this.sideMenu.sideMenuElements.sideMenuContainer);
     }
   }
 
@@ -102,11 +102,11 @@ export class View {
   }
 
   private turnOnMenuToggles(targets: TargetsForViewUpdate): void {
-    if (targets.vertical) this.sideMenu.sideMenuElements.planeToggle!.checked = true;
-    if (targets.double) this.sideMenu.sideMenuElements.toToggle!.checked = true;
-    if (targets.handlesValues) this.sideMenu.sideMenuElements.handleValuesToggle!.checked = true;
-    if (targets.valueScale) this.sideMenu.sideMenuElements.valueScaleToggle!.checked = true;
-    if (targets.integer) this.sideMenu.sideMenuElements.integerToggle!.checked = true;
+    if (targets.vertical) (this.sideMenu.sideMenuElements.planeToggle as HTMLInputElement).checked = true;
+    if (targets.double) (this.sideMenu.sideMenuElements.toToggle as HTMLInputElement).checked = true;
+    if (targets.handlesValues) (this.sideMenu.sideMenuElements.handleValuesToggle as HTMLInputElement).checked = true;
+    if (targets.valueScale) (this.sideMenu.sideMenuElements.valueScaleToggle as HTMLInputElement).checked = true;
+    if (targets.integer) (this.sideMenu.sideMenuElements.integerToggle as HTMLInputElement).checked = true;
   }
 
   public updateView(targets: TargetsForViewUpdate): void {
@@ -158,22 +158,22 @@ export class View {
     Object.values(this.valuesScale).forEach((scaleValue: HTMLSpanElement): void => {
       scaleValue.addEventListener('click', this.handleScaleValueClick);
     });
-    this.sideMenu.sideMenuElements.toToggle!.addEventListener('change', this.handleToToggleChange);
-    this.sideMenu.sideMenuElements.planeToggle!.addEventListener('change', this.handlePlaneToggleChange);
-    this.sideMenu.sideMenuElements.valueScaleToggle!.addEventListener('change', this.handleValueScaleToggleChange);
-    this.sideMenu.sideMenuElements.handleValuesToggle!.addEventListener('change', this.handleHandleValuesChange);
-    this.sideMenu.sideMenuElements.integerToggle!.addEventListener('change', this.handleIntegerToggleChange);
+    this.sideMenu.sideMenuElements.toToggle.addEventListener('change', this.handleToToggleChange);
+    this.sideMenu.sideMenuElements.planeToggle.addEventListener('change', this.handlePlaneToggleChange);
+    this.sideMenu.sideMenuElements.valueScaleToggle.addEventListener('change', this.handleValueScaleToggleChange);
+    this.sideMenu.sideMenuElements.handleValuesToggle.addEventListener('change', this.handleHandleValuesChange);
+    this.sideMenu.sideMenuElements.integerToggle.addEventListener('change', this.handleIntegerToggleChange);
     [this.sideMenu.sideMenuElements.fromInput, this.sideMenu.sideMenuElements.toInput].forEach(
-      (valueInput: HTMLInputElement | undefined): void => {
-        valueInput!.addEventListener('change', this.handleValueInputChange);
+      (valueInput: HTMLElement): void => {
+        valueInput.addEventListener('change', this.handleValueInputChange);
       },
     );
     [this.sideMenu.sideMenuElements.minimumInput, this.sideMenu.sideMenuElements.maximumInput].forEach(
-      (rangeInput: HTMLInputElement | undefined): void => {
-        rangeInput!.addEventListener('change', this.handleRangeInputChange);
+      (rangeInput: HTMLElement): void => {
+        rangeInput.addEventListener('change', this.handleRangeInputChange);
       },
     );
-    this.sideMenu.sideMenuElements.stepInput!.addEventListener('change', this.handleStepInputChange);
+    this.sideMenu.sideMenuElements.stepInput.addEventListener('change', this.handleStepInputChange);
     [this.handles.fromHandle, this.handles.toHandle].forEach((handle: HTMLSpanElement):void => {
       handle.addEventListener('mousedown', this.handleHandleClick);
     });
@@ -258,7 +258,7 @@ export class View {
 
     this.basicSettings.step = Number(element.value);
     if (element.value === '0') {
-      this.sideMenu.sideMenuElements.stepInput!.value = '';
+      (this.sideMenu.sideMenuElements.stepInput as HTMLInputElement).value = '';
       this.basicSettings.step = false;
     } else {
       this.dataRequestToModel.needStepWidth = { name: '', value: 'true' };

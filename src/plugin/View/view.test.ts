@@ -72,7 +72,7 @@ describe('View', () => {
     });
     expect(view.handles.toHandle.style.display).toEqual('none');
     expect(view.interval.interval.style.display).toEqual('none');
-    expect(view.sideMenu.sideMenuElements.toInputWrapper!.style.display).toEqual('none');
+    expect(view.sideMenu.sideMenuElements.toInputWrapper.style.display).toEqual('none');
   });
 
   it('updateSliderView() call display changers to hide valueScale', () => {
@@ -135,44 +135,44 @@ describe('View', () => {
       value: '50',
       isToFixed: true,
     });
-    expect(view.sideMenu.sideMenuElements.fromOutput!.innerText).toEqual('50');
-    expect(view.sideMenu.sideMenuElements.fromInput!.value).toEqual('50');
+    expect(view.sideMenu.sideMenuElements.fromOutput.innerText).toEqual('50');
+    expect((view.sideMenu.sideMenuElements.fromInput as HTMLInputElement).value).toEqual('50');
     view.refreshAllComponents({
       target: 'to',
       value: '50',
       isToFixed: true,
     });
-    expect(view.sideMenu.sideMenuElements.toOutput!.innerText).toEqual(' - 50');
-    expect(view.sideMenu.sideMenuElements.toInput!.value).toEqual('50');
+    expect(view.sideMenu.sideMenuElements.toOutput.innerText).toEqual(' - 50');
+    expect((view.sideMenu.sideMenuElements.toInput as HTMLInputElement).value).toEqual('50');
   });
 
   it('bindEventListeners() correctly responds to toToggle input changes', () => {
     view.bindEventListeners();
-    view.sideMenu.sideMenuElements.toToggle!.checked = false;
-    view.sideMenu.sideMenuElements.toToggle!.dispatchEvent(new Event('change'));
+    (view.sideMenu.sideMenuElements.toToggle as HTMLInputElement).checked = false;
+    view.sideMenu.sideMenuElements.toToggle.dispatchEvent(new Event('change'));
     expect(view.basicSettings.double).toBeFalse();
     expect(view.handles.toHandle.style.display).toEqual('none');
     expect(view.interval.interval.style.display).toEqual('none');
-    expect(view.sideMenu.sideMenuElements.toInputWrapper!.style.display).toEqual('none');
-    view.sideMenu.sideMenuElements.toToggle!.checked = true;
-    view.sideMenu.sideMenuElements.toToggle!.dispatchEvent(new Event('change'));
+    expect(view.sideMenu.sideMenuElements.toInputWrapper.style.display).toEqual('none');
+    (view.sideMenu.sideMenuElements.toToggle as HTMLInputElement).checked = true;
+    view.sideMenu.sideMenuElements.toToggle.dispatchEvent(new Event('change'));
     expect(view.basicSettings.double).toBeTrue();
     expect(view.handles.toHandle.style.display).toEqual('inline-block');
     expect(view.interval.interval.style.display).toEqual('block');
-    expect(view.sideMenu.sideMenuElements.toInputWrapper!.style.display).toEqual('block');
+    expect(view.sideMenu.sideMenuElements.toInputWrapper.style.display).toEqual('block');
   });
 
   it('bindEventListeners() correctly responds to plane input changes', () => {
     view.bindEventListeners();
-    view.sideMenu.sideMenuElements.planeToggle!.checked = true;
-    view.sideMenu.sideMenuElements.planeToggle!.dispatchEvent(new Event('change'));
+    (view.sideMenu.sideMenuElements.planeToggle as HTMLInputElement).checked = true;
+    view.sideMenu.sideMenuElements.planeToggle.dispatchEvent(new Event('change'));
     expect(view.basicSettings.vertical).toBeTrue();
     expect(view.slider.slider).toHaveClass('goby-slider_state_vertical');
     expect(view.handles.fromValue).toHaveClass('goby-slider__handle-value_state_vertical');
     expect(view.handles.toValue).toHaveClass('goby-slider__handle-value_state_vertical');
     expect(view.valuesScale.minValue).toHaveClass('goby-slider__value_state_vertical');
-    view.sideMenu.sideMenuElements.planeToggle!.checked = false;
-    view.sideMenu.sideMenuElements.planeToggle!.dispatchEvent(new Event('change'));
+    (view.sideMenu.sideMenuElements.planeToggle as HTMLInputElement).checked = false;
+    view.sideMenu.sideMenuElements.planeToggle.dispatchEvent(new Event('change'));
     expect(view.basicSettings.vertical).toBeFalse();
     expect(view.slider.slider).not.toHaveClass('goby-slider_state_vertical');
     expect(view.handles.fromValue).not.toHaveClass('goby-slider__handle-value_state_vertical');
@@ -182,25 +182,25 @@ describe('View', () => {
 
   it('bindEventListeners() correctly responds to valueScale input changes', () => {
     view.bindEventListeners();
-    view.sideMenu.sideMenuElements.valueScaleToggle!.checked = false;
-    view.sideMenu.sideMenuElements.valueScaleToggle!.dispatchEvent(new Event('change'));
+    (view.sideMenu.sideMenuElements.valueScaleToggle as HTMLInputElement).checked = false;
+    view.sideMenu.sideMenuElements.valueScaleToggle.dispatchEvent(new Event('change'));
     expect(view.basicSettings.valueScale).toBeFalsy();
     expect(view.valuesScale.minValue.style.display).toEqual('none');
-    view.sideMenu.sideMenuElements.valueScaleToggle!.checked = true;
-    view.sideMenu.sideMenuElements.valueScaleToggle!.dispatchEvent(new Event('change'));
+    (view.sideMenu.sideMenuElements.valueScaleToggle as HTMLInputElement).checked = true;
+    view.sideMenu.sideMenuElements.valueScaleToggle.dispatchEvent(new Event('change'));
     expect(view.basicSettings.valueScale).toBeTrue();
     expect(view.valuesScale.minValue.style.display).toEqual('inline-block');
   });
 
   it('bindEventListeners() correctly responds to handelValues input changes', () => {
     view.bindEventListeners();
-    view.sideMenu.sideMenuElements.handleValuesToggle!.checked = false;
-    view.sideMenu.sideMenuElements.handleValuesToggle!.dispatchEvent(new Event('change'));
+    (view.sideMenu.sideMenuElements.handleValuesToggle as HTMLInputElement).checked = false;
+    view.sideMenu.sideMenuElements.handleValuesToggle.dispatchEvent(new Event('change'));
     expect(view.basicSettings.handlesValues).toBeFalsy();
     expect(view.handles.fromValue.style.display).toEqual('none');
     expect(view.handles.toValue.style.display).toEqual('none');
-    view.sideMenu.sideMenuElements.handleValuesToggle!.checked = true;
-    view.sideMenu.sideMenuElements.handleValuesToggle!.dispatchEvent(new Event('change'));
+    (view.sideMenu.sideMenuElements.handleValuesToggle as HTMLInputElement).checked = true;
+    view.sideMenu.sideMenuElements.handleValuesToggle.dispatchEvent(new Event('change'));
     expect(view.basicSettings.handlesValues).toBeTrue();
     expect(view.handles.fromValue.style.display).toEqual('inline-block');
     expect(view.handles.toValue.style.display).toEqual('inline-block');
@@ -208,11 +208,11 @@ describe('View', () => {
 
   it('bindEventListeners() send new value from input', () => {
     view.bindEventListeners();
-    view.sideMenu.sideMenuElements.fromInput!.value = '50';
-    view.sideMenu.sideMenuElements.fromInput!.dispatchEvent(new Event('change'));
+    (view.sideMenu.sideMenuElements.fromInput as HTMLInputElement).value = '50';
+    view.sideMenu.sideMenuElements.fromInput.dispatchEvent(new Event('change'));
     expect(view.dataRequestToModel.needApplyNewValue).toEqual({ name: 'from', value: '50' });
-    view.sideMenu.sideMenuElements.toInput!.value = '80';
-    view.sideMenu.sideMenuElements.toInput!.dispatchEvent(new Event('change'));
+    (view.sideMenu.sideMenuElements.toInput as HTMLInputElement).value = '80';
+    view.sideMenu.sideMenuElements.toInput.dispatchEvent(new Event('change'));
     expect(view.dataRequestToModel.needApplyNewValue).toEqual({ name: 'to', value: '80' });
   });
 
@@ -220,8 +220,8 @@ describe('View', () => {
     view.dataRequestToModel.needStepWidth = { name: '', value: 'true' };
     expect(view.dataRequestToModel.needStepWidth).toEqual({ name: '', value: 'true' });
     view.bindEventListeners();
-    view.sideMenu.sideMenuElements.stepInput!.value = '50';
-    view.sideMenu.sideMenuElements.stepInput!.dispatchEvent(new Event('change'));
+    (view.sideMenu.sideMenuElements.stepInput as HTMLInputElement).value = '50';
+    view.sideMenu.sideMenuElements.stepInput.dispatchEvent(new Event('change'));
     expect(view.dataRequestToModel.needStepWidth).toEqual({ name: '', value: 'true' });
   });
 });
