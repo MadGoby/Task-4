@@ -136,6 +136,7 @@
 
   &__item-objective {
     align-self: start;
+    cursor: default;
   }
 
   &__inputs {
@@ -146,6 +147,7 @@
 
   &__input-wrapper {
     width: 40%;
+    padding-left: 40px;
   }
 
   &__input-description {
@@ -182,6 +184,8 @@
   &__output-value {
     color: $color-main-lighter;
     font-size: 24px;
+    user-select: none;
+    cursor: default;
   }
 
   &__outputs-value {
@@ -190,11 +194,12 @@
   }
 
   &__output-objective {
+    cursor: default;
     display: flex;
     align-items: center;
   }
 
-  &__toggle-item {
+  &__toggle-wrapper {
     display: flex;
     column-gap: 10px;
     align-items: center;
@@ -206,6 +211,10 @@
 
   &__toggle {
     display: none;
+  }
+
+  &__toggle-description {
+    cursor: pointer;
   }
 
   &__toggle-border {
@@ -228,7 +237,7 @@
     }
   }
 
-  &__toggle:checked + &__toggle-border {
+  &__toggle:checked ~ &__toggle-border {
     border-color: $color-main;
     justify-content: end;
 
@@ -236,5 +245,4 @@
       background: $color-main;
     }
   }
-
 }
