@@ -6,13 +6,15 @@
   row-gap: 40px;
 
   &__slider {
+    display: flex;
+    justify-content: center;
     min-height: 105px;
     font-family: $font-main;
   }
 
   &__body {
     width: 100%;
-    min-height: 10px;
+    height: 10px;
     border-radius: 10px;
     background: rgb(205, 236, 228);
     position: relative;
@@ -20,7 +22,12 @@
     bottom: -50px;
     cursor: pointer;
 
-    &
+    &_state {
+      &_vertical {
+        transform: rotate(-90deg);
+        max-width: 400px;
+      }
+    }
   }
 
   &__handle {
@@ -48,9 +55,7 @@
     cursor: default;
     left: -40px;
     min-width: 100px;
-  }
 
-  &__handle-value {
     &_type {
       &_from {
         top: -20px;
@@ -58,6 +63,14 @@
 
       &_to {
         top: 20px;
+      }
+    }
+
+    &_state {
+      &_vertical {
+        transform: rotate(90deg);
+        top: 70px;
+        text-align: left;
       }
     }
   }
@@ -78,9 +91,7 @@
     cursor: pointer;
     display: inline-block;
     user-select: none;
-  }
 
-  &__value {
     &_type {
       &_min {
         top: -50px;
@@ -103,6 +114,13 @@
 
       &_40,
       &_80 {
+        top: -50px;
+      }
+    }
+
+    &_state {
+      &_vertical {
+        transform: rotate(90deg);
         top: -50px;
       }
     }
@@ -162,7 +180,7 @@
   }
 
   &__output-value {
-    color: $color-main;
+    color: $color-main-lighter;
     font-size: 24px;
   }
 
