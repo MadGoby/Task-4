@@ -63,7 +63,7 @@ export class View {
       interval: this.interval.interval,
       valueScale: this.valuesScale,
     });
-    this.target.append(this.slider.sliderWrapper);
+    this.target.append(this.slider.mainWrapper);
   }
 
   private addSideMenuToDOM(): void {
@@ -72,7 +72,7 @@ export class View {
     if (typeof this.basicSettings.sideMenu === 'string') {
       document.querySelector(this.basicSettings.sideMenu)?.append(this.sideMenu.sideMenuElements.sideMenuContainer);
     } else {
-      this.target.append(this.sideMenu.sideMenuElements.sideMenuContainer);
+      this.slider.mainWrapper.append(this.sideMenu.sideMenuElements.sideMenuContainer);
     }
   }
 

@@ -1,6 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap');
-
-$font-color-main: rgb(2, 114, 82);
+@import '../plugin/common/variables';
 
 *,
 *::before,
@@ -8,7 +6,7 @@ $font-color-main: rgb(2, 114, 82);
   box-sizing: inherit;
   margin: 0;
   padding: 0;
-  font-family: 'Roboto', sans-serif;
+  font-family: $font-main;
 }
 
 html,
@@ -53,7 +51,7 @@ body {
     height: 80px;
     color: white;
     border-radius: 50%;
-    background-color: $font-color-main;
+    background-color: $color-main;
     position: absolute;
     left: -35px;
     top: -35px;

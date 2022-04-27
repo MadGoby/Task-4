@@ -5,12 +5,22 @@ export class Slider {
 
   readonly sliderWrapper: HTMLDivElement;
 
+  readonly mainWrapper: HTMLDivElement;
+
   constructor() {
+    this.mainWrapper = document.createElement('div');
     this.slider = document.createElement('div');
-    this.slider.classList.add('goby-slider__body');
     this.sliderWrapper = document.createElement('div');
-    this.sliderWrapper.classList.add('goby-slider');
+
+    this.createHTMLElements();
+  }
+
+  private createHTMLElements(): void {
+    this.slider.classList.add('goby-slider__body');
+    this.sliderWrapper.classList.add('goby-slider__slider');
+    this.mainWrapper.classList.add('goby-slider');
     this.sliderWrapper.append(this.slider);
+    this.mainWrapper.append(this.sliderWrapper);
   }
 
   public collectSlider(settings: SliderAssemblerSettings): void {
@@ -28,11 +38,11 @@ export class Slider {
   }
 
   private checkIsNeedToMakeHorizontally(isVertical: boolean): boolean {
-    return ((this.slider.classList.contains('goby-slider_state_vertical')) && (!isVertical));
+    return ((this.slider.classList.contains('goby-slider__body_state_vertical')) && (!isVertical));
   }
 
   private checkIsNeedToMakeVertical(isVertical: boolean): boolean {
-    return ((!this.slider.classList.contains('goby-slider_state_vertical')) && (isVertical));
+    return ((!this.slider.classList.contains('goby-slider__body_state_vertical')) && (isVertical));
   }
 
   public changePlane(settings: SliderPlaneSettings): void {
@@ -46,12 +56,12 @@ export class Slider {
 
     switch (true) {
       case this.checkIsNeedToMakeVertical(isVertical):
-        this.slider.classList.toggle('goby-slider_state_vertical');
+        this.slider.classList.toggle('goby-slider__body_state_vertical');
         this.slider.style.top = `${this.slider.offsetWidth / 2}px`;
         this.sliderWrapper.style.height = `${this.slider.offsetWidth}px`;
         break;
       case this.checkIsNeedToMakeHorizontally(isVertical):
-        this.slider.classList.toggle('goby-slider_state_vertical');
+        this.slider.classList.toggle('goby-slider__body_state_vertical');
         this.slider.style.top = '';
         this.sliderWrapper.style.height = '';
         break;
