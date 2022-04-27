@@ -198,7 +198,7 @@ const sideMenuData: SideMenuData = {
     {
       key: 'sideMenuContainer',
       name: 'div',
-      cssClasses: ['goby-side-menu'],
+      cssClasses: ['goby-slider__side-menu'],
     },
   ],
   appendList: {

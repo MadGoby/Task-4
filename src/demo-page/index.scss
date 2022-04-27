@@ -1,51 +1,66 @@
-html {
-  box-sizing: border-box;
-}
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap');
+
+$font-color-main: rgb(2, 114, 82);
 
 *,
 *::before,
 *::after {
   box-sizing: inherit;
+  margin: 0;
+  padding: 0;
+  font-family: 'Roboto', sans-serif;
 }
 
 html,
 body {
-  margin: 0;
   height: 100%;
   min-width: 320px;
 }
 
-.slider-demo__main {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 60px 0;
+.slider-demo {
+  background-color: #eaeaea;
+
+  &__main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 60px 40px;
+    row-gap: 60px;
+
+    @media screen and (max-width: 720px){
+      padding: 60px 0;
+    }
+  }
 }
 
 .slider-wrapper {
+  background-color: white;
   width: 90%;
   min-height: 185px;
   box-sizing: border-box;
   padding: 40px 40px;
   position: relative;
-  box-shadow: 0px 0px 20px 0px rgba(2,114,82,1);
+  box-shadow: 0 0 20px -5px rgba(2,114,82,1);
   border-radius: 20px;
-}
 
-.slider-wrapper__header {
-  font-family: 'Lucida Console', 'Lucida Sans Typewriter', monaco, 'Bitstream Vera Sans Mono', monospace;
-  text-align: center;
-  font-size: 35px;
-  font-weight: bold;
-  color: rgb(2, 114, 82);
-  padding-bottom: 15px;
-  border-bottom: 3px solid rgb(2, 114, 82);
-  margin: 0 0 40px 0;
-  user-select: none;
-}
+  &__number {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 60px;
+    font-weight: bold;
+    width: 80px;
+    height: 80px;
+    color: white;
+    border-radius: 50%;
+    background-color: $font-color-main;
+    position: absolute;
+    left: -35px;
+    top: -35px;
 
-@media screen and (max-width: 700px) {
-  .slider-wrapper__header {
-    font-size: 30px;
+    @media screen and (max-width: 720px){
+      left: calc(50% - 40px);
+      top: -45px;
+    }
   }
 }

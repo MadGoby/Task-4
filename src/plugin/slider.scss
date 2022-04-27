@@ -1,112 +1,116 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap');
+
 .goby-slider {
-  width: 100%;
-  min-height: 10px;
-  border-radius: 10px;
-  background: rgb(205, 236, 228);
-  position: relative;
-  box-sizing: border-box;
-  bottom: -50px;
-  cursor: pointer;
-}
-
-.goby-slider-wrapper {
   min-height: 105px;
-}
 
-.goby-slider__handle {
-  height: 20px;
-  width: 20px;
-  top: -5px;
-  background: rgb(0, 209, 150);
-  display: inline-block;
-  position: absolute;
-  box-sizing: border-box;
-  border-radius: 50%;
-  cursor: pointer;
-  z-index: 3;
-}
+  &__body {
+    width: 100%;
+    min-height: 10px;
+    border-radius: 10px;
+    background: rgb(205, 236, 228);
+    position: relative;
+    box-sizing: border-box;
+    bottom: -50px;
+    cursor: pointer;
+  }
 
-.goby-slider__handle-value {
-  position: absolute;
-  width: 100%;
-  text-align: center;
-  min-height: 20px;
-  font-family: 'Lucida Console', 'Lucida Sans Typewriter', monaco, 'Bitstream Vera Sans Mono', monospace;
-  font-weight: 900;
-  line-height: 20px;
-  color: rgb(2, 114, 82);
-  user-select: none;
-  cursor: default;
-  left: -40px;
-  min-width: 100px;
-}
+  &__handle {
+    height: 20px;
+    width: 20px;
+    top: -5px;
+    background: rgb(0, 209, 150);
+    display: inline-block;
+    position: absolute;
+    box-sizing: border-box;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 3;
+  }
 
-.goby-slider__handle-value_type_from {
-  top: -20px;
-}
+  &__handle-value {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    min-height: 20px;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 900;
+    line-height: 20px;
+    color: rgb(2, 114, 82);
+    user-select: none;
+    cursor: default;
+    left: -40px;
+    min-width: 100px;
+  }
 
-.goby-slider__handle-value_type_to {
-  top: 20px;
-}
+  &__handle-value {
+    &_type {
+      &_from {
+        top: -20px;
+      }
 
-.goby-slider__interval {
-  position: absolute;
-  min-height: 10px;
-  box-sizing: border-box;
-  background-color: rgb(0, 209, 150);
-  z-index: 2;
-}
+      &_to {
+        top: 20px;
+      }
+    }
+  }
 
-.goby-slider__value {
-  font-family: 'Lucida Console', 'Lucida Sans Typewriter', monaco, 'Bitstream Vera Sans Mono', monospace;
-  color: rgb(2, 114, 82);
-  position: absolute;
-  font-weight: 900;
-  text-align: center;
-  cursor: pointer;
-  display: inline-block;
-  user-select: none;
-}
+  &__interval {
+    position: absolute;
+    min-height: 10px;
+    box-sizing: border-box;
+    background-color: rgb(0, 209, 150);
+    z-index: 2;
+  }
 
-.goby-slider__value_type_min {
-  top: -50px;
-  left: 0;
-  text-align: left;
-}
+  &__value {
+    font-family: 'Roboto', sans-serif;
+    color: rgb(2, 114, 82);
+    position: absolute;
+    font-weight: 900;
+    text-align: center;
+    cursor: pointer;
+    display: inline-block;
+    user-select: none;
+  }
 
-.goby-slider__value_type_max {
-  top: 40px;
-  right: 0;
-  text-align: right;
-}
+  &__value {
+    &_type {
+      &_min {
+        top: -50px;
+        left: 0;
+        text-align: left;
+      }
 
-.goby-slider__value_percent_20 {
-  top: 40px;
-}
+      &_max {
+        top: 40px;
+        right: 0;
+        text-align: right;
+      }
+    }
 
-.goby-slider__value_percent_40 {
-  top: -50px;
-}
+    &_percent {
+      &_60,
+      &_20 {
+        top: 40px;
+      }
 
-.goby-slider__value_percent_60 {
-  top: 40px;
-}
+      &_40,
+      &_80 {
+        top: -50px;
+      }
+    }
+  }
 
-.goby-slider__value_percent_80 {
-  top: -50px;
-}
+  &__side-menu {
+    padding: 40px 15px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 20px;
+    line-height: 1.8ch;
 
-.goby-side-menu {
-  padding: 40px 15px;
-  font-family: 'Lucida Console', 'Lucida Sans Typewriter', monaco, 'Bitstream Vera Sans Mono', monospace;
-  font-size: 20px;
-  line-height: 1.8ch;
-}
-
-@media screen and (max-width: 700px) {
-  .goby-side-menu {
-    padding: 40px 0;
-    font-size: 18px;
+    @media screen and (max-width: 700px) {
+      padding: 40px 0;
+      font-size: 18px;
+    }
   }
 }
 
@@ -153,7 +157,7 @@
 .goby-side-menu__input {
   position: absolute;
   right: 0;
-  font-family: 'Lucida Console', 'Lucida Sans Typewriter', monaco, 'Bitstream Vera Sans Mono', monospace;
+  font-family: 'Roboto', sans-serif;
   border: none;
   border-bottom: 2px solid black;
   outline: none;

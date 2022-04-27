@@ -7,9 +7,9 @@ export class Slider {
 
   constructor() {
     this.slider = document.createElement('div');
-    this.slider.classList.add('goby-slider');
+    this.slider.classList.add('goby-slider__body');
     this.sliderWrapper = document.createElement('div');
-    this.sliderWrapper.classList.add('goby-slider-wrapper');
+    this.sliderWrapper.classList.add('goby-slider');
     this.sliderWrapper.append(this.slider);
   }
 
