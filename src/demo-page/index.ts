@@ -1,5 +1,5 @@
-import '../plugin/slider.css';
-import './index.css';
+import '../plugin/slider.scss';
+import './index.scss';
 import { SliderOptions } from '../plugin/types';
 
 const sliderSettings: Array<SliderOptions> = [

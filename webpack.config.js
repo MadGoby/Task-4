@@ -11,7 +11,7 @@ module.exports = {
     index: './src/demo-page/index.ts',
   },
   output: {
-    filename: '[name].js',
+    filename: 'js/[name].js',
     path: path.resolve(__dirname, './dist'),
   },
   resolve: {
@@ -32,12 +32,16 @@ module.exports = {
         use: 'ts-loader',
       },
       {
-        test: /\.css$/,
-        use: [MiniCssExtractPlugin.loader, 'css-loader'],
+        test: /\.s[ac]ss$/i,
+        use: [
+          MiniCssExtractPlugin.loader,
+          'css-loader',
+          'sass-loader',
+        ],
       },
       {
         test: /\.ts$/,
-        exclude: [path.resolve(__dirname, 'test')],
+        exclude: path.resolve(__dirname, 'test'),
         enforce: 'post',
         use: {
           loader: 'istanbul-instrumenter-loader',
@@ -48,7 +52,7 @@ module.exports = {
   },
   plugins: [
     new MiniCssExtractPlugin({
-      filename: '[name].css',
+      filename: 'css/[name].css',
     }),
     new HTMLWebpackPlugin({
       template: './src/demo-page/index.html',

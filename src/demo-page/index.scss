@@ -15,7 +15,10 @@ body {
   min-width: 320px;
 }
 
-.slider-demo {
+.slider-demo__main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   padding: 60px 0;
 }
 
@@ -25,9 +28,8 @@ body {
   box-sizing: border-box;
   padding: 40px 40px;
   position: relative;
-  border: 3px solid rgb(2, 114, 82);
+  box-shadow: 0px 0px 20px 0px rgba(2,114,82,1);
   border-radius: 20px;
-  margin: 0 auto 40px;
 }
 
 .slider-wrapper__header {
