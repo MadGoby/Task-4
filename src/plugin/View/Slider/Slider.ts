@@ -30,10 +30,10 @@ export class Slider {
       settings.interval,
       settings.valueScale.minValue,
       settings.valueScale.maxValue,
-      settings.valueScale[20],
-      settings.valueScale[40],
-      settings.valueScale[60],
-      settings.valueScale[80],
+      settings.valueScale.twentyPercentValue,
+      settings.valueScale.fortyPercentValue,
+      settings.valueScale.sixtyPercentValue,
+      settings.valueScale.eightyPercentValue,
     );
   }
 

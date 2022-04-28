@@ -3,14 +3,14 @@ import { DataForValueScale } from '../../Model/types';
 interface IValuesScale {
   minValue: HTMLSpanElement;
   maxValue: HTMLSpanElement;
-  20: HTMLSpanElement;
-  40: HTMLSpanElement;
-  60: HTMLSpanElement;
-  80: HTMLSpanElement;
+  twentyPercentValue: HTMLSpanElement;
+  fortyPercentValue: HTMLSpanElement;
+  sixtyPercentValue: HTMLSpanElement;
+  eightyPercentValue: HTMLSpanElement;
   refreshValueScale: (values: DataForValueScale) => void;
-  centersValues: (sliderWidth: number, handleWidth: number) => void;
+  centerValues: (sliderWidth: number, handleWidth: number) => void;
   changePlane: (isVertical: boolean) => void;
-  hideValueScale: (isValueScale: boolean) => void;
+  changeValueScaleDisplay: (isValueScale: boolean) => void;
 }
 
 export { IValuesScale };

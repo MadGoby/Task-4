@@ -131,7 +131,7 @@ export class View {
       });
       this.sideMenu.changeToValuesDisplay(this.basicSettings.double);
     }
-    if (!targets.valueScale) this.valuesScale.hideValueScale(this.basicSettings.valueScale);
+    if (!targets.valueScale) this.valuesScale.changeValueScaleDisplay(this.basicSettings.valueScale);
     if (!targets.handlesValues) this.handles.hideHandlesValues(this.basicSettings.handlesValues);
     if (targets.sideMenu) {
       this.turnOnMenuToggles(targets);
@@ -230,7 +230,7 @@ export class View {
     const element: HTMLInputElement = event.target as HTMLInputElement;
 
     this.basicSettings.valueScale = element.checked;
-    this.valuesScale.hideValueScale(this.basicSettings.valueScale);
+    this.valuesScale.changeValueScaleDisplay(this.basicSettings.valueScale);
   }
 
   private handleHandleValuesChange(event: Event): void {

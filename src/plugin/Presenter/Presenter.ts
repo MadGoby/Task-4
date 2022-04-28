@@ -44,7 +44,7 @@ export class Presenter {
   private distributesDataForScale(): void {
     const values: DataForValueScale = this.model.calculateDataForValueScale();
     this.view.valuesScale.refreshValueScale(values);
-    this.view.valuesScale.centersValues(
+    this.view.valuesScale.centerValues(
       this.view.slider.slider.offsetWidth - this.view.handles.fromHandle.offsetWidth,
       this.view.handles.fromHandle.offsetWidth,
     );

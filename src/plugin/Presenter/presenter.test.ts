@@ -45,23 +45,23 @@ describe('Presenter', () => {
 
   it('needApplyValueFromScale() choose from value', () => {
     view.basicSettings.double = true;
-    view.valuesScale[20].dispatchEvent(new Event('click'));
+    view.valuesScale.twentyPercentValue.dispatchEvent(new Event('click'));
     expect(model.values.from).toEqual('20');
   });
 
   it('needApplyValueFromScale() choose to value', () => {
     view.basicSettings.double = true;
-    view.valuesScale[80].dispatchEvent(new Event('click'));
+    view.valuesScale.eightyPercentValue.dispatchEvent(new Event('click'));
     expect(model.values.to).toEqual('80');
   });
 
   it('needDataForScale() fill value scale with correct values', () => {
     view.dataRequestToModel.needDataForScale = { name: '', value: 'true' };
     expect(view.valuesScale.minValue.innerText).toEqual('0');
-    expect(view.valuesScale[20].innerText).toEqual('20');
-    expect(view.valuesScale[40].innerText).toEqual('40');
-    expect(view.valuesScale[60].innerText).toEqual('60');
-    expect(view.valuesScale[80].innerText).toEqual('80');
+    expect(view.valuesScale.twentyPercentValue.innerText).toEqual('20');
+    expect(view.valuesScale.fortyPercentValue.innerText).toEqual('40');
+    expect(view.valuesScale.sixtyPercentValue.innerText).toEqual('60');
+    expect(view.valuesScale.eightyPercentValue.innerText).toEqual('80');
     expect(view.valuesScale.maxValue.innerText).toEqual('100');
   });
 

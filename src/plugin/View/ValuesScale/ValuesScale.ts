@@ -6,21 +6,21 @@ export class ValuesScale implements IValuesScale {
 
   readonly maxValue: HTMLSpanElement;
 
-  readonly 20: HTMLSpanElement;
+  readonly twentyPercentValue: HTMLSpanElement;
 
-  readonly 40: HTMLSpanElement;
+  readonly fortyPercentValue: HTMLSpanElement;
 
-  readonly 60: HTMLSpanElement;
+  readonly sixtyPercentValue: HTMLSpanElement;
 
-  readonly 80: HTMLSpanElement;
+  readonly eightyPercentValue: HTMLSpanElement;
 
   constructor() {
     this.minValue = ValuesScale.createElement('type_min');
     this.maxValue = ValuesScale.createElement('type_max');
-    this[20] = ValuesScale.createElement('percent_20');
-    this[40] = ValuesScale.createElement('percent_40');
-    this[60] = ValuesScale.createElement('percent_60');
-    this[80] = ValuesScale.createElement('percent_80');
+    this.twentyPercentValue = ValuesScale.createElement('percent_20');
+    this.fortyPercentValue = ValuesScale.createElement('percent_40');
+    this.sixtyPercentValue = ValuesScale.createElement('percent_60');
+    this.eightyPercentValue = ValuesScale.createElement('percent_80');
   }
 
   private static createElement(classModifier: string): HTMLSpanElement {
@@ -35,14 +35,14 @@ export class ValuesScale implements IValuesScale {
     ({
       min: this.minValue.innerText,
       max: this.maxValue.innerText,
-      20: this[20].innerText,
-      40: this[40].innerText,
-      60: this[60].innerText,
-      80: this[80].innerText,
+      20: this.twentyPercentValue.innerText,
+      40: this.fortyPercentValue.innerText,
+      60: this.sixtyPercentValue.innerText,
+      80: this.eightyPercentValue.innerText,
     } = values);
   }
 
-  public centersValues(sliderWidth: number, handleWidth: number): void {
+  public centerValues(sliderWidth: number, handleWidth: number): void {
     const calculateExtremeValuePosition = (element: HTMLSpanElement): string => `${
       0 - ((element.offsetWidth - handleWidth) / 2)
     }px`;
@@ -52,40 +52,37 @@ export class ValuesScale implements IValuesScale {
 
     this.minValue.style.left = calculateExtremeValuePosition(this.minValue);
     this.maxValue.style.right = calculateExtremeValuePosition(this.maxValue);
-    this[20].style.left = calculateValuePosition(0.2, this[20]);
-    this[40].style.left = calculateValuePosition(0.4, this[40]);
-    this[60].style.left = calculateValuePosition(0.6, this[60]);
-    this[80].style.left = calculateValuePosition(0.8, this[80]);
+    this.twentyPercentValue.style.left = calculateValuePosition(0.2, this.twentyPercentValue);
+    this.fortyPercentValue.style.left = calculateValuePosition(0.4, this.fortyPercentValue);
+    this.sixtyPercentValue.style.left = calculateValuePosition(0.6, this.sixtyPercentValue);
+    this.eightyPercentValue.style.left = calculateValuePosition(0.8, this.eightyPercentValue);
+  }
+
+  private checkIsContainVerticalClass(): boolean {
+    return (this.minValue.classList.contains('goby-slider__value_state_vertical'))
+      && (this.maxValue.classList.contains('goby-slider__value_state_vertical'))
+      && (this.twentyPercentValue.classList.contains('goby-slider__value_state_vertical'))
+      && (this.fortyPercentValue.classList.contains('goby-slider__value_state_vertical'))
+      && (this.sixtyPercentValue.classList.contains('goby-slider__value_state_vertical'))
+      && (this.eightyPercentValue.classList.contains('goby-slider__value_state_vertical'));
   }
 
   private checkIsNeedToMakeHorizontally(isVertical: boolean): boolean {
-    return (this.minValue.classList.contains('goby-slider__value_state_vertical'))
-      && (this.maxValue.classList.contains('goby-slider__value_state_vertical'))
-      && (this[20].classList.contains('goby-slider__value_state_vertical'))
-      && (this[40].classList.contains('goby-slider__value_state_vertical'))
-      && (this[60].classList.contains('goby-slider__value_state_vertical'))
-      && (this[80].classList.contains('goby-slider__value_state_vertical'))
-      && (!isVertical);
+    return this.checkIsContainVerticalClass() && !isVertical;
   }
 
   private checkIsNeedToMakeVertical(isVertical: boolean): boolean {
-    return (!this.minValue.classList.contains('goby-slider__value_state_vertical'))
-      && (!this.maxValue.classList.contains('goby-slider__value_state_vertical'))
-      && (!this[20].classList.contains('goby-slider__value_state_vertical'))
-      && (!this[40].classList.contains('goby-slider__value_state_vertical'))
-      && (!this[60].classList.contains('goby-slider__value_state_vertical'))
-      && (!this[80].classList.contains('goby-slider__value_state_vertical'))
-      && (isVertical);
+    return !this.checkIsContainVerticalClass() && isVertical;
   }
 
   public changePlane(isVertical: boolean): void {
     const changeClasses = (): void => {
       this.minValue.classList.toggle('goby-slider__value_state_vertical');
       this.maxValue.classList.toggle('goby-slider__value_state_vertical');
-      this[20].classList.toggle('goby-slider__value_state_vertical');
-      this[40].classList.toggle('goby-slider__value_state_vertical');
-      this[60].classList.toggle('goby-slider__value_state_vertical');
-      this[80].classList.toggle('goby-slider__value_state_vertical');
+      this.twentyPercentValue.classList.toggle('goby-slider__value_state_vertical');
+      this.fortyPercentValue.classList.toggle('goby-slider__value_state_vertical');
+      this.sixtyPercentValue.classList.toggle('goby-slider__value_state_vertical');
+      this.eightyPercentValue.classList.toggle('goby-slider__value_state_vertical');
     };
 
     const isNeedToChangeClasses = this.checkIsNeedToMakeVertical(isVertical)
@@ -94,14 +91,14 @@ export class ValuesScale implements IValuesScale {
     if (isNeedToChangeClasses) changeClasses();
   }
 
-  public hideValueScale(isValueScale: boolean): void {
+  public changeValueScaleDisplay(isValueScale: boolean): void {
     const changeDisplay = (value: string): void => {
       this.minValue.style.display = value;
       this.maxValue.style.display = value;
-      this[20].style.display = value;
-      this[40].style.display = value;
-      this[60].style.display = value;
-      this[80].style.display = value;
+      this.twentyPercentValue.style.display = value;
+      this.fortyPercentValue.style.display = value;
+      this.sixtyPercentValue.style.display = value;
+      this.eightyPercentValue.style.display = value;
     };
 
     if (!isValueScale) {
