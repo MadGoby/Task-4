@@ -50,7 +50,7 @@ describe('Movement', () => {
 
   it('handelListener() move from and interval to '
     + 'position bigger than right edge and record the position after fixing', () => {
-    movement.settings.double = false;
+    movement.basicSettings.double = false;
     movement.handleListener({ eventInfo: { target: movement.from, x: 50, y: 0 }, test: { x: 200, y: 0 } });
 
     expect(movement.from.style.left).toEqual('100px');
@@ -60,7 +60,7 @@ describe('Movement', () => {
 
   it('handelListener() move from and interval to position less than left edge'
     + ' and record the position after fixing', () => {
-    movement.settings.double = false;
+    movement.basicSettings.double = false;
     movement.handleListener({ eventInfo: { target: movement.from, x: 50, y: 0 }, test: { x: -100, y: 0 } });
 
     expect(movement.from.style.left).toEqual('0px');
@@ -79,7 +79,7 @@ describe('Movement', () => {
 
   it('correctsImpossiblePosition() fix value smaller then from correctly', () => {
     movement.dataForMovement.target = movement.to;
-    const result: number = movement.correctsImpossiblePosition(100, 20);
+    const result: number = movement.fixImpossiblePosition(100, 20);
 
     expect(result).toEqual(50);
   });

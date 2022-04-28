@@ -16,7 +16,7 @@ export class Movement {
 
   readonly to: HTMLSpanElement;
 
-  readonly settings: BasicViewSettings;
+  readonly basicSettings: BasicViewSettings;
 
   readonly interval: HTMLDivElement;
 
@@ -30,10 +30,10 @@ export class Movement {
     this.slider = settings.slider;
     this.from = settings.fromHandle;
     this.to = settings.toHandle;
-    this.settings = settings.basicSettings;
+    this.basicSettings = settings.basicSettings;
     this.interval = settings.interval;
     this.positions = { from: 0, to: 100 };
-    if (!this.settings.step) {
+    if (!this.basicSettings.step) {
       this.stepWidth = false;
     } else {
       this.stepWidth = '';
@@ -53,7 +53,7 @@ export class Movement {
   }
 
   private checkIsDouble(): boolean {
-    return this.settings.double;
+    return this.basicSettings.double;
   }
 
   private checkIsFromBiggerThanTo(newPosition: number): boolean {
@@ -68,49 +68,58 @@ export class Movement {
 
   private checkIsStepSetCorrectly(): boolean {
     const minStepWidth: number = 0.01;
-    return (this.settings.step !== false)
+    return (this.basicSettings.step !== false)
       && (typeof this.stepWidth === 'string') && (Number(this.stepWidth) >= minStepWidth);
   }
 
   private checkIsStepWidthPassed(targetPosition: number, currentPosition: number): boolean {
-    const correctStepPassed = Math.abs(targetPosition - currentPosition) >= Number(this.stepWidth);
+    const isStepWidthPassed: boolean = Math.abs(targetPosition - currentPosition) >= Number(this.stepWidth);
     const stepRate: number = currentPosition / Number(this.stepWidth);
     const isNotInStepRange: boolean = !Number.isInteger(stepRate);
-    const isRangeWherePassed: boolean = Math.floor(stepRate) * Number(this.stepWidth) > targetPosition
+    const isStepRangePassed: boolean = Math.floor(stepRate) * Number(this.stepWidth) > targetPosition
       || Math.ceil(stepRate) * Number(this.stepWidth) < targetPosition;
 
-    return correctStepPassed || (isNotInStepRange && isRangeWherePassed);
+    return isStepWidthPassed || (isNotInStepRange && isStepRangePassed);
   }
 
-  public correctsImpossiblePosition(rightSliderEdge: number, newPosition: number): number {
-    let value: number = newPosition;
-
-    const correctDoublePositions = (): void => {
-      if (this.checkIsFromBiggerThanTo(newPosition)) value = this.positions.to - this.dataForMovement.target.offsetWidth;
+  public fixImpossiblePosition(rightSliderEdge: number, newPosition: number): number {
+    const fixDoublePositions = (): number => {
+      if (this.checkIsFromBiggerThanTo(newPosition)) return this.positions.to - this.dataForMovement.target.offsetWidth;
       if (this.checkIsToSmallerThanFrom(newPosition)) {
-        value = this.positions.from + this.dataForMovement.target.offsetWidth;
+        return this.positions.from + this.dataForMovement.target.offsetWidth;
       }
-      if (this.checkIsToBiggerThanRightEdge(rightSliderEdge, newPosition)) value = rightSliderEdge;
+      if (this.checkIsToBiggerThanRightEdge(rightSliderEdge, newPosition)) return rightSliderEdge;
+      return newPosition;
     };
 
-    if (newPosition < 0) value = 0;
-    if (this.checkIsFromBiggerThanRightEdge(rightSliderEdge, newPosition)) value = rightSliderEdge;
-    if (this.checkIsDouble()) {
-      correctDoublePositions();
-    }
+    const isFromLessThenMinimum = newPosition < 0;
+    const isFromBiggerThanRightEdge = this.checkIsFromBiggerThanRightEdge(rightSliderEdge, newPosition);
 
-    return value;
+    const fixPosition = (): number => {
+      switch (true) {
+        case isFromLessThenMinimum:
+          return 0;
+        case isFromBiggerThanRightEdge:
+          return rightSliderEdge;
+        case this.checkIsDouble():
+          return fixDoublePositions();
+        default:
+          return newPosition;
+      }
+    };
+
+    return fixPosition();
   }
 
-  public correctsIntervalPosition(): void {
+  public fixIntervalPosition(): void {
     this.interval.style.left = `${(this.positions.from + (this.dataForMovement.target.offsetWidth / 2))}px`;
     this.interval.style.right = `${(this.slider.offsetWidth - this.positions.to)
     - (this.dataForMovement.target.offsetWidth / 2)}px`;
   }
 
   private applyNewPosition(newPosition: number): void {
-    const { target } = this.dataForMovement;
-    target.style.left = `${newPosition}px`;
+    const { target: targetHandle } = this.dataForMovement;
+    targetHandle.style.left = `${newPosition}px`;
 
     if (this.dataForMovement.target === this.from) {
       this.positions.from = newPosition;
@@ -118,20 +127,20 @@ export class Movement {
       this.positions.to = newPosition;
     }
 
-    this.correctsIntervalPosition();
+    this.fixIntervalPosition();
   }
 
-  private checkIsEdgePosition(newPosition: number): boolean {
+  private checkIsExtremePosition(newPosition: number): boolean {
     return (newPosition === 0) || (newPosition === this.slider.offsetWidth - this.dataForMovement.target.offsetWidth);
   }
 
-  private controlStepMovement(newPosition: number, targetPosition: number): void {
-    const difference = newPosition - targetPosition;
+  private performStepMovement(newPosition: number, targetPosition: number): void {
+    const currentStepWidth: number = newPosition - targetPosition;
     const newTargetPosition: number = targetPosition + Number(this.stepWidth)
-      * (Math.trunc(difference / Number(this.stepWidth)));
+      * (Math.trunc(currentStepWidth / Number(this.stepWidth)));
 
     switch (true) {
-      case this.checkIsEdgePosition(newPosition):
+      case this.checkIsExtremePosition(newPosition):
         this.applyNewPosition(newPosition);
         break;
       case this.checkIsStepWidthPassed(newPosition, targetPosition):
@@ -148,30 +157,18 @@ export class Movement {
     const x: number = event.clientX;
     const y: number = event.clientY;
     const rightSliderEdge: number = this.slider.offsetWidth - this.dataForMovement.target.offsetWidth;
-    let targetPosition: number;
-
-    if (this.dataForMovement.target === this.from) {
-      targetPosition = this.positions.from;
-    } else {
-      targetPosition = this.positions.to;
-    }
-
-    let newPosition: number;
-
-    if (this.settings.vertical) {
-      newPosition = this.slider.offsetWidth - (
-        y - this.dataForMovement.distanceToCursor - this.slider.getBoundingClientRect().top
-      );
-    } else {
-      newPosition = x - this.dataForMovement.distanceToCursor - this.slider.getBoundingClientRect().left;
-    }
-
-    newPosition = this.correctsImpossiblePosition(rightSliderEdge, newPosition);
+    const isFromTarget = this.dataForMovement.target === this.from;
+    const targetHandlePosition: number = isFromTarget ? this.positions.from : this.positions.to;
+    const newPosition: number = this.basicSettings.vertical
+      ? this.slider.offsetWidth - (
+        y - this.dataForMovement.distanceToCursor - this.slider.getBoundingClientRect().top)
+      : x - this.dataForMovement.distanceToCursor - this.slider.getBoundingClientRect().left;
+    const fixedPosition: number = this.fixImpossiblePosition(rightSliderEdge, newPosition);
 
     if (this.checkIsStepSetCorrectly()) {
-      this.controlStepMovement(newPosition, targetPosition);
+      this.performStepMovement(fixedPosition, targetHandlePosition);
     } else {
-      this.applyNewPosition(newPosition);
+      this.applyNewPosition(fixedPosition);
     }
   }
 
@@ -184,20 +181,12 @@ export class Movement {
       },
       test = false,
     } = setting;
-
-    let target: HTMLSpanElement;
-    if (eventInfo.target === this.from) {
-      target = this.from;
-    } else {
-      target = this.to;
-    }
-
-    let distanceToCursor: number;
-    if (this.settings.vertical) {
-      distanceToCursor = eventInfo.y - target.getBoundingClientRect().top - (target.offsetWidth);
-    } else {
-      distanceToCursor = eventInfo.x - target.getBoundingClientRect().left;
-    }
+    const isFromHandle: boolean = eventInfo.target === this.from;
+    const isVertical: boolean = this.basicSettings.vertical;
+    const targetHandle: HTMLSpanElement = isFromHandle ? this.from : this.to;
+    const distanceToCursor: number = isVertical
+      ? eventInfo.y - targetHandle.getBoundingClientRect().top - (targetHandle.offsetWidth)
+      : eventInfo.x - targetHandle.getBoundingClientRect().left;
 
     if (test) {
       this.handleDocumentMouseMove({
@@ -207,23 +196,23 @@ export class Movement {
     }
 
     this.dataForMovement = {
-      target,
+      target: targetHandle,
       distanceToCursor,
     };
 
-    this.bindEventListeners();
+    this.bindDocumentEventListeners();
   }
 
-  private removeEventListeners(): void {
+  private removeDocumentEventListeners(): void {
     document.removeEventListener('mousemove', this.handleDocumentMouseMove);
     document.removeEventListener('mouseup', this.handleDocumentMouseUp);
   }
 
   private handleDocumentMouseUp(): void {
-    this.removeEventListeners();
+    this.removeDocumentEventListeners();
   }
 
-  private bindEventListeners(): void {
+  private bindDocumentEventListeners(): void {
     document.addEventListener('mousemove', this.handleDocumentMouseMove);
     document.addEventListener('mouseup', this.handleDocumentMouseUp);
   }

@@ -301,7 +301,7 @@ export class View {
       isDouble: this.basicSettings.double,
     });
     this.movement.dataForMovement.target = targetHandle;
-    const correctedValue: number = this.movement.correctsImpossiblePosition(
+    const correctedValue: number = this.movement.fixImpossiblePosition(
       this.slider.slider.offsetWidth - targetHandle.offsetWidth,
       targetPosition,
     );
@@ -310,7 +310,7 @@ export class View {
       value: correctedValue,
       positions: this.movement.positions,
     });
-    this.movement.correctsIntervalPosition();
+    this.movement.fixIntervalPosition();
   }
 
   private handleWindowResize(): void {
