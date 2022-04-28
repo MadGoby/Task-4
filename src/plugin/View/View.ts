@@ -57,7 +57,7 @@ export class View {
   }
 
   private addSliderToDOM(): void {
-    this.slider.collectSlider({
+    this.slider.initializeSliderElements({
       from: this.handles.fromHandle,
       to: this.handles.toHandle,
       interval: this.interval.interval,

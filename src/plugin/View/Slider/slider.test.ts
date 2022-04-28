@@ -31,7 +31,7 @@ describe('Slider', () => {
       interval: new SelectedInterval().interval,
       valueScale: new ValuesScale(),
     };
-    slider.collectSlider(settings);
+    slider.initializeSliderElements(settings);
     expect(slider.slider).toBeTruthy();
   });
 

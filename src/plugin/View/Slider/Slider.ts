@@ -23,7 +23,7 @@ export class Slider {
     this.mainWrapper.append(this.sliderWrapper);
   }
 
-  public collectSlider(settings: SliderAssemblerSettings): void {
+  public initializeSliderElements(settings: SliderAssemblerSettings): void {
     this.slider.append(
       settings.from,
       settings.to,
@@ -37,11 +37,11 @@ export class Slider {
     );
   }
 
-  private checkIsNeedToMakeHorizontally(isVertical: boolean): boolean {
+  private checkIsNeedToDisplayHorizontally(isVertical: boolean): boolean {
     return ((this.slider.classList.contains('goby-slider__body_state_vertical')) && (!isVertical));
   }
 
-  private checkIsNeedToMakeVertical(isVertical: boolean): boolean {
+  private checkIsNeedToDisplayVertical(isVertical: boolean): boolean {
     return ((!this.slider.classList.contains('goby-slider__body_state_vertical')) && (isVertical));
   }
 
@@ -55,12 +55,12 @@ export class Slider {
     }
 
     switch (true) {
-      case this.checkIsNeedToMakeVertical(isVertical):
+      case this.checkIsNeedToDisplayVertical(isVertical):
         this.slider.classList.toggle('goby-slider__body_state_vertical');
         this.slider.style.top = `${this.slider.offsetWidth / 2}px`;
         this.sliderWrapper.style.height = `${this.slider.offsetWidth}px`;
         break;
-      case this.checkIsNeedToMakeHorizontally(isVertical):
+      case this.checkIsNeedToDisplayHorizontally(isVertical):
         this.slider.classList.toggle('goby-slider__body_state_vertical');
         this.slider.style.top = '';
         this.sliderWrapper.style.height = '';
