@@ -115,13 +115,13 @@ describe('View', () => {
   });
 
   it('refreshAllComponents() refresh handel values', () => {
-    view.refreshAllComponents({
+    view.refreshValues({
       target: 'from',
       value: '50',
       isToFixed: true,
     });
     expect(view.handles.fromValue.innerText).toEqual('50');
-    view.refreshAllComponents({
+    view.refreshValues({
       target: 'to',
       value: '50',
       isToFixed: true,
@@ -130,14 +130,14 @@ describe('View', () => {
   });
 
   it('refreshAllComponents() refresh sideMenu values', () => {
-    view.refreshAllComponents({
+    view.refreshValues({
       target: 'from',
       value: '50',
       isToFixed: true,
     });
     expect(view.sideMenu.sideMenuElements.fromOutput.innerText).toEqual('50');
     expect((view.sideMenu.sideMenuElements.fromInput as HTMLInputElement).value).toEqual('50');
-    view.refreshAllComponents({
+    view.refreshValues({
       target: 'to',
       value: '50',
       isToFixed: true,

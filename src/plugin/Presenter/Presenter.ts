@@ -76,12 +76,12 @@ export class Presenter {
     adjustPositions(startTo);
     this.view.movement.positions.from = Number(startFrom.position);
     this.view.movement.positions.to = Number(startTo.position);
-    this.view.refreshAllComponents({
+    this.view.refreshValues({
       value: this.model.values.min,
       target: 'min',
       isToFixed: this.view.basicSettings.integer,
     });
-    this.view.refreshAllComponents({
+    this.view.refreshValues({
       value: this.model.values.max,
       target: 'max',
       isToFixed: this.view.basicSettings.integer,
@@ -209,7 +209,7 @@ export class Presenter {
       set(target: BasicModelSettings, property: 'min' | 'max' | 'from' | 'to', value: string) {
         target[property] = value;
 
-        view.refreshAllComponents({
+        view.refreshValues({
           value,
           target: property,
           isToFixed: view.basicSettings.integer,

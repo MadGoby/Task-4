@@ -11,10 +11,11 @@ import {
   DataRequestToModel,
   TargetsForViewUpdate,
 } from './types';
+import { HandlesOverlaps } from './Handles/types';
 
 @autobind
 export class View {
-  readonly target: HTMLElement;
+  readonly container: HTMLElement;
 
   readonly slider: Slider;
 
@@ -40,7 +41,7 @@ export class View {
   };
 
   constructor(settings: BasicViewSettings, target: HTMLElement) {
-    this.target = target;
+    this.container = target;
     this.slider = new Slider();
     this.handles = new Handles();
     this.interval = new SelectedInterval();
@@ -63,7 +64,7 @@ export class View {
       interval: this.interval.interval,
       valueScale: this.valuesScale,
     });
-    this.target.append(this.slider.mainWrapper);
+    this.container.append(this.slider.mainWrapper);
   }
 
   private addSideMenuToDOM(): void {
@@ -133,22 +134,19 @@ export class View {
     }
     if (!targets.valueScale) this.valuesScale.changeValueScaleDisplay(this.basicSettings.valueScale);
     if (!targets.handlesValues) this.handles.hideHandlesValues(this.basicSettings.handlesValues);
-    if (targets.sideMenu) {
-      this.turnOnMenuToggles(targets);
-    }
+    if (targets.sideMenu) this.turnOnMenuToggles(targets);
   }
 
-  public refreshAllComponents(settings: RefreshData): void {
-    const isTargetNotRange = settings.target !== 'min' && settings.target !== 'max';
-    let handlesRefreshResult: boolean = true;
-
-    if (isTargetNotRange) {
-      handlesRefreshResult = this.handles.refreshValues(settings, {
-        positions: this.movement.positions,
-        isDouble: this.basicSettings.double,
-        sliderWidth: this.slider.slider.offsetWidth,
-      });
-    }
+  public refreshValues(settings: RefreshData): void {
+    const isTargetNotRange: boolean = settings.target !== 'min' && settings.target !== 'max';
+    const handlesOverlapsData: HandlesOverlaps = {
+      positions: this.movement.positions,
+      isDouble: this.basicSettings.double,
+      sliderWidth: this.slider.slider.offsetWidth,
+    };
+    const handlesRefreshResult: boolean = isTargetNotRange
+      ? this.handles.refreshValues(settings, handlesOverlapsData)
+      : true;
 
     const isNeedSideMenuUpdate = handlesRefreshResult && this.basicSettings.sideMenu;
     if (isNeedSideMenuUpdate) this.sideMenu.refreshValues(settings);
@@ -175,13 +173,13 @@ export class View {
     );
     this.sideMenu.sideMenuElements.stepInput.addEventListener('change', this.handleStepInputChange);
     [this.handles.fromHandle, this.handles.toHandle].forEach((handle: HTMLSpanElement):void => {
-      handle.addEventListener('mousedown', this.handleHandleClick);
+      handle.addEventListener('mousedown', this.handleHandleMouseDown);
     });
-    this.slider.slider.addEventListener('mousedown', this.handleSliderClick);
+    this.slider.slider.addEventListener('mousedown', this.handleSliderMouseDown);
     window.addEventListener('resize', this.handleWindowResize);
   }
 
-  private handleHandleClick(event: MouseEvent): void {
+  private handleHandleMouseDown(event: MouseEvent): void {
     const target: HTMLSpanElement = event.target as HTMLSpanElement;
     this.movement.handleListener({
       eventInfo: {
@@ -242,15 +240,10 @@ export class View {
 
   private handleValueInputChange(event: Event): void {
     const element: HTMLInputElement = event.target as HTMLInputElement;
-    let target: string;
+    const isTargetFrom: boolean = element === this.sideMenu.sideMenuElements.fromInput;
+    const inputTarget: string = isTargetFrom ? 'from' : 'to';
 
-    if (element === this.sideMenu.sideMenuElements.fromInput) {
-      target = 'from';
-    } else {
-      target = 'to';
-    }
-
-    this.dataRequestToModel.needApplyNewValue = { name: target, value: element.value };
+    this.dataRequestToModel.needApplyNewValue = { name: inputTarget, value: element.value };
   }
 
   private handleStepInputChange(event: Event): void {
@@ -267,24 +260,20 @@ export class View {
 
   private handleRangeInputChange(event: Event): void {
     const element: HTMLInputElement = event.target as HTMLInputElement;
-    let target: string;
+    const inTargetMinInput: boolean = element === this.sideMenu.sideMenuElements.minimumInput;
+    const inputTarget: string = inTargetMinInput ? 'min' : 'max';
 
-    if (element === this.sideMenu.sideMenuElements.minimumInput) {
-      target = 'min';
-    } else {
-      target = 'max';
-    }
-
-    this.dataRequestToModel.needChangeSliderValuesRange = { name: target, value: element.value };
+    this.dataRequestToModel.needChangeSliderValuesRange = { name: inputTarget, value: element.value };
   }
 
   private handleIntegerToggleChange(event: Event): void {
     const element: HTMLInputElement = event.target as HTMLInputElement;
+
     this.basicSettings.integer = element.checked;
     this.dataRequestToModel.needDataForStartPosition = { name: '', value: 'true' };
   }
 
-  private handleSliderClick(event: MouseEvent): void {
+  private handleSliderMouseDown(event: MouseEvent): void {
     const isNotSliderBody = event.target !== this.interval.interval && event.target !== this.slider.slider;
     const horizontalPosition: number = (
       event.clientX - this.slider.slider.getBoundingClientRect().x - (this.handles.fromHandle.offsetWidth / 2)
