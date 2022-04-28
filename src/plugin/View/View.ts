@@ -129,7 +129,7 @@ export class View {
         isDouble: this.basicSettings.double,
         handleWidth: this.handles.fromHandle.offsetWidth,
       });
-      this.sideMenu.hideToValues(this.basicSettings.double);
+      this.sideMenu.changeToValuesDisplay(this.basicSettings.double);
     }
     if (!targets.valueScale) this.valuesScale.hideValueScale(this.basicSettings.valueScale);
     if (!targets.handlesValues) this.handles.hideHandlesValues(this.basicSettings.handlesValues);
@@ -210,7 +210,7 @@ export class View {
       isDouble: this.basicSettings.double,
       handleWidth: this.handles.fromHandle.offsetWidth,
     });
-    this.sideMenu.hideToValues(this.basicSettings.double);
+    this.sideMenu.changeToValuesDisplay(this.basicSettings.double);
   }
 
   private handlePlaneToggleChange(event: Event): void {

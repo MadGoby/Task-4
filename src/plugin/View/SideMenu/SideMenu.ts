@@ -12,11 +12,11 @@ export class SideMenu {
 
   constructor() {
     this.sideMenuElements = {};
-    this.collectsSideMenuElements();
-    this.clonesSimilarElements();
+    this.initializeSideMenuElements();
+    this.cloneSimilarElements();
   }
 
-  private collectsSideMenuElements(): void {
+  private initializeSideMenuElements(): void {
     sideMenuData.elements.forEach((elementData: SideMenuBaseData): void => {
       const {
         key,
@@ -35,7 +35,7 @@ export class SideMenu {
     });
   }
 
-  private clonesSimilarElements():void {
+  private cloneSimilarElements():void {
     Object.keys(sideMenuData.cloneList).forEach((key: string): void => {
       const originalElement: HTMLElement = this.sideMenuElements[key];
 
@@ -56,19 +56,17 @@ export class SideMenu {
   }
 
   public refreshValues(refreshData: RefreshData): void {
-    const isRoundUpNeed = refreshData.isToFixed && !this.isInputChanges;
-    const bringsValuesToForm = (value: string): string => (
-      isRoundUpNeed ? `${Math.round(Number(value))}` : value
-    );
+    const isRoundUpNeed: boolean = refreshData.isToFixed && !this.isInputChanges;
+    const roundUpValues = (value: string): string => (isRoundUpNeed ? `${Math.round(Number(value))}` : value);
 
     switch (refreshData.target) {
       case 'from':
-        (this.sideMenuElements.fromOutput as HTMLOutputElement).value = bringsValuesToForm(refreshData.value);
-        (this.sideMenuElements.fromInput as HTMLInputElement).value = bringsValuesToForm(refreshData.value);
+        (this.sideMenuElements.fromOutput as HTMLOutputElement).value = roundUpValues(refreshData.value);
+        (this.sideMenuElements.fromInput as HTMLInputElement).value = roundUpValues(refreshData.value);
         break;
       case 'to':
-        (this.sideMenuElements.toOutput as HTMLOutputElement).value = ` - ${bringsValuesToForm(refreshData.value)}`;
-        (this.sideMenuElements.toInput as HTMLInputElement).value = bringsValuesToForm(refreshData.value);
+        (this.sideMenuElements.toOutput as HTMLOutputElement).value = ` - ${roundUpValues(refreshData.value)}`;
+        (this.sideMenuElements.toInput as HTMLInputElement).value = roundUpValues(refreshData.value);
         break;
       case 'min':
         (this.sideMenuElements.minimumInput as HTMLInputElement).value = refreshData.value;
@@ -83,16 +81,16 @@ export class SideMenu {
     this.isInputChanges = false;
   }
 
-  public hideToValues(isHideToValues: boolean): void {
-    const changeDisplay = (input: string, output: string): void => {
-      this.sideMenuElements.toInputWrapper!.style.display = input;
-      this.sideMenuElements.toOutput!.style.display = output;
+  public changeToValuesDisplay(isToValuesShouldBeShown: boolean): void {
+    const changeDisplay = (inputState: string, outputState: string): void => {
+      this.sideMenuElements.toInputWrapper!.style.display = inputState;
+      this.sideMenuElements.toOutput!.style.display = outputState;
     };
 
-    if (!isHideToValues) {
-      changeDisplay('none', 'none');
-    } else {
+    if (isToValuesShouldBeShown) {
       changeDisplay('block', 'inline');
+    } else {
+      changeDisplay('none', 'none');
     }
   }
 }

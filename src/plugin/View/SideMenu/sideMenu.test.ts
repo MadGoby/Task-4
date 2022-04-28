@@ -29,11 +29,11 @@ describe('SideMenu', () => {
   });
 
   it('hideToValues() operates the display function correctly', () => {
-    sideMenu.hideToValues(false);
+    sideMenu.changeToValuesDisplay(false);
     expect(sideMenu.sideMenuElements.toInputWrapper.style.display).toEqual('none');
     expect(sideMenu.sideMenuElements.toOutput.style.display).toEqual('none');
 
-    sideMenu.hideToValues(true);
+    sideMenu.changeToValuesDisplay(true);
     expect(sideMenu.sideMenuElements.toInputWrapper.style.display).toEqual('block');
     expect(sideMenu.sideMenuElements.toOutput.style.display).toEqual('inline');
   });
