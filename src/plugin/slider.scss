@@ -146,7 +146,7 @@
   }
 
   &__input-wrapper {
-    width: 40%;
+    max-width: 320px;
     padding-left: 40px;
   }
 
@@ -172,10 +172,13 @@
 
   &__outputs {
     display: flex;
-    column-gap: 100px;
+    column-gap: 10px;
+    flex-wrap: wrap;
   }
 
   &__outputs-wrapper {
+    max-width: 260px;
+    justify-content: end;
     display: flex;
     flex-grow: 2;
     column-gap: 7px;
@@ -219,6 +222,7 @@
 
   &__toggle-border {
     display: flex;
+    flex-shrink: 0;
     height: 20px;
     width: 40px;
     border-radius: 10px;
