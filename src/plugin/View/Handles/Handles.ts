@@ -6,9 +6,10 @@ import {
   HandleHideData,
   RefreshHandlesData,
   HandlesOverlaps,
+  DataToHandlesMove,
+  NewPositionData,
 } from './types';
 import { RefreshData } from '../types';
-import { HandlesPosition } from '../Movement/types';
 
 export class Handles {
   readonly fromHandle: HTMLSpanElement;
@@ -49,12 +50,11 @@ export class Handles {
     this.toHandle = Handles.createElement(this.staticElementsDescription[1]);
     this.fromValue = Handles.createElement(this.staticElementsDescription[2]);
     this.toValue = Handles.createElement(this.staticElementsDescription[3]);
-    this.fromHandle.append(this.fromValue);
-    this.toHandle.append(this.toValue);
-    this.prepareClassElements();
+
+    this.collectClassElements();
   }
 
-  private prepareClassElements(): void {
+  private collectClassElements(): void {
     this.fromHandle.append(this.fromValue);
     this.toHandle.append(this.toValue);
   }
@@ -74,13 +74,13 @@ export class Handles {
       element.classList.add(cssClass);
     });
 
-    const isAssignValuesNeed = name && value;
+    const isAssignValuesNeed: boolean = Boolean(name) && Boolean(value);
     if (isAssignValuesNeed) element.setAttribute(name, value);
 
     return element;
   }
 
-  private correctsHandlesOverlaps(settings: HandlesOverlaps) {
+  private fixHandlesOverlap(settings: HandlesOverlaps) {
     const { positions, sliderWidth } = settings;
     const isToNotInExtra: boolean = positions.to < sliderWidth - this.toHandle.offsetWidth;
 
@@ -94,43 +94,43 @@ export class Handles {
   }
 
   public refreshValues(data: RefreshData, positions: HandlesOverlaps): boolean {
-    const handlesData: RefreshHandlesData = data as RefreshHandlesData;
-    const target: 'fromValue' | 'toValue' = `${handlesData.target}Value`;
+    const refreshHandlesData: RefreshHandlesData = data as RefreshHandlesData;
+    const target: 'fromValue' | 'toValue' = `${refreshHandlesData.target}Value`;
     const isRoundUpNeed: boolean = data.isToFixed && !this.isInputChanges;
     const differenceBetweenPositions: number = positions.positions.to - positions.positions.from;
-    const isExtraPosition = positions.positions.from === 0
+    const isExtraPosition: boolean = positions.positions.from === 0
       || positions.positions.to === positions.sliderWidth - this.fromHandle.offsetWidth;
     const isHandlesOverlaps: boolean = isExtraPosition && positions.isDouble
       && differenceBetweenPositions < this.fromHandle.offsetWidth;
 
-    let result: boolean = true;
     if (isHandlesOverlaps) {
-      this.correctsHandlesOverlaps(positions);
-      result = false;
-    } else {
-      this[target].innerText = isRoundUpNeed ? `${Math.round(Number(data.value))}` : data.value;
-      if (this.isInputChanges) this.isInputChanges = false;
+      this.fixHandlesOverlap(positions);
+      return false;
     }
-    return result;
+
+    this[target].innerText = isRoundUpNeed ? `${Math.round(Number(data.value))}` : data.value;
+    if (this.isInputChanges) this.isInputChanges = false;
+
+    return true;
   }
 
   public adjustPositions(dataToRefresh: DataForAdjustPosition, sliderWidth: number): RefreshIntervalPositions {
-    const handleLink: 'fromHandle' | 'toHandle' = `${dataToRefresh.target}Handle`;
-    const target = this[handleLink];
+    const handleName: 'fromHandle' | 'toHandle' = `${dataToRefresh.target}Handle`;
+    const handleTarget: HTMLSpanElement = this[handleName];
 
     function calculateNewPosition(): string {
-      return String(((sliderWidth - target.offsetWidth) / dataToRefresh.totalValues)
+      return String(((sliderWidth - handleTarget.offsetWidth) / dataToRefresh.totalValues)
         * (Number(dataToRefresh.value) - Number(dataToRefresh.minValue)));
     }
 
     const newPosition: string = calculateNewPosition();
-    target.style.left = `${newPosition}px`;
+    handleTarget.style.left = `${newPosition}px`;
 
     return {
       target: dataToRefresh.target,
       position: newPosition,
-      sliderWidth: sliderWidth - target.offsetWidth,
-      handleWidth: target.offsetWidth,
+      sliderWidth: sliderWidth - handleTarget.offsetWidth,
+      handleWidth: handleTarget.offsetWidth,
     };
   }
 
@@ -170,34 +170,36 @@ export class Handles {
     }
   }
 
-  private controlHandlesPosition(settings: HandleHideData) {
+  private changeHandlesPosition(settings: HandleHideData) {
     const { sliderWidth, positions } = settings;
-
     const newPosition: number = sliderWidth - this.toHandle.offsetWidth;
+
     this.toHandle.style.left = `${newPosition}px`;
     positions.to = newPosition;
-    const isWrongFromPosition = positions.from > sliderWidth - this.toHandle.offsetWidth - this.fromHandle.offsetWidth;
+    const isFromPositionIncorrect: boolean = positions.from > (
+      sliderWidth - this.toHandle.offsetWidth - this.fromHandle.offsetWidth
+    );
 
-    if (isWrongFromPosition) {
+    if (isFromPositionIncorrect) {
       const extremeFromPosition = String(sliderWidth - this.toHandle.offsetWidth - this.fromHandle.offsetWidth);
       this.fromHandle.style.left = `${extremeFromPosition}px`;
       positions.from = Number(extremeFromPosition);
     }
   }
 
-  public controlHandlesDisplay(settings: HandleHideData): void {
+  public changeHandlesDisplay(settings: HandleHideData): void {
     const { isDouble } = settings;
 
     if (this.checkIsToNeedHide(isDouble)) {
       this.toHandle.style.display = 'none';
     } else if (this.checkIsToNeedShow(isDouble)) {
       this.toHandle.style.display = 'inline-block';
-      this.controlHandlesPosition(settings);
+      this.changeHandlesPosition(settings);
     }
   }
 
-  public hideHandleValues(isHandleValues: boolean): void {
-    if (!isHandleValues) {
+  public hideHandlesValues(isHandlesValues: boolean): void {
+    if (!isHandlesValues) {
       this.toValue.style.display = 'none';
       this.fromValue.style.display = 'none';
     } else {
@@ -206,25 +208,17 @@ export class Handles {
     }
   }
 
-  public selectsHandleToMove(settings: {
-    targetPosition: number,
-    positions: HandlesPosition,
-    isDouble: boolean,
-  }): HTMLSpanElement {
+  public defineHandleToMove(settings: DataToHandlesMove): HTMLSpanElement {
     const { targetPosition, positions, isDouble } = settings;
-    const fromDifference = Math.abs(Number(positions.from) - Number(targetPosition));
-    const toDifference = Math.abs(Number(positions.to) - Number(targetPosition));
-    const isFromDifferenceLess = fromDifference < toDifference || !isDouble;
+    const fromDifference: number = Math.abs(Number(positions.from) - Number(targetPosition));
+    const toDifference: number = Math.abs(Number(positions.to) - Number(targetPosition));
+    const isFromDifferenceLess: boolean = fromDifference < toDifference || !isDouble;
 
     if (isFromDifferenceLess) return this.fromHandle;
     return this.toHandle;
   }
 
-  public acceptNewPosition(settings: {
-    target: HTMLSpanElement,
-    value: number,
-    positions: HandlesPosition,
-  }): void {
+  public acceptNewPosition(settings: NewPositionData): void {
     const { target, value, positions } = settings;
 
     if (target === this.fromHandle) {

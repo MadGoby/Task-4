@@ -69,29 +69,29 @@ describe('Handles', () => {
   });
 
   it('hideHandleValues() manage display correctly', () => {
-    handles.hideHandleValues(false);
+    handles.hideHandlesValues(false);
     expect(handles.fromValue.style.display).toEqual('none');
     expect(handles.toValue.style.display).toEqual('none');
-    handles.hideHandleValues(true);
+    handles.hideHandlesValues(true);
     expect(handles.fromValue.style.display).toEqual('inline-block');
     expect(handles.toValue.style.display).toEqual('inline-block');
   });
 
   it('hideToHandel() if need to hide', () => {
-    handles.controlHandlesDisplay({ isDouble: false, positions: { from: 30, to: 70 }, sliderWidth: 100 });
+    handles.changeHandlesDisplay({ isDouble: false, positions: { from: 30, to: 70 }, sliderWidth: 100 });
     expect(handles.toHandle.style.display).toEqual('none');
   });
 
   it('hideToHandel() if need to show', () => {
     handles.toHandle.style.display = 'none';
-    handles.controlHandlesDisplay({ isDouble: true, positions: { from: 30, to: 70 }, sliderWidth: 100 });
+    handles.changeHandlesDisplay({ isDouble: true, positions: { from: 30, to: 70 }, sliderWidth: 100 });
     expect(handles.toHandle.style.display).toEqual('inline-block');
     expect(handles.toHandle.style.left).toEqual('100px');
   });
 
   it('hideToHandel() if need to show ane from bigger than to', () => {
     handles.toHandle.style.display = 'none';
-    handles.controlHandlesDisplay({ isDouble: true, positions: { from: 101, to: 70 }, sliderWidth: 100 });
+    handles.changeHandlesDisplay({ isDouble: true, positions: { from: 101, to: 70 }, sliderWidth: 100 });
     expect(handles.toHandle.style.display).toEqual('inline-block');
     expect(handles.toHandle.style.left).toEqual('100px');
     expect(handles.fromHandle.style.left).toEqual('100px');
@@ -137,7 +137,7 @@ describe('Handles', () => {
   });
 
   it('selectsHandleToMove() choose from handle', () => {
-    const result: HTMLSpanElement = handles.selectsHandleToMove({
+    const result: HTMLSpanElement = handles.defineHandleToMove({
       positions: { from: 70, to: 80 },
       isDouble: true,
       targetPosition: 74,
@@ -147,7 +147,7 @@ describe('Handles', () => {
   });
 
   it('selectsHandleToMove() choose to handle', () => {
-    const result: HTMLSpanElement = handles.selectsHandleToMove({
+    const result: HTMLSpanElement = handles.defineHandleToMove({
       positions: { from: 70, to: 80 },
       isDouble: true,
       targetPosition: 76,

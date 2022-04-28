@@ -120,7 +120,7 @@ export class View {
       this.valuesScale.changePlane(targets.vertical);
     }
     if (!targets.double) {
-      this.handles.controlHandlesDisplay({
+      this.handles.changeHandlesDisplay({
         isDouble: this.basicSettings.double,
         positions: this.movement.positions,
         sliderWidth: this.slider.slider.offsetWidth,
@@ -132,7 +132,7 @@ export class View {
       this.sideMenu.hideToValues(this.basicSettings.double);
     }
     if (!targets.valueScale) this.valuesScale.hideValueScale(this.basicSettings.valueScale);
-    if (!targets.handlesValues) this.handles.hideHandleValues(this.basicSettings.handlesValues);
+    if (!targets.handlesValues) this.handles.hideHandlesValues(this.basicSettings.handlesValues);
     if (targets.sideMenu) {
       this.turnOnMenuToggles(targets);
     }
@@ -201,7 +201,7 @@ export class View {
     const element: HTMLInputElement = event.target as HTMLInputElement;
 
     this.basicSettings.double = element.checked;
-    this.handles.controlHandlesDisplay({
+    this.handles.changeHandlesDisplay({
       isDouble: this.basicSettings.double,
       positions: this.movement.positions,
       sliderWidth: this.slider.slider.offsetWidth,
@@ -237,7 +237,7 @@ export class View {
     const element: HTMLInputElement = event.target as HTMLInputElement;
 
     this.basicSettings.handlesValues = element.checked;
-    this.handles.hideHandleValues(this.basicSettings.handlesValues);
+    this.handles.hideHandlesValues(this.basicSettings.handlesValues);
   }
 
   private handleValueInputChange(event: Event): void {
@@ -295,7 +295,7 @@ export class View {
     if (isNotSliderBody) return;
 
     const targetPosition: number = this.basicSettings.vertical ? verticalPosition : horizontalPosition;
-    const targetHandle: HTMLSpanElement = this.handles.selectsHandleToMove({
+    const targetHandle: HTMLSpanElement = this.handles.defineHandleToMove({
       targetPosition,
       positions: this.movement.positions,
       isDouble: this.basicSettings.double,

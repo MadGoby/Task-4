@@ -33,6 +33,18 @@ type HandlesOverlaps = {
   sliderWidth: number,
 };
 
+type DataToHandlesMove = {
+  targetPosition: number,
+  positions: HandlesPosition,
+  isDouble: boolean,
+};
+
+type NewPositionData = {
+  target: HTMLSpanElement,
+  value: number,
+  positions: HandlesPosition,
+};
+
 type StaticElementsDescription = Array<HandlesElementsInfo>;
 
 export {
@@ -43,4 +55,6 @@ export {
   DataForAdjustPositionBasic,
   RefreshHandlesData,
   HandlesOverlaps,
+  DataToHandlesMove,
+  NewPositionData,
 };
