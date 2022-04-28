@@ -137,6 +137,7 @@
   &__item-objective {
     align-self: start;
     cursor: default;
+    user-select: none;
   }
 
   &__inputs {
@@ -153,6 +154,7 @@
   &__input-description {
     display: inline-block;
     min-width: 20%;
+    user-select: none;
   }
 
   &__input {
@@ -200,6 +202,7 @@
     cursor: default;
     display: flex;
     align-items: center;
+    user-select: none;
   }
 
   &__toggle-wrapper {
@@ -218,6 +221,7 @@
 
   &__toggle-description {
     cursor: pointer;
+    user-select: none;
   }
 
   &__toggle-border {
