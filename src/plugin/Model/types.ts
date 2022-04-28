@@ -38,7 +38,7 @@ type BasicModelSettings = {
   to: string
 };
 
-type StepInfoFromModel = {
+type StepDataFromModel = {
   minStep: number;
   stepWidth: string;
   step: number;
@@ -61,7 +61,7 @@ export {
   DataForRefreshingModel,
   DataForValueScale,
   BasicModelSettings,
-  StepInfoFromModel,
+  StepDataFromModel,
   StepCalculateData,
   ValuesRangeData,
 };

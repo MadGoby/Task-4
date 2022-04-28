@@ -1,4 +1,4 @@
-import { StepInfoFromModel, DataForValueScale } from './types';
+import { StepDataFromModel, DataForValueScale } from './types';
 import { Model } from './Model';
 import { DataForAdjustPosition } from '../View/Handles/types';
 
@@ -19,12 +19,12 @@ describe('Model', () => {
   });
 
   it('calculateValuesByPosition() calculate correct for from', () => {
-    model.calculateValuesByPosition({ target: 'from', position: '50', sliderWidth: 100 });
+    model.calculateValueByPosition({ target: 'from', position: '50', sliderWidth: 100 });
     expect(model.values.from).toEqual('5');
   });
 
   it('calculateValuesByPosition() calculate correct for to', () => {
-    model.calculateValuesByPosition({ target: 'to', position: '50', sliderWidth: 100 });
+    model.calculateValueByPosition({ target: 'to', position: '50', sliderWidth: 100 });
     expect(model.values.to).toEqual('5');
   });
 
@@ -60,7 +60,7 @@ describe('Model', () => {
   });
 
   it('calculateStepWidth() calculate correct step width with correct step', () => {
-    const result: StepInfoFromModel = model.calculateStepWidth({
+    const result: StepDataFromModel = model.calculateStepWidth({
       step: 2,
       sliderWidth: 120,
       handleWidth: 20,
@@ -69,7 +69,7 @@ describe('Model', () => {
   });
 
   it('calculateStepWidth() calculate correct step width with step less that minimum', () => {
-    const result: StepInfoFromModel = model.calculateStepWidth({
+    const result: StepDataFromModel = model.calculateStepWidth({
       step: -1,
       sliderWidth: 120,
       handleWidth: 20,
@@ -163,23 +163,23 @@ describe('Model', () => {
   });
 
   it('truncatesNumbersAfterDot() cut numbers correctly', () => {
-    let result: string = Model.truncatesNumbersAfterDot(2.1222222);
+    let result: string = Model.truncateNumbersAfterDot(2.1222222);
     expect(result).toEqual('2.12');
 
-    result = Model.truncatesNumbersAfterDot(2.1011111);
+    result = Model.truncateNumbersAfterDot(2.1011111);
     expect(result).toEqual('2.1');
 
-    result = Model.truncatesNumbersAfterDot(2.0000001);
+    result = Model.truncateNumbersAfterDot(2.0000001);
     expect(result).toEqual('2');
   });
 
   it('changeSliderValuesRange() record value bigger then max correctly', () => {
-    model.changeSliderValuesRange({ value: '11', name: 'min' });
+    model.changeSliderRangeValues({ value: '11', name: 'min' });
     expect(model.values.min).toEqual('9');
   });
 
   it('changeSliderValuesRange() record value smaller then min correctly', () => {
-    model.changeSliderValuesRange({ value: '-1', name: 'max' });
+    model.changeSliderRangeValues({ value: '-1', name: 'max' });
     expect(model.values.max).toEqual('1');
   });
 });

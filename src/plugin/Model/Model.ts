@@ -6,7 +6,7 @@ import {
   DataForRefreshingModel,
   DataForValueScale,
   StepCalculateData,
-  StepInfoFromModel,
+  StepDataFromModel,
   ValuesRangeData,
 } from './types';
 
@@ -15,18 +15,18 @@ class Model {
 
   constructor(settings: BasicModelSettings) {
     this.values = {
-      min: Model.truncatesNumbersAfterDot(Number(settings.min)),
-      max: Model.truncatesNumbersAfterDot(Number(settings.max)),
-      from: Model.truncatesNumbersAfterDot(Number(settings.from)),
-      to: Model.truncatesNumbersAfterDot(Number(settings.to)),
+      min: Model.truncateNumbersAfterDot(Number(settings.min)),
+      max: Model.truncateNumbersAfterDot(Number(settings.max)),
+      from: Model.truncateNumbersAfterDot(Number(settings.from)),
+      to: Model.truncateNumbersAfterDot(Number(settings.to)),
     };
   }
 
-  private writesDataToModel(data: DataForRefreshingModel): void {
+  private writeDataToModel(data: DataForRefreshingModel): void {
     this.values[data.target] = data.value;
   }
 
-  public static truncatesNumbersAfterDot(value: number): string {
+  public static truncateNumbersAfterDot(value: number): string {
     const isLastZero: boolean = !Number.isInteger(value) && `${value.toFixed(2)}`.slice(-1) === '0';
     const areLastTwoZero: boolean = `${value.toFixed(2)}`.slice(-2) === '00';
     const isInteger: boolean = Number.isInteger(value) || areLastTwoZero;
@@ -41,15 +41,15 @@ class Model {
     }
   }
 
-  public calculateValuesByPosition(settings: CalculationData): void {
-    const calculateValues = (calculationData: CalculationData): string => {
-      const value: number = (Number(this.values.min) + (Number(calculationData.position) / (
+  public calculateValueByPosition(settings: CalculationData): void {
+    const calculateValue = (calculationData: CalculationData): string => {
+      const newValue: number = (Number(this.values.min) + (Number(calculationData.position) / (
         Number(calculationData.sliderWidth) / (Number(this.values.max) - Number(this.values.min)))
       ));
-      return Model.truncatesNumbersAfterDot(value);
+      return Model.truncateNumbersAfterDot(newValue);
     };
 
-    this.writesDataToModel({ target: settings.target, value: calculateValues(settings) });
+    this.writeDataToModel({ target: settings.target, value: calculateValue(settings) });
   }
 
   public calculateDataForValueScale(): DataForValueScale {
@@ -58,48 +58,43 @@ class Model {
     );
 
     return {
-      min: Model.truncatesNumbersAfterDot(Number(this.values.min)),
-      max: Model.truncatesNumbersAfterDot(Number(this.values.max)),
-      20: Model.truncatesNumbersAfterDot(calculatePosition(0.2)),
-      40: Model.truncatesNumbersAfterDot(calculatePosition(0.4)),
-      60: Model.truncatesNumbersAfterDot(calculatePosition(0.6)),
-      80: Model.truncatesNumbersAfterDot(calculatePosition(0.8)),
+      min: Model.truncateNumbersAfterDot(Number(this.values.min)),
+      max: Model.truncateNumbersAfterDot(Number(this.values.max)),
+      20: Model.truncateNumbersAfterDot(calculatePosition(0.2)),
+      40: Model.truncateNumbersAfterDot(calculatePosition(0.4)),
+      60: Model.truncateNumbersAfterDot(calculatePosition(0.6)),
+      80: Model.truncateNumbersAfterDot(calculatePosition(0.8)),
     };
   }
 
   public assignValueFromScale(value: string, isDouble: boolean): DataForAdjustPosition {
-    const fromDifference = Math.abs(Number(this.values.from) - Number(value));
-    const toDifference = Math.abs(Number(this.values.to) - Number(value));
-    const isFromDifferenceLess = fromDifference < toDifference || !isDouble;
-    let result: DataForAdjustPositionBasic;
+    const fromDifference: number = Math.abs(Number(this.values.from) - Number(value));
+    const toDifference: number = Math.abs(Number(this.values.to) - Number(value));
+    const isFromDifferenceLess: boolean = fromDifference < toDifference || !isDouble;
+    const adjustPositionData: DataForAdjustPositionBasic = isFromDifferenceLess
+      ? { target: 'from', value }
+      : { target: 'to', value };
 
-    if (isFromDifferenceLess) {
-      result = { target: 'from', value };
-    } else {
-      result = { target: 'to', value };
-    }
-
-    this.writesDataToModel(result);
+    this.writeDataToModel(adjustPositionData);
     return {
-      target: result.target,
-      value: result.value,
+      target: adjustPositionData.target,
+      value: adjustPositionData.value,
       totalValues: Number(this.values.max) - Number(this.values.min),
       minValue: this.values.min,
     };
   }
 
-  public calculateStepWidth(settings: StepCalculateData): StepInfoFromModel {
-    const minStep: number = 0.01;
+  public calculateStepWidth(settings: StepCalculateData): StepDataFromModel {
     const { sliderWidth, handleWidth } = settings;
-    let { step } = settings;
+    const minStep: number = 0.01;
+    const { step } = settings;
 
-    if (step < minStep) step = minStep;
-
+    const newStep: number = step < minStep ? minStep : step;
     const stepWidth: number = (
       (sliderWidth - handleWidth) / (Number(this.values.max) - Number(this.values.min))
-    ) * Number(step);
+    ) * Number(newStep);
 
-    return { minStep, stepWidth: String(stepWidth), step };
+    return { minStep, stepWidth: String(stepWidth), step: newStep };
   }
 
   private checkIsValueSmallerThanMin(value: string): boolean {
@@ -118,46 +113,49 @@ class Model {
     return (name === 'to') && (Number(value) < Number(this.values.from) + (handleWidth / Number(step)));
   }
 
-  private correctFromBiggerThenTo(settings: DataForPrepareValue, step: StepInfoFromModel, target: string): string {
+  private fixWrongValues(settings: DataForPrepareValue, target: string): string {
     const adjustOffset: number = ((Number(this.values.max) - Number(this.values.min))
       / (settings.sliderWidth - settings.handleWidth)) * settings.handleWidth;
 
-    let newHandleValue: string = '';
-
-    if (target === 'to') {
-      newHandleValue = String(Model.truncatesNumbersAfterDot(Number(this.values.to) - adjustOffset));
-    } else if (target === 'from') {
-      newHandleValue = String(Model.truncatesNumbersAfterDot(Number(this.values.from) + adjustOffset));
+    switch (target) {
+      case 'to':
+        return String(Model.truncateNumbersAfterDot(Number(this.values.to) - adjustOffset));
+      case 'from':
+        return String(Model.truncateNumbersAfterDot(Number(this.values.from) + adjustOffset));
+      default:
+        return '';
     }
-
-    return newHandleValue;
   }
 
-  private correctsDoubleValues(settings: DataForPrepareValue): string {
-    const step: StepInfoFromModel = this.calculateStepWidth({
+  private fixDoubleValues(settings: DataForPrepareValue): string {
+    const stepData: StepDataFromModel = this.calculateStepWidth({
       step: 1,
       sliderWidth: settings.sliderWidth,
       handleWidth: settings.handleWidth,
     });
-    let { value } = settings;
+    const isFromValueBiggerThanTo: boolean = this.checkIsFromValueBiggerThanTo(
+      settings.name, settings.value, stepData.stepWidth, settings.handleWidth,
+    );
+    const isToValueSmallerThanFrom: boolean = this.checkIsToValueSmallerThanFrom(
+      settings.name, settings.value, stepData.stepWidth, settings.handleWidth,
+    );
 
-    if (this.checkIsFromValueBiggerThanTo(settings.name, settings.value, step.stepWidth, settings.handleWidth)) {
-      value = this.correctFromBiggerThenTo(settings, step, 'to');
+    switch (true) {
+      case isFromValueBiggerThanTo:
+        return this.fixWrongValues(settings, 'to');
+      case isToValueSmallerThanFrom:
+        return this.fixWrongValues(settings, 'from');
+      default:
+        return settings.value;
     }
-
-    if (this.checkIsToValueSmallerThanFrom(settings.name, settings.value, step.stepWidth, settings.handleWidth)) {
-      value = this.correctFromBiggerThenTo(settings, step, 'from');
-    }
-
-    return value;
   }
 
   public prepareInputValueForRecord(settings: DataForPrepareValue): DataForAdjustPosition {
     if (this.checkIsValueSmallerThanMin(settings.value)) settings.value = this.values.min;
     if (this.checkIsValueBiggerThanMax(settings.value)) settings.value = this.values.max;
-    if (settings.isDouble) settings.value = this.correctsDoubleValues(settings);
+    if (settings.isDouble) settings.value = this.fixDoubleValues(settings);
 
-    this.writesDataToModel({ target: settings.name, value: settings.value });
+    this.writeDataToModel({ target: settings.name, value: settings.value });
     return {
       target: settings.name,
       value: settings.value,
@@ -167,31 +165,30 @@ class Model {
   }
 
   private correctsValueBiggerThanMax(value: string): string {
-    if (value >= this.values.max) value = String(Number(this.values.max) - 1);
-    return value;
+    const isValueBiggerThenMax: boolean = value >= this.values.max;
+
+    return isValueBiggerThenMax ? String(Number(this.values.max) - 1) : value;
   }
 
   private correctsValueLessThanMin(value: string): string {
-    if (value <= this.values.min) value = String(Number(this.values.min) + 1);
-    return value;
+    const isValueLessThenMin: boolean = value >= this.values.max;
+
+    return isValueLessThenMin ? String(Number(this.values.min) + 1) : value;
   }
 
-  public changeSliderValuesRange(settings: ValuesRangeData) {
-    const { name } = settings;
-    let { value } = settings;
+  public changeSliderRangeValues(settings: ValuesRangeData) {
+    const { name, value } = settings;
 
     switch (name) {
       case 'min':
-        value = Model.truncatesNumbersAfterDot(Number(
+        this.values.min = Model.truncateNumbersAfterDot(Number(
           this.correctsValueBiggerThanMax(value),
         ));
-        this.values.min = value;
         break;
       case 'max':
-        value = Model.truncatesNumbersAfterDot(Number(
+        this.values.max = Model.truncateNumbersAfterDot(Number(
           this.correctsValueLessThanMin(value),
         ));
-        this.values.max = value;
         break;
       default:
         break;

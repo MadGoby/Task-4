@@ -35,7 +35,7 @@ export class Presenter {
         }
 
         target[prop] = val;
-        model.calculateValuesByPosition(settings);
+        model.calculateValueByPosition(settings);
 
         return true;
       },
@@ -162,7 +162,7 @@ export class Presenter {
   }
 
   private distributeSliderValuesRangeToApply(value: DataRequestValue): void {
-    this.model.changeSliderValuesRange({
+    this.model.changeSliderRangeValues({
       name: value?.name,
       value: value.value,
     });
