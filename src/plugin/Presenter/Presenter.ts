@@ -71,7 +71,7 @@ export class Presenter {
     const dataForTo: DataForAdjustPosition = this.prepareDataForAdjustPosition('to', this.model.values.to);
     const startFrom: RefreshIntervalPositions = this.prepareNewHandlesPositionsData(dataForFrom);
     const startTo: RefreshIntervalPositions = this.prepareNewHandlesPositionsData(dataForTo);
-    const adjustPositions = this.view.interval.adjustPositionRelativeValue;
+    const adjustPositions = this.view.interval.adjustPositionRelativeToValue;
     adjustPositions(startFrom);
     adjustPositions(startTo);
     this.view.movement.positions.from = Number(startFrom.position);
@@ -141,7 +141,7 @@ export class Presenter {
 
     this.view.handles.isInputChanges = true;
     this.view.sideMenu.isInputChanges = true;
-    this.view.interval.adjustPositionRelativeValue(newPosition);
+    this.view.interval.adjustPositionRelativeToValue(newPosition);
     this.view.movement.positions[newPosition.target] = Number(newPosition.position);
   }
 
@@ -153,7 +153,7 @@ export class Presenter {
     );
     this.view.handles.isInputChanges = true;
     this.view.sideMenu.isInputChanges = true;
-    this.view.interval.adjustPositionRelativeValue(newPosition);
+    this.view.interval.adjustPositionRelativeToValue(newPosition);
     if (newPosition.target === 'from') this.view.movement.positions.from = Number(newPosition.position);
     if (newPosition.target === 'to') this.view.movement.positions.to = Number(newPosition.position);
   }

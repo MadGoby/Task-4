@@ -12,7 +12,7 @@ describe('SelectedInterval', () => {
   });
 
   it('adjustPositionRelativeValue() adjust position correctly for left side', () => {
-    interval.adjustPositionRelativeValue({
+    interval.adjustPositionRelativeToValue({
       target: 'from',
       position: '50',
       handleWidth: 20,
@@ -22,7 +22,7 @@ describe('SelectedInterval', () => {
   });
 
   it('adjustPositionRelativeValue() adjust position correctly for right side', () => {
-    interval.adjustPositionRelativeValue({
+    interval.adjustPositionRelativeToValue({
       target: 'to',
       position: '50',
       handleWidth: 20,
