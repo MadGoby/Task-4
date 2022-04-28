@@ -5,7 +5,7 @@ import { DataForAdjustPosition } from '../View/Handles/types';
 import { RefreshIntervalPositions } from '../View/SelectedInterval/types';
 import { View } from '../View/View';
 import { HandlesPosition } from '../View/Movement/types';
-import { DataRequestToModel, DataRequestValue } from '../View/types';
+import { ViewRequestsData, DataRequestValue } from '../View/types';
 
 @autobind
 export class Presenter {
@@ -21,7 +21,8 @@ export class Presenter {
   private bindProxyToHandlesMovement(view: View, model: Model): HandlesPosition {
     return new Proxy(this.view.movement.positions, {
       set(target, prop: 'from' | 'to', val) {
-        const isExtraRange = val === 0 || val === view.slider.slider.offsetWidth - view.handles.fromHandle.offsetWidth;
+        const isExtraRange: boolean = val === 0
+          || val === view.slider.slider.offsetWidth - view.handles.fromHandle.offsetWidth;
         const settings: CalculationData = {
           position: String(val),
           target: prop,
@@ -71,7 +72,8 @@ export class Presenter {
     const dataForTo: DataForAdjustPosition = this.prepareDataForAdjustPosition('to', this.model.values.to);
     const startFrom: RefreshIntervalPositions = this.prepareNewHandlesPositionsData(dataForFrom);
     const startTo: RefreshIntervalPositions = this.prepareNewHandlesPositionsData(dataForTo);
-    const adjustPositions = this.view.interval.adjustPositionRelativeToValue;
+    const adjustPositions: (
+      dataToRefresh: RefreshIntervalPositions) => void = this.view.interval.adjustPositionRelativeToValue;
     adjustPositions(startFrom);
     adjustPositions(startTo);
     this.view.movement.positions.from = Number(startFrom.position);
@@ -109,13 +111,14 @@ export class Presenter {
   }
 
   private static checkCorrectTarget(name: string): 'from' | 'to' | false {
-    let correctName: 'from' | 'to' | false = false;
-    if (name === 'from') {
-      correctName = 'from';
-    } else if (name === 'to') {
-      correctName = 'to';
+    switch (name) {
+      case 'from':
+        return 'from';
+      case 'to':
+        return 'to';
+      default:
+        return false;
     }
-    return correctName;
   }
 
   private distributeNewValuesForApply(name: string, value: string): void {
@@ -163,9 +166,9 @@ export class Presenter {
       name: value?.name,
       value: value.value,
     });
-    this.view.dataRequestToModel.needDataForStartPosition = { name: '', value: 'true' };
-    this.view.dataRequestToModel.needDataForScale = { name: '', value: 'true' };
-    this.view.dataRequestToModel.needStepWidth = { name: '', value: 'true' };
+    this.view.requests.needDataForStartPosition = { name: '', value: 'true' };
+    this.view.requests.needDataForScale = { name: '', value: 'true' };
+    this.view.requests.needStepWidth = { name: '', value: 'true' };
   }
 
   private handlesRequestsFromView(property: string, value: DataRequestValue): void {
@@ -193,10 +196,10 @@ export class Presenter {
     }
   }
 
-  private bindProxyToViewRequests(): DataRequestToModel {
+  private bindProxyToViewRequests(): ViewRequestsData {
     const that: this = this;
-    return new Proxy(this.view.dataRequestToModel, {
-      set(target: DataRequestToModel, property: string, value: DataRequestValue) {
+    return new Proxy(this.view.requests, {
+      set(target: ViewRequestsData, property: string, value: DataRequestValue) {
         if (!value) return false;
         that.handlesRequestsFromView(property, value);
         return true;
@@ -204,7 +207,7 @@ export class Presenter {
     });
   }
 
-  private bindProxyToModel(view: View): BasicModelSettings {
+  private bindProxyToModelValues(view: View): BasicModelSettings {
     return new Proxy(this.model.values, {
       set(target: BasicModelSettings, property: 'min' | 'max' | 'from' | 'to', value: string) {
         target[property] = value;
@@ -224,7 +227,7 @@ export class Presenter {
     const { view, model } = this;
 
     view.movement.positions = this.bindProxyToHandlesMovement(view, model);
-    view.dataRequestToModel = this.bindProxyToViewRequests();
-    model.values = this.bindProxyToModel(view);
+    view.requests = this.bindProxyToViewRequests();
+    model.values = this.bindProxyToModelValues(view);
   }
 }

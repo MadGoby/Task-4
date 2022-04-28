@@ -1,5 +1,5 @@
 import { IValuesScale } from '../ValuesScale/interfaces';
-import { DataRequestToModel } from '../types';
+import { ViewRequestsData } from '../types';
 
 type SliderAssemblerSettings = {
   readonly from: HTMLSpanElement;
@@ -10,7 +10,7 @@ type SliderAssemblerSettings = {
 
 type SliderPlaneSettings = {
   isVertical: boolean;
-  requests: DataRequestToModel;
+  requests: ViewRequestsData;
   isStep: boolean;
 };
 

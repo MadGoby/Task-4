@@ -8,8 +8,8 @@ import { SideMenu } from './SideMenu/SideMenu';
 import {
   RefreshData,
   BasicViewSettings,
-  DataRequestToModel,
   TargetsForViewUpdate,
+  ViewRequestsData,
 } from './types';
 import { HandlesOverlaps } from './Handles/types';
 
@@ -31,7 +31,7 @@ export class View {
 
   public basicSettings: BasicViewSettings;
 
-  public dataRequestToModel: DataRequestToModel = {
+  public requests: ViewRequestsData = {
     needDataForScale: { name: '', value: '' },
     needDataForStartPosition: { name: '', value: '' },
     needStepWidth: { name: '', value: '' },
@@ -87,10 +87,10 @@ export class View {
 
     if (this.basicSettings.sideMenu) this.addSideMenuToDOM();
 
-    this.dataRequestToModel.needDataForScale = { name: '', value: 'true' };
-    this.dataRequestToModel.needDataForStartPosition = { name: '', value: 'true' };
+    this.requests.needDataForScale = { name: '', value: 'true' };
+    this.requests.needDataForStartPosition = { name: '', value: 'true' };
 
-    if (this.checkIsStepRequired()) this.dataRequestToModel.needStepWidth = { name: '', value: 'true' };
+    if (this.checkIsStepRequired()) this.requests.needStepWidth = { name: '', value: 'true' };
 
     this.updateView({
       vertical: this.basicSettings.vertical,
@@ -115,7 +115,7 @@ export class View {
       this.slider.changePlane({
         isVertical: targets.vertical,
         isStep: this.checkIsStepRequired(),
-        requests: this.dataRequestToModel,
+        requests: this.requests,
       });
       this.handles.changePlane(targets.vertical);
       this.valuesScale.changePlane(targets.vertical);
@@ -192,7 +192,7 @@ export class View {
 
   private handleScaleValueClick(event: Event): void {
     const element: HTMLSpanElement = event.target as HTMLSpanElement;
-    this.dataRequestToModel.needApplyValueFromScale = { name: '', value: element.innerText };
+    this.requests.needApplyValueFromScale = { name: '', value: element.innerText };
   }
 
   private handleToToggleChange(event: Event): void {
@@ -218,7 +218,7 @@ export class View {
     this.slider.changePlane({
       isVertical: this.basicSettings.vertical,
       isStep: this.checkIsStepRequired(),
-      requests: this.dataRequestToModel,
+      requests: this.requests,
     });
     this.handles.changePlane(this.basicSettings.vertical);
     this.valuesScale.changePlane(this.basicSettings.vertical);
@@ -243,7 +243,7 @@ export class View {
     const isTargetFrom: boolean = element === this.sideMenu.sideMenuElements.fromInput;
     const inputTarget: string = isTargetFrom ? 'from' : 'to';
 
-    this.dataRequestToModel.needApplyNewValue = { name: inputTarget, value: element.value };
+    this.requests.needApplyNewValue = { name: inputTarget, value: element.value };
   }
 
   private handleStepInputChange(event: Event): void {
@@ -254,7 +254,7 @@ export class View {
       (this.sideMenu.sideMenuElements.stepInput as HTMLInputElement).value = '';
       this.basicSettings.step = false;
     } else {
-      this.dataRequestToModel.needStepWidth = { name: '', value: 'true' };
+      this.requests.needStepWidth = { name: '', value: 'true' };
     }
   }
 
@@ -263,14 +263,14 @@ export class View {
     const inTargetMinInput: boolean = element === this.sideMenu.sideMenuElements.minimumInput;
     const inputTarget: string = inTargetMinInput ? 'min' : 'max';
 
-    this.dataRequestToModel.needChangeSliderValuesRange = { name: inputTarget, value: element.value };
+    this.requests.needChangeSliderValuesRange = { name: inputTarget, value: element.value };
   }
 
   private handleIntegerToggleChange(event: Event): void {
     const element: HTMLInputElement = event.target as HTMLInputElement;
 
     this.basicSettings.integer = element.checked;
-    this.dataRequestToModel.needDataForStartPosition = { name: '', value: 'true' };
+    this.requests.needDataForStartPosition = { name: '', value: 'true' };
   }
 
   private handleSliderMouseDown(event: MouseEvent): void {
@@ -303,8 +303,8 @@ export class View {
   }
 
   private handleWindowResize(): void {
-    this.dataRequestToModel.needDataForScale = { name: '', value: 'true' };
-    this.dataRequestToModel.needDataForStartPosition = { name: '', value: 'true' };
-    if (this.checkIsStepRequired()) this.dataRequestToModel.needStepWidth = { name: '', value: 'true' };
+    this.requests.needDataForScale = { name: '', value: 'true' };
+    this.requests.needDataForStartPosition = { name: '', value: 'true' };
+    if (this.checkIsStepRequired()) this.requests.needStepWidth = { name: '', value: 'true' };
   }
 }

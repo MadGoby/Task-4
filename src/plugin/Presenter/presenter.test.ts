@@ -56,7 +56,7 @@ describe('Presenter', () => {
   });
 
   it('needDataForScale() fill value scale with correct values', () => {
-    view.dataRequestToModel.needDataForScale = { name: '', value: 'true' };
+    view.requests.needDataForScale = { name: '', value: 'true' };
     expect(view.valuesScale.minValue.innerText).toEqual('0');
     expect(view.valuesScale.twentyPercentValue.innerText).toEqual('20');
     expect(view.valuesScale.fortyPercentValue.innerText).toEqual('40');
@@ -66,37 +66,37 @@ describe('Presenter', () => {
   });
 
   it('needDataForStartPosition() set correct positions', () => {
-    view.dataRequestToModel.needDataForStartPosition = { name: '', value: 'true' };
+    view.requests.needDataForStartPosition = { name: '', value: 'true' };
     expect(view.movement.positions.from).toEqual(30);
     expect(view.movement.positions.to).toEqual(70);
   });
 
   it('needStepWidth() set correct stepWidth', () => {
     view.basicSettings.step = 10;
-    view.dataRequestToModel.needStepWidth = { name: '', value: 'true' };
+    view.requests.needStepWidth = { name: '', value: 'true' };
     expect(view.movement.stepWidth).toEqual('10');
   });
 
   it('needApplyNewValue() apply new value for from correctly', () => {
-    view.dataRequestToModel.needApplyNewValue = { name: 'from', value: '40' };
+    view.requests.needApplyNewValue = { name: 'from', value: '40' };
     expect(view.movement.positions.from).toEqual(40);
     expect(model.values.from).toEqual('40');
   });
 
   it('needApplyNewValue() apply new value for to correctly', () => {
-    view.dataRequestToModel.needApplyNewValue = { name: 'to', value: '60' };
+    view.requests.needApplyNewValue = { name: 'to', value: '60' };
     expect(view.movement.positions.to).toEqual(60);
     expect(model.values.to).toEqual('60');
   });
 
   it('needApplyValueFromScale() apply value from scale correctly', () => {
-    view.dataRequestToModel.needApplyValueFromScale = { name: '', value: '20' };
+    view.requests.needApplyValueFromScale = { name: '', value: '20' };
     expect(model.values.from).toEqual('20');
-    view.dataRequestToModel.needApplyValueFromScale = { name: '', value: '40' };
+    view.requests.needApplyValueFromScale = { name: '', value: '40' };
     expect(model.values.from).toEqual('40');
-    view.dataRequestToModel.needApplyValueFromScale = { name: '', value: '80' };
+    view.requests.needApplyValueFromScale = { name: '', value: '80' };
     expect(model.values.to).toEqual('80');
-    view.dataRequestToModel.needApplyValueFromScale = { name: '', value: '60' };
+    view.requests.needApplyValueFromScale = { name: '', value: '60' };
     expect(model.values.to).toEqual('60');
   });
 });

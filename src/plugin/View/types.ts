@@ -28,7 +28,7 @@ type DataRequestValue = {
   value: string;
 };
 
-type DataRequestToModel = {
+type ViewRequestsData = {
   needDataForScale: DataRequestValue;
   needDataForStartPosition: DataRequestValue;
   needStepWidth: DataRequestValue;
@@ -40,6 +40,6 @@ export {
   BasicViewSettings,
   TargetsForViewUpdate,
   RefreshData,
-  DataRequestToModel,
+  ViewRequestsData,
   DataRequestValue,
 };

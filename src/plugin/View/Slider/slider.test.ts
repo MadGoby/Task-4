@@ -3,11 +3,11 @@ import { SelectedInterval } from '../SelectedInterval/SelectedInterval';
 import { SliderAssemblerSettings } from './types';
 import { Slider } from './Slider';
 import { ValuesScale } from '../ValuesScale/ValuesScale';
-import { DataRequestToModel } from '../types';
+import { ViewRequestsData } from '../types';
 
 describe('Slider', () => {
   let slider: Slider;
-  const requests: DataRequestToModel = {
+  const requests: ViewRequestsData = {
     needStepWidth: { value: '', name: '' },
     needApplyNewValue: { value: '', name: '' },
     needApplyValueFromScale: { value: '', name: '' },

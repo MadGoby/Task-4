@@ -210,18 +210,18 @@ describe('View', () => {
     view.bindEventListeners();
     (view.sideMenu.sideMenuElements.fromInput as HTMLInputElement).value = '50';
     view.sideMenu.sideMenuElements.fromInput.dispatchEvent(new Event('change'));
-    expect(view.dataRequestToModel.needApplyNewValue).toEqual({ name: 'from', value: '50' });
+    expect(view.requests.needApplyNewValue).toEqual({ name: 'from', value: '50' });
     (view.sideMenu.sideMenuElements.toInput as HTMLInputElement).value = '80';
     view.sideMenu.sideMenuElements.toInput.dispatchEvent(new Event('change'));
-    expect(view.dataRequestToModel.needApplyNewValue).toEqual({ name: 'to', value: '80' });
+    expect(view.requests.needApplyNewValue).toEqual({ name: 'to', value: '80' });
   });
 
   it('bindEventListeners() send new step from input', () => {
-    view.dataRequestToModel.needStepWidth = { name: '', value: 'true' };
-    expect(view.dataRequestToModel.needStepWidth).toEqual({ name: '', value: 'true' });
+    view.requests.needStepWidth = { name: '', value: 'true' };
+    expect(view.requests.needStepWidth).toEqual({ name: '', value: 'true' });
     view.bindEventListeners();
     (view.sideMenu.sideMenuElements.stepInput as HTMLInputElement).value = '50';
     view.sideMenu.sideMenuElements.stepInput.dispatchEvent(new Event('change'));
-    expect(view.dataRequestToModel.needStepWidth).toEqual({ name: '', value: 'true' });
+    expect(view.requests.needStepWidth).toEqual({ name: '', value: 'true' });
   });
 });
