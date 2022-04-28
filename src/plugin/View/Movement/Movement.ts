@@ -83,32 +83,27 @@ export class Movement {
   }
 
   public fixImpossiblePosition(rightSliderEdge: number, newPosition: number): number {
-    const fixDoublePositions = (): number => {
-      if (this.checkIsFromBiggerThanTo(newPosition)) return this.positions.to - this.dataForMovement.target.offsetWidth;
+    const fixDoublePositions = (position: number): number => {
+      if (this.checkIsFromBiggerThanTo(newPosition)) {
+        position = this.positions.to - this.dataForMovement.target.offsetWidth;
+      }
       if (this.checkIsToSmallerThanFrom(newPosition)) {
-        return this.positions.from + this.dataForMovement.target.offsetWidth;
+        position = this.positions.from + this.dataForMovement.target.offsetWidth;
       }
-      if (this.checkIsToBiggerThanRightEdge(rightSliderEdge, newPosition)) return rightSliderEdge;
-      return newPosition;
+      if (this.checkIsToBiggerThanRightEdge(rightSliderEdge, newPosition)) position = rightSliderEdge;
+
+      return position;
     };
 
-    const isFromLessThenMinimum = newPosition < 0;
-    const isFromBiggerThanRightEdge = this.checkIsFromBiggerThanRightEdge(rightSliderEdge, newPosition);
+    const fixPosition = (position: number): number => {
+      if (newPosition < 0) position = 0;
+      if (this.checkIsFromBiggerThanRightEdge(rightSliderEdge, newPosition)) position = rightSliderEdge;
+      if (this.checkIsDouble()) return fixDoublePositions(position);
 
-    const fixPosition = (): number => {
-      switch (true) {
-        case isFromLessThenMinimum:
-          return 0;
-        case isFromBiggerThanRightEdge:
-          return rightSliderEdge;
-        case this.checkIsDouble():
-          return fixDoublePositions();
-        default:
-          return newPosition;
-      }
+      return position;
     };
 
-    return fixPosition();
+    return fixPosition(newPosition);
   }
 
   public fixIntervalPosition(): void {

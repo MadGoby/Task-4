@@ -41,13 +41,13 @@ describe('Slider', () => {
       isStep: false,
       isVertical: true,
     });
-    expect(slider.slider).toHaveClass('goby-slider_state_vertical');
+    expect(slider.slider).toHaveClass('goby-slider__body_state_vertical');
 
     slider.changePlane({
       requests,
       isStep: false,
       isVertical: false,
     });
-    expect(slider.slider).not.toHaveClass('goby-slider_state_vertical');
+    expect(slider.slider).not.toHaveClass('goby-slider__body_state_vertical');
   });
 });

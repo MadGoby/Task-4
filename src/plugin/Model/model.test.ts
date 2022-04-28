@@ -173,12 +173,12 @@ describe('Model', () => {
     expect(result).toEqual('2');
   });
 
-  it('changeSliderValuesRange() record value bigger then max correctly', () => {
+  it('changeSliderRangeValues() record value bigger then max correctly', () => {
     model.changeSliderRangeValues({ value: '11', name: 'min' });
     expect(model.values.min).toEqual('9');
   });
 
-  it('changeSliderValuesRange() record value smaller then min correctly', () => {
+  it('changeSliderRangeValues() record value smaller then min correctly', () => {
     model.changeSliderRangeValues({ value: '-1', name: 'max' });
     expect(model.values.max).toEqual('1');
   });

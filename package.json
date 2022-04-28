@@ -9,7 +9,7 @@
     "watch": "webpack --mode development --watch",
     "test": "karma start karma.conf.js --watch",
     "start": "webpack-dev-server --config webpack.config.js --open",
-    "eslint": "eslint ./src/**/*.ts"
+    "lint": "eslint ./src/**/*.ts"
   },
   "keywords": [],
   "author": "",

@@ -8,8 +8,6 @@ import {
 import { IPlugin } from './interfaces';
 import { gobyDefaults } from './common/defaultSettings';
 
-const pluginName = 'gobySlider';
-
 class Plugin implements IPlugin {
   readonly element: HTMLElement;
 
@@ -33,8 +31,8 @@ class Plugin implements IPlugin {
   }
 }
 
-$.fn[pluginName] = function gobySlider(sliderSettings: SliderOptions): PluginInfo {
+$.fn.gobySlider = function gobySlider(sliderSettings: SliderOptions): PluginInfo {
   return this.each(() => {
-    $.data(this, `plugin_${pluginName}`, new Plugin(this, sliderSettings));
+    $.data(this, 'plugin_gobySlider', new Plugin(this, sliderSettings));
   });
 };

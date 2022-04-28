@@ -164,14 +164,14 @@ class Model {
     };
   }
 
-  private correctsValueBiggerThanMax(value: string): string {
+  private fixValueBiggerThanMax(value: string): string {
     const isValueBiggerThenMax: boolean = value >= this.values.max;
 
     return isValueBiggerThenMax ? String(Number(this.values.max) - 1) : value;
   }
 
-  private correctsValueLessThanMin(value: string): string {
-    const isValueLessThenMin: boolean = value >= this.values.max;
+  private fixValueLessThanMin(value: string): string {
+    const isValueLessThenMin: boolean = value <= this.values.min;
 
     return isValueLessThenMin ? String(Number(this.values.min) + 1) : value;
   }
@@ -182,12 +182,12 @@ class Model {
     switch (name) {
       case 'min':
         this.values.min = Model.truncateNumbersAfterDot(Number(
-          this.correctsValueBiggerThanMax(value),
+          this.fixValueBiggerThanMax(value),
         ));
         break;
       case 'max':
         this.values.max = Model.truncateNumbersAfterDot(Number(
-          this.correctsValueLessThanMin(value),
+          this.fixValueLessThanMin(value),
         ));
         break;
       default:
