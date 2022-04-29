@@ -26,22 +26,22 @@ export class Handles {
     {
       cssClasses: ['goby-slider__handle', 'goby-slider__handle_type_from'],
       name: 'style',
-      value: 'display: inline-block',
+      value: 'display: flex',
     },
     {
       cssClasses: ['goby-slider__handle', 'goby-slider__handle_type_to'],
       name: 'style',
-      value: 'display: inline-block',
+      value: 'display: flex',
     },
     {
       cssClasses: ['goby-slider__handle-value', 'goby-slider__handle-value_type_from'],
       name: 'style',
-      value: 'display: inline-block',
+      value: 'display: flex',
     },
     {
       cssClasses: ['goby-slider__handle-value', 'goby-slider__handle-value_type_to'],
       name: 'style',
-      value: 'display: inline-block',
+      value: 'display: flex',
     },
   ];
 
@@ -145,7 +145,7 @@ export class Handles {
   }
 
   private checkIsToNeedHide(isDouble: boolean): boolean {
-    return (!isDouble) && (this.toHandle.style.display === 'inline-block');
+    return (!isDouble) && (this.toHandle.style.display === 'flex');
   }
 
   private checkIsToNeedShow(isDouble: boolean): boolean {
@@ -193,7 +193,7 @@ export class Handles {
     if (this.checkIsToNeedHide(isDouble)) {
       this.toHandle.style.display = 'none';
     } else if (this.checkIsToNeedShow(isDouble)) {
-      this.toHandle.style.display = 'inline-block';
+      this.toHandle.style.display = 'flex';
       this.changeHandlesPosition(settings);
     }
   }
@@ -203,8 +203,8 @@ export class Handles {
       this.toValue.style.display = 'none';
       this.fromValue.style.display = 'none';
     } else {
-      this.toValue.style.display = 'inline-block';
-      this.fromValue.style.display = 'inline-block';
+      this.toValue.style.display = 'flex';
+      this.fromValue.style.display = 'flex';
     }
   }
 
