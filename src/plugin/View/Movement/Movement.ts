@@ -167,6 +167,20 @@ export class Movement {
     }
   }
 
+  private toggleActiveHandleClass(targetHandle: HTMLSpanElement | false): void {
+    const defineActiveHandle = (): HTMLSpanElement => {
+      if (this.from.classList.contains('goby-slider__handle_focused')) return this.from;
+      return this.to;
+    };
+
+    if (targetHandle) {
+      targetHandle.classList.add('goby-slider__handle_focused');
+    } else {
+      const oldTargetHandle: HTMLSpanElement = defineActiveHandle();
+      oldTargetHandle.classList.remove('goby-slider__handle_focused');
+    }
+  }
+
   public handleListener(setting: MovementEvent): void {
     const {
       eventInfo = {
@@ -182,6 +196,8 @@ export class Movement {
     const distanceToCursor: number = isVertical
       ? eventInfo.y - targetHandle.getBoundingClientRect().top - (targetHandle.offsetWidth)
       : eventInfo.x - targetHandle.getBoundingClientRect().left;
+
+    this.toggleActiveHandleClass(targetHandle);
 
     if (test) {
       this.handleDocumentMouseMove({
@@ -205,6 +221,7 @@ export class Movement {
 
   private handleDocumentMouseUp(): void {
     this.removeDocumentEventListeners();
+    this.toggleActiveHandleClass(false);
   }
 
   private bindDocumentEventListeners(): void {
