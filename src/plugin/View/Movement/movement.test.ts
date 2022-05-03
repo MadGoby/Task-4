@@ -51,7 +51,7 @@ describe('Movement', () => {
   it('handelListener() move from and interval to '
     + 'position bigger than right edge and record the position after fixing', () => {
     movement.basicSettings.double = false;
-    movement.handleListener({ eventInfo: { target: movement.from, x: 50, y: 0 }, test: { x: 200, y: 0 } });
+    movement.handleListener({ eventInfo: { target: movement.from, x: 50, y: 0 } });
 
     expect(movement.from.style.left).toEqual('100px');
     expect(movement.interval.style.left).toEqual('110px');
@@ -61,7 +61,7 @@ describe('Movement', () => {
   it('handelListener() move from and interval to position less than left edge'
     + ' and record the position after fixing', () => {
     movement.basicSettings.double = false;
-    movement.handleListener({ eventInfo: { target: movement.from, x: 50, y: 0 }, test: { x: -100, y: 0 } });
+    movement.handleListener({ eventInfo: { target: movement.from, x: 50, y: 0 } });
 
     expect(movement.from.style.left).toEqual('0px');
     expect(movement.interval.style.left).toEqual('10px');
@@ -70,7 +70,7 @@ describe('Movement', () => {
 
   it('handelListener() move from and interval to position bigger than to position'
     + ' and record the position after fixing', () => {
-    movement.handleListener({ eventInfo: { target: movement.from, x: 50, y: 0 }, test: { x: 200, y: 0 } });
+    movement.handleListener({ eventInfo: { target: movement.from, x: 50, y: 0 } });
 
     expect(movement.from.style.left).toEqual('50px');
     expect(movement.interval.style.left).toEqual('60px');

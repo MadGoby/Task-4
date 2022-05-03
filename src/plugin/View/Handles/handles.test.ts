@@ -18,10 +18,6 @@ describe('Handles', () => {
       target: 'from',
       value: '5',
       isToFixed: false,
-    }, {
-      positions: { from: 0, to: 0 },
-      sliderWidth: 0,
-      isDouble: false,
     });
     expect(handles.fromValue.innerText).toEqual('5');
   });
@@ -31,10 +27,6 @@ describe('Handles', () => {
       target: 'to',
       value: '5',
       isToFixed: false,
-    }, {
-      positions: { from: 0, to: 0 },
-      sliderWidth: 0,
-      isDouble: false,
     });
     expect(handles.toHandle.innerText).toEqual('5');
   });
@@ -106,10 +98,6 @@ describe('Handles', () => {
       isToFixed: true,
       target: 'from',
       value: '4',
-    }, {
-      sliderWidth: 100,
-      positions: positionImitator,
-      isDouble: true,
     });
 
     expect(result).toBeFalse();
@@ -126,10 +114,6 @@ describe('Handles', () => {
       isToFixed: true,
       target: 'from',
       value: '4',
-    }, {
-      sliderWidth: 100,
-      positions: positionImitator,
-      isDouble: true,
     });
 
     expect(result).toBeFalse();

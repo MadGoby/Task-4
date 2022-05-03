@@ -145,7 +145,7 @@ export class View {
       sliderWidth: this.slider.slider.offsetWidth,
     };
     const handlesRefreshResult: boolean = isTargetNotRange
-      ? this.handles.refreshValues(settings, handlesOverlapsData)
+      ? this.handles.refreshValues(settings)
       : true;
 
     const isNeedSideMenuUpdate = handlesRefreshResult && this.basicSettings.sideMenu;

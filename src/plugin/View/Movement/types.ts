@@ -28,10 +28,6 @@ type TestMouseEvent = {
 
 type MovementEvent = {
   eventInfo: EventInfo,
-  test?: {
-    x: number,
-    y: number,
-  },
 };
 
 type HandleClickData = {

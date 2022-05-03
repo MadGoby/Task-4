@@ -105,46 +105,34 @@ class Model {
     return Number(value) > Number(this.values.max);
   }
 
-  private checkIsFromValueBiggerThanTo(name: string, value: string, step: string, handleWidth: number): boolean {
-    return (name === 'from') && (Number(value) > Number(this.values.to) - (handleWidth / Number(step)));
+  private checkIsFromValueBiggerThanTo(name: string, value: string): boolean {
+    return (name === 'from') && (Number(value) > Number(this.values.to));
   }
 
-  private checkIsToValueSmallerThanFrom(name: string, value: string, step: string, handleWidth: number): boolean {
-    return (name === 'to') && (Number(value) < Number(this.values.from) + (handleWidth / Number(step)));
+  private checkIsToValueSmallerThanFrom(name: string, value: string): boolean {
+    return (name === 'to') && (Number(value) < Number(this.values.from));
   }
 
-  private fixWrongValues(settings: DataForPrepareValue, target: string): string {
-    const adjustOffset: number = ((Number(this.values.max) - Number(this.values.min))
-      / (settings.sliderWidth - settings.handleWidth)) * settings.handleWidth;
-
+  private fixWrongValues(target: string): string {
     switch (target) {
       case 'to':
-        return String(Model.truncateNumbersAfterDot(Number(this.values.to) - adjustOffset));
+        return String(Model.truncateNumbersAfterDot(Number(this.values.to)));
       case 'from':
-        return String(Model.truncateNumbersAfterDot(Number(this.values.from) + adjustOffset));
+        return String(Model.truncateNumbersAfterDot(Number(this.values.from)));
       default:
         return '';
     }
   }
 
   private fixDoubleValues(settings: DataForPrepareValue): string {
-    const stepData: StepDataFromModel = this.calculateStepWidth({
-      step: 1,
-      sliderWidth: settings.sliderWidth,
-      handleWidth: settings.handleWidth,
-    });
-    const isFromValueBiggerThanTo: boolean = this.checkIsFromValueBiggerThanTo(
-      settings.name, settings.value, stepData.stepWidth, settings.handleWidth,
-    );
-    const isToValueSmallerThanFrom: boolean = this.checkIsToValueSmallerThanFrom(
-      settings.name, settings.value, stepData.stepWidth, settings.handleWidth,
-    );
+    const isFromValueBiggerThanTo: boolean = this.checkIsFromValueBiggerThanTo(settings.name, settings.value);
+    const isToValueSmallerThanFrom: boolean = this.checkIsToValueSmallerThanFrom(settings.name, settings.value);
 
     switch (true) {
       case isFromValueBiggerThanTo:
-        return this.fixWrongValues(settings, 'to');
+        return this.fixWrongValues('to');
       case isToValueSmallerThanFrom:
-        return this.fixWrongValues(settings, 'from');
+        return this.fixWrongValues('from');
       default:
         return settings.value;
     }

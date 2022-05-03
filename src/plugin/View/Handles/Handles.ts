@@ -93,20 +93,10 @@ export class Handles {
     }
   }
 
-  public refreshValues(data: RefreshData, positions: HandlesOverlaps): boolean {
+  public refreshValues(data: RefreshData): boolean {
     const refreshHandlesData: RefreshHandlesData = data as RefreshHandlesData;
     const target: 'fromValue' | 'toValue' = `${refreshHandlesData.target}Value`;
     const isRoundUpNeed: boolean = data.isToFixed && !this.isInputChanges;
-    const differenceBetweenPositions: number = positions.positions.to - positions.positions.from;
-    const isExtraPosition: boolean = positions.positions.from === 0
-      || positions.positions.to === positions.sliderWidth - this.fromHandle.offsetWidth;
-    const isHandlesOverlaps: boolean = isExtraPosition && positions.isDouble
-      && differenceBetweenPositions < this.fromHandle.offsetWidth;
-
-    if (isHandlesOverlaps) {
-      this.fixHandlesOverlap(positions);
-      return false;
-    }
 
     this[target].innerText = isRoundUpNeed ? `${Math.round(Number(data.value))}` : data.value;
     if (this.isInputChanges) this.isInputChanges = false;

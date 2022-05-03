@@ -5,7 +5,6 @@ import {
   HandlesPosition,
   MovementEvent,
   MovementSettings,
-  TestMouseEvent,
 } from './types';
 
 @autobind
@@ -58,12 +57,12 @@ export class Movement {
 
   private checkIsFromBiggerThanTo(newPosition: number): boolean {
     return (this.dataForMovement.target === this.from)
-      && (newPosition > this.positions.to - this.dataForMovement.target.offsetWidth);
+      && (newPosition > this.positions.to);
   }
 
   private checkIsToSmallerThanFrom(newPosition: number): boolean {
     return (this.dataForMovement.target === this.to)
-      && (newPosition < this.positions.from + this.dataForMovement.target.offsetWidth);
+      && (newPosition < this.positions.from);
   }
 
   private checkIsStepSetCorrectly(): boolean {
@@ -85,10 +84,10 @@ export class Movement {
   public fixImpossiblePosition(rightSliderEdge: number, newPosition: number): number {
     const fixDoublePositions = (position: number): number => {
       if (this.checkIsFromBiggerThanTo(newPosition)) {
-        position = this.positions.to - this.dataForMovement.target.offsetWidth;
+        position = this.positions.to;
       }
       if (this.checkIsToSmallerThanFrom(newPosition)) {
-        position = this.positions.from + this.dataForMovement.target.offsetWidth;
+        position = this.positions.from;
       }
       if (this.checkIsToBiggerThanRightEdge(rightSliderEdge, newPosition)) position = rightSliderEdge;
 
@@ -148,7 +147,15 @@ export class Movement {
     }
   }
 
-  private handleDocumentMouseMove(event: MouseEvent | TestMouseEvent): void {
+  updateMainHandleClass(targetHandle: HTMLSpanElement) {
+    const className: string = 'goby-slider__handle_type_main';
+
+    if (this.from.classList.contains(className)) this.from.classList.remove(className);
+    if (this.to.classList.contains(className)) this.to.classList.remove(className);
+    targetHandle.classList.add(className);
+  }
+
+  private handleDocumentMouseMove(event: MouseEvent): void {
     const x: number = event.clientX;
     const y: number = event.clientY;
     const rightSliderEdge: number = this.slider.offsetWidth - this.dataForMovement.target.offsetWidth;
@@ -167,17 +174,18 @@ export class Movement {
     }
   }
 
-  private toggleActiveHandleClass(targetHandle: HTMLSpanElement | false): void {
+  private updateFocusedHandleClass(targetHandle: HTMLSpanElement | false): void {
+    const className: string = 'goby-slider__handle_focused';
     const defineActiveHandle = (): HTMLSpanElement => {
-      if (this.from.classList.contains('goby-slider__handle_focused')) return this.from;
+      if (this.from.classList.contains(className)) return this.from;
       return this.to;
     };
 
     if (targetHandle) {
-      targetHandle.classList.add('goby-slider__handle_focused');
+      targetHandle.classList.add(className);
     } else {
       const oldTargetHandle: HTMLSpanElement = defineActiveHandle();
-      oldTargetHandle.classList.remove('goby-slider__handle_focused');
+      oldTargetHandle.classList.remove(className);
     }
   }
 
@@ -188,7 +196,6 @@ export class Movement {
         y: 0,
         target: false,
       },
-      test = false,
     } = setting;
     const isFromHandle: boolean = eventInfo.target === this.from;
     const isVertical: boolean = this.basicSettings.vertical;
@@ -197,14 +204,8 @@ export class Movement {
       ? eventInfo.y - targetHandle.getBoundingClientRect().top - (targetHandle.offsetWidth)
       : eventInfo.x - targetHandle.getBoundingClientRect().left;
 
-    this.toggleActiveHandleClass(targetHandle);
-
-    if (test) {
-      this.handleDocumentMouseMove({
-        clientX: test.x,
-        clientY: test.y,
-      });
-    }
+    this.updateFocusedHandleClass(targetHandle);
+    this.updateMainHandleClass(targetHandle);
 
     this.dataForMovement = {
       target: targetHandle,
@@ -221,7 +222,7 @@ export class Movement {
 
   private handleDocumentMouseUp(): void {
     this.removeDocumentEventListeners();
-    this.toggleActiveHandleClass(false);
+    this.updateFocusedHandleClass(false);
   }
 
   private bindDocumentEventListeners(): void {
