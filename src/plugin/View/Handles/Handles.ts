@@ -196,4 +196,27 @@ export class Handles {
       positions.to = value;
     }
   }
+
+  updateMainHandleClass(targetHandle: HTMLSpanElement) {
+    const className: string = `${this.handleClass}_type_main`;
+
+    if (this.fromHandle.classList.contains(className)) this.fromHandle.classList.remove(className);
+    if (this.toHandle.classList.contains(className)) this.toHandle.classList.remove(className);
+    targetHandle.classList.add(className);
+  }
+
+  private updateFocusedHandleClass(targetHandle: HTMLSpanElement | false): void {
+    const className: string = 'goby-slider__handle_focused';
+    const defineActiveHandle = (): HTMLSpanElement => {
+      if (this.fromHandle.classList.contains(className)) return this.fromHandle;
+      return this.toHandle;
+    };
+
+    if (targetHandle) {
+      targetHandle.classList.add(className);
+    } else {
+      const oldTargetHandle: HTMLSpanElement = defineActiveHandle();
+      oldTargetHandle.classList.remove(className);
+    }
+  }
 }

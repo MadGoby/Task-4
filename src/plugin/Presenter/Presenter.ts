@@ -4,8 +4,11 @@ import { Model } from '../Model/Model';
 import { DataForAdjustPosition } from '../View/Handles/types';
 import { RefreshIntervalPositions } from '../View/SelectedInterval/types';
 import { View } from '../View/View';
-import { HandlesPosition } from '../View/Movement/types';
-import { ViewRequestsData, DataRequestValue } from '../View/types';
+import {
+  ViewRequestsData,
+  HandlePositions,
+  DataRequestValue,
+} from '../View/types';
 
 @autobind
 export class Presenter {
@@ -18,22 +21,15 @@ export class Presenter {
     this.model = modelLink;
   }
 
-  private bindProxyToHandlesMovement(view: View, model: Model): HandlesPosition {
-    return new Proxy(this.view.movement.positions, {
+  private bindProxyToHandlesMovement(view: View, model: Model): HandlePositions {
+    return new Proxy(this.view.positions, {
       set(target, prop: 'from' | 'to', val) {
-        const isExtraRange: boolean = val === 0
-          || val === view.slider.slider.offsetWidth - view.handles.fromHandle.offsetWidth;
         const settings: CalculationData = {
           position: String(val),
           target: prop,
           sliderWidth: view.slider.slider.offsetWidth - view.handles.fromHandle.offsetWidth,
         };
-
-        if (isExtraRange) {
-          view.handles.isInputChanges = true;
-          view.sideMenu.isInputChanges = true;
-        }
-
+        console.log(target);
         target[prop] = val;
         model.calculateValueByPosition(settings);
 
@@ -76,8 +72,8 @@ export class Presenter {
       dataToRefresh: RefreshIntervalPositions) => void = this.view.interval.adjustPositionRelativeToValue;
     adjustPositions(startFrom);
     adjustPositions(startTo);
-    this.view.movement.positions.from = Number(startFrom.position);
-    this.view.movement.positions.to = Number(startTo.position);
+    this.view.positions.from = Number(startFrom.position);
+    this.view.positions.to = Number(startTo.position);
     this.view.refreshValues({
       value: this.model.values.min,
       target: 'min',
@@ -92,12 +88,11 @@ export class Presenter {
 
   private distributeStepWidth(): void {
     const writesNewStepWidth = (): void => {
-      const { stepWidth, step } = this.model.calculateStepWidth({
+      const { step } = this.model.calculateStepWidth({
         step: Number(this.view.basicSettings.step),
         sliderWidth: this.view.slider.slider.offsetWidth,
         handleWidth: this.view.handles.fromHandle.offsetWidth,
       });
-      this.view.movement.stepWidth = stepWidth;
 
       this.view.basicSettings.integer = Number.isInteger(step);
 
@@ -131,8 +126,8 @@ export class Presenter {
       step: this.view.basicSettings.step,
       isDouble: this.view.basicSettings.double,
       positions: {
-        from: this.view.movement.positions.from,
-        to: this.view.movement.positions.to,
+        from: this.view.positions.from,
+        to: this.view.positions.to,
       },
       handleWidth: this.view.handles.toHandle.offsetWidth,
       sliderWidth: this.view.slider.slider.offsetWidth,
@@ -145,7 +140,7 @@ export class Presenter {
     this.view.handles.isInputChanges = true;
     this.view.sideMenu.isInputChanges = true;
     this.view.interval.adjustPositionRelativeToValue(newPosition);
-    this.view.movement.positions[newPosition.target] = Number(newPosition.position);
+    this.view.positions[newPosition.target] = Number(newPosition.position);
   }
 
   private distributeValueFromScaleToApply(value: string): void {
@@ -157,8 +152,8 @@ export class Presenter {
     this.view.handles.isInputChanges = true;
     this.view.sideMenu.isInputChanges = true;
     this.view.interval.adjustPositionRelativeToValue(newPosition);
-    if (newPosition.target === 'from') this.view.movement.positions.from = Number(newPosition.position);
-    if (newPosition.target === 'to') this.view.movement.positions.to = Number(newPosition.position);
+    if (newPosition.target === 'from') this.view.positions.from = Number(newPosition.position);
+    if (newPosition.target === 'to') this.view.positions.to = Number(newPosition.position);
   }
 
   private distributeSliderValuesRangeToApply(value: DataRequestValue): void {
@@ -226,7 +221,7 @@ export class Presenter {
   public initialize(): void {
     const { view, model } = this;
 
-    view.movement.positions = this.bindProxyToHandlesMovement(view, model);
+    view.positions = this.bindProxyToHandlesMovement(view, model);
     view.requests = this.bindProxyToViewRequests();
     model.values = this.bindProxyToModelValues(view);
   }

@@ -95,7 +95,6 @@ export class ValuesScale implements IValuesScale {
   }
 
   public changeValueScaleDisplay(isValueScale: boolean): void {
-    console.log(isValueScale)
     if (!isValueScale) {
       this.values.forEach((element: HTMLSpanElement): void => {
         element.classList.add(`${this.valueClass}_hidden`);

@@ -8,6 +8,11 @@ type BasicViewSettings = {
   integer: boolean;
 };
 
+type HandlePositions = {
+  from: number;
+  to: number;
+};
+
 type TargetsForViewUpdate = {
   double?: boolean;
   handlesValues?: boolean;
@@ -42,4 +47,5 @@ export {
   RefreshData,
   ViewRequestsData,
   DataRequestValue,
+  HandlePositions,
 };

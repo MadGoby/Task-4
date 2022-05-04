@@ -1,6 +1,6 @@
 import { Handles } from './Handles';
 import { RefreshIntervalPositions } from '../SelectedInterval/types';
-import { HandlesPosition } from '../Movement/types';
+import { HandlePositions } from '../types';
 
 describe('Handles', () => {
   let handles: Handles;
@@ -90,7 +90,7 @@ describe('Handles', () => {
   });
 
   it('correctsHandlesOverlaps() fix from extra position correctly', () => {
-    const positionImitator: HandlesPosition = { from: 0, to: 10 };
+    const positionImitator: HandlePositions = { from: 0, to: 10 };
     document.body.append(handles.fromHandle);
     handles.fromHandle.style.width = '20px';
 
@@ -105,7 +105,7 @@ describe('Handles', () => {
   });
 
   it('correctsHandlesOverlaps() fix to extra position correctly', () => {
-    const positionImitator: HandlesPosition = { from: 70, to: 80 };
+    const positionImitator: HandlePositions = { from: 70, to: 80 };
     document.body.append(handles.fromHandle, handles.toHandle);
     handles.fromHandle.style.width = '20px';
     handles.toHandle.style.width = '20px';
@@ -141,7 +141,7 @@ describe('Handles', () => {
   });
 
   it('acceptNewPosition() record data correctly', () => {
-    const positionImitator: HandlesPosition = { from: 70, to: 80 };
+    const positionImitator: HandlePositions = { from: 70, to: 80 };
 
     handles.acceptNewPosition({
       positions: positionImitator,

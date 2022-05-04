@@ -1,4 +1,4 @@
-import { HandlesPosition } from '../Movement/types';
+import { HandlePositions } from '../types';
 
 type DataForAdjustPositionBasic = {
   target: 'from' | 'to';
@@ -16,7 +16,7 @@ type HandlesElementsInfo = {
 
 type HandleHideData = {
   isDouble: boolean,
-  positions: HandlesPosition,
+  positions: HandlePositions,
   sliderWidth: number
 };
 
@@ -27,14 +27,14 @@ type RefreshHandlesData = {
 
 type DataToHandlesMove = {
   targetPosition: number,
-  positions: HandlesPosition,
+  positions: HandlePositions,
   isDouble: boolean,
 };
 
 type NewPositionData = {
   target: HTMLSpanElement,
   value: number,
-  positions: HandlesPosition,
+  positions: HandlePositions,
 };
 
 type StaticElementsDescription = Array<HandlesElementsInfo>;

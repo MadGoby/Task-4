@@ -9,7 +9,7 @@ import {
   RefreshData,
   BasicViewSettings,
   TargetsForViewUpdate,
-  ViewRequestsData,
+  ViewRequestsData, HandlePositions,
 } from './types';
 
 @autobind
@@ -30,6 +30,8 @@ export class View {
 
   public basicSettings: BasicViewSettings;
 
+  public positions: HandlePositions;
+
   public requests: ViewRequestsData = {
     needDataForScale: { name: '', value: '' },
     needDataForStartPosition: { name: '', value: '' },
@@ -47,13 +49,25 @@ export class View {
     this.valuesScale = new ValuesScale();
     this.sideMenu = new SideMenu();
     this.basicSettings = settings;
+    this.positions = {
+      from: 0,
+      to: 100,
+    };
     this.movement = new Movement({
       slider: this.slider.slider,
-      fromHandle: this.handles.fromHandle,
-      toHandle: this.handles.toHandle,
-      interval: this.interval.interval,
+      handles: this.handles,
+      interval: this.interval,
+      updatePositions: this.updatePositions,
       basicSettings: this.basicSettings,
     });
+  }
+
+  updatePositions(isTargetFrom: boolean, newPosition: number): void {
+    if (isTargetFrom) {
+      this.positions.from = newPosition;
+    } else {
+      this.positions.to = newPosition;
+    }
   }
 
   private addSliderToDOM(): void {
@@ -122,7 +136,7 @@ export class View {
     if (!targets.double) {
       this.handles.changeHandlesDisplay({
         isDouble: this.basicSettings.double,
-        positions: this.movement.positions,
+        positions: this.positions,
         sliderWidth: this.slider.slider.offsetWidth,
       });
       this.interval.hideSelectedInterval({
@@ -176,11 +190,9 @@ export class View {
   private handleHandleMouseDown(event: MouseEvent): void {
     const target: HTMLSpanElement = event.target as HTMLSpanElement;
     this.movement.handleListener({
-      eventInfo: {
-        target,
-        x: event.clientX,
-        y: event.clientY,
-      },
+      target,
+      x: event.clientX,
+      y: event.clientY,
     });
   }
 
@@ -195,7 +207,7 @@ export class View {
     this.basicSettings.double = element.checked;
     this.handles.changeHandlesDisplay({
       isDouble: this.basicSettings.double,
-      positions: this.movement.positions,
+      positions: this.positions,
       sliderWidth: this.slider.slider.offsetWidth,
     });
     this.interval.hideSelectedInterval({
@@ -280,20 +292,14 @@ export class View {
     const targetPosition: number = this.basicSettings.vertical ? verticalPosition : horizontalPosition;
     const targetHandle: HTMLSpanElement = this.handles.defineHandleToMove({
       targetPosition,
-      positions: this.movement.positions,
+      positions: this.positions,
       isDouble: this.basicSettings.double,
     });
-    this.movement.dataForMovement.target = targetHandle;
-    const correctedValue: number = this.movement.fixImpossiblePosition(
-      this.slider.slider.offsetWidth - targetHandle.offsetWidth,
-      targetPosition,
-    );
     this.handles.acceptNewPosition({
       target: targetHandle,
-      value: correctedValue,
-      positions: this.movement.positions,
+      value: targetPosition,
+      positions: this.positions,
     });
-    this.movement.fixIntervalPosition();
   }
 
   private handleWindowResize(): void {

@@ -1,45 +1,29 @@
-import { BasicViewSettings } from '../types';
+import { BasicViewSettings, HandlePositions } from '../types';
+import { Handles } from '../Handles/Handles';
+import { SelectedInterval } from '../SelectedInterval/SelectedInterval';
 
-type EventInfo = {
+type MovementSettings = {
+  slider: HTMLDivElement;
+  handles: Handles;
+  interval: SelectedInterval;
+  basicSettings: BasicViewSettings;
+  updatePositions(isTargetFrom: boolean, newPosition: number): void;
+};
+
+type MovementEvent = {
   readonly target: EventTarget,
   readonly x: number,
   readonly y: number
 };
 
-type HandlesPosition = {
-  from: number;
-  to: number;
-};
-
-type MovementSettings = {
-  slider: HTMLDivElement;
-  fromHandle: HTMLSpanElement;
-  toHandle: HTMLSpanElement;
-  basicSettings: BasicViewSettings;
-  interval: HTMLDivElement;
-  positions?: HandlesPosition;
-  stepWidth?: string | boolean;
-};
-
-type TestMouseEvent = {
-  clientX: number,
-  clientY: number,
-};
-
-type MovementEvent = {
-  eventInfo: EventInfo,
-};
-
 type HandleClickData = {
   target: HTMLSpanElement,
-  distanceToCursor: number,
+  distanceToCursor: Number,
 };
 
 export {
-  EventInfo,
-  HandlesPosition,
+  HandlePositions,
   MovementSettings,
-  TestMouseEvent,
   MovementEvent,
   HandleClickData,
 };
