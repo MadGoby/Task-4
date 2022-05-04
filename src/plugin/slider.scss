@@ -44,6 +44,10 @@
     cursor: pointer;
     z-index: 3;
 
+    &_hidden {
+      display: none;
+    }
+
     &_type {
       &_main {
         z-index: 4;
@@ -66,6 +70,10 @@
     color: rgb(2, 114, 82);
     user-select: none;
     cursor: default;
+
+    &_hidden {
+      display: none;
+    }
 
     &_type {
       &_from {
@@ -92,6 +100,10 @@
     box-sizing: border-box;
     background-color: rgb(0, 209, 150);
     z-index: 2;
+
+    &_hidden {
+      display: none;
+    }
   }
 
   &__value {
@@ -102,6 +114,10 @@
     cursor: pointer;
     display: inline-block;
     user-select: none;
+
+    &_hidden {
+      display: none;
+    }
 
     &_type {
       &_min {

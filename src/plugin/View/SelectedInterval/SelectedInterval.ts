@@ -5,14 +5,15 @@ import { IntervalDisplayData, RefreshIntervalPositions } from './types';
 export class SelectedInterval {
   readonly interval: HTMLDivElement;
 
+  private readonly intervalClass: string = 'goby-slider__interval';
+
   constructor() {
     this.interval = document.createElement('div');
     this.initializeHTMLElement();
   }
 
   private initializeHTMLElement(): void {
-    this.interval.classList.add('goby-slider__interval');
-    this.interval.setAttribute('style', 'display: block');
+    this.interval.classList.add(this.intervalClass);
   }
 
   public adjustPositionRelativeToValue(dataToRefresh: RefreshIntervalPositions): void {
@@ -25,11 +26,11 @@ export class SelectedInterval {
   }
 
   private checkIsIntervalShouldBeHided(isDouble: boolean): boolean {
-    return (!isDouble) && (this.interval.style.display === 'block');
+    return (!isDouble) && (!this.interval.classList.contains(`${this.intervalClass}_hidden`));
   }
 
   private checkIsIntervalShouldBeShown(isDouble: boolean): boolean {
-    return (isDouble) && (this.interval.style.display === 'none');
+    return (isDouble) && (this.interval.classList.contains(`${this.intervalClass}_hidden`));
   }
 
   public hideSelectedInterval(settings: IntervalDisplayData): void {
@@ -37,10 +38,10 @@ export class SelectedInterval {
 
     switch (true) {
       case this.checkIsIntervalShouldBeHided(isDouble):
-        this.interval.style.display = 'none';
+        this.interval.classList.add(`${this.intervalClass}_hidden`);
         break;
       case this.checkIsIntervalShouldBeShown(isDouble):
-        this.interval.style.display = 'block';
+        this.interval.classList.remove(`${this.intervalClass}_hidden`);
         this.interval.style.right = `${handleWidth / 2}px`;
         break;
       default:

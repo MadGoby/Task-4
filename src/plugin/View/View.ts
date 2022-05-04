@@ -11,7 +11,6 @@ import {
   TargetsForViewUpdate,
   ViewRequestsData,
 } from './types';
-import { HandlesOverlaps } from './Handles/types';
 
 @autobind
 export class View {
@@ -139,11 +138,6 @@ export class View {
 
   public refreshValues(settings: RefreshData): void {
     const isTargetNotRange: boolean = settings.target !== 'min' && settings.target !== 'max';
-    const handlesOverlapsData: HandlesOverlaps = {
-      positions: this.movement.positions,
-      isDouble: this.basicSettings.double,
-      sliderWidth: this.slider.slider.offsetWidth,
-    };
     const handlesRefreshResult: boolean = isTargetNotRange
       ? this.handles.refreshValues(settings)
       : true;
@@ -153,7 +147,7 @@ export class View {
   }
 
   public bindEventListeners(): void {
-    Object.values(this.valuesScale).forEach((scaleValue: HTMLSpanElement): void => {
+    this.valuesScale.values.forEach((scaleValue: HTMLSpanElement): void => {
       scaleValue.addEventListener('click', this.handleScaleValueClick);
     });
     this.sideMenu.sideMenuElements.toToggle.addEventListener('change', this.handleToToggleChange);

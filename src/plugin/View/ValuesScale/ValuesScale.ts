@@ -14,19 +14,25 @@ export class ValuesScale implements IValuesScale {
 
   readonly eightyPercentValue: HTMLSpanElement;
 
+  readonly valueClass: string = 'goby-slider__value';
+
+  readonly values: Array<HTMLSpanElement>;
+
   constructor() {
-    this.minValue = ValuesScale.createElement('type_min');
-    this.maxValue = ValuesScale.createElement('type_max');
-    this.twentyPercentValue = ValuesScale.createElement('percent_20');
-    this.fortyPercentValue = ValuesScale.createElement('percent_40');
-    this.sixtyPercentValue = ValuesScale.createElement('percent_60');
-    this.eightyPercentValue = ValuesScale.createElement('percent_80');
+    this.minValue = this.createElement('type_min');
+    this.maxValue = this.createElement('type_max');
+    this.twentyPercentValue = this.createElement('percent_20');
+    this.fortyPercentValue = this.createElement('percent_40');
+    this.sixtyPercentValue = this.createElement('percent_60');
+    this.eightyPercentValue = this.createElement('percent_80');
+
+    this.values = Object.values(this).filter((element) => typeof element === 'object');
   }
 
-  private static createElement(classModifier: string): HTMLSpanElement {
+  private createElement(classModifier: string): HTMLSpanElement {
     const element: HTMLSpanElement = document.createElement('span');
 
-    element.classList.add('goby-slider__value', `goby-slider__value_${classModifier}`);
+    element.classList.add(this.valueClass, `${this.valueClass}_${classModifier}`);
 
     return element;
   }
@@ -59,12 +65,12 @@ export class ValuesScale implements IValuesScale {
   }
 
   private checkIsContainVerticalClass(): boolean {
-    return (this.minValue.classList.contains('goby-slider__value_state_vertical'))
-      && (this.maxValue.classList.contains('goby-slider__value_state_vertical'))
-      && (this.twentyPercentValue.classList.contains('goby-slider__value_state_vertical'))
-      && (this.fortyPercentValue.classList.contains('goby-slider__value_state_vertical'))
-      && (this.sixtyPercentValue.classList.contains('goby-slider__value_state_vertical'))
-      && (this.eightyPercentValue.classList.contains('goby-slider__value_state_vertical'));
+    return (this.minValue.classList.contains(`${this.valueClass}_state_vertical`))
+      && (this.maxValue.classList.contains(`${this.valueClass}_state_vertical`))
+      && (this.twentyPercentValue.classList.contains(`${this.valueClass}_state_vertical`))
+      && (this.fortyPercentValue.classList.contains(`${this.valueClass}_state_vertical`))
+      && (this.sixtyPercentValue.classList.contains(`${this.valueClass}_state_vertical`))
+      && (this.eightyPercentValue.classList.contains(`${this.valueClass}_state_vertical`));
   }
 
   private checkIsNeedToMakeHorizontally(isVertical: boolean): boolean {
@@ -77,12 +83,9 @@ export class ValuesScale implements IValuesScale {
 
   public changePlane(isVertical: boolean): void {
     const changeClasses = (): void => {
-      this.minValue.classList.toggle('goby-slider__value_state_vertical');
-      this.maxValue.classList.toggle('goby-slider__value_state_vertical');
-      this.twentyPercentValue.classList.toggle('goby-slider__value_state_vertical');
-      this.fortyPercentValue.classList.toggle('goby-slider__value_state_vertical');
-      this.sixtyPercentValue.classList.toggle('goby-slider__value_state_vertical');
-      this.eightyPercentValue.classList.toggle('goby-slider__value_state_vertical');
+      this.values.forEach((element: HTMLSpanElement): void => {
+        element.classList.toggle(`${this.valueClass}_state_vertical`);
+      });
     };
 
     const isNeedToChangeClasses = this.checkIsNeedToMakeVertical(isVertical)
@@ -92,19 +95,15 @@ export class ValuesScale implements IValuesScale {
   }
 
   public changeValueScaleDisplay(isValueScale: boolean): void {
-    const changeDisplay = (value: string): void => {
-      this.minValue.style.display = value;
-      this.maxValue.style.display = value;
-      this.twentyPercentValue.style.display = value;
-      this.fortyPercentValue.style.display = value;
-      this.sixtyPercentValue.style.display = value;
-      this.eightyPercentValue.style.display = value;
-    };
-
+    console.log(isValueScale)
     if (!isValueScale) {
-      changeDisplay('none');
+      this.values.forEach((element: HTMLSpanElement): void => {
+        element.classList.add(`${this.valueClass}_hidden`);
+      });
     } else {
-      changeDisplay('inline-block');
+      this.values.forEach((element: HTMLSpanElement): void => {
+        element.classList.remove(`${this.valueClass}_hidden`);
+      });
     }
   }
 }

@@ -5,7 +5,6 @@ import {
   StaticElementsDescription,
   HandleHideData,
   RefreshHandlesData,
-  HandlesOverlaps,
   DataToHandlesMove,
   NewPositionData,
 } from './types';
@@ -20,28 +19,24 @@ export class Handles {
 
   readonly toValue: HTMLSpanElement;
 
+  private readonly handleClass: string = 'goby-slider__handle';
+
+  private readonly handleValueClass: string = 'goby-slider__handle-value';
+
   public isInputChanges = false;
 
   readonly staticElementsDescription: StaticElementsDescription = [
     {
-      cssClasses: ['goby-slider__handle', 'goby-slider__handle_type_from'],
-      name: 'style',
-      value: 'display: flex',
+      cssClasses: [this.handleClass, `${this.handleClass}_type_from`],
     },
     {
-      cssClasses: ['goby-slider__handle', 'goby-slider__handle_type_to'],
-      name: 'style',
-      value: 'display: flex',
+      cssClasses: [this.handleClass, `${this.handleClass}_type_to`],
     },
     {
-      cssClasses: ['goby-slider__handle-value', 'goby-slider__handle-value_type_from'],
-      name: 'style',
-      value: 'display: flex',
+      cssClasses: [this.handleValueClass, `${this.handleValueClass}_type_from`],
     },
     {
-      cssClasses: ['goby-slider__handle-value', 'goby-slider__handle-value_type_to'],
-      name: 'style',
-      value: 'display: flex',
+      cssClasses: [this.handleValueClass, `${this.handleValueClass}_type_to`],
     },
   ];
 
@@ -65,8 +60,6 @@ export class Handles {
         'for-change',
         'for-change',
       ],
-      name = 'for-change',
-      value = 'for-change',
     } = settings;
     const element: HTMLSpanElement = document.createElement('span');
 
@@ -74,23 +67,7 @@ export class Handles {
       element.classList.add(cssClass);
     });
 
-    const isAssignValuesNeed: boolean = Boolean(name) && Boolean(value);
-    if (isAssignValuesNeed) element.setAttribute(name, value);
-
     return element;
-  }
-
-  private fixHandlesOverlap(settings: HandlesOverlaps) {
-    const { positions, sliderWidth } = settings;
-    const isToNotInExtra: boolean = positions.to < sliderWidth - this.toHandle.offsetWidth;
-
-    if (isToNotInExtra) {
-      this.toHandle.style.left = `${positions.from + this.fromHandle.offsetWidth}px`;
-      positions.to = positions.from + this.fromHandle.offsetWidth;
-    } else {
-      this.fromHandle.style.left = `${positions.to - this.fromHandle.offsetWidth}px`;
-      positions.from = positions.to - this.fromHandle.offsetWidth;
-    }
   }
 
   public refreshValues(data: RefreshData): boolean {
@@ -125,28 +102,28 @@ export class Handles {
   }
 
   private checkIsNeedToMakeVertical(isVertical: boolean): boolean {
-    return (!this.fromValue.classList.contains('goby-slider__handle-value_state_vertical'))
-      && (!this.toValue.classList.contains('goby-slider__handle-value_state_vertical')) && (isVertical);
+    return (!this.fromValue.classList.contains(`${this.handleValueClass}_state_vertical`))
+      && (!this.toValue.classList.contains(`${this.handleValueClass}_state_vertical`)) && (isVertical);
   }
 
   private checkIsNeedToMakeHorizontally(isVertical: boolean): boolean {
-    return (this.fromValue.classList.contains('goby-slider__handle-value_state_vertical'))
-      && (this.toValue.classList.contains('goby-slider__handle-value_state_vertical')) && (!isVertical);
+    return (this.fromValue.classList.contains(`${this.handleValueClass}_state_vertical`))
+      && (this.toValue.classList.contains(`${this.handleValueClass}_state_vertical`)) && (!isVertical);
   }
 
   private checkIsToNeedHide(isDouble: boolean): boolean {
-    return (!isDouble) && (this.toHandle.style.display === 'flex');
+    return (!isDouble) && (!this.toHandle.classList.contains(`${this.handleClass}_hidden`));
   }
 
   private checkIsToNeedShow(isDouble: boolean): boolean {
-    return (isDouble) && (this.toHandle.style.display === 'none');
+    return (isDouble) && (this.toHandle.classList.contains(`${this.handleClass}_hidden`));
   }
 
   public changePlane(isVertical: boolean): void {
-    function changeVerticalClass(from: HTMLSpanElement, to: HTMLSpanElement) {
-      from.classList.toggle('goby-slider__handle-value_state_vertical');
-      to.classList.toggle('goby-slider__handle-value_state_vertical');
-    }
+    const changeVerticalClass = (from: HTMLSpanElement, to: HTMLSpanElement): void => {
+      from.classList.toggle(`${this.handleValueClass}_state_vertical`);
+      to.classList.toggle(`${this.handleValueClass}_state_vertical`);
+    };
 
     switch (true) {
       case this.checkIsNeedToMakeVertical(isVertical):
@@ -181,20 +158,20 @@ export class Handles {
     const { isDouble } = settings;
 
     if (this.checkIsToNeedHide(isDouble)) {
-      this.toHandle.style.display = 'none';
+      this.toHandle.classList.add(`${this.handleClass}_hidden`);
     } else if (this.checkIsToNeedShow(isDouble)) {
-      this.toHandle.style.display = 'flex';
+      this.toHandle.classList.remove(`${this.handleClass}_hidden`);
       this.changeHandlesPosition(settings);
     }
   }
 
   public hideHandlesValues(isHandlesValues: boolean): void {
     if (!isHandlesValues) {
-      this.toValue.style.display = 'none';
-      this.fromValue.style.display = 'none';
+      this.toValue.classList.add(`${this.handleValueClass}_hidden`);
+      this.fromValue.classList.add(`${this.handleValueClass}_hidden`);
     } else {
-      this.toValue.style.display = 'flex';
-      this.fromValue.style.display = 'flex';
+      this.toValue.classList.remove(`${this.handleValueClass}_hidden`);
+      this.fromValue.classList.remove(`${this.handleValueClass}_hidden`);
     }
   }
 

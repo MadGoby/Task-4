@@ -12,8 +12,6 @@ type DataForAdjustPosition = DataForAdjustPositionBasic & {
 
 type HandlesElementsInfo = {
   cssClasses: Array<string>,
-  name: string,
-  value: string
 };
 
 type HandleHideData = {
@@ -25,12 +23,6 @@ type HandleHideData = {
 type RefreshHandlesData = {
   value: string;
   target: 'from' | 'to';
-};
-
-type HandlesOverlaps = {
-  positions: HandlesPosition,
-  isDouble: boolean,
-  sliderWidth: number,
 };
 
 type DataToHandlesMove = {
@@ -54,7 +46,6 @@ export {
   HandleHideData,
   DataForAdjustPositionBasic,
   RefreshHandlesData,
-  HandlesOverlaps,
   DataToHandlesMove,
   NewPositionData,
 };
