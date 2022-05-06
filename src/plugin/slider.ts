@@ -24,10 +24,6 @@ class Plugin implements IPlugin {
     const model: Model = new Model(options);
     const view: View = new View(options, element);
     const presenter: Presenter = new Presenter(view, model);
-
-    presenter.initialize();
-    view.prepareSliderForUse();
-    view.bindEventListeners();
   }
 }
 

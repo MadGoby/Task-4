@@ -1,4 +1,4 @@
-import { RefreshData } from '../types';
+import { DataFromModel } from '../types';
 import { sideMenuData } from './sideMenuData';
 import {
   SideMenuBaseData,
@@ -55,7 +55,7 @@ export class SideMenu {
     });
   }
 
-  public refreshValues(refreshData: RefreshData): void {
+  public refreshValues(refreshData: DataFromModel): void {
     const isRoundUpNeed: boolean = refreshData.isToFixed && !this.isInputChanges;
     const roundUpValues = (value: string): string => (isRoundUpNeed ? `${Math.round(Number(value))}` : value);
 

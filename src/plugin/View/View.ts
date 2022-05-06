@@ -6,11 +6,12 @@ import { SelectedInterval } from './SelectedInterval/SelectedInterval';
 import { ValuesScale } from './ValuesScale/ValuesScale';
 import { SideMenu } from './SideMenu/SideMenu';
 import {
-  RefreshData,
+  DataFromModel,
   BasicViewSettings,
   TargetsForViewUpdate,
-  ViewRequestsData, HandlePositions,
+  ViewRequestsData, HandlePositions, NewHandlesData,
 } from './types';
+import { DataForValueScale } from '../Model/types';
 
 @autobind
 export class View {
@@ -28,7 +29,7 @@ export class View {
 
   readonly sideMenu: SideMenu;
 
-  public basicSettings: BasicViewSettings;
+  public settings: BasicViewSettings;
 
   public positions: HandlePositions;
 
@@ -48,7 +49,7 @@ export class View {
     this.interval = new SelectedInterval();
     this.valuesScale = new ValuesScale();
     this.sideMenu = new SideMenu();
-    this.basicSettings = settings;
+    this.settings = settings;
     this.positions = {
       from: 0,
       to: 100,
@@ -58,8 +59,11 @@ export class View {
       handles: this.handles,
       interval: this.interval,
       updatePositions: this.updatePositions,
-      basicSettings: this.basicSettings,
+      basicSettings: this.settings,
     });
+
+    this.prepareSliderForUse();
+    this.bindEventListeners();
   }
 
   updatePositions(isTargetFrom: boolean, newPosition: number): void {
@@ -83,22 +87,22 @@ export class View {
   private addSideMenuToDOM(): void {
     this.sideMenu.collectSideMenu();
 
-    if (typeof this.basicSettings.sideMenu === 'string') {
-      document.querySelector(this.basicSettings.sideMenu)?.append(this.sideMenu.sideMenuElements.sideMenuContainer);
+    if (typeof this.settings.sideMenu === 'string') {
+      document.querySelector(this.settings.sideMenu)?.append(this.sideMenu.sideMenuElements.sideMenuContainer);
     } else {
       this.slider.mainWrapper.append(this.sideMenu.sideMenuElements.sideMenuContainer);
     }
   }
 
   private checkIsStepRequired(): boolean {
-    return Object.prototype.hasOwnProperty.call(this.basicSettings, 'step')
-      && typeof this.basicSettings.step === 'number';
+    return Object.prototype.hasOwnProperty.call(this.settings, 'step')
+      && typeof this.settings.step === 'number';
   }
 
-  public prepareSliderForUse(): void {
+  private prepareSliderForUse(): void {
     this.addSliderToDOM();
 
-    if (this.basicSettings.sideMenu) this.addSideMenuToDOM();
+    if (this.settings.sideMenu) this.addSideMenuToDOM();
 
     this.requests.needDataForScale = { name: '', value: 'true' };
     this.requests.needDataForStartPosition = { name: '', value: 'true' };
@@ -106,12 +110,12 @@ export class View {
     if (this.checkIsStepRequired()) this.requests.needStepWidth = { name: '', value: 'true' };
 
     this.updateView({
-      vertical: this.basicSettings.vertical,
-      double: this.basicSettings.double,
-      sideMenu: this.basicSettings.sideMenu,
-      handlesValues: this.basicSettings.handlesValues,
-      valueScale: this.basicSettings.valueScale,
-      integer: this.basicSettings.integer,
+      vertical: this.settings.vertical,
+      double: this.settings.double,
+      sideMenu: this.settings.sideMenu,
+      handlesValues: this.settings.handlesValues,
+      valueScale: this.settings.valueScale,
+      integer: this.settings.integer,
     });
   }
 
@@ -135,32 +139,56 @@ export class View {
     }
     if (!targets.double) {
       this.handles.changeHandlesDisplay({
-        isDouble: this.basicSettings.double,
+        isDouble: this.settings.double,
         positions: this.positions,
         sliderWidth: this.slider.slider.offsetWidth,
       });
       this.interval.hideSelectedInterval({
-        isDouble: this.basicSettings.double,
+        isDouble: this.settings.double,
         handleWidth: this.handles.fromHandle.offsetWidth,
       });
-      this.sideMenu.changeToValuesDisplay(this.basicSettings.double);
+      this.sideMenu.changeToValuesDisplay(this.settings.double);
     }
-    if (!targets.valueScale) this.valuesScale.changeValueScaleDisplay(this.basicSettings.valueScale);
-    if (!targets.handlesValues) this.handles.hideHandlesValues(this.basicSettings.handlesValues);
+    if (!targets.valueScale) this.valuesScale.changeValueScaleDisplay(this.settings.valueScale);
+    if (!targets.handlesValues) this.handles.hideHandlesValues(this.settings.handlesValues);
     if (targets.sideMenu) this.turnOnMenuToggles(targets);
   }
 
-  public refreshValues(settings: RefreshData): void {
-    const isTargetNotRange: boolean = settings.target !== 'min' && settings.target !== 'max';
-    const handlesRefreshResult: boolean = isTargetNotRange
-      ? this.handles.refreshValues(settings)
-      : true;
+  private convertValueToPosition(settings: DataFromModel):string {
+    const { totalValues, minValue, value } = settings;
+    const workRange: number = this.slider.slider.offsetWidth;
+    const handleWidth: number = this.handles.fromHandle.offsetWidth;
 
-    const isNeedSideMenuUpdate = handlesRefreshResult && this.basicSettings.sideMenu;
-    if (isNeedSideMenuUpdate) this.sideMenu.refreshValues(settings);
+    return String(((workRange - handleWidth) / totalValues)
+        * (Number(value) - Number(minValue)));
   }
 
-  public bindEventListeners(): void {
+  public refreshValueScale(values: DataForValueScale): void {
+    this.valuesScale.refreshValueScale(values);
+    this.valuesScale.centerValues(
+      this.slider.slider.offsetWidth - this.handles.fromHandle.offsetWidth,
+      this.handles.fromHandle.offsetWidth,
+    );
+  }
+
+  public refreshHandleValues(settings: DataFromModel): void {
+    const newHandlesData: NewHandlesData = {
+      target: settings.target,
+      value: settings.value,
+      isToFixed: settings.isToFixed,
+      position: this.convertValueToPosition(settings),
+    };
+
+    this.handles.refreshValues(newHandlesData);
+    this.interval.refreshIntervalPositions({
+      target: settings.target,
+      position: newHandlesData.position,
+      handleWidth: this.handles.fromHandle.offsetWidth,
+      sliderWidth: this.slider.slider.offsetWidth,
+    });
+  }
+
+  private bindEventListeners(): void {
     this.valuesScale.values.forEach((scaleValue: HTMLSpanElement): void => {
       scaleValue.addEventListener('click', this.handleScaleValueClick);
     });
@@ -204,44 +232,40 @@ export class View {
   private handleToToggleChange(event: Event): void {
     const element: HTMLInputElement = event.target as HTMLInputElement;
 
-    this.basicSettings.double = element.checked;
+    this.settings.double = element.checked;
     this.handles.changeHandlesDisplay({
-      isDouble: this.basicSettings.double,
+      isDouble: this.settings.double,
       positions: this.positions,
       sliderWidth: this.slider.slider.offsetWidth,
     });
     this.interval.hideSelectedInterval({
-      isDouble: this.basicSettings.double,
+      isDouble: this.settings.double,
       handleWidth: this.handles.fromHandle.offsetWidth,
     });
-    this.sideMenu.changeToValuesDisplay(this.basicSettings.double);
   }
 
   private handlePlaneToggleChange(event: Event): void {
     const element: HTMLInputElement = event.target as HTMLInputElement;
 
-    this.basicSettings.vertical = element.checked;
+    this.settings.vertical = element.checked;
     this.slider.changePlane({
-      isVertical: this.basicSettings.vertical,
+      isVertical: this.settings.vertical,
       isStep: this.checkIsStepRequired(),
       requests: this.requests,
     });
-    this.handles.changePlane(this.basicSettings.vertical);
-    this.valuesScale.changePlane(this.basicSettings.vertical);
+    this.handles.changePlane(this.settings.vertical);
+    this.valuesScale.changePlane(this.settings.vertical);
   }
 
-  private handleValueScaleToggleChange(event: Event): void {
-    const element: HTMLInputElement = event.target as HTMLInputElement;
-
-    this.basicSettings.valueScale = element.checked;
-    this.valuesScale.changeValueScaleDisplay(this.basicSettings.valueScale);
+  private handleValueScaleToggleChange(): void {
+    this.valuesScale.changeValueScaleDisplay(this.settings.valueScale);
   }
 
   private handleHandleValuesChange(event: Event): void {
     const element: HTMLInputElement = event.target as HTMLInputElement;
 
-    this.basicSettings.handlesValues = element.checked;
-    this.handles.hideHandlesValues(this.basicSettings.handlesValues);
+    this.settings.handlesValues = element.checked;
+    this.handles.hideHandlesValues(this.settings.handlesValues);
   }
 
   private handleValueInputChange(event: Event): void {
@@ -255,10 +279,10 @@ export class View {
   private handleStepInputChange(event: Event): void {
     const element: HTMLInputElement = event.target as HTMLInputElement;
 
-    this.basicSettings.step = Number(element.value);
+    this.settings.step = Number(element.value);
     if (element.value === '0') {
       (this.sideMenu.sideMenuElements.stepInput as HTMLInputElement).value = '';
-      this.basicSettings.step = false;
+      this.settings.step = false;
     } else {
       this.requests.needStepWidth = { name: '', value: 'true' };
     }
@@ -275,7 +299,7 @@ export class View {
   private handleIntegerToggleChange(event: Event): void {
     const element: HTMLInputElement = event.target as HTMLInputElement;
 
-    this.basicSettings.integer = element.checked;
+    this.settings.integer = element.checked;
     this.requests.needDataForStartPosition = { name: '', value: 'true' };
   }
 
@@ -289,11 +313,11 @@ export class View {
     );
     if (isNotSliderBody) return;
 
-    const targetPosition: number = this.basicSettings.vertical ? verticalPosition : horizontalPosition;
+    const targetPosition: number = this.settings.vertical ? verticalPosition : horizontalPosition;
     const targetHandle: HTMLSpanElement = this.handles.defineHandleToMove({
       targetPosition,
       positions: this.positions,
-      isDouble: this.basicSettings.double,
+      isDouble: this.settings.double,
     });
     this.handles.acceptNewPosition({
       target: targetHandle,

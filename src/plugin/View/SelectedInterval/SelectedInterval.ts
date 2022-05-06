@@ -1,5 +1,5 @@
 import autobind from 'autobind-decorator';
-import { IntervalDisplayData, RefreshIntervalPositions } from './types';
+import { IntervalDisplayData, NewIntervalData } from './types';
 
 @autobind
 export class SelectedInterval {
@@ -12,17 +12,23 @@ export class SelectedInterval {
     this.initializeHTMLElement();
   }
 
-  private initializeHTMLElement(): void {
-    this.interval.classList.add(this.intervalClass);
+  public refreshIntervalPositions(settings: NewIntervalData):void {
+    const {
+      target,
+      position,
+      sliderWidth,
+      handleWidth,
+    } = settings;
+
+    if (target === 'from') {
+      this.interval.style.left = `${Number(position) + (handleWidth / 2)}px`;
+    } else if (target === 'to') {
+      this.interval.style.right = `${(sliderWidth - Number(position)) - (handleWidth / 2)}px`;
+    }
   }
 
-  public adjustPositionRelativeToValue(dataToRefresh: RefreshIntervalPositions): void {
-    if (dataToRefresh.target === 'from') {
-      this.interval.style.left = `${Number(dataToRefresh.position) + (dataToRefresh.handleWidth / 2)}px`;
-    } else {
-      this.interval.style.right = `${dataToRefresh.sliderWidth - Number(dataToRefresh.position)
-        + (dataToRefresh.handleWidth / 2)}px`;
-    }
+  private initializeHTMLElement(): void {
+    this.interval.classList.add(this.intervalClass);
   }
 
   private checkIsIntervalShouldBeHided(isDouble: boolean): boolean {

@@ -22,10 +22,19 @@ type TargetsForViewUpdate = {
   integer: boolean;
 };
 
-type RefreshData = {
+type DataFromModel = {
   value: string;
   target: 'from' | 'to' | 'min' | 'max';
   isToFixed: boolean;
+  totalValues: number;
+  minValue: number;
+};
+
+type NewHandlesData = {
+  target: 'from' | 'to' | 'min' | 'max';
+  value: string;
+  isToFixed: boolean;
+  position: string;
 };
 
 type DataRequestValue = {
@@ -44,8 +53,9 @@ type ViewRequestsData = {
 export {
   BasicViewSettings,
   TargetsForViewUpdate,
-  RefreshData,
+  DataFromModel,
   ViewRequestsData,
   DataRequestValue,
   HandlePositions,
+  NewHandlesData,
 };

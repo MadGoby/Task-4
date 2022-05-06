@@ -1,14 +1,8 @@
 import autobind from 'autobind-decorator';
 import { BasicModelSettings, CalculationData, DataForValueScale } from '../Model/types';
 import { Model } from '../Model/Model';
-import { DataForAdjustPosition } from '../View/Handles/types';
-import { RefreshIntervalPositions } from '../View/SelectedInterval/types';
 import { View } from '../View/View';
-import {
-  ViewRequestsData,
-  HandlePositions,
-  DataRequestValue,
-} from '../View/types';
+import { HandlePositions } from '../View/types';
 
 @autobind
 export class Presenter {
@@ -19,6 +13,8 @@ export class Presenter {
   constructor(viewLink: View, modelLink: Model) {
     this.view = viewLink;
     this.model = modelLink;
+
+    this.initialize();
   }
 
   private bindProxyToHandlesMovement(view: View, model: Model): HandlePositions {
@@ -28,8 +24,9 @@ export class Presenter {
           position: String(val),
           target: prop,
           sliderWidth: view.slider.slider.offsetWidth - view.handles.fromHandle.offsetWidth,
+          isDouble: view.settings.double,
         };
-        console.log(target);
+
         target[prop] = val;
         model.calculateValueByPosition(settings);
 
@@ -38,179 +35,41 @@ export class Presenter {
     });
   }
 
-  private distributesDataForScale(): void {
+  private updateValueScale(): void {
     const values: DataForValueScale = this.model.calculateDataForValueScale();
-    this.view.valuesScale.refreshValueScale(values);
-    this.view.valuesScale.centerValues(
-      this.view.slider.slider.offsetWidth - this.view.handles.fromHandle.offsetWidth,
-      this.view.handles.fromHandle.offsetWidth,
-    );
-  }
-
-  private prepareDataForAdjustPosition(target: 'from' | 'to', value: string): DataForAdjustPosition {
-    return {
-      target,
-      value,
-      totalValues: Number(this.model.values.max) - Number(this.model.values.min),
-      minValue: this.model.values.min,
-    };
-  }
-
-  private prepareNewHandlesPositionsData(handleData: DataForAdjustPosition): RefreshIntervalPositions {
-    return this.view.handles.adjustPositions(
-      handleData,
-      this.view.slider.slider.offsetWidth,
-    );
+    this.view.refreshValueScale(values);
   }
 
   private distributeDataForStartPosition(): void {
-    const dataForFrom: DataForAdjustPosition = this.prepareDataForAdjustPosition('from', this.model.values.from);
-    const dataForTo: DataForAdjustPosition = this.prepareDataForAdjustPosition('to', this.model.values.to);
-    const startFrom: RefreshIntervalPositions = this.prepareNewHandlesPositionsData(dataForFrom);
-    const startTo: RefreshIntervalPositions = this.prepareNewHandlesPositionsData(dataForTo);
-    const adjustPositions: (
-      dataToRefresh: RefreshIntervalPositions) => void = this.view.interval.adjustPositionRelativeToValue;
-    adjustPositions(startFrom);
-    adjustPositions(startTo);
-    this.view.positions.from = Number(startFrom.position);
-    this.view.positions.to = Number(startTo.position);
-    this.view.refreshValues({
-      value: this.model.values.min,
-      target: 'min',
-      isToFixed: this.view.basicSettings.integer,
+    this.view.refreshHandleValues({
+      value: this.model.values.from,
+      target: 'from',
+      isToFixed: this.view.settings.integer,
+      totalValues: this.model.getTotalValues(),
+      minValue: Number(this.model.values.min),
     });
-    this.view.refreshValues({
-      value: this.model.values.max,
-      target: 'max',
-      isToFixed: this.view.basicSettings.integer,
+    this.view.refreshHandleValues({
+      value: this.model.values.to,
+      target: 'to',
+      isToFixed: this.view.settings.integer,
+      totalValues: this.model.getTotalValues(),
+      minValue: Number(this.model.values.min),
     });
-  }
-
-  private distributeStepWidth(): void {
-    const writesNewStepWidth = (): void => {
-      const { step } = this.model.calculateStepWidth({
-        step: Number(this.view.basicSettings.step),
-        sliderWidth: this.view.slider.slider.offsetWidth,
-        handleWidth: this.view.handles.fromHandle.offsetWidth,
-      });
-
-      this.view.basicSettings.integer = Number.isInteger(step);
-
-      if (this.view.basicSettings.sideMenu) {
-        (this.view.sideMenu.sideMenuElements.stepInput as HTMLInputElement).value = String(step);
-        (this.view.sideMenu.sideMenuElements.integerToggle as HTMLInputElement).checked = Number.isInteger(step);
-      }
-    };
-
-    if (typeof this.view.basicSettings.step === 'number') writesNewStepWidth();
-  }
-
-  private static checkCorrectTarget(name: string): 'from' | 'to' | false {
-    switch (name) {
-      case 'from':
-        return 'from';
-      case 'to':
-        return 'to';
-      default:
-        return false;
-    }
-  }
-
-  private distributeNewValuesForApply(name: string, value: string): void {
-    const correctName: 'from' | 'to' | false = Presenter.checkCorrectTarget(name);
-    if (!correctName) return;
-
-    const result: DataForAdjustPosition = this.model.prepareInputValueForRecord({
-      name: correctName,
-      value,
-      step: this.view.basicSettings.step,
-      isDouble: this.view.basicSettings.double,
-      positions: {
-        from: this.view.positions.from,
-        to: this.view.positions.to,
-      },
-      handleWidth: this.view.handles.toHandle.offsetWidth,
-      sliderWidth: this.view.slider.slider.offsetWidth,
-    });
-    const newPosition: RefreshIntervalPositions = this.view.handles.adjustPositions(
-      result,
-      this.view.slider.slider.offsetWidth,
-    );
-
-    this.view.handles.isInputChanges = true;
-    this.view.sideMenu.isInputChanges = true;
-    this.view.interval.adjustPositionRelativeToValue(newPosition);
-    this.view.positions[newPosition.target] = Number(newPosition.position);
-  }
-
-  private distributeValueFromScaleToApply(value: string): void {
-    const result: DataForAdjustPosition = this.model.assignValueFromScale(value, this.view.basicSettings.double);
-    const newPosition: RefreshIntervalPositions = this.view.handles.adjustPositions(
-      result,
-      this.view.slider.slider.offsetWidth,
-    );
-    this.view.handles.isInputChanges = true;
-    this.view.sideMenu.isInputChanges = true;
-    this.view.interval.adjustPositionRelativeToValue(newPosition);
-    if (newPosition.target === 'from') this.view.positions.from = Number(newPosition.position);
-    if (newPosition.target === 'to') this.view.positions.to = Number(newPosition.position);
-  }
-
-  private distributeSliderValuesRangeToApply(value: DataRequestValue): void {
-    this.model.changeSliderRangeValues({
-      name: value?.name,
-      value: value.value,
-    });
-    this.view.requests.needDataForStartPosition = { name: '', value: 'true' };
-    this.view.requests.needDataForScale = { name: '', value: 'true' };
-    this.view.requests.needStepWidth = { name: '', value: 'true' };
-  }
-
-  private handlesRequestsFromView(property: string, value: DataRequestValue): void {
-    switch (property) {
-      case 'needDataForScale':
-        this.distributesDataForScale();
-        break;
-      case 'needDataForStartPosition':
-        this.distributeDataForStartPosition();
-        break;
-      case 'needStepWidth':
-        this.distributeStepWidth();
-        break;
-      case 'needApplyNewValue':
-        this.distributeNewValuesForApply(value.name, value.value);
-        break;
-      case 'needApplyValueFromScale':
-        this.distributeValueFromScaleToApply(value.value);
-        break;
-      case 'needChangeSliderValuesRange':
-        this.distributeSliderValuesRangeToApply(value);
-        break;
-      default:
-        break;
-    }
-  }
-
-  private bindProxyToViewRequests(): ViewRequestsData {
-    const that: this = this;
-    return new Proxy(this.view.requests, {
-      set(target: ViewRequestsData, property: string, value: DataRequestValue) {
-        if (!value) return false;
-        that.handlesRequestsFromView(property, value);
-        return true;
-      },
-    });
+    this.updateValueScale();
   }
 
   private bindProxyToModelValues(view: View): BasicModelSettings {
+    const { model } = this;
     return new Proxy(this.model.values, {
       set(target: BasicModelSettings, property: 'min' | 'max' | 'from' | 'to', value: string) {
         target[property] = value;
 
-        view.refreshValues({
+        view.refreshHandleValues({
           value,
           target: property,
-          isToFixed: view.basicSettings.integer,
+          isToFixed: view.settings.integer,
+          totalValues: model.getTotalValues(),
+          minValue: Number(model.values.min),
         });
 
         return true;
@@ -218,11 +77,11 @@ export class Presenter {
     });
   }
 
-  public initialize(): void {
+  private initialize(): void {
     const { view, model } = this;
 
     view.positions = this.bindProxyToHandlesMovement(view, model);
-    view.requests = this.bindProxyToViewRequests();
     model.values = this.bindProxyToModelValues(view);
+    this.distributeDataForStartPosition();
   }
 }

@@ -1,14 +1,11 @@
-import { RefreshIntervalPositions } from '../SelectedInterval/types';
 import {
-  DataForAdjustPosition,
   HandlesElementsInfo,
   StaticElementsDescription,
   HandleHideData,
-  RefreshHandlesData,
   DataToHandlesMove,
   NewPositionData,
 } from './types';
-import { RefreshData } from '../types';
+import { NewHandlesData } from '../types';
 
 export class Handles {
   readonly fromHandle: HTMLSpanElement;
@@ -70,35 +67,26 @@ export class Handles {
     return element;
   }
 
-  public refreshValues(data: RefreshData): boolean {
-    const refreshHandlesData: RefreshHandlesData = data as RefreshHandlesData;
-    const target: 'fromValue' | 'toValue' = `${refreshHandlesData.target}Value`;
-    const isRoundUpNeed: boolean = data.isToFixed && !this.isInputChanges;
+  public refreshValues(data: NewHandlesData): void {
+    const {
+      target,
+      value,
+      isToFixed,
+      position,
+    } = data;
+    if (target === 'min' || target === 'max') return;
+    const valueTargetName: 'fromValue' | 'toValue' = `${target}Value`;
+    const isRoundUpNeed: boolean = isToFixed && !this.isInputChanges;
 
-    this[target].innerText = isRoundUpNeed ? `${Math.round(Number(data.value))}` : data.value;
+    this[valueTargetName].innerText = isRoundUpNeed ? `${Math.round(Number(value))}` : value;
     if (this.isInputChanges) this.isInputChanges = false;
 
-    return true;
+    this.refreshPosition(target, position);
   }
 
-  public adjustPositions(dataToRefresh: DataForAdjustPosition, sliderWidth: number): RefreshIntervalPositions {
-    const handleName: 'fromHandle' | 'toHandle' = `${dataToRefresh.target}Handle`;
-    const handleTarget: HTMLSpanElement = this[handleName];
-
-    function calculateNewPosition(): string {
-      return String(((sliderWidth - handleTarget.offsetWidth) / dataToRefresh.totalValues)
-        * (Number(dataToRefresh.value) - Number(dataToRefresh.minValue)));
-    }
-
-    const newPosition: string = calculateNewPosition();
-    handleTarget.style.left = `${newPosition}px`;
-
-    return {
-      target: dataToRefresh.target,
-      position: newPosition,
-      sliderWidth: sliderWidth - handleTarget.offsetWidth,
-      handleWidth: handleTarget.offsetWidth,
-    };
+  private refreshPosition(target: 'from' | 'to', position: string):void {
+    const handleTargetName: 'fromHandle' | 'toHandle' = `${target}Handle`;
+    this[handleTargetName].style.left = `${position}px`;
   }
 
   private checkIsNeedToMakeVertical(isVertical: boolean): boolean {
@@ -137,23 +125,6 @@ export class Handles {
     }
   }
 
-  private changeHandlesPosition(settings: HandleHideData) {
-    const { sliderWidth, positions } = settings;
-    const newPosition: number = sliderWidth - this.toHandle.offsetWidth;
-
-    this.toHandle.style.left = `${newPosition}px`;
-    positions.to = newPosition;
-    const isFromPositionIncorrect: boolean = positions.from > (
-      sliderWidth - this.toHandle.offsetWidth - this.fromHandle.offsetWidth
-    );
-
-    if (isFromPositionIncorrect) {
-      const extremeFromPosition = String(sliderWidth - this.toHandle.offsetWidth - this.fromHandle.offsetWidth);
-      this.fromHandle.style.left = `${extremeFromPosition}px`;
-      positions.from = Number(extremeFromPosition);
-    }
-  }
-
   public changeHandlesDisplay(settings: HandleHideData): void {
     const { isDouble } = settings;
 
@@ -161,7 +132,6 @@ export class Handles {
       this.toHandle.classList.add(`${this.handleClass}_hidden`);
     } else if (this.checkIsToNeedShow(isDouble)) {
       this.toHandle.classList.remove(`${this.handleClass}_hidden`);
-      this.changeHandlesPosition(settings);
     }
   }
 

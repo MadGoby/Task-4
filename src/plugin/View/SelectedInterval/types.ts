@@ -1,16 +1,16 @@
-type RefreshIntervalPositions = {
-  target: 'from' | 'to';
-  position: string;
-  sliderWidth: number;
-  handleWidth: number;
-};
-
 type IntervalDisplayData = {
   isDouble: boolean,
   handleWidth: number
 };
 
+type NewIntervalData = {
+  target: 'from' | 'to' | 'min' | 'max';
+  position: string;
+  sliderWidth: number;
+  handleWidth: number;
+};
+
 export {
-  RefreshIntervalPositions,
+  NewIntervalData,
   IntervalDisplayData,
 };

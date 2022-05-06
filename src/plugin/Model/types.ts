@@ -2,6 +2,7 @@ type CalculationData = {
   target: 'from' | 'to' | 'min' | 'max';
   position: string;
   sliderWidth: number;
+  isDouble: boolean;
 };
 
 type DataForPrepareValue = {
@@ -20,6 +21,7 @@ type DataForPrepareValue = {
 type DataForRefreshingModel = {
   target: 'from' | 'to' | 'min' | 'max';
   value: string;
+  isDouble: boolean;
 };
 
 type DataForValueScale = {
