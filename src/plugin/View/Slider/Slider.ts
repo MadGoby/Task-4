@@ -46,13 +46,7 @@ export class Slider {
   }
 
   public changePlane(settings: SliderPlaneSettings): void {
-    const { isStep, isVertical, requests } = settings;
-
-    function refreshAfterResize(): void {
-      requests.needDataForScale = { name: '', value: 'true' };
-      requests.needDataForStartPosition = { name: '', value: 'true' };
-      if (isStep) requests.needStepWidth = { name: '', value: 'true' };
-    }
+    const { isVertical } = settings;
 
     switch (true) {
       case this.checkIsNeedToDisplayVertical(isVertical):
@@ -68,7 +62,5 @@ export class Slider {
       default:
         break;
     }
-
-    refreshAfterResize();
   }
 }

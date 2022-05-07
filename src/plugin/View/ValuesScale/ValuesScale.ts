@@ -1,6 +1,9 @@
+import autobind from 'autobind-decorator';
 import { DataForValueScale } from '../../Model/types';
 import { IValuesScale } from './interfaces';
+import { PassNewValue } from '../types';
 
+@autobind
 export class ValuesScale implements IValuesScale {
   readonly minValue: HTMLSpanElement;
 
@@ -18,15 +21,19 @@ export class ValuesScale implements IValuesScale {
 
   readonly values: Array<HTMLSpanElement>;
 
-  constructor() {
+  private readonly passNewValue: PassNewValue;
+
+  constructor(passNewValue: PassNewValue) {
     this.minValue = this.createElement('type_min');
     this.maxValue = this.createElement('type_max');
     this.twentyPercentValue = this.createElement('percent_20');
     this.fortyPercentValue = this.createElement('percent_40');
     this.sixtyPercentValue = this.createElement('percent_60');
     this.eightyPercentValue = this.createElement('percent_80');
+    this.passNewValue = passNewValue;
 
     this.values = Object.values(this).filter((element) => typeof element === 'object');
+    this.values.forEach((value) => this.bindHandleValueClick(value));
   }
 
   private createElement(classModifier: string): HTMLSpanElement {
@@ -104,5 +111,16 @@ export class ValuesScale implements IValuesScale {
         element.classList.remove(`${this.valueClass}_hidden`);
       });
     }
+  }
+
+  private handleValueClick(event: Event): void {
+    if (!event.target) return;
+    const eventTarget: HTMLSpanElement = event.target as HTMLSpanElement;
+
+    this.passNewValue('unspecified', Number(eventTarget.innerText));
+  }
+
+  private bindHandleValueClick(value: HTMLSpanElement):void {
+    value.addEventListener('click', this.handleValueClick);
   }
 }

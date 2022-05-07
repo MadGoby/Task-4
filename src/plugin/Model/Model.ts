@@ -3,6 +3,8 @@ import {
   CalculationData,
   DataForRefreshingModel,
   DataForValueScale,
+  UnspecifiedValueTarget, ValueData,
+  ValueTarget,
 } from './types';
 
 class Model {
@@ -56,7 +58,21 @@ class Model {
     }
   }
 
-  public calculateValueByPosition(settings: CalculationData): void {
+  private determineValueTarget(value: string, target: UnspecifiedValueTarget): ValueTarget {
+    if (target !== 'unspecified') return target;
+
+    const fromDifference: number = Math.abs(Number(this.values.from) - Number(value));
+    const toDifference: number = Math.abs(Number(this.values.to) - Number(value));
+    const isFromEqualTo: boolean = Number(this.values.from) === Number(this.values.to);
+    const isValueLessThenEqual: boolean = isFromEqualTo && Number(value) < Number(this.values.from);
+    const isValueBiggerThenEqual: boolean = isFromEqualTo && Number(value) > Number(this.values.to);
+
+    if (isValueLessThenEqual) return 'from';
+    if (isValueBiggerThenEqual) return 'to';
+    return fromDifference <= toDifference ? 'from' : 'to';
+  }
+
+  public writeValueFromPosition(settings: CalculationData): void {
     const calculateValue = (calculationData: CalculationData): string => {
       const newValue: number = (Number(this.values.min) + (Number(calculationData.position) / (
         Number(calculationData.sliderWidth) / (Number(this.values.max) - Number(this.values.min)))
@@ -64,9 +80,22 @@ class Model {
       return Model.truncateNumbersAfterDot(newValue);
     };
 
+    const value: string = calculateValue(settings);
+    const target: ValueTarget = this.determineValueTarget(value, settings.target);
+
     this.writeDataToModel({
-      target: settings.target,
-      value: calculateValue(settings),
+      target,
+      value,
+      isDouble: settings.isDouble,
+    });
+  }
+
+  public writeValue(settings: ValueData): void {
+    const target: ValueTarget = this.determineValueTarget(settings.value, settings.target);
+
+    this.writeDataToModel({
+      target,
+      value: settings.value,
       isDouble: settings.isDouble,
     });
   }

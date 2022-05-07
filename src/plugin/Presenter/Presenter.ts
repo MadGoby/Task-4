@@ -2,7 +2,11 @@ import autobind from 'autobind-decorator';
 import { BasicModelSettings, CalculationData, DataForValueScale } from '../Model/types';
 import { Model } from '../Model/Model';
 import { View } from '../View/View';
-import { HandlePositions } from '../View/types';
+import {
+  HandlePositions,
+  UpdatePositionTarget,
+  ValuesToPass,
+} from '../View/types';
 
 @autobind
 export class Presenter {
@@ -19,16 +23,31 @@ export class Presenter {
 
   private bindProxyToHandlesMovement(view: View, model: Model): HandlePositions {
     return new Proxy(this.view.positions, {
-      set(target, prop: 'from' | 'to', val) {
+      set(target, property: 'from' | 'to', value) {
         const settings: CalculationData = {
-          position: String(val),
-          target: prop,
+          position: String(value),
+          target: property,
           sliderWidth: view.slider.slider.offsetWidth - view.handles.fromHandle.offsetWidth,
           isDouble: view.settings.double,
         };
 
-        target[prop] = val;
-        model.calculateValueByPosition(settings);
+        target[property] = value;
+        model.writeValueFromPosition(settings);
+
+        return true;
+      },
+    });
+  }
+
+  private handleProxyToPassNewValue(view: View, model: Model) {
+    return new Proxy(this.view.valuesToPass, {
+      set(target: ValuesToPass, property: UpdatePositionTarget, value: number) {
+        model.writeValue({
+          value: String(value),
+          target: property,
+          sliderWidth: view.slider.slider.offsetWidth - view.handles.fromHandle.offsetWidth,
+          isDouble: view.settings.double,
+        });
 
         return true;
       },
@@ -40,7 +59,7 @@ export class Presenter {
     this.view.refreshValueScale(values);
   }
 
-  private distributeDataForStartPosition(): void {
+  private updateAllViewValues(): void {
     this.view.refreshHandleValues({
       value: this.model.values.from,
       target: 'from',
@@ -81,7 +100,8 @@ export class Presenter {
     const { view, model } = this;
 
     view.positions = this.bindProxyToHandlesMovement(view, model);
+    view.valuesToPass = this.handleProxyToPassNewValue(view, model);
     model.values = this.bindProxyToModelValues(view);
-    this.distributeDataForStartPosition();
+    this.updateAllViewValues();
   }
 }

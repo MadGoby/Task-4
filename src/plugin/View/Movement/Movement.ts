@@ -32,16 +32,21 @@ export class Movement {
     };
   }
 
-  private handleDocumentMouseMove(event: MouseEvent): void {
-    const x: number = event.clientX;
-    const y: number = event.clientY;
-    const newPosition: number = this.basicSettings.vertical
+  public calculateNewPosition(x: number, y: number): number {
+    return this.basicSettings.vertical
       ? this.slider.offsetWidth - (
         y - Number(this.handleClickData.distanceToCursor) - this.slider.getBoundingClientRect().top)
       : x - Number(this.handleClickData.distanceToCursor) - this.slider.getBoundingClientRect().left;
-    const isTargetFrom: boolean = this.handleClickData.target === this.handles.fromHandle;
+  }
 
-    this.movementSettings.updatePositions(isTargetFrom, newPosition);
+  private handleDocumentMouseMove(event: MouseEvent): void {
+    const x: number = event.clientX;
+    const y: number = event.clientY;
+    const newPosition: number = this.calculateNewPosition(x, y);
+    const isTargetFrom: boolean = this.handleClickData.target === this.handles.fromHandle;
+    const target = isTargetFrom ? 'from' : 'to';
+
+    this.movementSettings.updatePositions(target, newPosition);
   }
 
   public handleListener(setting: MovementEvent): void {

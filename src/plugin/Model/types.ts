@@ -1,25 +1,19 @@
+type ValueTarget = 'from' | 'to' | 'min' | 'max';
+type UnspecifiedValueTarget = ValueTarget | 'unspecified';
+
 type CalculationData = {
-  target: 'from' | 'to' | 'min' | 'max';
+  target: UnspecifiedValueTarget;
   position: string;
   sliderWidth: number;
   isDouble: boolean;
 };
 
-type DataForPrepareValue = {
-  name: 'from' | 'to';
+type ValueData = Omit<CalculationData, 'position'> & {
   value: string;
-  isDouble: boolean;
-  positions: {
-    from: number;
-    to: number;
-  };
-  handleWidth: number;
-  sliderWidth: number;
-  step: boolean | number;
 };
 
 type DataForRefreshingModel = {
-  target: 'from' | 'to' | 'min' | 'max';
+  target: ValueTarget;
   value: string;
   isDouble: boolean;
 };
@@ -40,30 +34,12 @@ type BasicModelSettings = {
   to: string
 };
 
-type StepDataFromModel = {
-  minStep: number;
-  stepWidth: string;
-  step: number;
-};
-
-type StepCalculateData = {
-  step: number,
-  sliderWidth: number,
-  handleWidth: number,
-};
-
-type ValuesRangeData = {
-  name: string,
-  value: string,
-};
-
 export {
   CalculationData,
-  DataForPrepareValue,
+  ValueTarget,
   DataForRefreshingModel,
   DataForValueScale,
   BasicModelSettings,
-  StepDataFromModel,
-  StepCalculateData,
-  ValuesRangeData,
+  UnspecifiedValueTarget,
+  ValueData,
 };

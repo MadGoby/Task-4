@@ -1,4 +1,4 @@
-import { DataFromModel } from '../types';
+import { DataFromModel } from '../../plugin/View/types';
 import { sideMenuData } from './sideMenuData';
 import {
   SideMenuBaseData,

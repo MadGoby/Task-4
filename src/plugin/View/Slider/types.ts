@@ -10,8 +10,6 @@ type SliderAssemblerSettings = {
 
 type SliderPlaneSettings = {
   isVertical: boolean;
-  requests: ViewRequestsData;
-  isStep: boolean;
 };
 
 export {

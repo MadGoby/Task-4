@@ -1,4 +1,8 @@
-import { BasicViewSettings, HandlePositions } from '../types';
+import {
+  BasicViewSettings,
+  HandlePositions,
+  UpdatePositions,
+} from '../types';
 import { Handles } from '../Handles/Handles';
 import { SelectedInterval } from '../SelectedInterval/SelectedInterval';
 
@@ -7,7 +11,7 @@ type MovementSettings = {
   handles: Handles;
   interval: SelectedInterval;
   basicSettings: BasicViewSettings;
-  updatePositions(isTargetFrom: boolean, newPosition: number): void;
+  updatePositions: UpdatePositions;
 };
 
 type MovementEvent = {

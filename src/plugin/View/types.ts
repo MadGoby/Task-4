@@ -1,3 +1,9 @@
+type UpdatePositionTarget = 'from' | 'to' | 'unspecified';
+
+type UpdatePositions = (target: UpdatePositionTarget, newPosition: number) => void;
+
+type PassNewValue = UpdatePositions;
+
 type BasicViewSettings = {
   double: boolean;
   sideMenu: boolean | string;
@@ -11,7 +17,10 @@ type BasicViewSettings = {
 type HandlePositions = {
   from: number;
   to: number;
+  unspecified: number
 };
+
+type ValuesToPass = HandlePositions;
 
 type TargetsForViewUpdate = {
   double?: boolean;
@@ -58,4 +67,8 @@ export {
   DataRequestValue,
   HandlePositions,
   NewHandlesData,
+  UpdatePositions,
+  UpdatePositionTarget,
+  PassNewValue,
+  ValuesToPass,
 };
