@@ -3,7 +3,7 @@ import {
   BasicViewSettings,
 } from '../types';
 import {
-  HandleClickData,
+  HandleClickData, MovementCalculateData,
   MovementEvent,
   MovementSettings,
 } from './types';
@@ -32,17 +32,27 @@ export class Movement {
     };
   }
 
-  public calculateNewPosition(x: number, y: number): number {
+  public calculateNewPosition(settings: MovementCalculateData): number {
+    const {
+      x,
+      y,
+      distanceToCursor,
+    } = settings;
+
     return this.basicSettings.vertical
       ? this.slider.offsetWidth - (
-        y - Number(this.handleClickData.distanceToCursor) - this.slider.getBoundingClientRect().top)
-      : x - Number(this.handleClickData.distanceToCursor) - this.slider.getBoundingClientRect().left;
+        y - Number(distanceToCursor) - this.slider.getBoundingClientRect().top)
+      : x - Number(distanceToCursor) - this.slider.getBoundingClientRect().left;
   }
 
   private handleDocumentMouseMove(event: MouseEvent): void {
     const x: number = event.clientX;
     const y: number = event.clientY;
-    const newPosition: number = this.calculateNewPosition(x, y);
+    const newPosition: number = this.calculateNewPosition({
+      x,
+      y,
+      distanceToCursor: this.handleClickData.distanceToCursor,
+    });
     const isTargetFrom: boolean = this.handleClickData.target === this.handles.fromHandle;
     const target = isTargetFrom ? 'from' : 'to';
 

@@ -2,8 +2,6 @@ import {
   HandlesElementsInfo,
   StaticElementsDescription,
   HandleHideData,
-  DataToHandlesMove,
-  NewPositionData,
 } from './types';
 import { NewHandlesData } from '../types';
 
@@ -78,7 +76,7 @@ export class Handles {
     const valueTargetName: 'fromValue' | 'toValue' = `${target}Value`;
     const isRoundUpNeed: boolean = isToFixed && !this.isInputChanges;
 
-    this[valueTargetName].innerText = isRoundUpNeed ? `${Math.round(Number(value))}` : value;
+    this[valueTargetName].innerText = isRoundUpNeed ? `${Math.round(Number(value))}` : String(value);
     if (this.isInputChanges) this.isInputChanges = false;
 
     this.refreshPosition(target, position);
@@ -86,7 +84,7 @@ export class Handles {
 
   private refreshPosition(target: 'from' | 'to', position: string):void {
     const handleTargetName: 'fromHandle' | 'toHandle' = `${target}Handle`;
-    this[handleTargetName].style.left = `${position}px`;
+    this[handleTargetName].style.left = `${Number(position)}px`;
   }
 
   private checkIsNeedToMakeVertical(isVertical: boolean): boolean {
@@ -145,48 +143,11 @@ export class Handles {
     }
   }
 
-  public defineHandleToMove(settings: DataToHandlesMove): HTMLSpanElement {
-    const { targetPosition, positions, isDouble } = settings;
-    const fromDifference: number = Math.abs(Number(positions.from) - Number(targetPosition));
-    const toDifference: number = Math.abs(Number(positions.to) - Number(targetPosition));
-    const isFromDifferenceLess: boolean = fromDifference < toDifference || !isDouble;
-
-    if (isFromDifferenceLess) return this.fromHandle;
-    return this.toHandle;
-  }
-
-  public acceptNewPosition(settings: NewPositionData): void {
-    const { target, value, positions } = settings;
-
-    if (target === this.fromHandle) {
-      this.fromHandle.style.left = `${value}px`;
-      positions.from = value;
-    } else {
-      this.toHandle.style.left = `${value}px`;
-      positions.to = value;
-    }
-  }
-
   updateMainHandleClass(targetHandle: HTMLSpanElement) {
     const className: string = `${this.handleClass}_type_main`;
 
     if (this.fromHandle.classList.contains(className)) this.fromHandle.classList.remove(className);
     if (this.toHandle.classList.contains(className)) this.toHandle.classList.remove(className);
     targetHandle.classList.add(className);
-  }
-
-  private updateFocusedHandleClass(targetHandle: HTMLSpanElement | false): void {
-    const className: string = 'goby-slider__handle_focused';
-    const defineActiveHandle = (): HTMLSpanElement => {
-      if (this.fromHandle.classList.contains(className)) return this.fromHandle;
-      return this.toHandle;
-    };
-
-    if (targetHandle) {
-      targetHandle.classList.add(className);
-    } else {
-      const oldTargetHandle: HTMLSpanElement = defineActiveHandle();
-      oldTargetHandle.classList.remove(className);
-    }
   }
 }

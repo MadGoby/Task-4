@@ -1,6 +1,6 @@
 type SliderOptions = {
-  min: string;
-  max: string;
+  min: number;
+  max: number;
   double: boolean;
   sideMenu: boolean | string;
   handlesValues: boolean;
@@ -8,8 +8,8 @@ type SliderOptions = {
   step: boolean | number;
   valueScale: boolean;
   integer: boolean;
-  from: string;
-  to: string;
+  from: number;
+  to: number;
 };
 
 type PluginInfo = {

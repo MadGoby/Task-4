@@ -17,15 +17,13 @@ export class Presenter {
   constructor(viewLink: View, modelLink: Model) {
     this.view = viewLink;
     this.model = modelLink;
-
-    this.initialize();
   }
 
   private bindProxyToHandlesMovement(view: View, model: Model): HandlePositions {
     return new Proxy(this.view.positions, {
       set(target, property: 'from' | 'to', value) {
         const settings: CalculationData = {
-          position: String(value),
+          position: value,
           target: property,
           sliderWidth: view.slider.slider.offsetWidth - view.handles.fromHandle.offsetWidth,
           isDouble: view.settings.double,
@@ -43,7 +41,7 @@ export class Presenter {
     return new Proxy(this.view.valuesToPass, {
       set(target: ValuesToPass, property: UpdatePositionTarget, value: number) {
         model.writeValue({
-          value: String(value),
+          value,
           target: property,
           sliderWidth: view.slider.slider.offsetWidth - view.handles.fromHandle.offsetWidth,
           isDouble: view.settings.double,
@@ -80,7 +78,7 @@ export class Presenter {
   private bindProxyToModelValues(view: View): BasicModelSettings {
     const { model } = this;
     return new Proxy(this.model.values, {
-      set(target: BasicModelSettings, property: 'min' | 'max' | 'from' | 'to', value: string) {
+      set(target: BasicModelSettings, property: 'min' | 'max' | 'from' | 'to', value: number) {
         target[property] = value;
 
         view.refreshHandleValues({
@@ -96,7 +94,7 @@ export class Presenter {
     });
   }
 
-  private initialize(): void {
+  public initialize(): void {
     const { view, model } = this;
 
     view.positions = this.bindProxyToHandlesMovement(view, model);

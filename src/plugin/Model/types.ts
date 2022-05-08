@@ -3,18 +3,18 @@ type UnspecifiedValueTarget = ValueTarget | 'unspecified';
 
 type CalculationData = {
   target: UnspecifiedValueTarget;
-  position: string;
+  position: number;
   sliderWidth: number;
   isDouble: boolean;
 };
 
 type ValueData = Omit<CalculationData, 'position'> & {
-  value: string;
+  value: number;
 };
 
 type DataForRefreshingModel = {
   target: ValueTarget;
-  value: string;
+  value: number;
   isDouble: boolean;
 };
 
@@ -28,10 +28,11 @@ type DataForValueScale = {
 };
 
 type BasicModelSettings = {
-  min: string,
-  max: string,
-  from: string,
-  to: string
+  min: number,
+  max: number,
+  from: number,
+  to: number,
+  step: number | boolean,
 };
 
 export {

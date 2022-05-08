@@ -14,6 +14,12 @@ type MovementSettings = {
   updatePositions: UpdatePositions;
 };
 
+type MovementCalculateData = {
+  x: number,
+  y: number,
+  distanceToCursor: number,
+};
+
 type MovementEvent = {
   readonly target: EventTarget,
   readonly x: number,
@@ -22,7 +28,7 @@ type MovementEvent = {
 
 type HandleClickData = {
   target: HTMLSpanElement,
-  distanceToCursor: Number,
+  distanceToCursor: number,
 };
 
 export {
@@ -30,4 +36,5 @@ export {
   MovementSettings,
   MovementEvent,
   HandleClickData,
+  MovementCalculateData,
 };

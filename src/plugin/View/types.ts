@@ -32,7 +32,7 @@ type TargetsForViewUpdate = {
 };
 
 type DataFromModel = {
-  value: string;
+  value: number;
   target: 'from' | 'to' | 'min' | 'max';
   isToFixed: boolean;
   totalValues: number;
@@ -41,7 +41,7 @@ type DataFromModel = {
 
 type NewHandlesData = {
   target: 'from' | 'to' | 'min' | 'max';
-  value: string;
+  value: number;
   isToFixed: boolean;
   position: string;
 };
