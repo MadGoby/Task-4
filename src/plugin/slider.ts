@@ -3,7 +3,7 @@ import { View } from './View/View';
 import { Presenter } from './Presenter/Presenter';
 import {
   PluginInfo,
-  SliderOptions,
+  SliderOptions, UserSliderOptions,
 } from './types';
 import { IPlugin } from './interfaces';
 import { gobyDefaults } from './common/defaultSettings';
@@ -13,7 +13,7 @@ class Plugin implements IPlugin {
 
   readonly options: SliderOptions;
 
-  constructor(element: HTMLElement, options: SliderOptions) {
+  constructor(element: HTMLElement, options: UserSliderOptions) {
     this.element = element;
     this.options = $.extend({}, gobyDefaults, options);
 
@@ -23,7 +23,7 @@ class Plugin implements IPlugin {
   private static initialize(element: HTMLElement, options: SliderOptions): void {
     const model: Model = new Model(options);
     const view: View = new View(options, element);
-    const presenter: Presenter = new Presenter(view, model);
+    const presenter: Presenter = new Presenter(view, model, options);
 
     presenter.initialize();
   }

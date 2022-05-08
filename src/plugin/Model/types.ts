@@ -1,4 +1,7 @@
 type ValueTarget = 'from' | 'to' | 'min' | 'max';
+
+type ModelValues = ValueTarget | 'step';
+
 type UnspecifiedValueTarget = ValueTarget | 'unspecified';
 
 type CalculationData = {
@@ -43,4 +46,5 @@ export {
   BasicModelSettings,
   UnspecifiedValueTarget,
   ValueData,
+  ModelValues,
 };

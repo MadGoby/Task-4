@@ -1,12 +1,18 @@
 import autobind from 'autobind-decorator';
-import { BasicModelSettings, CalculationData, DataForValueScale } from '../Model/types';
+import {
+  BasicModelSettings,
+  CalculationData,
+  DataForValueScale,
+  ModelValues,
+} from '../Model/types';
 import { Model } from '../Model/Model';
 import { View } from '../View/View';
 import {
   HandlePositions,
   UpdatePositionTarget,
-  ValuesToPass,
+  ValuesToPass, ViewRequests,
 } from '../View/types';
+import { SliderOptions } from '../types';
 
 @autobind
 export class Presenter {
@@ -14,9 +20,12 @@ export class Presenter {
 
   private readonly model: Model;
 
-  constructor(viewLink: View, modelLink: Model) {
+  private readonly options: SliderOptions;
+
+  constructor(viewLink: View, modelLink: Model, options: SliderOptions) {
     this.view = viewLink;
     this.model = modelLink;
+    this.options = options;
   }
 
   private bindProxyToHandlesMovement(view: View, model: Model): HandlePositions {
@@ -77,17 +86,36 @@ export class Presenter {
 
   private bindProxyToModelValues(view: View): BasicModelSettings {
     const { model } = this;
+    const that: Presenter = this;
     return new Proxy(this.model.values, {
-      set(target: BasicModelSettings, property: 'min' | 'max' | 'from' | 'to', value: number) {
+      set(target: BasicModelSettings, property: ModelValues, value: number): boolean {
         target[property] = value;
 
-        view.refreshHandleValues({
-          value,
-          target: property,
-          isToFixed: view.settings.integer,
-          totalValues: model.getTotalValues(),
-          minValue: Number(model.values.min),
-        });
+        if (property !== 'step') {
+          view.refreshHandleValues({
+            value,
+            target: property,
+            isToFixed: view.settings.integer,
+            totalValues: model.getTotalValues(),
+            minValue: Number(model.values.min),
+          });
+        }
+
+        if (that.options.onChange) that.options.onChange({ property, value });
+
+        return true;
+      },
+    });
+  }
+
+  private bindProxyToViewRequests(): ViewRequests {
+    const that: Presenter = this;
+
+    return new Proxy(this.view.requests, {
+      set(target: ViewRequests, property: string, value: boolean): boolean {
+        if (!value) return false;
+
+        if (property === 'needDataForViewUpdate') that.updateAllViewValues();
 
         return true;
       },
@@ -99,6 +127,7 @@ export class Presenter {
 
     view.positions = this.bindProxyToHandlesMovement(view, model);
     view.valuesToPass = this.handleProxyToPassNewValue(view, model);
+    view.requests = this.bindProxyToViewRequests();
     model.values = this.bindProxyToModelValues(view);
     this.updateAllViewValues();
   }

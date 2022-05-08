@@ -32,6 +32,9 @@ body {
 }
 
 .slider-wrapper {
+  display: flex;
+  flex-direction: column;
+  row-gap: 40px;
   width: 90%;
   min-height: 185px;
   min-width: 320px;

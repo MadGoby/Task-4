@@ -1,8 +1,9 @@
+import { ModelValues } from './Model/types';
+
 type SliderOptions = {
   min: number;
   max: number;
   double: boolean;
-  sideMenu: boolean | string;
   handlesValues: boolean;
   vertical: boolean;
   step: boolean | number;
@@ -10,6 +11,21 @@ type SliderOptions = {
   integer: boolean;
   from: number;
   to: number;
+  onChange?: (data: { property: ModelValues, value: number }) => void;
+};
+
+type UserSliderOptions = {
+  min?: number;
+  max?: number;
+  double?: boolean;
+  handlesValues?: boolean;
+  vertical?: boolean;
+  step?: boolean | number;
+  valueScale?: boolean;
+  integer?: boolean;
+  from?: number;
+  to?: number;
+  onChange?: (data: { property: ModelValues, value: number }) => void;
 };
 
 type PluginInfo = {
@@ -20,4 +36,5 @@ type PluginInfo = {
 export {
   SliderOptions,
   PluginInfo,
+  UserSliderOptions,
 };

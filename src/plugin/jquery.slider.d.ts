@@ -1,10 +1,10 @@
 import {
   PluginInfo,
-  SliderOptions,
+  UserSliderOptions,
 } from './types';
 
 declare global {
   interface JQuery {
-    gobySlider(options: SliderOptions): PluginInfo;
+    gobySlider(options: UserSliderOptions): PluginInfo;
   }
 }

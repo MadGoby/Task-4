@@ -1,5 +1,4 @@
 import { IValuesScale } from '../ValuesScale/interfaces';
-import { ViewRequestsData } from '../types';
 
 type SliderAssemblerSettings = {
   readonly from: HTMLSpanElement;

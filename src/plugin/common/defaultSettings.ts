@@ -1,7 +1,6 @@
 import { SliderOptions } from '../types';
 
 const gobyDefaults: SliderOptions = {
-  sideMenu: true,
   min: 0,
   max: 100,
   double: false,

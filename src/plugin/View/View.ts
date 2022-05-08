@@ -12,6 +12,7 @@ import {
   NewHandlesData,
   UpdatePositionTarget,
   ValuesToPass,
+  ViewRequests,
 } from './types';
 import { DataForValueScale } from '../Model/types';
 
@@ -33,6 +34,8 @@ export class View {
 
   public positions: HandlePositions;
 
+  public requests: ViewRequests;
+
   public valuesToPass: ValuesToPass;
 
   constructor(settings: BasicViewSettings, target: HTMLElement) {
@@ -48,6 +51,7 @@ export class View {
       unspecified: 0,
     };
     this.positions = { ...this.valuesToPass };
+    this.requests = { needDataForViewUpdate: false };
     this.movement = new Movement({
       slider: this.slider.slider,
       handles: this.handles,
@@ -84,7 +88,6 @@ export class View {
     this.updateView({
       vertical: this.settings.vertical,
       double: this.settings.double,
-      sideMenu: this.settings.sideMenu,
       handlesValues: this.settings.handlesValues,
       valueScale: this.settings.valueScale,
       integer: this.settings.integer,
@@ -153,6 +156,7 @@ export class View {
       handle.addEventListener('mousedown', this.handleHandleMouseDown);
     });
     this.slider.slider.addEventListener('mousedown', this.handleSliderMouseDown);
+    window.addEventListener('resize', this.handleWindowResize);
   }
 
   private handleHandleMouseDown(event: MouseEvent): void {
@@ -175,5 +179,9 @@ export class View {
       y: event.clientY,
       distanceToCursor: halfHandleWidth,
     });
+  }
+
+  private handleWindowResize(): void {
+    this.requests.needDataForViewUpdate = true;
   }
 }
