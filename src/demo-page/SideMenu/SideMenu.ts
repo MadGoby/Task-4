@@ -1,9 +1,12 @@
+import autobind from 'autobind-decorator';
 import { sideMenuData } from './sideMenuData';
 import {
   SideMenuBaseData,
   SideMenuElements,
 } from './types';
+import { BasicModelSettings } from '../../plugin/Model/types';
 
+@autobind
 export class SideMenu {
   readonly sideMenuElements: SideMenuElements;
 
@@ -55,5 +58,15 @@ export class SideMenu {
   public appendToDom(target: JQuery<HTMLElement>): void {
     this.collectSideMenu();
     target.append(this.sideMenuElements.sideMenuContainer);
+  }
+
+  public updateSideMenu(data: BasicModelSettings):void {
+    this.sideMenuElements.fromOutput.innerText = `${data.from}`;
+    this.sideMenuElements.toOutput.innerText = `${data.to}`;
+    (this.sideMenuElements.fromInput as HTMLInputElement).value = `${data.from}`;
+    (this.sideMenuElements.toInput as HTMLInputElement).value = `${data.to}`;
+    (this.sideMenuElements.minimumInput as HTMLInputElement).value = `${data.min}`;
+    (this.sideMenuElements.maximumInput as HTMLInputElement).value = `${data.max}`;
+    (this.sideMenuElements.stepInput as HTMLInputElement).value = `${data.step}`;
   }
 }

@@ -1,4 +1,6 @@
-import { ModelValues } from './Model/types';
+import { BasicModelSettings, ModelValues } from './Model/types';
+
+type UserCallback = (data: BasicModelSettings) => void;
 
 type SliderOptions = {
   min: number;
@@ -9,9 +11,10 @@ type SliderOptions = {
   step: boolean | number;
   valueScale: boolean;
   integer: boolean;
-  from: number;
-  to: number;
-  onChange?: (data: { property: ModelValues, value: number }) => void;
+  from?: number;
+  to?: number;
+  onChange?: UserCallback;
+  onStart?: UserCallback;
 };
 
 type UserSliderOptions = {
@@ -25,7 +28,8 @@ type UserSliderOptions = {
   integer?: boolean;
   from?: number;
   to?: number;
-  onChange?: (data: { property: ModelValues, value: number }) => void;
+  onChange?: UserCallback;
+  onStart?: UserCallback;
 };
 
 type PluginInfo = {
@@ -37,4 +41,5 @@ export {
   SliderOptions,
   PluginInfo,
   UserSliderOptions,
+  UserCallback,
 };

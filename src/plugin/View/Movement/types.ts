@@ -10,7 +10,7 @@ type MovementSettings = {
   slider: HTMLDivElement;
   handles: Handles;
   interval: SelectedInterval;
-  basicSettings: BasicViewSettings;
+  getOptions: () => BasicViewSettings;
   updatePositions: UpdatePositions;
 };
 

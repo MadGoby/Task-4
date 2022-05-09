@@ -15,7 +15,7 @@ export class Movement {
 
   private readonly handles: Handles;
 
-  readonly basicSettings: BasicViewSettings;
+  readonly getOptions: () => BasicViewSettings;
 
   private handleClickData: HandleClickData;
 
@@ -24,7 +24,7 @@ export class Movement {
   constructor(settings: MovementSettings) {
     this.slider = settings.slider;
     this.handles = settings.handles;
-    this.basicSettings = settings.basicSettings;
+    this.getOptions = settings.getOptions;
     this.movementSettings = settings;
     this.handleClickData = {
       target: this.handles.fromHandle,
@@ -39,7 +39,7 @@ export class Movement {
       distanceToCursor,
     } = settings;
 
-    return this.basicSettings.vertical
+    return this.getOptions().vertical
       ? this.slider.offsetWidth - (
         y - Number(distanceToCursor) - this.slider.getBoundingClientRect().top)
       : x - Number(distanceToCursor) - this.slider.getBoundingClientRect().left;
@@ -67,7 +67,7 @@ export class Movement {
     } = setting;
     const isFromHandle: boolean = target === this.handles.fromHandle;
     const targetHandle: HTMLSpanElement = isFromHandle ? this.handles.fromHandle : this.handles.toHandle;
-    const distanceToCursor: number = this.basicSettings.vertical
+    const distanceToCursor: number = this.getOptions().vertical
       ? y - targetHandle.getBoundingClientRect().top - (targetHandle.offsetWidth)
       : x - targetHandle.getBoundingClientRect().left;
     this.handleClickData = {

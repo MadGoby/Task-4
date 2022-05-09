@@ -20,40 +20,44 @@ export class Presenter {
 
   private readonly model: Model;
 
-  private readonly options: SliderOptions;
+  private readonly getOptions: () => SliderOptions;
 
-  constructor(viewLink: View, modelLink: Model, options: SliderOptions) {
+  constructor(viewLink: View, modelLink: Model, getOptions: () => SliderOptions) {
     this.view = viewLink;
     this.model = modelLink;
-    this.options = options;
+    this.getOptions = getOptions;
   }
 
-  private bindProxyToHandlesMovement(view: View, model: Model): HandlePositions {
+  private bindProxyToHandlesMovement(): HandlePositions {
+    const that: Presenter = this;
+
     return new Proxy(this.view.positions, {
       set(target, property: 'from' | 'to', value) {
         const settings: CalculationData = {
           position: value,
           target: property,
-          sliderWidth: view.slider.slider.offsetWidth - view.handles.fromHandle.offsetWidth,
-          isDouble: view.settings.double,
+          sliderWidth: that.view.slider.slider.offsetWidth - that.view.handles.fromHandle.offsetWidth,
+          isDouble: that.getOptions().double,
         };
 
         target[property] = value;
-        model.writeValueFromPosition(settings);
+        that.model.writeValueFromPosition(settings);
 
         return true;
       },
     });
   }
 
-  private handleProxyToPassNewValue(view: View, model: Model) {
+  private handleProxyToPassNewValue() {
+    const that: Presenter = this;
+
     return new Proxy(this.view.valuesToPass, {
       set(target: ValuesToPass, property: UpdatePositionTarget, value: number) {
-        model.writeValue({
+        that.model.writeValue({
           value,
           target: property,
-          sliderWidth: view.slider.slider.offsetWidth - view.handles.fromHandle.offsetWidth,
-          isDouble: view.settings.double,
+          sliderWidth: that.view.slider.slider.offsetWidth - that.view.handles.fromHandle.offsetWidth,
+          isDouble: that.getOptions().double,
         });
 
         return true;
@@ -67,41 +71,46 @@ export class Presenter {
   }
 
   private updateAllViewValues(): void {
+    const options: SliderOptions = this.getOptions();
+
     this.view.refreshHandleValues({
       value: this.model.values.from,
       target: 'from',
-      isToFixed: this.view.settings.integer,
+      isToFixed: options.integer,
       totalValues: this.model.getTotalValues(),
       minValue: Number(this.model.values.min),
     });
+
     this.view.refreshHandleValues({
       value: this.model.values.to,
       target: 'to',
-      isToFixed: this.view.settings.integer,
+      isToFixed: options.integer,
       totalValues: this.model.getTotalValues(),
       minValue: Number(this.model.values.min),
     });
+
     this.updateValueScale();
   }
 
-  private bindProxyToModelValues(view: View): BasicModelSettings {
-    const { model } = this;
+  private bindProxyToModelValues(): BasicModelSettings {
     const that: Presenter = this;
+
     return new Proxy(this.model.values, {
       set(target: BasicModelSettings, property: ModelValues, value: number): boolean {
+        const options: SliderOptions = that.getOptions();
         target[property] = value;
 
         if (property !== 'step') {
-          view.refreshHandleValues({
+          that.view.refreshHandleValues({
             value,
             target: property,
-            isToFixed: view.settings.integer,
-            totalValues: model.getTotalValues(),
-            minValue: Number(model.values.min),
+            isToFixed: options.integer,
+            totalValues: that.model.getTotalValues(),
+            minValue: Number(that.model.values.min),
           });
         }
 
-        if (that.options.onChange) that.options.onChange({ property, value });
+        if (options.onChange) options.onChange(that.model.values);
 
         return true;
       },
@@ -125,10 +134,13 @@ export class Presenter {
   public initialize(): void {
     const { view, model } = this;
 
-    view.positions = this.bindProxyToHandlesMovement(view, model);
-    view.valuesToPass = this.handleProxyToPassNewValue(view, model);
+    view.positions = this.bindProxyToHandlesMovement();
+    view.valuesToPass = this.handleProxyToPassNewValue();
     view.requests = this.bindProxyToViewRequests();
-    model.values = this.bindProxyToModelValues(view);
+    model.values = this.bindProxyToModelValues();
     this.updateAllViewValues();
+
+    const options: SliderOptions = this.getOptions();
+    if (options.onStart) options.onStart(model.values);
   }
 }

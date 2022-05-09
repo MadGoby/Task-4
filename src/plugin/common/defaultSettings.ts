@@ -8,8 +8,6 @@ const gobyDefaults: SliderOptions = {
   vertical: false,
   step: false,
   valueScale: true,
-  from: 0,
-  to: 100,
   integer: true,
 };
 

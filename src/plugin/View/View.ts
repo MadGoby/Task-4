@@ -30,7 +30,7 @@ export class View {
 
   readonly valuesScale: ValuesScale;
 
-  public settings: BasicViewSettings;
+  public getOptions: () => BasicViewSettings;
 
   public positions: HandlePositions;
 
@@ -38,13 +38,13 @@ export class View {
 
   public valuesToPass: ValuesToPass;
 
-  constructor(settings: BasicViewSettings, target: HTMLElement) {
+  constructor(getOptions: () => BasicViewSettings, target: HTMLElement) {
     this.container = target;
     this.slider = new Slider();
     this.handles = new Handles();
     this.interval = new SelectedInterval();
     this.valuesScale = new ValuesScale(this.passNewValue);
-    this.settings = settings;
+    this.getOptions = getOptions;
     this.valuesToPass = {
       from: 0,
       to: 0,
@@ -57,7 +57,7 @@ export class View {
       handles: this.handles,
       interval: this.interval,
       updatePositions: this.updatePositions,
-      basicSettings: this.settings,
+      getOptions: this.getOptions,
     });
 
     this.prepareSliderForUse();
@@ -85,16 +85,19 @@ export class View {
   private prepareSliderForUse(): void {
     this.addSliderToDOM();
 
+    const options: BasicViewSettings = this.getOptions();
     this.updateView({
-      vertical: this.settings.vertical,
-      double: this.settings.double,
-      handlesValues: this.settings.handlesValues,
-      valueScale: this.settings.valueScale,
-      integer: this.settings.integer,
+      vertical: options.vertical,
+      double: options.double,
+      handlesValues: options.handlesValues,
+      valueScale: options.valueScale,
+      integer: options.integer,
     });
   }
 
   public updateView(targets: TargetsForViewUpdate): void {
+    const options: BasicViewSettings = this.getOptions();
+
     if (targets.vertical) {
       this.slider.changePlane({
         isVertical: targets.vertical,
@@ -104,17 +107,17 @@ export class View {
     }
     if (!targets.double) {
       this.handles.changeHandlesDisplay({
-        isDouble: this.settings.double,
+        isDouble: options.double,
         positions: this.positions,
         sliderWidth: this.slider.slider.offsetWidth,
       });
       this.interval.hideSelectedInterval({
-        isDouble: this.settings.double,
+        isDouble: options.double,
         handleWidth: this.handles.fromHandle.offsetWidth,
       });
     }
-    if (!targets.valueScale) this.valuesScale.changeValueScaleDisplay(this.settings.valueScale);
-    if (!targets.handlesValues) this.handles.hideHandlesValues(this.settings.handlesValues);
+    if (!targets.valueScale) this.valuesScale.changeValueScaleDisplay(options.valueScale);
+    if (!targets.handlesValues) this.handles.hideHandlesValues(options.handlesValues);
   }
 
   private convertValueToPosition(settings: DataFromModel):string {

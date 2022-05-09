@@ -6,17 +6,23 @@ import {
   UnspecifiedValueTarget, ValueData,
   ValueTarget,
 } from './types';
+import { SliderOptions } from '../types';
 
 class Model {
   public values: BasicModelSettings;
 
-  constructor(settings: BasicModelSettings) {
+  constructor(getOptions: () => SliderOptions) {
+    const options: SliderOptions = getOptions();
+
+    const from: number = options.from ? options.from : options.min;
+    const to: number = options.to ? options.to : options.max;
+
     this.values = {
-      min: Model.truncateNumbersAfterDot(Number(settings.min)),
-      max: Model.truncateNumbersAfterDot(Number(settings.max)),
-      from: Model.truncateNumbersAfterDot(Number(settings.from)),
-      to: Model.truncateNumbersAfterDot(Number(settings.to)),
-      step: Model.truncateNumbersAfterDot(Number(settings.step)),
+      min: Model.truncateNumbersAfterDot(options.min),
+      max: Model.truncateNumbersAfterDot(options.max),
+      from: Model.truncateNumbersAfterDot(from),
+      to: Model.truncateNumbersAfterDot(to),
+      step: Model.truncateNumbersAfterDot(Number(options.step)),
     };
   }
 

@@ -1,3 +1,4 @@
+import autobind from 'autobind-decorator';
 import { Model } from './Model/Model';
 import { View } from './View/View';
 import { Presenter } from './Presenter/Presenter';
@@ -8,24 +9,29 @@ import {
 import { IPlugin } from './interfaces';
 import { gobyDefaults } from './common/defaultSettings';
 
+@autobind
 class Plugin implements IPlugin {
   readonly element: HTMLElement;
 
-  readonly options: SliderOptions;
+  public options: SliderOptions;
 
   constructor(element: HTMLElement, options: UserSliderOptions) {
     this.element = element;
     this.options = $.extend({}, gobyDefaults, options);
 
-    Plugin.initialize(this.element, this.options);
+    Plugin.initialize(this.element, this.getOptions);
   }
 
-  private static initialize(element: HTMLElement, options: SliderOptions): void {
-    const model: Model = new Model(options);
-    const view: View = new View(options, element);
-    const presenter: Presenter = new Presenter(view, model, options);
+  private static initialize(element: HTMLElement, getOptions: () => SliderOptions): void {
+    const model: Model = new Model(getOptions);
+    const view: View = new View(getOptions, element);
+    const presenter: Presenter = new Presenter(view, model, getOptions);
 
     presenter.initialize();
+  }
+
+  private getOptions(): SliderOptions {
+    return this.options;
   }
 }
 

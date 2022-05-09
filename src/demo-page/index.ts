@@ -1,9 +1,9 @@
 import './index.scss';
 import '../plugin/slider.scss';
-import { UserSliderOptions } from '../plugin/types';
 import { SideMenu } from './SideMenu/SideMenu';
+import { UserSliderSettings } from './types';
 
-const sliderSettings: Array<{ containerElement: HTMLElement, sliderOptions: UserSliderOptions }> = [
+const sliderSettings: Array<UserSliderSettings> = [
   {
     containerElement: document.querySelector('.js-slider-wrapper_number_1')!,
     sliderOptions: {
@@ -12,10 +12,6 @@ const sliderSettings: Array<{ containerElement: HTMLElement, sliderOptions: User
       handlesValues: true,
       step: 5,
       integer: false,
-      from: -100,
-      onChange(data) {
-        console.log(data);
-      },
     },
   }, {
     containerElement: document.querySelector('.js-slider-wrapper_number_2')!,
@@ -54,16 +50,18 @@ const sliderSettings: Array<{ containerElement: HTMLElement, sliderOptions: User
       handlesValues: true,
       step: 10,
       integer: false,
-      from: 0,
-      to: 1000,
     },
   },
 ];
 
-sliderSettings.forEach((settings: { containerElement: HTMLElement, sliderOptions: UserSliderOptions }) => {
+sliderSettings.forEach((settings: UserSliderSettings) => {
   const { containerElement, sliderOptions } = settings;
   const container: JQuery<HTMLElement> = $(containerElement);
 
+  const sideMenu: SideMenu = new SideMenu();
+  sliderOptions.onChange = sideMenu.updateSideMenu;
+  sliderOptions.onStart = sideMenu.updateSideMenu;
+
   container.gobySlider(sliderOptions);
-  new SideMenu().appendToDom(container);
+  sideMenu.appendToDom(container);
 });
