@@ -4,12 +4,10 @@ import {
   UpdatePositions,
 } from '../types';
 import { Handles } from '../Handles/Handles';
-import { SelectedInterval } from '../SelectedInterval/SelectedInterval';
 
 type MovementSettings = {
   slider: HTMLDivElement;
   handles: Handles;
-  interval: SelectedInterval;
   getOptions: () => BasicViewSettings;
   environmentLink: { updatePositions: UpdatePositions };
 };
