@@ -18,8 +18,6 @@ export class Handles {
 
   private readonly handleValueClass: string = 'goby-slider__handle-value';
 
-  public isInputChanges = false;
-
   readonly staticElementsDescription: StaticElementsDescription = [
     {
       cssClasses: [this.handleClass, `${this.handleClass}_type_from`],
@@ -74,11 +72,8 @@ export class Handles {
     } = data;
     if (target === 'min' || target === 'max') return;
     const valueTargetName: 'fromValue' | 'toValue' = `${target}Value`;
-    const isRoundUpNeed: boolean = isToFixed && !this.isInputChanges;
 
-    this[valueTargetName].innerText = isRoundUpNeed ? `${Math.round(Number(value))}` : String(value);
-    if (this.isInputChanges) this.isInputChanges = false;
-
+    this[valueTargetName].innerText = isToFixed ? `${Math.round(Number(value))}` : String(value);
     this.refreshPosition(target, position, sliderWidth);
   }
 
