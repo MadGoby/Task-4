@@ -11,7 +11,7 @@ type MovementSettings = {
   handles: Handles;
   interval: SelectedInterval;
   getOptions: () => BasicViewSettings;
-  updatePositions: UpdatePositions;
+  environmentLink: { updatePositions: UpdatePositions };
 };
 
 type MovementCalculateData = {

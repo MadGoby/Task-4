@@ -10,10 +10,20 @@ import { BasicModelSettings } from '../../plugin/Model/types';
 export class SideMenu {
   readonly sideMenuElements: SideMenuElements;
 
+  textInputs: Array<HTMLInputElement>;
+
   constructor() {
     this.sideMenuElements = {};
     this.initializeSideMenuElements();
     this.cloneSimilarElements();
+
+    this.textInputs = [
+      this.sideMenuElements.fromInput,
+      this.sideMenuElements.toInput,
+      this.sideMenuElements.minInput,
+      this.sideMenuElements.maxInput,
+      this.sideMenuElements.stepInput,
+    ] as Array<HTMLInputElement>;
   }
 
   private initializeSideMenuElements(): void {
@@ -55,7 +65,7 @@ export class SideMenu {
     });
   }
 
-  public appendToDom(target: JQuery<HTMLElement>): void {
+  public appendToDom(target: JQuery): void {
     this.collectSideMenu();
     target.append(this.sideMenuElements.sideMenuContainer);
   }
@@ -65,8 +75,8 @@ export class SideMenu {
     this.sideMenuElements.toOutput.innerText = `${data.to}`;
     (this.sideMenuElements.fromInput as HTMLInputElement).value = `${data.from}`;
     (this.sideMenuElements.toInput as HTMLInputElement).value = `${data.to}`;
-    (this.sideMenuElements.minimumInput as HTMLInputElement).value = `${data.min}`;
-    (this.sideMenuElements.maximumInput as HTMLInputElement).value = `${data.max}`;
+    (this.sideMenuElements.minInput as HTMLInputElement).value = `${data.min}`;
+    (this.sideMenuElements.maxInput as HTMLInputElement).value = `${data.max}`;
     (this.sideMenuElements.stepInput as HTMLInputElement).value = `${data.step}`;
   }
 }

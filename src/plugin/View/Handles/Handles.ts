@@ -65,7 +65,7 @@ export class Handles {
     return element;
   }
 
-  public refreshValues(data: NewHandlesData): void {
+  public refreshValues(data: NewHandlesData, sliderWidth: number): void {
     const {
       target,
       value,
@@ -79,12 +79,17 @@ export class Handles {
     this[valueTargetName].innerText = isRoundUpNeed ? `${Math.round(Number(value))}` : String(value);
     if (this.isInputChanges) this.isInputChanges = false;
 
-    this.refreshPosition(target, position);
+    this.refreshPosition(target, position, sliderWidth);
   }
 
-  private refreshPosition(target: 'from' | 'to', position: string):void {
+  private refreshPosition(target: 'from' | 'to', position: string, sliderWidth: number):void {
     const handleTargetName: 'fromHandle' | 'toHandle' = `${target}Handle`;
     this[handleTargetName].style.left = `${Number(position)}px`;
+    const toPosition: number = Number(this.toHandle.style.left.replace('px', ''));
+    const fromPosition: number = Number(this.fromHandle.style.left.replace('px', ''));
+
+    if (toPosition <= (this.toHandle.offsetWidth * 2)) this.updateMainHandleClass(this.toHandle);
+    if (fromPosition >= (sliderWidth - this.toHandle.offsetWidth * 2)) this.updateMainHandleClass(this.fromHandle);
   }
 
   private checkIsNeedToMakeVertical(isVertical: boolean): boolean {

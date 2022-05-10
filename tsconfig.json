@@ -20,11 +20,11 @@
   ],
   "include": [
     "src/plugin/**/*",
-    "src/demo-page/index.ts",
+    "src/demo-page/**/*.ts",
     "./webpack.config.js",
     "src/plugin/jquery.slider.d.ts",
     "./karma.conf.js",
-    "src/demo-page/index.ts",
+    "src/demo-page/DemoPage/DemoPage.ts",
     "**/*.test.ts"
   ]
 }

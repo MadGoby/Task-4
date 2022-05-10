@@ -1,58 +1,37 @@
 import './index.scss';
 import '../plugin/slider.scss';
-import { SideMenu } from './SideMenu/SideMenu';
 import { UserSliderSettings } from './types';
+import { SideMenu } from './SideMenu/SideMenu';
+import { sliderSettings } from './indexData';
 
-const sliderSettings: Array<UserSliderSettings> = [
-  {
-    containerElement: document.querySelector('.js-slider-wrapper_number_1')!,
-    sliderOptions: {
-      min: -100,
-      double: true,
-      handlesValues: true,
-      step: 5,
-      integer: false,
-    },
-  }, {
-    containerElement: document.querySelector('.js-slider-wrapper_number_2')!,
-    sliderOptions: {
-      min: -10000,
-      max: 10000,
-      double: true,
-      handlesValues: true,
-      vertical: true,
-      from: -5000,
-      to: 5000,
-      integer: false,
-    },
-  }, {
-    containerElement: document.querySelector('.js-slider-wrapper_number_3')!,
-    sliderOptions: {
-      min: 0,
-      max: 10,
-      from: 5,
-    },
-  }, {
-    containerElement: document.querySelector('.js-slider-wrapper_number_4')!,
-    sliderOptions: {
-      min: 0,
-      max: 1000,
-      valueScale: false,
-      integer: false,
-      from: 500,
-    },
-  }, {
-    containerElement: document.querySelector('.js-slider-wrapper_number_5')!,
-    sliderOptions: {
-      min: 0,
-      max: 1000,
-      double: true,
-      handlesValues: true,
-      step: 10,
-      integer: false,
-    },
-  },
-];
+function handleTextInputChange(sideMenu: SideMenu, event: Event) {
+  const target: HTMLInputElement = event.target as HTMLInputElement;
+
+  const passValue = (key: string) => {
+    const correctKey: string = key.replace('Input', '');
+
+    if (correctKey === 'from') this.data('plugin_gobySlider').update({ from: Number(target.value) });
+    if (correctKey === 'to') this.data('plugin_gobySlider').update({ to: Number(target.value) });
+    if (correctKey === 'min') this.data('plugin_gobySlider').update({ min: Number(target.value) });
+    if (correctKey === 'max') this.data('plugin_gobySlider').update({ max: Number(target.value) });
+    if (correctKey === 'step') this.data('plugin_gobySlider').update({ step: Number(target.value) });
+  };
+
+  Object.keys(sideMenu.sideMenuElements).forEach((key: string): void => {
+    if (sideMenu.sideMenuElements[key] === target) passValue(key);
+  });
+}
+
+function binHandleTextInputChange(textInput: HTMLInputElement, element: JQuery<HTMLElement>, sideMenu: SideMenu): void {
+  textInput.addEventListener('change', handleTextInputChange.bind(element, sideMenu));
+}
+
+function initializeEventListeners(textInputs: Array<HTMLInputElement>,
+  element: JQuery<HTMLElement>, sideMenu: SideMenu): void {
+  textInputs.forEach((textInput: HTMLInputElement) => {
+    binHandleTextInputChange(textInput, element, sideMenu);
+  });
+}
 
 sliderSettings.forEach((settings: UserSliderSettings) => {
   const { containerElement, sliderOptions } = settings;
@@ -64,4 +43,5 @@ sliderSettings.forEach((settings: UserSliderSettings) => {
 
   container.gobySlider(sliderOptions);
   sideMenu.appendToDom(container);
+  initializeEventListeners(sideMenu.textInputs, container, sideMenu);
 });

@@ -56,7 +56,10 @@ export class Movement {
     const isTargetFrom: boolean = this.handleClickData.target === this.handles.fromHandle;
     const target = isTargetFrom ? 'from' : 'to';
 
-    this.movementSettings.updatePositions(target, newPosition);
+    this.movementSettings.environmentLink.updatePositions({
+      target,
+      newPosition,
+    });
   }
 
   public handleListener(setting: MovementEvent): void {

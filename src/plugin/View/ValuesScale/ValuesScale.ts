@@ -21,18 +21,25 @@ export class ValuesScale implements IValuesScale {
 
   readonly values: Array<HTMLSpanElement>;
 
-  private readonly passNewValue: PassNewValue;
+  private readonly environmentLink: { passNewValue: PassNewValue };
 
-  constructor(passNewValue: PassNewValue) {
+  constructor(environmentLink: { passNewValue: PassNewValue }) {
     this.minValue = this.createElement('type_min');
     this.maxValue = this.createElement('type_max');
     this.twentyPercentValue = this.createElement('percent_20');
     this.fortyPercentValue = this.createElement('percent_40');
     this.sixtyPercentValue = this.createElement('percent_60');
     this.eightyPercentValue = this.createElement('percent_80');
-    this.passNewValue = passNewValue;
+    this.environmentLink = environmentLink;
 
-    this.values = Object.values(this).filter((element) => typeof element === 'object');
+    this.values = [
+      this.minValue,
+      this.maxValue,
+      this.twentyPercentValue,
+      this.fortyPercentValue,
+      this.sixtyPercentValue,
+      this.eightyPercentValue,
+    ];
     this.values.forEach((value) => this.bindHandleValueClick(value));
   }
 
@@ -117,7 +124,10 @@ export class ValuesScale implements IValuesScale {
     if (!event.target) return;
     const eventTarget: HTMLSpanElement = event.target as HTMLSpanElement;
 
-    this.passNewValue('unspecified', Number(eventTarget.innerText));
+    this.environmentLink.passNewValue({
+      target: 'unspecified',
+      newPosition: Number(eventTarget.innerText),
+    });
   }
 
   private bindHandleValueClick(value: HTMLSpanElement):void {

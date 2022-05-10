@@ -8,11 +8,9 @@ import {
   DataFromModel,
   BasicViewSettings,
   TargetsForViewUpdate,
-  HandlePositions,
   NewHandlesData,
-  UpdatePositionTarget,
-  ValuesToPass,
-  ViewRequests,
+  UpdatePositionsData,
+  PassNewValue,
 } from './types';
 import { DataForValueScale } from '../Model/types';
 
@@ -32,44 +30,29 @@ export class View {
 
   public getOptions: () => BasicViewSettings;
 
-  public positions: HandlePositions;
+  public passNewValue: PassNewValue = (data: UpdatePositionsData) => data;
 
-  public requests: ViewRequests;
+  public updatePositions: PassNewValue = (data: UpdatePositionsData) => data;
 
-  public valuesToPass: ValuesToPass;
+  public callViewUpdate: (target: string) => string = (target) => target;
 
   constructor(getOptions: () => BasicViewSettings, target: HTMLElement) {
     this.container = target;
     this.slider = new Slider();
     this.handles = new Handles();
     this.interval = new SelectedInterval();
-    this.valuesScale = new ValuesScale(this.passNewValue);
+    this.valuesScale = new ValuesScale(this);
     this.getOptions = getOptions;
-    this.valuesToPass = {
-      from: 0,
-      to: 0,
-      unspecified: 0,
-    };
-    this.positions = { ...this.valuesToPass };
-    this.requests = { needDataForViewUpdate: false };
     this.movement = new Movement({
       slider: this.slider.slider,
       handles: this.handles,
       interval: this.interval,
-      updatePositions: this.updatePositions,
+      environmentLink: this,
       getOptions: this.getOptions,
     });
 
     this.prepareSliderForUse();
     this.bindEventListeners();
-  }
-
-  passNewValue(target: UpdatePositionTarget, newPosition: number) {
-    this.valuesToPass[target] = newPosition;
-  }
-
-  updatePositions(target: UpdatePositionTarget, newPosition: number): void {
-    this.positions[target] = newPosition;
   }
 
   private addSliderToDOM(): void {
@@ -108,7 +91,6 @@ export class View {
     if (!targets.double) {
       this.handles.changeHandlesDisplay({
         isDouble: options.double,
-        positions: this.positions,
         sliderWidth: this.slider.slider.offsetWidth,
       });
       this.interval.hideSelectedInterval({
@@ -145,7 +127,7 @@ export class View {
       position: this.convertValueToPosition(settings),
     };
 
-    this.handles.refreshValues(newHandlesData);
+    this.handles.refreshValues(newHandlesData, this.slider.slider.offsetWidth);
     this.interval.refreshIntervalPositions({
       target: settings.target,
       position: newHandlesData.position,
@@ -176,15 +158,17 @@ export class View {
     if (isNotSliderBody) return;
 
     const halfHandleWidth: number = this.handles.fromHandle.offsetWidth / 2;
-
-    this.positions.unspecified = this.movement.calculateNewPosition({
-      x: event.clientX,
-      y: event.clientY,
-      distanceToCursor: halfHandleWidth,
+    this.updatePositions({
+      target: 'unspecified',
+      newPosition: this.movement.calculateNewPosition({
+        x: event.clientX,
+        y: event.clientY,
+        distanceToCursor: halfHandleWidth,
+      }),
     });
   }
 
-  private handleWindowResize(): void {
-    this.requests.needDataForViewUpdate = true;
+  public handleWindowResize(): void {
+    this.callViewUpdate('resize');
   }
 }

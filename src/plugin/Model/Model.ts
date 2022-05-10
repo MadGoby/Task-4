@@ -11,19 +11,39 @@ import { SliderOptions } from '../types';
 class Model {
   public values: BasicModelSettings;
 
+  private readonly getOptions: () => SliderOptions;
+
   constructor(getOptions: () => SliderOptions) {
-    const options: SliderOptions = getOptions();
+    this.getOptions = getOptions;
+    const options: SliderOptions = this.getOptions();
 
     const from: number = options.from ? options.from : options.min;
     const to: number = options.to ? options.to : options.max;
 
     this.values = {
-      min: Model.truncateNumbersAfterDot(options.min),
-      max: Model.truncateNumbersAfterDot(options.max),
-      from: Model.truncateNumbersAfterDot(from),
-      to: Model.truncateNumbersAfterDot(to),
-      step: Model.truncateNumbersAfterDot(Number(options.step)),
+      min: Model.convertFractional(options.min),
+      max: Model.convertFractional(options.max),
+      from: Model.convertFractional(from),
+      to: Model.convertFractional(to),
+      step: Model.convertFractional(Number(options.step)),
     };
+  }
+
+  public updateValues(): void {
+    const options: SliderOptions = this.getOptions();
+    const modelValues: Array<ValueTarget> = ['min', 'max', 'from', 'to'];
+
+    modelValues.forEach((key: ValueTarget) => {
+      const value: number = options[key] as number;
+
+      this.writeDataToModel({
+        target: key,
+        value: Model.convertFractional(value),
+        isDouble: options.double,
+      });
+    });
+
+    this.values.step = options.step;
   }
 
   private fixIncorrectValue(data: DataForRefreshingModel): number {
@@ -42,7 +62,7 @@ class Model {
     return fixedValue;
   }
 
-  private writeDataToModel(data: DataForRefreshingModel): void {
+  public writeDataToModel(data: DataForRefreshingModel): void {
     this.values[data.target] = this.fixIncorrectValue(data);
   }
 
@@ -50,7 +70,7 @@ class Model {
     return Number(this.values.max) - Number(this.values.min);
   }
 
-  public static truncateNumbersAfterDot(value: number): number {
+  public static convertFractional(value: number): number {
     const isLastZero: boolean = !Number.isInteger(value) && `${value.toFixed(2)}`.slice(-1) === '0';
     const areLastTwoZero: boolean = `${value.toFixed(2)}`.slice(-2) === '00';
     const isInteger: boolean = Number.isInteger(value) || areLastTwoZero;
@@ -83,7 +103,7 @@ class Model {
     const newValue: number = (Number(this.values.min) + (Number(calculationData.position) / (
       Number(calculationData.sliderWidth) / (Number(this.values.max) - Number(this.values.min)))
     ));
-    return Model.truncateNumbersAfterDot(newValue);
+    return Model.convertFractional(newValue);
   }
 
   private calculateOutStepRangeValue(value: number, target: 'from' | 'to'): number | false {
@@ -126,7 +146,7 @@ class Model {
     }
 
     const target: 'from' | 'to' = settings.target === 'from' ? 'from' : 'to';
-    const newValue: number | false = !Number.isInteger(this.values[target])
+    const newValue: number | false = !Number.isInteger(this.values[target] / Number(this.values.step))
       ? this.calculateOutStepRangeValue(value, target)
       : this.calculateStepValue(value, target);
 
@@ -155,12 +175,12 @@ class Model {
     );
 
     return {
-      min: String(Model.truncateNumbersAfterDot(Number(this.values.min))),
-      max: String(Model.truncateNumbersAfterDot(Number(this.values.max))),
-      20: String(Model.truncateNumbersAfterDot(calculateValue(0.2))),
-      40: String(Model.truncateNumbersAfterDot(calculateValue(0.4))),
-      60: String(Model.truncateNumbersAfterDot(calculateValue(0.6))),
-      80: String(Model.truncateNumbersAfterDot(calculateValue(0.8))),
+      min: String(Model.convertFractional(Number(this.values.min))),
+      max: String(Model.convertFractional(Number(this.values.max))),
+      20: String(Model.convertFractional(calculateValue(0.2))),
+      40: String(Model.convertFractional(calculateValue(0.4))),
+      60: String(Model.convertFractional(calculateValue(0.6))),
+      80: String(Model.convertFractional(calculateValue(0.8))),
     };
   }
 }

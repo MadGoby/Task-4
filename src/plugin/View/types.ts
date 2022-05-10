@@ -1,6 +1,11 @@
 type UpdatePositionTarget = 'from' | 'to' | 'unspecified';
 
-type UpdatePositions = (target: UpdatePositionTarget, newPosition: number) => void;
+type UpdatePositionsData = {
+  target: UpdatePositionTarget;
+  newPosition: number;
+};
+
+type UpdatePositions = (data: UpdatePositionsData) => UpdatePositionsData;
 
 type PassNewValue = UpdatePositions;
 
@@ -18,12 +23,6 @@ type HandlePositions = {
   to: number;
   unspecified: number
 };
-
-type ViewRequests = {
-  needDataForViewUpdate: boolean;
-};
-
-type ValuesToPass = HandlePositions;
 
 type TargetsForViewUpdate = {
   double?: boolean;
@@ -57,6 +56,5 @@ export {
   UpdatePositions,
   UpdatePositionTarget,
   PassNewValue,
-  ValuesToPass,
-  ViewRequests,
+  UpdatePositionsData,
 };

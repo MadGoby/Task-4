@@ -1,4 +1,6 @@
-import { SliderOptions } from '../types';
+import {
+  SliderOptions,
+} from '../types';
 
 const gobyDefaults: SliderOptions = {
   min: 0,

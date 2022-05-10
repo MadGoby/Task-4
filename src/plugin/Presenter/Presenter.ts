@@ -8,11 +8,16 @@ import {
 import { Model } from '../Model/Model';
 import { View } from '../View/View';
 import {
-  HandlePositions,
-  UpdatePositionTarget,
-  ValuesToPass, ViewRequests,
+  UpdatePositions,
+  UpdatePositionsData,
 } from '../View/types';
-import { SliderOptions } from '../types';
+import {
+  SliderOptions,
+  Update,
+  UserSliderOptions,
+} from '../types';
+import { BasicPresenterSettings } from './types';
+import { IPlugin } from '../interfaces';
 
 @autobind
 export class Presenter {
@@ -22,25 +27,29 @@ export class Presenter {
 
   private readonly getOptions: () => SliderOptions;
 
-  constructor(viewLink: View, modelLink: Model, getOptions: () => SliderOptions) {
-    this.view = viewLink;
-    this.model = modelLink;
-    this.getOptions = getOptions;
+  private readonly updateEnvironment: { update: (data: UserSliderOptions) => UserSliderOptions };
+
+  constructor(settings: BasicPresenterSettings) {
+    this.view = settings.viewLink;
+    this.model = settings.modelLink;
+    this.updateEnvironment = settings.environment;
+    this.getOptions = settings.getOptions;
   }
 
-  private bindProxyToHandlesMovement(): HandlePositions {
+  private bindProxyToUpdatePositions(): UpdatePositions {
     const that: Presenter = this;
 
-    return new Proxy(this.view.positions, {
-      set(target, property: 'from' | 'to', value) {
+    return new Proxy(this.view.updatePositions, {
+      apply(environment: UpdatePositions, thisArgs: View, argArray: [UpdatePositionsData]): boolean {
+        const { target, newPosition } = argArray[0];
+
         const settings: CalculationData = {
-          position: value,
-          target: property,
+          position: newPosition,
+          target,
           sliderWidth: that.view.slider.slider.offsetWidth - that.view.handles.fromHandle.offsetWidth,
           isDouble: that.getOptions().double,
         };
 
-        target[property] = value;
         that.model.writeValueFromPosition(settings);
 
         return true;
@@ -51,11 +60,13 @@ export class Presenter {
   private handleProxyToPassNewValue() {
     const that: Presenter = this;
 
-    return new Proxy(this.view.valuesToPass, {
-      set(target: ValuesToPass, property: UpdatePositionTarget, value: number) {
+    return new Proxy(this.view.passNewValue, {
+      apply(environment: UpdatePositions, thisArgs: View, argArray: [UpdatePositionsData]): boolean {
+        const { target, newPosition } = argArray[0];
+
         that.model.writeValue({
-          value,
-          target: property,
+          value: newPosition,
+          target,
           sliderWidth: that.view.slider.slider.offsetWidth - that.view.handles.fromHandle.offsetWidth,
           isDouble: that.getOptions().double,
         });
@@ -100,15 +111,7 @@ export class Presenter {
         const options: SliderOptions = that.getOptions();
         target[property] = value;
 
-        if (property !== 'step') {
-          that.view.refreshHandleValues({
-            value,
-            target: property,
-            isToFixed: options.integer,
-            totalValues: that.model.getTotalValues(),
-            minValue: Number(that.model.values.min),
-          });
-        }
+        if (property !== 'step') that.updateAllViewValues();
 
         if (options.onChange) options.onChange(that.model.values);
 
@@ -117,14 +120,27 @@ export class Presenter {
     });
   }
 
-  private bindProxyToViewRequests(): ViewRequests {
+  private bindProxyToCallViewUpdate(): (target: string) => string {
     const that: Presenter = this;
 
-    return new Proxy(this.view.requests, {
-      set(target: ViewRequests, property: string, value: boolean): boolean {
-        if (!value) return false;
+    return new Proxy(this.view.callViewUpdate, {
+      apply(): boolean {
+        that.updateAllViewValues();
 
-        if (property === 'needDataForViewUpdate') that.updateAllViewValues();
+        return true;
+      },
+    });
+  }
+
+  private bindProxyToUpdate(): Update {
+    const that: Presenter = this;
+
+    return new Proxy(this.updateEnvironment.update, {
+      apply(environment: Update, thisArgs: IPlugin, argArray: [UserSliderOptions]): boolean {
+        const userValues: UserSliderOptions = argArray[0];
+
+        thisArgs.options = ({ ...thisArgs.options, ...that.model.values, ...userValues });
+        that.model.updateValues();
 
         return true;
       },
@@ -134,13 +150,15 @@ export class Presenter {
   public initialize(): void {
     const { view, model } = this;
 
-    view.positions = this.bindProxyToHandlesMovement();
-    view.valuesToPass = this.handleProxyToPassNewValue();
-    view.requests = this.bindProxyToViewRequests();
+    view.updatePositions = this.bindProxyToUpdatePositions();
+    view.passNewValue = this.handleProxyToPassNewValue();
+    view.callViewUpdate = this.bindProxyToCallViewUpdate();
     model.values = this.bindProxyToModelValues();
     this.updateAllViewValues();
 
     const options: SliderOptions = this.getOptions();
     if (options.onStart) options.onStart(model.values);
+
+    this.updateEnvironment.update = this.bindProxyToUpdate();
   }
 }
