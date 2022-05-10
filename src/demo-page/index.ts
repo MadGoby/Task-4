@@ -3,18 +3,20 @@ import '../plugin/slider.scss';
 import { UserSliderSettings } from './types';
 import { SideMenu } from './SideMenu/SideMenu';
 import { sliderSettings } from './indexData';
+import { IPlugin } from '../plugin/interfaces';
 
 function handleTextInputChange(sideMenu: SideMenu, event: Event) {
   const target: HTMLInputElement = event.target as HTMLInputElement;
 
   const passValue = (key: string) => {
     const correctKey: string = key.replace('Input', '');
+    const slider: IPlugin = this.data('plugin_gobySlider');
 
-    if (correctKey === 'from') this.data('plugin_gobySlider').update({ from: Number(target.value) });
-    if (correctKey === 'to') this.data('plugin_gobySlider').update({ to: Number(target.value) });
-    if (correctKey === 'min') this.data('plugin_gobySlider').update({ min: Number(target.value) });
-    if (correctKey === 'max') this.data('plugin_gobySlider').update({ max: Number(target.value) });
-    if (correctKey === 'step') this.data('plugin_gobySlider').update({ step: Number(target.value) });
+    if (correctKey === 'from') slider.update({ from: Number(target.value) });
+    if (correctKey === 'to') slider.update({ to: Number(target.value) });
+    if (correctKey === 'min') slider.update({ min: Number(target.value) });
+    if (correctKey === 'max') slider.update({ max: Number(target.value) });
+    if (correctKey === 'step') slider.update({ step: Number(target.value) });
   };
 
   Object.keys(sideMenu.sideMenuElements).forEach((key: string): void => {
@@ -27,12 +29,13 @@ function handleToggleInputChange(sideMenu: SideMenu, event: Event): void {
 
   const passValue = (key: string) => {
     const optionsKey: string = key.replace('Toggle', '');
+    const slider: IPlugin = this.data('plugin_gobySlider');
 
-    if (optionsKey === 'double') this.data('plugin_gobySlider').update({ double: target.checked });
-    if (optionsKey === 'handlesValues') this.data('plugin_gobySlider').update({ handlesValues: target.checked });
-    if (optionsKey === 'valueScale') this.data('plugin_gobySlider').update({ valueScale: target.checked });
-    if (optionsKey === 'vertical') this.data('plugin_gobySlider').update({ vertical: target.checked });
-    if (optionsKey === 'integer') this.data('plugin_gobySlider').update({ integer: target.checked });
+    if (optionsKey === 'double') slider.update({ double: target.checked });
+    if (optionsKey === 'handlesValues') slider.update({ handlesValues: target.checked });
+    if (optionsKey === 'valueScale') slider.update({ valueScale: target.checked });
+    if (optionsKey === 'vertical') slider.update({ vertical: target.checked });
+    if (optionsKey === 'integer') slider.update({ integer: target.checked });
   };
 
   Object.keys(sideMenu.sideMenuElements).forEach((key: string): void => {

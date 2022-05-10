@@ -84,12 +84,15 @@ export class SideMenu {
   }
 
   public updateSideMenu(data: SliderOptions):void {
-    this.sideMenuElements.fromOutput.innerText = `${data.from}`;
-    this.sideMenuElements.toOutput.innerText = `${data.to}`;
-    (this.sideMenuElements.fromInput as HTMLInputElement).value = `${data.from}`;
-    (this.sideMenuElements.toInput as HTMLInputElement).value = `${data.to}`;
-    (this.sideMenuElements.minInput as HTMLInputElement).value = `${data.min}`;
-    (this.sideMenuElements.maxInput as HTMLInputElement).value = `${data.max}`;
+    const isInteger: boolean = data.integer;
+
+    this.sideMenuElements.fromOutput.innerText = isInteger ? `${Math.round(data.from!)}` : `${data.from}`;
+    this.sideMenuElements.toOutput.innerText = isInteger ? `${Math.round(data.to!)}` : `${data.to}`;
+    (this.sideMenuElements.fromInput as HTMLInputElement).value = isInteger
+      ? `${Math.round(data.from!)}` : `${data.from}`;
+    (this.sideMenuElements.toInput as HTMLInputElement).value = isInteger ? `${Math.round(data.to!)}` : `${data.to}`;
+    (this.sideMenuElements.minInput as HTMLInputElement).value = isInteger ? `${Math.round(data.min!)}` : `${data.min}`;
+    (this.sideMenuElements.maxInput as HTMLInputElement).value = isInteger ? `${Math.round(data.max!)}` : `${data.max}`;
     (this.sideMenuElements.stepInput as HTMLInputElement).value = `${data.step}`;
     (this.sideMenuElements.doubleToggle as HTMLInputElement).checked = data.double;
     (this.sideMenuElements.handlesValuesToggle as HTMLInputElement).checked = data.handlesValues;
