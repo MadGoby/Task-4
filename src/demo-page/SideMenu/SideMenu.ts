@@ -4,25 +4,38 @@ import {
   SideMenuBaseData,
   SideMenuElements,
 } from './types';
-import { BasicModelSettings } from '../../plugin/Model/types';
+import { SliderOptions } from '../../plugin/types';
 
 @autobind
 export class SideMenu {
   readonly sideMenuElements: SideMenuElements;
 
-  textInputs: Array<HTMLInputElement>;
+  public textInputs: Array<HTMLInputElement> | undefined;
+
+  public toggleInputs: Array<HTMLInputElement> | undefined;
 
   constructor() {
     this.sideMenuElements = {};
     this.initializeSideMenuElements();
     this.cloneSimilarElements();
+    this.collectInputs();
+  }
 
+  private collectInputs(): void {
     this.textInputs = [
       this.sideMenuElements.fromInput,
       this.sideMenuElements.toInput,
       this.sideMenuElements.minInput,
       this.sideMenuElements.maxInput,
       this.sideMenuElements.stepInput,
+    ] as Array<HTMLInputElement>;
+
+    this.toggleInputs = [
+      this.sideMenuElements.doubleToggle,
+      this.sideMenuElements.handlesValuesToggle,
+      this.sideMenuElements.valueScaleToggle,
+      this.sideMenuElements.verticalToggle,
+      this.sideMenuElements.integerToggle,
     ] as Array<HTMLInputElement>;
   }
 
@@ -70,7 +83,7 @@ export class SideMenu {
     target.append(this.sideMenuElements.sideMenuContainer);
   }
 
-  public updateSideMenu(data: BasicModelSettings):void {
+  public updateSideMenu(data: SliderOptions):void {
     this.sideMenuElements.fromOutput.innerText = `${data.from}`;
     this.sideMenuElements.toOutput.innerText = `${data.to}`;
     (this.sideMenuElements.fromInput as HTMLInputElement).value = `${data.from}`;
@@ -78,5 +91,10 @@ export class SideMenu {
     (this.sideMenuElements.minInput as HTMLInputElement).value = `${data.min}`;
     (this.sideMenuElements.maxInput as HTMLInputElement).value = `${data.max}`;
     (this.sideMenuElements.stepInput as HTMLInputElement).value = `${data.step}`;
+    (this.sideMenuElements.doubleToggle as HTMLInputElement).checked = data.double;
+    (this.sideMenuElements.handlesValuesToggle as HTMLInputElement).checked = data.handlesValues;
+    (this.sideMenuElements.valueScaleToggle as HTMLInputElement).checked = data.valueScale;
+    (this.sideMenuElements.verticalToggle as HTMLInputElement).checked = data.vertical;
+    (this.sideMenuElements.integerToggle as HTMLInputElement).checked = data.integer;
   }
 }

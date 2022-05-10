@@ -27,7 +27,7 @@ export class Presenter {
 
   private readonly getOptions: () => SliderOptions;
 
-  private readonly updateEnvironment: { update: (data: UserSliderOptions) => UserSliderOptions };
+  private readonly updateEnvironment: IPlugin;
 
   constructor(settings: BasicPresenterSettings) {
     this.view = settings.viewLink;
@@ -108,12 +108,13 @@ export class Presenter {
 
     return new Proxy(this.model.values, {
       set(target: BasicModelSettings, property: ModelValues, value: number): boolean {
-        const options: SliderOptions = that.getOptions();
         target[property] = value;
+        that.updateEnvironment.options = ({ ...that.updateEnvironment.options, ...that.model.values });
 
         if (property !== 'step') that.updateAllViewValues();
 
-        if (options.onChange) options.onChange(that.model.values);
+        const options: SliderOptions = that.getOptions();
+        if (options.onChange) options.onChange(options);
 
         return true;
       },
@@ -140,6 +141,7 @@ export class Presenter {
         const userValues: UserSliderOptions = argArray[0];
 
         thisArgs.options = ({ ...thisArgs.options, ...that.model.values, ...userValues });
+        that.view.updateView();
         that.model.updateValues();
 
         return true;
@@ -157,7 +159,7 @@ export class Presenter {
     this.updateAllViewValues();
 
     const options: SliderOptions = this.getOptions();
-    if (options.onStart) options.onStart(model.values);
+    if (options.onStart) options.onStart(options);
 
     this.updateEnvironment.update = this.bindProxyToUpdate();
   }

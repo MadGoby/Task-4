@@ -10,7 +10,7 @@ import { IPlugin } from './interfaces';
 import { gobyDefaults } from './common/defaultSettings';
 
 @autobind
-class Plugin {
+class Plugin implements IPlugin {
   readonly element: HTMLElement;
 
   public options: SliderOptions;

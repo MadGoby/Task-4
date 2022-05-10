@@ -1,6 +1,4 @@
-import { BasicModelSettings } from './Model/types';
-
-type UserCallback = (data: BasicModelSettings) => void;
+type UserCallback = (data: SliderOptions) => void;
 
 type Update = (data: UserSliderOptions) => UserSliderOptions;
 
@@ -18,19 +16,6 @@ type SliderOptions = {
   onChange?: UserCallback;
   onStart?: UserCallback;
 };
-
-type SliderOptionsKey = 'min'
-| 'max'
-| 'double'
-| 'handlesValues'
-| 'vertical'
-| 'step'
-| 'valueScale'
-| 'integer'
-| 'from'
-| 'to'
-| 'onChange'
-| 'onStart';
 
 type UserSliderOptions = {
   min?: number;
@@ -58,5 +43,4 @@ export {
   UserSliderOptions,
   UserCallback,
   Update,
-  SliderOptionsKey,
 };

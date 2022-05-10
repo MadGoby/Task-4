@@ -7,7 +7,6 @@ import { ValuesScale } from './ValuesScale/ValuesScale';
 import {
   DataFromModel,
   BasicViewSettings,
-  TargetsForViewUpdate,
   NewHandlesData,
   UpdatePositionsData,
   PassNewValue,
@@ -67,39 +66,27 @@ export class View {
 
   private prepareSliderForUse(): void {
     this.addSliderToDOM();
-
-    const options: BasicViewSettings = this.getOptions();
-    this.updateView({
-      vertical: options.vertical,
-      double: options.double,
-      handlesValues: options.handlesValues,
-      valueScale: options.valueScale,
-      integer: options.integer,
-    });
+    this.updateView();
   }
 
-  public updateView(targets: TargetsForViewUpdate): void {
+  public updateView(): void {
     const options: BasicViewSettings = this.getOptions();
 
-    if (targets.vertical) {
-      this.slider.changePlane({
-        isVertical: targets.vertical,
-      });
-      this.handles.changePlane(targets.vertical);
-      this.valuesScale.changePlane(targets.vertical);
-    }
-    if (!targets.double) {
-      this.handles.changeHandlesDisplay({
-        isDouble: options.double,
-        sliderWidth: this.slider.slider.offsetWidth,
-      });
-      this.interval.hideSelectedInterval({
-        isDouble: options.double,
-        handleWidth: this.handles.fromHandle.offsetWidth,
-      });
-    }
-    if (!targets.valueScale) this.valuesScale.changeValueScaleDisplay(options.valueScale);
-    if (!targets.handlesValues) this.handles.hideHandlesValues(options.handlesValues);
+    this.slider.changePlane({
+      isVertical: options.vertical,
+    });
+    this.handles.changePlane(options.vertical);
+    this.valuesScale.changePlane(options.vertical);
+    this.handles.changeHandlesDisplay({
+      isDouble: options.double,
+      sliderWidth: this.slider.slider.offsetWidth,
+    });
+    this.interval.hideSelectedInterval({
+      isDouble: options.double,
+      handleWidth: this.handles.fromHandle.offsetWidth,
+    });
+    this.valuesScale.changeValueScaleDisplay(options.valueScale);
+    this.handles.hideHandlesValues(options.handlesValues);
   }
 
   private convertValueToPosition(settings: DataFromModel):string {

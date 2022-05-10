@@ -24,14 +24,6 @@ type HandlePositions = {
   unspecified: number
 };
 
-type TargetsForViewUpdate = {
-  double?: boolean;
-  handlesValues?: boolean;
-  vertical?: boolean;
-  valueScale?: boolean;
-  integer: boolean;
-};
-
 type DataFromModel = {
   value: number;
   target: 'from' | 'to' | 'min' | 'max';
@@ -49,7 +41,6 @@ type NewHandlesData = {
 
 export {
   BasicViewSettings,
-  TargetsForViewUpdate,
   DataFromModel,
   HandlePositions,
   NewHandlesData,

@@ -19,6 +19,8 @@ class Model {
 
     const from: number = options.from ? options.from : options.min;
     const to: number = options.to ? options.to : options.max;
+    this.getOptions().from = from;
+    this.getOptions().to = to;
 
     this.values = {
       min: Model.convertFractional(options.min),
@@ -52,11 +54,16 @@ class Model {
     if (fixedValue < Number(this.values.min)) fixedValue = Number(this.values.min);
 
     const isDoubleAndFromTarget: boolean = data.isDouble && data.target === 'from';
+    const isNotDoubleAndFromTarget: boolean = !data.isDouble && data.target === 'from';
     const isDoubleAndToTarget: boolean = data.isDouble && data.target === 'to';
     const isFromBiggerThenTo: boolean = isDoubleAndFromTarget && Number(data.value) > Number(this.values.to);
     const isToLessThenFrom: boolean = isDoubleAndToTarget && Number(data.value) < Number(this.values.from);
 
-    if (isFromBiggerThenTo) fixedValue = Number(this.values.to);
+    if (isFromBiggerThenTo) {
+      fixedValue = Number(this.values.to);
+    } else if (isNotDoubleAndFromTarget) {
+      this.values.to = fixedValue;
+    }
     if (isToLessThenFrom) fixedValue = Number(this.values.from);
 
     return fixedValue;

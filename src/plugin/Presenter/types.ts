@@ -2,14 +2,14 @@ import { View } from '../View/View';
 import { Model } from '../Model/Model';
 import {
   SliderOptions,
-  Update,
 } from '../types';
+import { IPlugin } from '../interfaces';
 
 type BasicPresenterSettings = {
   viewLink: View;
   modelLink: Model;
   getOptions: () => SliderOptions;
-  environment: { update: Update };
+  environment: IPlugin;
 };
 
 export {
