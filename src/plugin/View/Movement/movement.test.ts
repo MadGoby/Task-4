@@ -1,7 +1,7 @@
 import { Movement } from './Movement';
 import { Handles } from '../Handles/Handles';
 import { UpdatePositionsData } from '../types';
-import {MovementSettings} from "./types";
+import { MovementSettings } from './types';
 
 describe('Movement', () => {
   let movement: Movement;
@@ -38,16 +38,13 @@ describe('Movement', () => {
     expect(result).toEqual(100);
   });
 
-  it('handelListener() move from and interval to position less than left edge'
-    + ' and record the position after fixing', () => {
+  it('handle got main class', () => {
     movement.handleListener({
       x: 100,
       y: 200,
       target: movement.movementSettings.handles.fromHandle,
     });
 
-    expect(movement.movementSettings.handles.fromHandle.classList.contains(
-      'goby-slider__handle_type_main',
-    )).toBeTruthy();
+    expect(movement.movementSettings.handles.fromHandle).toHaveClass('goby-slider__handle_type_main');
   });
 });

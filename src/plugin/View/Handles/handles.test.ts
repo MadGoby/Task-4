@@ -29,7 +29,6 @@ describe('Handles', () => {
       isToFixed: true,
     }, 500);
     expect(handles.toHandle.innerText).toEqual('5');
-    handles.toHandle.classList.contains('goby-slider__handle_type_main');
   });
 
   it('refreshValues() refresh not integer value', () => {
@@ -40,7 +39,7 @@ describe('Handles', () => {
       isToFixed: false,
     }, 500);
     expect(handles.fromValue.innerText).toEqual('5.5');
-    handles.fromHandle.classList.contains('goby-slider__handle_type_main');
+    expect(handles.fromHandle).toHaveClass('goby-slider__handle_type_main');
   });
 
   it('changePlane() change classes correctly', () => {

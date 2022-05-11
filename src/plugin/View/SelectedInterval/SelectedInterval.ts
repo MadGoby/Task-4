@@ -1,5 +1,5 @@
 import autobind from 'autobind-decorator';
-import { IntervalDisplayData, NewIntervalData } from './types';
+import { NewIntervalData } from './types';
 
 @autobind
 export class SelectedInterval {
@@ -39,16 +39,13 @@ export class SelectedInterval {
     return (isDouble) && (this.interval.classList.contains(`${this.intervalClass}_hidden`));
   }
 
-  public hideSelectedInterval(settings: IntervalDisplayData): void {
-    const { isDouble, handleWidth } = settings;
-
+  public changeIntervalDisplay(isDouble: boolean): void {
     switch (true) {
       case this.checkIsIntervalShouldBeHided(isDouble):
         this.interval.classList.add(`${this.intervalClass}_hidden`);
         break;
       case this.checkIsIntervalShouldBeShown(isDouble):
         this.interval.classList.remove(`${this.intervalClass}_hidden`);
-        this.interval.style.right = `${handleWidth / 2}px`;
         break;
       default:
         break;

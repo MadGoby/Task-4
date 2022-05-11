@@ -11,8 +11,8 @@ describe('SelectedInterval', () => {
     expect(interval).toBeTruthy();
   });
 
-  it('adjustPositionRelativeValue() adjust position correctly for left side', () => {
-    interval.adjustPositionRelativeToValue({
+  it('refreshIntervalPositions() change position correctly for left side', () => {
+    interval.refreshIntervalPositions({
       target: 'from',
       position: '50',
       handleWidth: 20,
@@ -21,21 +21,20 @@ describe('SelectedInterval', () => {
     expect(interval.interval.style.left).toEqual('60px');
   });
 
-  it('adjustPositionRelativeValue() adjust position correctly for right side', () => {
-    interval.adjustPositionRelativeToValue({
+  it('refreshIntervalPositions() change position correctly for right side', () => {
+    interval.refreshIntervalPositions({
       target: 'to',
       position: '50',
       handleWidth: 20,
-      sliderWidth: 100,
+      sliderWidth: 120,
     });
     expect(interval.interval.style.right).toEqual('60px');
   });
 
   it('hideSelectedInterval() operates the display function correctly', () => {
-    interval.hideSelectedInterval({ isDouble: false, handleWidth: 20 });
-    expect(interval.interval.style.display).toEqual('none');
-    interval.hideSelectedInterval({ isDouble: true, handleWidth: 20 });
-    expect(interval.interval.style.display).toEqual('block');
-    expect(interval.interval.style.right).toEqual('10px');
+    interval.changeIntervalDisplay(false);
+    expect(interval.interval).toHaveClass('goby-slider__interval_hidden');
+    interval.changeIntervalDisplay(true);
+    expect(interval.interval).not.toHaveClass('goby-slider__interval_hidden');
   });
 });

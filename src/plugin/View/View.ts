@@ -45,7 +45,6 @@ export class View {
     this.movement = new Movement({
       slider: this.slider.slider,
       handles: this.handles,
-      interval: this.interval,
       environmentLink: this,
       getOptions: this.getOptions,
     });
@@ -72,19 +71,14 @@ export class View {
   public updateView(): void {
     const options: BasicViewSettings = this.getOptions();
 
-    this.slider.changePlane({
-      isVertical: options.vertical,
-    });
+    this.slider.changePlane(options.vertical);
     this.handles.changePlane(options.vertical);
     this.valuesScale.changePlane(options.vertical);
     this.handles.changeHandlesDisplay({
       isDouble: options.double,
       sliderWidth: this.slider.slider.offsetWidth,
     });
-    this.interval.hideSelectedInterval({
-      isDouble: options.double,
-      handleWidth: this.handles.fromHandle.offsetWidth,
-    });
+    this.interval.changeIntervalDisplay(options.double);
     this.valuesScale.changeValueScaleDisplay(options.valueScale);
     this.handles.hideHandlesValues(options.handlesValues);
   }

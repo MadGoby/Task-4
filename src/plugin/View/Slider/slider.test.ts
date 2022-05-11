@@ -1,53 +1,39 @@
-// import { Handles } from '../Handles/Handles';
-// import { SelectedInterval } from '../SelectedInterval/SelectedInterval';
-// import { SliderAssemblerSettings } from './types';
-// import { Slider } from './Slider';
-// import { ValuesScale } from '../ValuesScale/ValuesScale';
-// import { ViewRequestsData } from '../types';
-//
-// describe('Slider', () => {
-//   let slider: Slider;
-//   const requests: ViewRequestsData = {
-//     needStepWidth: { value: '', name: '' },
-//     needApplyNewValue: { value: '', name: '' },
-//     needApplyValueFromScale: { value: '', name: '' },
-//     needChangeSliderValuesRange: { value: '', name: '' },
-//     needDataForScale: { value: '', name: '' },
-//     needDataForStartPosition: { value: '', name: '' },
-//   };
-//
-//   beforeEach(() => {
-//     slider = new Slider();
-//   });
-//
-//   it('Slider can be create', () => {
-//     expect(slider).toBeTruthy();
-//   });
-//
-//   it('collectSlider() can collect elements', () => {
-//     const settings: SliderAssemblerSettings = {
-//       from: new Handles().fromHandle,
-//       to: new Handles().toHandle,
-//       interval: new SelectedInterval().interval,
-//       valueScale: new ValuesScale(),
-//     };
-//     slider.initializeSliderElements(settings);
-//     expect(slider.slider).toBeTruthy();
-//   });
-//
-//   it('changePlane() operates the display function correctly', () => {
-//     slider.changePlane({
-//       requests,
-//       isStep: false,
-//       isVertical: true,
-//     });
-//     expect(slider.slider).toHaveClass('goby-slider__body_state_vertical');
-//
-//     slider.changePlane({
-//       requests,
-//       isStep: false,
-//       isVertical: false,
-//     });
-//     expect(slider.slider).not.toHaveClass('goby-slider__body_state_vertical');
-//   });
-// });
+import { Handles } from '../Handles/Handles';
+import { SelectedInterval } from '../SelectedInterval/SelectedInterval';
+import { SliderAssemblerSettings } from './types';
+import { Slider } from './Slider';
+import { ValuesScale } from '../ValuesScale/ValuesScale';
+import { UpdatePositionsData } from '../types';
+
+describe('Slider', () => {
+  let slider: Slider;
+
+  beforeEach(() => {
+    slider = new Slider();
+  });
+
+  it('Slider can be create', () => {
+    expect(slider).toBeTruthy();
+  });
+
+  it('createHTMLElements() create elements', () => {
+    const settings: SliderAssemblerSettings = {
+      from: new Handles().fromHandle,
+      to: new Handles().toHandle,
+      interval: new SelectedInterval().interval,
+      valueScale: new ValuesScale({ passNewValue: (data: UpdatePositionsData) => data }),
+    };
+    slider.initializeSliderElements(settings);
+    expect(slider.slider).toBeTruthy();
+  });
+
+  it('changePlane() operates the display function correctly', () => {
+    slider.changePlane(true);
+    expect(slider.slider).toHaveClass('goby-slider__body_state_vertical');
+    expect(slider.sliderWrapper).toHaveClass('goby-slider__slider_state_vertical');
+
+    slider.changePlane(false);
+    expect(slider.slider).not.toHaveClass('goby-slider__body_state_vertical');
+    expect(slider.sliderWrapper).not.toHaveClass('goby-slider__slider_state_vertical');
+  });
+});

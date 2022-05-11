@@ -11,6 +11,12 @@
     justify-content: center;
     min-height: 105px;
     font-family: $font-main;
+
+    &_state {
+      &_vertical {
+        height: 400px;
+      }
+    }
   }
 
   &__body {
@@ -25,6 +31,7 @@
 
     &_state {
       &_vertical {
+        top: calc(100% / 2);
         transform: rotate(-90deg);
         max-width: 400px;
       }

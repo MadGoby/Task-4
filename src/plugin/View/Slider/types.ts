@@ -7,11 +7,6 @@ type SliderAssemblerSettings = {
   readonly valueScale: IValuesScale;
 };
 
-type SliderPlaneSettings = {
-  isVertical: boolean;
-};
-
 export {
   SliderAssemblerSettings,
-  SliderPlaneSettings,
 };
