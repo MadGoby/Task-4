@@ -58,8 +58,6 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 /*! ../SelectedInterval/SelectedInterval */
 
-/*! ../Slider/Slider */
-
 /*! ../ValuesScale/ValuesScale */
 
 /*! ../View/View */
@@ -79,10 +77,6 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 /*! ./SelectedInterval */
 
 /*! ./SelectedInterval/SelectedInterval */
-
-/*! ./SideMenu */
-
-/*! ./SideMenu/SideMenu */
 
 /*! ./Slider */
 
@@ -128,6 +122,10 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
   !*** ./src/plugin/View/view.test.ts ***!
   \**************************************/
 
+/*!***************************************!*\
+  !*** ./src/plugin/Presenter/types.ts ***!
+  \***************************************/
+
 /*!****************************************!*\
   !*** ./src/plugin/Model/model.test.ts ***!
   \****************************************/
@@ -168,10 +166,6 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
   !*** ./src/plugin/View/Movement/types.ts ***!
   \*******************************************/
 
-/*!*******************************************!*\
-  !*** ./src/plugin/View/SideMenu/types.ts ***!
-  \*******************************************/
-
 /*!********************************************!*\
   !*** ./node_modules/jquery/dist/jquery.js ***!
   \********************************************/
@@ -186,10 +180,6 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 /*!**********************************************!*\
   !*** ./src/plugin/View/Movement/Movement.ts ***!
-  \**********************************************/
-
-/*!**********************************************!*\
-  !*** ./src/plugin/View/SideMenu/SideMenu.ts ***!
   \**********************************************/
 
 /*!***********************************************!*\
@@ -210,10 +200,6 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 /*!***************************************************!*\
   !*** ./src/plugin/View/SelectedInterval/types.ts ***!
-  \***************************************************/
-
-/*!***************************************************!*\
-  !*** ./src/plugin/View/SideMenu/sideMenu.test.ts ***!
   \***************************************************/
 
 /*!***************************************************!*\
