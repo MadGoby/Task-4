@@ -36,6 +36,7 @@ function handleToggleInputChange(sideMenu: SideMenu, event: Event): void {
     if (optionsKey === 'valueScale') slider.update({ valueScale: target.checked });
     if (optionsKey === 'vertical') slider.update({ vertical: target.checked });
     if (optionsKey === 'integer') slider.update({ integer: target.checked });
+    if (optionsKey === 'step') slider.update({ step: target.checked });
   };
 
   Object.keys(sideMenu.sideMenuElements).forEach((key: string): void => {

@@ -50,21 +50,37 @@ class Model {
 
   private fixIncorrectValue(data: DataForRefreshingModel): number {
     let fixedValue: number = Number(data.value);
-    if (fixedValue > Number(this.values.max)) fixedValue = Number(this.values.max);
-    if (fixedValue < Number(this.values.min)) fixedValue = Number(this.values.min);
+    const isHandleTarget: boolean = data.target === 'from' || data.target === 'to';
+    const isRangeTarget: boolean = data.target === 'min' || data.target === 'max';
 
-    const isDoubleAndFromTarget: boolean = data.isDouble && data.target === 'from';
-    const isNotDoubleAndFromTarget: boolean = !data.isDouble && data.target === 'from';
-    const isDoubleAndToTarget: boolean = data.isDouble && data.target === 'to';
-    const isFromBiggerThenTo: boolean = isDoubleAndFromTarget && Number(data.value) > Number(this.values.to);
-    const isToLessThenFrom: boolean = isDoubleAndToTarget && Number(data.value) < Number(this.values.from);
+    const fixRangeValues: () => void = () => {
+      const isMinBiggerThenMax: boolean = data.target === 'min' && data.value >= this.values.max;
+      const isMaxLessThenMin: boolean = data.target === 'max' && data.value <= this.values.min;
 
-    if (isFromBiggerThenTo) {
-      fixedValue = Number(this.values.to);
-    } else if (isNotDoubleAndFromTarget) {
-      this.values.to = fixedValue;
-    }
-    if (isToLessThenFrom) fixedValue = Number(this.values.from);
+      if (isMinBiggerThenMax) fixedValue -= 0.01;
+      if (isMaxLessThenMin) fixedValue += 0.01;
+    };
+
+    const fixHandlesValues: () => void = () => {
+      if (fixedValue > Number(this.values.max)) fixedValue = Number(this.values.max);
+      if (fixedValue < Number(this.values.min)) fixedValue = Number(this.values.min);
+
+      const isDoubleAndFromTarget: boolean = data.isDouble && data.target === 'from';
+      const isNotDoubleAndFromTarget: boolean = !data.isDouble && data.target === 'from';
+      const isDoubleAndToTarget: boolean = data.isDouble && data.target === 'to';
+      const isFromBiggerThenTo: boolean = isDoubleAndFromTarget && Number(data.value) > Number(this.values.to);
+      const isToLessThenFrom: boolean = isDoubleAndToTarget && Number(data.value) < Number(this.values.from);
+
+      if (isFromBiggerThenTo) {
+        fixedValue = Number(this.values.to);
+      } else if (isNotDoubleAndFromTarget) {
+        this.values.to = fixedValue;
+      }
+      if (isToLessThenFrom) fixedValue = Number(this.values.from);
+    };
+
+    if (isHandleTarget) fixHandlesValues();
+    if (isRangeTarget) fixRangeValues();
 
     return fixedValue;
   }
@@ -114,8 +130,12 @@ class Model {
   }
 
   private calculateOutStepRangeValue(value: number, target: 'from' | 'to'): number | false {
-    const lessStepValue: number = Math.floor(this.values[target] / Number(this.values.step)) * Number(this.values.step);
-    const biggerStepValue: number = Math.ceil(this.values[target] / Number(this.values.step)) * Number(this.values.step);
+    const lessStepValue: number = Model.convertFractional(Math.floor(
+      this.values[target] / Number(this.values.step),
+    ) * Number(this.values.step));
+    const biggerStepValue: number = Model.convertFractional(Math.ceil(
+      this.values[target] / Number(this.values.step),
+    ) * Number(this.values.step));
 
     switch (true) {
       case value <= lessStepValue:
@@ -133,8 +153,8 @@ class Model {
     if (valueDifference < this.values.step) return false;
 
     return value < this.values[target]
-      ? this.values[target] - Number(this.values.step)
-      : this.values[target] + Number(this.values.step);
+      ? Model.convertFractional(this.values[target] - Number(this.values.step))
+      : Model.convertFractional(this.values[target] + Number(this.values.step));
   }
 
   public writeValueFromPosition(settings: CalculationData): void {
@@ -153,12 +173,11 @@ class Model {
     }
 
     const target: 'from' | 'to' = settings.target === 'from' ? 'from' : 'to';
-    const newValue: number | false = !Number.isInteger(this.values[target] / Number(this.values.step))
-      ? this.calculateOutStepRangeValue(value, target)
-      : this.calculateStepValue(value, target);
-
+    const isInRange: boolean = Number.isInteger(Model.convertFractional(this.values[target] / Number(this.values.step)));
+    const newValue: number | false = isInRange
+      ? this.calculateStepValue(value, target)
+      : this.calculateOutStepRangeValue(value, target);
     if (newValue === false) return;
-
     this.writeDataToModel({
       target,
       value: newValue,

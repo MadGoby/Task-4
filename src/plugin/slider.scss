@@ -183,6 +183,10 @@
   &__input-wrapper {
     max-width: 320px;
     padding-left: 40px;
+
+    &_hidden {
+      display: none;
+    }
   }
 
   &__input-description {
@@ -235,6 +239,10 @@
           color: black;
         }
       }
+    }
+
+    &_hidden {
+      display: none;
     }
   }
 

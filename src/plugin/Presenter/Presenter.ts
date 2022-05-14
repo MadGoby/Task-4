@@ -138,7 +138,13 @@ export class Presenter {
 
     return new Proxy(this.updateEnvironment.update, {
       apply(environment: Update, thisArgs: IPlugin, argArray: [UserSliderOptions]): boolean {
+        const minStep: number = 0.01;
+        const withoutStep: number = 0;
         const userValues: UserSliderOptions = argArray[0];
+        const isStepNeedBeRemoved = userValues.step === withoutStep || Number(userValues.step) < minStep;
+
+        if (isStepNeedBeRemoved) userValues.step = withoutStep;
+        if (userValues.step === true) userValues.step = minStep;
 
         thisArgs.options = ({ ...thisArgs.options, ...that.model.values, ...userValues });
         that.view.updateView();

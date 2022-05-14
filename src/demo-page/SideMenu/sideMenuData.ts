@@ -106,6 +106,11 @@ const sideMenuData: SideMenuData = {
       cssClasses: ['goby-slider__toggle-item'],
     },
     {
+      key: 'stepWrapper',
+      name: 'div',
+      cssClasses: ['goby-slider__toggle-item'],
+    },
+    {
       key: 'valueScaleWrapper',
       name: 'div',
       cssClasses: ['goby-slider__toggle-item'],
@@ -163,7 +168,19 @@ const sideMenuData: SideMenuData = {
       text: 'Включить второй ползунок: ',
     },
     {
+      key: 'stepToggleObjective',
+      name: 'span',
+      cssClasses: ['goby-slider__toggle-description'],
+      text: 'Включить шаг: ',
+    },
+    {
       key: 'doubleToggle',
+      name: 'input',
+      cssClasses: ['goby-slider__toggle'],
+      attr: { name: 'type', value: 'checkbox' },
+    },
+    {
+      key: 'stepToggle',
       name: 'input',
       cssClasses: ['goby-slider__toggle'],
       attr: { name: 'type', value: 'checkbox' },
@@ -196,6 +213,11 @@ const sideMenuData: SideMenuData = {
     },
     {
       key: 'verticalToggleBorder',
+      name: 'span',
+      cssClasses: ['goby-slider__toggle-border'],
+    },
+    {
+      key: 'stepToggleBorder',
       name: 'span',
       cssClasses: ['goby-slider__toggle-border'],
     },
@@ -241,6 +263,8 @@ const sideMenuData: SideMenuData = {
       'minInputWrapper', 'maxInputWrapper'],
     doubleToggleWrapper: ['doubleToggle', 'doubleToggleObjective', 'doubleToggleBorder'],
     toWrapper: ['doubleToggleWrapper'],
+    stepToggleWrapper: ['stepToggle', 'stepToggleObjective', 'stepToggleBorder'],
+    stepWrapper: ['stepToggleWrapper'],
     handlesValuesToggleWrapper: ['handlesValuesToggle', 'handlesValuesObjective', 'handlesValuesToggleBorder'],
     handlesValuesWrapper: ['handlesValuesToggleWrapper'],
     valueScaleToggleWrapper: ['valueScaleToggle', 'valueScaleObjective', 'valueScaleToggleBorder'],
@@ -249,13 +273,13 @@ const sideMenuData: SideMenuData = {
     verticalWrapper: ['verticalToggleWrapper'],
     integerToggleWrapper: ['integerToggle', 'integerObjective', 'integerToggleBorder'],
     integerWrapper: ['integerToggleWrapper'],
-    sideMenuContainer: ['currentValuesWrapper', 'inputWrapper', 'toWrapper', 'handlesValuesWrapper',
+    sideMenuContainer: ['currentValuesWrapper', 'inputWrapper', 'stepWrapper', 'toWrapper', 'handlesValuesWrapper',
       'valueScaleWrapper', 'verticalWrapper', 'integerWrapper'],
   },
   cloneList: {
     doubleToggle: ['handlesValuesToggle', 'valueScaleToggle', 'integerToggle'],
-    doubleToggleWrapper: ['handlesValuesToggleWrapper', 'valueScaleToggleWrapper', 'verticalToggleWrapper',
-      'integerToggleWrapper'],
+    doubleToggleWrapper: ['handlesValuesToggleWrapper', 'valueScaleToggleWrapper',
+      'verticalToggleWrapper', 'integerToggleWrapper', 'stepToggleWrapper'],
   },
 };
 
