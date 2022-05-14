@@ -1,8 +1,3 @@
-type IntervalDisplayData = {
-  isDouble: boolean,
-  handleWidth: number
-};
-
 type NewIntervalData = {
   target: 'from' | 'to' | 'min' | 'max';
   position: string;
@@ -12,5 +7,4 @@ type NewIntervalData = {
 
 export {
   NewIntervalData,
-  IntervalDisplayData,
 };
