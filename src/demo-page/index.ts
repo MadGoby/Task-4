@@ -1,5 +1,6 @@
 import './index.scss';
 import '../plugin/slider.scss';
+import '../plugin/slider';
 import { UserSliderSettings } from './types';
 import { SideMenu } from './SideMenu/SideMenu';
 import { sliderSettings } from './indexData';

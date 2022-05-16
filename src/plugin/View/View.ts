@@ -49,8 +49,8 @@ export class View {
       getOptions: this.getOptions,
     });
 
-    this.prepareSliderForUse();
     this.bindEventListeners();
+    this.initialize();
   }
 
   private addSliderToDOM(): void {
@@ -63,7 +63,7 @@ export class View {
     this.container.append(this.slider.mainWrapper);
   }
 
-  private prepareSliderForUse(): void {
+  public initialize(): void {
     this.addSliderToDOM();
     this.updateView();
   }

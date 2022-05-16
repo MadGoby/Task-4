@@ -20,7 +20,6 @@ class Plugin implements IPlugin {
   constructor(element: HTMLElement, options: UserSliderOptions) {
     this.element = element;
     this.options = $.extend({}, gobyDefaults, options);
-
     this.initialize(this.element, this.getOptions);
   }
 

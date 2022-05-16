@@ -57,6 +57,7 @@ module.exports = {
     new HTMLWebpackPlugin({
       template: './src/demo-page/index.html',
       filename: 'index.html',
+      scriptLoading: 'blocking',
     }),
     new webpack.ProvidePlugin({
       autoBind: 'auto-bind',
@@ -67,9 +68,4 @@ module.exports = {
       'window.autobind': 'autobind-decorator',
     }),
   ],
-  optimization: {
-    runtimeChunk: 'single',
-    minimize: true,
-    minimizer: [new TerserPlugin()],
-  },
 };

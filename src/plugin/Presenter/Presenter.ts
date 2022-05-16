@@ -18,6 +18,7 @@ import {
 } from '../types';
 import { BasicPresenterSettings } from './types';
 import { IPlugin } from '../interfaces';
+import {contains} from "jquery";
 
 @autobind
 export class Presenter {
@@ -163,7 +164,6 @@ export class Presenter {
     view.callViewUpdate = this.bindProxyToCallViewUpdate();
     model.values = this.bindProxyToModelValues();
     this.updateAllViewValues();
-
     const options: SliderOptions = this.getOptions();
     if (options.onStart) options.onStart(options);
 
