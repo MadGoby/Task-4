@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">78.57% </span>
+                <span class="strong">69.84% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>44/56</span>
+                <span class='fraction'>44/63</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">50% </span>
+                <span class="strong">25% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>3/6</span>
+                <span class='fraction'>3/12</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">80.39% </span>
+                <span class="strong">73.21% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>41/51</span>
+                <span class='fraction'>41/56</span>
             </div>
         
             
@@ -223,7 +223,14 @@
 <a name='L164'></a><a href='#L164'>164</a>
 <a name='L165'></a><a href='#L165'>165</a>
 <a name='L166'></a><a href='#L166'>166</a>
-<a name='L167'></a><a href='#L167'>167</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L167'></a><a href='#L167'>167</a>
+<a name='L168'></a><a href='#L168'>168</a>
+<a name='L169'></a><a href='#L169'>169</a>
+<a name='L170'></a><a href='#L170'>170</a>
+<a name='L171'></a><a href='#L171'>171</a>
+<a name='L172'></a><a href='#L172'>172</a>
+<a name='L173'></a><a href='#L173'>173</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -364,6 +371,12 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -382,7 +395,6 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -409,6 +421,7 @@ import {
 } from '../types';
 import { BasicPresenterSettings } from './types';
 import { IPlugin } from '../interfaces';
+import {contains} from "jquery";
 &nbsp;
 @autobind
 export class Presenter {
@@ -529,7 +542,13 @@ export class Presenter {
 &nbsp;
     return new Proxy(this.updateEnvironment.update, {
       apply(environment: Update, thisArgs: IPlugin, argArray: [UserSliderOptions]): boolean {
+        const minStep: number = <span class="cstat-no" title="statement not covered" >0.01;</span>
+        const withoutStep: number = <span class="cstat-no" title="statement not covered" >0;</span>
         const userValues: UserSliderOptions = <span class="cstat-no" title="statement not covered" >argArray[0];</span>
+        const isStepNeedBeRemoved = <span class="cstat-no" title="statement not covered" >userValues.step === withoutStep || Number(userValues.step) &lt; minStep;</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        if (isStepNeedBeRemoved) <span class="cstat-no" title="statement not covered" >userValues.step = withoutStep;</span></span>
+<span class="cstat-no" title="statement not covered" >        if (userValues.step === true) <span class="cstat-no" title="statement not covered" >userValues.step = minStep;</span></span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >        thisArgs.options = ({ ...thisArgs.options, ...that.model.values, ...userValues });</span>
 <span class="cstat-no" title="statement not covered" >        that.view.updateView();</span>
@@ -548,7 +567,6 @@ export class Presenter {
     view.callViewUpdate = this.bindProxyToCallViewUpdate();
     model.values = this.bindProxyToModelValues();
     this.updateAllViewValues();
-&nbsp;
     const options: SliderOptions = this.getOptions();
     <span class="missing-if-branch" title="if path not taken" >I</span>if (options.onStart) <span class="cstat-no" title="statement not covered" >options.onStart(options);</span>
 &nbsp;
@@ -562,7 +580,7 @@ export class Presenter {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Sat May 14 2022 11:29:35 GMT+0300 (Москва, стандартное время)
+                at Mon May 16 2022 18:25:40 GMT+0300 (Москва, стандартное время)
             </div>
         </div>
         <script src="../prettify.js"></script>
