@@ -34,6 +34,9 @@ npm install
   2. Подключить плагин импортировав файл **main.js** из папки "./dist/plugin/main.js"
   #### Пример
   ```
+  <body>
+    <div class="my-slider-container"></div>
+  </body>
   <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
   <script src="./plugin/main.js"></script>
   <script src="DemoPage.ts"></script>
