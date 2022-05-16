@@ -22,8 +22,8 @@ npm install
 
 ## Github pages
 
-[Demo Page](https://madgoby.github.io/Task-4/gh-pages/index.html)
-[Coverage](https://madgoby.github.io/Task-4/gh-pages/coverage/index.html)
+- [Demo Page](https://madgoby.github.io/Task-4/gh-pages/index.html)
+- [Coverage](https://madgoby.github.io/Task-4/gh-pages/coverage/index.html)
 
 ## Глобальные библиотеки
 
@@ -117,4 +117,4 @@ npm install
 
 ### UML Диаграмма
 
-[UML](https://madgoby.github.io/Task-4/uml/uml.html)
+- [UML](https://madgoby.github.io/Task-4/uml/uml.html)
