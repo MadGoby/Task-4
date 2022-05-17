@@ -52,10 +52,10 @@ describe('Handles', () => {
   });
 
   it('hideHandleValues() manage display correctly', () => {
-    handles.hideHandlesValues(false);
+    handles.changeHandlesValuesDisplay(false);
     expect(handles.fromValue.classList.contains('goby-slider__handle-value_hidden')).toBeTruthy();
     expect(handles.fromValue.classList.contains('goby-slider__handle-value_hidden')).toBeTruthy();
-    handles.hideHandlesValues(true);
+    handles.changeHandlesValuesDisplay(true);
     expect(handles.fromValue.classList.contains('goby-slider__handle-value_hidden')).toBeFalse();
     expect(handles.fromValue.classList.contains('goby-slider__handle-value_hidden')).toBeFalse();
   });

@@ -87,11 +87,11 @@ export class ValuesScale implements IValuesScale {
       && (this.eightyPercentValue.classList.contains(`${this.valueClass}_state_vertical`));
   }
 
-  private checkIsNeedToMakeHorizontally(isVertical: boolean): boolean {
+  private checkIsNeedToDisplayHorizontally(isVertical: boolean): boolean {
     return this.checkIsContainVerticalClass() && !isVertical;
   }
 
-  private checkIsNeedToMakeVertical(isVertical: boolean): boolean {
+  private checkIsNeedToDisplayVertical(isVertical: boolean): boolean {
     return !this.checkIsContainVerticalClass() && isVertical;
   }
 
@@ -102,8 +102,8 @@ export class ValuesScale implements IValuesScale {
       });
     };
 
-    const isNeedToChangeClasses = this.checkIsNeedToMakeVertical(isVertical)
-      || this.checkIsNeedToMakeHorizontally(isVertical);
+    const isNeedToChangeClasses = this.checkIsNeedToDisplayVertical(isVertical)
+      || this.checkIsNeedToDisplayHorizontally(isVertical);
 
     if (isNeedToChangeClasses) changeClasses();
   }

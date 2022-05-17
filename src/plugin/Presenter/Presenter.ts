@@ -18,7 +18,6 @@ import {
 } from '../types';
 import { BasicPresenterSettings } from './types';
 import { IPlugin } from '../interfaces';
-import {contains} from "jquery";
 
 @autobind
 export class Presenter {
@@ -58,7 +57,7 @@ export class Presenter {
     });
   }
 
-  private handleProxyToPassNewValue() {
+  private bindProxyToPassNewValue() {
     const that: Presenter = this;
 
     return new Proxy(this.view.passNewValue, {
@@ -134,18 +133,22 @@ export class Presenter {
     });
   }
 
+  private static fixStepFromUpdate(userValues: UserSliderOptions): UserSliderOptions {
+    const minStep: number = 0.01;
+    const withoutStep: number = 0;
+    const isStepNeedBeRemoved = userValues.step === withoutStep || Number(userValues.step) < minStep;
+
+    if (isStepNeedBeRemoved) userValues.step = withoutStep;
+    if (userValues.step === true) userValues.step = minStep;
+    return userValues;
+  }
+
   private bindProxyToUpdate(): Update {
     const that: Presenter = this;
 
     return new Proxy(this.updateEnvironment.update, {
       apply(environment: Update, thisArgs: IPlugin, argArray: [UserSliderOptions]): boolean {
-        const minStep: number = 0.01;
-        const withoutStep: number = 0;
-        const userValues: UserSliderOptions = argArray[0];
-        const isStepNeedBeRemoved = userValues.step === withoutStep || Number(userValues.step) < minStep;
-
-        if (isStepNeedBeRemoved) userValues.step = withoutStep;
-        if (userValues.step === true) userValues.step = minStep;
+        const userValues: UserSliderOptions = Presenter.fixStepFromUpdate(argArray[0]);
 
         thisArgs.options = ({ ...thisArgs.options, ...that.model.values, ...userValues });
         that.view.updateView();
@@ -160,10 +163,10 @@ export class Presenter {
     const { view, model } = this;
 
     view.updatePositions = this.bindProxyToUpdatePositions();
-    view.passNewValue = this.handleProxyToPassNewValue();
+    view.passNewValue = this.bindProxyToPassNewValue();
     view.callViewUpdate = this.bindProxyToCallViewUpdate();
     model.values = this.bindProxyToModelValues();
-    this.updateAllViewValues();
+
     const options: SliderOptions = this.getOptions();
     if (options.onStart) options.onStart(options);
 

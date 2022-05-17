@@ -48,9 +48,6 @@ export class View {
       environmentLink: this,
       getOptions: this.getOptions,
     });
-
-    this.bindEventListeners();
-    this.initialize();
   }
 
   private addSliderToDOM(): void {
@@ -64,8 +61,10 @@ export class View {
   }
 
   public initialize(): void {
+    this.bindEventListeners();
     this.addSliderToDOM();
     this.updateView();
+    this.callViewUpdate('start');
   }
 
   public updateView(): void {
@@ -80,7 +79,7 @@ export class View {
     });
     this.interval.changeIntervalDisplay(options.double);
     this.valuesScale.changeValueScaleDisplay(options.valueScale);
-    this.handles.hideHandlesValues(options.handlesValues);
+    this.handles.changeHandlesValuesDisplay(options.handlesValues);
   }
 
   private convertValueToPosition(settings: DataFromModel):string {

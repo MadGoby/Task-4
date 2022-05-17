@@ -133,7 +133,7 @@ export class Handles {
     }
   }
 
-  public hideHandlesValues(isHandlesValues: boolean): void {
+  public changeHandlesValuesDisplay(isHandlesValues: boolean): void {
     if (!isHandlesValues) {
       this.toValue.classList.add(`${this.handleValueClass}_hidden`);
       this.fromValue.classList.add(`${this.handleValueClass}_hidden`);

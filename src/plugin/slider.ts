@@ -4,7 +4,9 @@ import { View } from './View/View';
 import { Presenter } from './Presenter/Presenter';
 import {
   PluginInfo,
-  SliderOptions, Update, UserSliderOptions,
+  SliderOptions,
+  Update,
+  UserSliderOptions,
 } from './types';
 import { IPlugin } from './interfaces';
 import { gobyDefaults } from './common/defaultSettings';
@@ -15,7 +17,7 @@ class Plugin implements IPlugin {
 
   public options: SliderOptions;
 
-  public update: Update = (data) => data;
+  public update: Update = (data: UserSliderOptions) => data;
 
   constructor(element: HTMLElement, options: UserSliderOptions) {
     this.element = element;
@@ -34,6 +36,7 @@ class Plugin implements IPlugin {
     });
 
     presenter.initialize();
+    view.initialize();
   }
 
   private getOptions(): SliderOptions {
