@@ -8,7 +8,7 @@ import { SliderOptions } from '../../plugin/types';
 
 @autobind
 export class SideMenu {
-  readonly sideMenuElements: SideMenuElements;
+  public readonly sideMenuElements: SideMenuElements;
 
   public textInputs: Array<HTMLInputElement> | undefined;
 
@@ -19,6 +19,33 @@ export class SideMenu {
     this.initializeSideMenuElements();
     this.cloneSimilarElements();
     this.collectInputs();
+  }
+
+  public appendToDom(target: JQuery): void {
+    this.collectSideMenu();
+    target.append(this.sideMenuElements.sideMenuContainer);
+  }
+
+  public updateSideMenu(data: SliderOptions):void {
+    const isInteger: boolean = data.integer;
+    const withoutStep: number = 0;
+
+    this.sideMenuElements.fromOutput.innerText = isInteger ? `${Math.round(data.from!)}` : `${data.from}`;
+    this.sideMenuElements.toOutput.innerText = isInteger ? `${Math.round(data.to!)}` : `${data.to}`;
+    (this.sideMenuElements.fromInput as HTMLInputElement).value = isInteger
+      ? `${Math.round(data.from!)}` : `${data.from}`;
+    (this.sideMenuElements.toInput as HTMLInputElement).value = isInteger ? `${Math.round(data.to!)}` : `${data.to}`;
+    (this.sideMenuElements.minInput as HTMLInputElement).value = isInteger ? `${Math.round(data.min!)}` : `${data.min}`;
+    (this.sideMenuElements.maxInput as HTMLInputElement).value = isInteger ? `${Math.round(data.max!)}` : `${data.max}`;
+    if (data.step !== withoutStep) (this.sideMenuElements.stepInput as HTMLInputElement).value = `${data.step}`;
+    (this.sideMenuElements.doubleToggle as HTMLInputElement).checked = data.double;
+    (this.sideMenuElements.handlesValuesToggle as HTMLInputElement).checked = data.handlesValues;
+    (this.sideMenuElements.valueScaleToggle as HTMLInputElement).checked = data.valueScale;
+    (this.sideMenuElements.verticalToggle as HTMLInputElement).checked = data.vertical;
+    (this.sideMenuElements.integerToggle as HTMLInputElement).checked = data.integer;
+    (this.sideMenuElements.stepToggle as HTMLInputElement).checked = Boolean(data.step);
+    this.changeToDisplay(data.double);
+    this.changeStepDisplay(data.step);
   }
 
   private collectInputs(): void {
@@ -79,11 +106,6 @@ export class SideMenu {
     });
   }
 
-  public appendToDom(target: JQuery): void {
-    this.collectSideMenu();
-    target.append(this.sideMenuElements.sideMenuContainer);
-  }
-
   private changeToDisplay(isDouble: boolean):void {
     const isNeedToShowTo: boolean = isDouble
       && this.sideMenuElements.toOutput.classList.contains('goby-slider__output-value_hidden');
@@ -111,27 +133,5 @@ export class SideMenu {
     } else if (isNeedToHideTo) {
       this.sideMenuElements.stepInputWrapper.classList.add('goby-slider__input-wrapper_hidden');
     }
-  }
-
-  public updateSideMenu(data: SliderOptions):void {
-    const isInteger: boolean = data.integer;
-    const withoutStep: number = 0;
-
-    this.sideMenuElements.fromOutput.innerText = isInteger ? `${Math.round(data.from!)}` : `${data.from}`;
-    this.sideMenuElements.toOutput.innerText = isInteger ? `${Math.round(data.to!)}` : `${data.to}`;
-    (this.sideMenuElements.fromInput as HTMLInputElement).value = isInteger
-      ? `${Math.round(data.from!)}` : `${data.from}`;
-    (this.sideMenuElements.toInput as HTMLInputElement).value = isInteger ? `${Math.round(data.to!)}` : `${data.to}`;
-    (this.sideMenuElements.minInput as HTMLInputElement).value = isInteger ? `${Math.round(data.min!)}` : `${data.min}`;
-    (this.sideMenuElements.maxInput as HTMLInputElement).value = isInteger ? `${Math.round(data.max!)}` : `${data.max}`;
-    if (data.step !== withoutStep) (this.sideMenuElements.stepInput as HTMLInputElement).value = `${data.step}`;
-    (this.sideMenuElements.doubleToggle as HTMLInputElement).checked = data.double;
-    (this.sideMenuElements.handlesValuesToggle as HTMLInputElement).checked = data.handlesValues;
-    (this.sideMenuElements.valueScaleToggle as HTMLInputElement).checked = data.valueScale;
-    (this.sideMenuElements.verticalToggle as HTMLInputElement).checked = data.vertical;
-    (this.sideMenuElements.integerToggle as HTMLInputElement).checked = data.integer;
-    (this.sideMenuElements.stepToggle as HTMLInputElement).checked = Boolean(data.step);
-    this.changeToDisplay(data.double);
-    this.changeStepDisplay(data.step);
   }
 }
