@@ -7,8 +7,6 @@ interface IValuesScale {
   fortyPercentValue: HTMLSpanElement;
   sixtyPercentValue: HTMLSpanElement;
   eightyPercentValue: HTMLSpanElement;
-  valueClass: string;
-  values: Array<HTMLSpanElement>;
   refreshValueScale: (values: DataForValueScale) => void;
   centerValues: (sliderWidth: number, handleWidth: number) => void;
   changePlane: (isVertical: boolean) => void;

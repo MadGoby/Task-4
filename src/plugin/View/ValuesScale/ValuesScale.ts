@@ -5,21 +5,21 @@ import { PassNewValue } from '../types';
 
 @autobind
 export class ValuesScale implements IValuesScale {
-  readonly minValue: HTMLSpanElement;
+  public readonly minValue: HTMLSpanElement;
 
-  readonly maxValue: HTMLSpanElement;
+  public readonly maxValue: HTMLSpanElement;
 
-  readonly twentyPercentValue: HTMLSpanElement;
+  public readonly twentyPercentValue: HTMLSpanElement;
 
-  readonly fortyPercentValue: HTMLSpanElement;
+  public readonly fortyPercentValue: HTMLSpanElement;
 
-  readonly sixtyPercentValue: HTMLSpanElement;
+  public readonly sixtyPercentValue: HTMLSpanElement;
 
-  readonly eightyPercentValue: HTMLSpanElement;
+  public readonly eightyPercentValue: HTMLSpanElement;
 
-  readonly valueClass: string = 'goby-slider__value';
+  private readonly valueClass: string = 'goby-slider__value';
 
-  readonly values: Array<HTMLSpanElement>;
+  private readonly values: Array<HTMLSpanElement>;
 
   private readonly environmentLink: { passNewValue: PassNewValue };
 
@@ -41,14 +41,6 @@ export class ValuesScale implements IValuesScale {
       this.eightyPercentValue,
     ];
     this.values.forEach((value) => this.bindHandleValueClick(value));
-  }
-
-  private createElement(classModifier: string): HTMLSpanElement {
-    const element: HTMLSpanElement = document.createElement('span');
-
-    element.classList.add(this.valueClass, `${this.valueClass}_${classModifier}`);
-
-    return element;
   }
 
   public refreshValueScale(values: DataForValueScale): void {
@@ -78,23 +70,6 @@ export class ValuesScale implements IValuesScale {
     this.eightyPercentValue.style.left = calculateValuePosition(0.8, this.eightyPercentValue);
   }
 
-  private checkIsContainVerticalClass(): boolean {
-    return (this.minValue.classList.contains(`${this.valueClass}_state_vertical`))
-      && (this.maxValue.classList.contains(`${this.valueClass}_state_vertical`))
-      && (this.twentyPercentValue.classList.contains(`${this.valueClass}_state_vertical`))
-      && (this.fortyPercentValue.classList.contains(`${this.valueClass}_state_vertical`))
-      && (this.sixtyPercentValue.classList.contains(`${this.valueClass}_state_vertical`))
-      && (this.eightyPercentValue.classList.contains(`${this.valueClass}_state_vertical`));
-  }
-
-  private checkIsNeedToDisplayHorizontally(isVertical: boolean): boolean {
-    return this.checkIsContainVerticalClass() && !isVertical;
-  }
-
-  private checkIsNeedToDisplayVertical(isVertical: boolean): boolean {
-    return !this.checkIsContainVerticalClass() && isVertical;
-  }
-
   public changePlane(isVertical: boolean): void {
     const changeClasses = (): void => {
       this.values.forEach((element: HTMLSpanElement): void => {
@@ -118,6 +93,31 @@ export class ValuesScale implements IValuesScale {
         element.classList.remove(`${this.valueClass}_hidden`);
       });
     }
+  }
+
+  private createElement(classModifier: string): HTMLSpanElement {
+    const element: HTMLSpanElement = document.createElement('span');
+
+    element.classList.add(this.valueClass, `${this.valueClass}_${classModifier}`);
+
+    return element;
+  }
+
+  private checkIsContainVerticalClass(): boolean {
+    return (this.minValue.classList.contains(`${this.valueClass}_state_vertical`))
+      && (this.maxValue.classList.contains(`${this.valueClass}_state_vertical`))
+      && (this.twentyPercentValue.classList.contains(`${this.valueClass}_state_vertical`))
+      && (this.fortyPercentValue.classList.contains(`${this.valueClass}_state_vertical`))
+      && (this.sixtyPercentValue.classList.contains(`${this.valueClass}_state_vertical`))
+      && (this.eightyPercentValue.classList.contains(`${this.valueClass}_state_vertical`));
+  }
+
+  private checkIsNeedToDisplayHorizontally(isVertical: boolean): boolean {
+    return this.checkIsContainVerticalClass() && !isVertical;
+  }
+
+  private checkIsNeedToDisplayVertical(isVertical: boolean): boolean {
+    return !this.checkIsContainVerticalClass() && isVertical;
   }
 
   private handleValueClick(event: Event): void {

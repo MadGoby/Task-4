@@ -1,11 +1,11 @@
 import { SliderAssemblerSettings } from './types';
 
 export class Slider {
-  readonly slider: HTMLDivElement;
+  public readonly slider: HTMLDivElement;
 
-  readonly sliderWrapper: HTMLDivElement;
+  public readonly sliderWrapper: HTMLDivElement;
 
-  readonly mainWrapper: HTMLDivElement;
+  public readonly mainWrapper: HTMLDivElement;
 
   constructor() {
     this.mainWrapper = document.createElement('div');
@@ -13,14 +13,6 @@ export class Slider {
     this.sliderWrapper = document.createElement('div');
 
     this.createHTMLElements();
-  }
-
-  private createHTMLElements(): void {
-    this.slider.classList.add('goby-slider__body');
-    this.sliderWrapper.classList.add('goby-slider__slider');
-    this.mainWrapper.classList.add('goby-slider');
-    this.sliderWrapper.append(this.slider);
-    this.mainWrapper.append(this.sliderWrapper);
   }
 
   public initializeSliderElements(settings: SliderAssemblerSettings): void {
@@ -37,14 +29,6 @@ export class Slider {
     );
   }
 
-  private checkIsNeedToDisplayHorizontally(isVertical: boolean): boolean {
-    return ((this.slider.classList.contains('goby-slider__body_state_vertical')) && (!isVertical));
-  }
-
-  private checkIsNeedToDisplayVertical(isVertical: boolean): boolean {
-    return ((!this.slider.classList.contains('goby-slider__body_state_vertical')) && (isVertical));
-  }
-
   public changePlane(isVertical: boolean): void {
     switch (true) {
       case this.checkIsNeedToDisplayVertical(isVertical):
@@ -58,5 +42,21 @@ export class Slider {
       default:
         break;
     }
+  }
+
+  private createHTMLElements(): void {
+    this.slider.classList.add('goby-slider__body');
+    this.sliderWrapper.classList.add('goby-slider__slider');
+    this.mainWrapper.classList.add('goby-slider');
+    this.sliderWrapper.append(this.slider);
+    this.mainWrapper.append(this.sliderWrapper);
+  }
+
+  private checkIsNeedToDisplayHorizontally(isVertical: boolean): boolean {
+    return ((this.slider.classList.contains('goby-slider__body_state_vertical')) && (!isVertical));
+  }
+
+  private checkIsNeedToDisplayVertical(isVertical: boolean): boolean {
+    return ((!this.slider.classList.contains('goby-slider__body_state_vertical')) && (isVertical));
   }
 }

@@ -11,15 +11,15 @@ import { Handles } from '../Handles/Handles';
 
 @autobind
 export class Movement {
-  readonly slider: HTMLDivElement;
-
-  private readonly handles: Handles;
-
-  readonly getOptions: () => BasicViewSettings;
+  public readonly movementSettings: MovementSettings;
 
   private handleClickData: HandleClickData;
 
-  public movementSettings: MovementSettings;
+  private readonly slider: HTMLDivElement;
+
+  private readonly getOptions: () => BasicViewSettings;
+
+  private readonly handles: Handles;
 
   constructor(settings: MovementSettings) {
     this.slider = settings.slider;
@@ -45,23 +45,6 @@ export class Movement {
       : x - Number(distanceToCursor) - this.slider.getBoundingClientRect().left;
   }
 
-  private handleDocumentMouseMove(event: MouseEvent): void {
-    const x: number = event.clientX;
-    const y: number = event.clientY;
-    const newPosition: number = this.calculateNewPosition({
-      x,
-      y,
-      distanceToCursor: this.handleClickData.distanceToCursor,
-    });
-    const isTargetFrom: boolean = this.handleClickData.target === this.handles.fromHandle;
-    const target = isTargetFrom ? 'from' : 'to';
-
-    this.movementSettings.environmentLink.updatePositions({
-      target,
-      newPosition,
-    });
-  }
-
   public handleListener(setting: MovementEvent): void {
     const {
       x = 0,
@@ -81,6 +64,23 @@ export class Movement {
     this.handles.updateMainHandleClass(targetHandle);
 
     this.bindDocumentEventListeners();
+  }
+
+  private handleDocumentMouseMove(event: MouseEvent): void {
+    const x: number = event.clientX;
+    const y: number = event.clientY;
+    const newPosition: number = this.calculateNewPosition({
+      x,
+      y,
+      distanceToCursor: this.handleClickData.distanceToCursor,
+    });
+    const isTargetFrom: boolean = this.handleClickData.target === this.handles.fromHandle;
+    const target = isTargetFrom ? 'from' : 'to';
+
+    this.movementSettings.environmentLink.updatePositions({
+      target,
+      newPosition,
+    });
   }
 
   private removeDocumentEventListeners(): void {

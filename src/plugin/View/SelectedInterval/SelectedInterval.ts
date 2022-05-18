@@ -3,7 +3,7 @@ import { NewIntervalData } from './types';
 
 @autobind
 export class SelectedInterval {
-  readonly interval: HTMLDivElement;
+  public readonly interval: HTMLDivElement;
 
   private readonly intervalClass: string = 'goby-slider__interval';
 
@@ -27,18 +27,6 @@ export class SelectedInterval {
     }
   }
 
-  private initializeHTMLElement(): void {
-    this.interval.classList.add(this.intervalClass);
-  }
-
-  private checkIsIntervalShouldBeHided(isDouble: boolean): boolean {
-    return (!isDouble) && (!this.interval.classList.contains(`${this.intervalClass}_hidden`));
-  }
-
-  private checkIsIntervalShouldBeShown(isDouble: boolean): boolean {
-    return (isDouble) && (this.interval.classList.contains(`${this.intervalClass}_hidden`));
-  }
-
   public changeIntervalDisplay(isDouble: boolean): void {
     switch (true) {
       case this.checkIsIntervalShouldBeHided(isDouble):
@@ -50,5 +38,17 @@ export class SelectedInterval {
       default:
         break;
     }
+  }
+
+  private checkIsIntervalShouldBeHided(isDouble: boolean): boolean {
+    return (!isDouble) && (!this.interval.classList.contains(`${this.intervalClass}_hidden`));
+  }
+
+  private checkIsIntervalShouldBeShown(isDouble: boolean): boolean {
+    return (isDouble) && (this.interval.classList.contains(`${this.intervalClass}_hidden`));
+  }
+
+  private initializeHTMLElement(): void {
+    this.interval.classList.add(this.intervalClass);
   }
 }

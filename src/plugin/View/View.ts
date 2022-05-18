@@ -15,25 +15,25 @@ import { DataForValueScale } from '../Model/types';
 
 @autobind
 export class View {
-  readonly container: HTMLElement;
+  public readonly slider: Slider;
 
-  readonly slider: Slider;
+  public readonly handles: Handles;
 
-  readonly handles: Handles;
-
-  readonly movement: Movement;
-
-  readonly interval: SelectedInterval;
-
-  readonly valuesScale: ValuesScale;
-
-  public getOptions: () => BasicViewSettings;
+  public readonly valuesScale: ValuesScale;
 
   public passNewValue: PassNewValue = (data: UpdatePositionsData) => data;
 
   public updatePositions: PassNewValue = (data: UpdatePositionsData) => data;
 
   public callViewUpdate: (target: string) => string = (target) => target;
+
+  private readonly container: HTMLElement;
+
+  private readonly movement: Movement;
+
+  private readonly interval: SelectedInterval;
+
+  private readonly getOptions: () => BasicViewSettings;
 
   constructor(getOptions: () => BasicViewSettings, target: HTMLElement) {
     this.container = target;
@@ -48,16 +48,6 @@ export class View {
       environmentLink: this,
       getOptions: this.getOptions,
     });
-  }
-
-  private addSliderToDOM(): void {
-    this.slider.initializeSliderElements({
-      from: this.handles.fromHandle,
-      to: this.handles.toHandle,
-      interval: this.interval.interval,
-      valueScale: this.valuesScale,
-    });
-    this.container.append(this.slider.mainWrapper);
   }
 
   public initialize(): void {
@@ -80,15 +70,6 @@ export class View {
     this.interval.changeIntervalDisplay(options.double);
     this.valuesScale.changeValueScaleDisplay(options.valueScale);
     this.handles.changeHandlesValuesDisplay(options.handlesValues);
-  }
-
-  private convertValueToPosition(settings: DataFromModel):string {
-    const { totalValues, minValue, value } = settings;
-    const workRange: number = this.slider.slider.offsetWidth;
-    const handleWidth: number = this.handles.fromHandle.offsetWidth;
-
-    return String(((workRange - handleWidth) / totalValues)
-        * (Number(value) - Number(minValue)));
   }
 
   public refreshValueScale(values: DataForValueScale): void {
@@ -116,12 +97,23 @@ export class View {
     });
   }
 
-  private bindEventListeners(): void {
-    [this.handles.fromHandle, this.handles.toHandle].forEach((handle: HTMLSpanElement):void => {
-      handle.addEventListener('mousedown', this.handleHandleMouseDown);
+  private addSliderToDOM(): void {
+    this.slider.initializeSliderElements({
+      from: this.handles.fromHandle,
+      to: this.handles.toHandle,
+      interval: this.interval.interval,
+      valueScale: this.valuesScale,
     });
-    this.slider.slider.addEventListener('mousedown', this.handleSliderMouseDown);
-    window.addEventListener('resize', this.handleWindowResize);
+    this.container.append(this.slider.mainWrapper);
+  }
+
+  private convertValueToPosition(settings: DataFromModel):string {
+    const { totalValues, minValue, value } = settings;
+    const workRange: number = this.slider.slider.offsetWidth;
+    const handleWidth: number = this.handles.fromHandle.offsetWidth;
+
+    return String(((workRange - handleWidth) / totalValues)
+        * (Number(value) - Number(minValue)));
   }
 
   private handleHandleMouseDown(event: MouseEvent): void {
@@ -148,7 +140,15 @@ export class View {
     });
   }
 
-  public handleWindowResize(): void {
+  private handleWindowResize(): void {
     this.callViewUpdate('resize');
+  }
+
+  private bindEventListeners(): void {
+    [this.handles.fromHandle, this.handles.toHandle].forEach((handle: HTMLSpanElement):void => {
+      handle.addEventListener('mousedown', this.handleHandleMouseDown);
+    });
+    this.slider.slider.addEventListener('mousedown', this.handleSliderMouseDown);
+    window.addEventListener('resize', this.handleWindowResize);
   }
 }

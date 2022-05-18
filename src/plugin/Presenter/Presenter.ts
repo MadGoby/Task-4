@@ -25,15 +25,29 @@ export class Presenter {
 
   private readonly model: Model;
 
-  private readonly getOptions: () => SliderOptions;
-
   private readonly updateEnvironment: IPlugin;
+
+  private readonly getOptions: () => SliderOptions;
 
   constructor(settings: BasicPresenterSettings) {
     this.view = settings.viewLink;
     this.model = settings.modelLink;
     this.updateEnvironment = settings.environment;
     this.getOptions = settings.getOptions;
+  }
+
+  public initialize(): void {
+    const { view, model } = this;
+
+    view.updatePositions = this.bindProxyToUpdatePositions();
+    view.passNewValue = this.bindProxyToPassNewValue();
+    view.callViewUpdate = this.bindProxyToCallViewUpdate();
+    model.values = this.bindProxyToModelValues();
+
+    const options: SliderOptions = this.getOptions();
+    if (options.onStart) options.onStart(options);
+
+    this.updateEnvironment.update = this.bindProxyToUpdate();
   }
 
   private bindProxyToUpdatePositions(): UpdatePositions {
@@ -157,19 +171,5 @@ export class Presenter {
         return true;
       },
     });
-  }
-
-  public initialize(): void {
-    const { view, model } = this;
-
-    view.updatePositions = this.bindProxyToUpdatePositions();
-    view.passNewValue = this.bindProxyToPassNewValue();
-    view.callViewUpdate = this.bindProxyToCallViewUpdate();
-    model.values = this.bindProxyToModelValues();
-
-    const options: SliderOptions = this.getOptions();
-    if (options.onStart) options.onStart(options);
-
-    this.updateEnvironment.update = this.bindProxyToUpdate();
   }
 }
