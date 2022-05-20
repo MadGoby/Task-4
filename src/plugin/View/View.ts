@@ -116,7 +116,7 @@ export class View {
         * (Number(value) - Number(minValue)));
   }
 
-  private handleHandleMouseDown(event: MouseEvent): void {
+  private handleHandleMouseDown(event: PointerEvent): void {
     const target: HTMLSpanElement = event.target as HTMLSpanElement;
     this.movement.handleListener({
       target,
@@ -125,7 +125,7 @@ export class View {
     });
   }
 
-  private handleSliderMouseDown(event: MouseEvent): void {
+  private handleSliderMouseDown(event: PointerEvent): void {
     const isNotSliderBody = event.target !== this.interval.interval && event.target !== this.slider.slider;
     if (isNotSliderBody) return;
 
@@ -146,9 +146,9 @@ export class View {
 
   private bindEventListeners(): void {
     [this.handles.fromHandle, this.handles.toHandle].forEach((handle: HTMLSpanElement):void => {
-      handle.addEventListener('mousedown', this.handleHandleMouseDown);
+      handle.addEventListener('pointerdown', this.handleHandleMouseDown);
     });
-    this.slider.slider.addEventListener('mousedown', this.handleSliderMouseDown);
+    this.slider.slider.addEventListener('pointerdown', this.handleSliderMouseDown);
     window.addEventListener('resize', this.handleWindowResize);
   }
 }

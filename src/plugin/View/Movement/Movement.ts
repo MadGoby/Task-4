@@ -66,7 +66,7 @@ export class Movement {
     this.bindDocumentEventListeners();
   }
 
-  private handleDocumentMouseMove(event: MouseEvent): void {
+  private handleDocumentMouseMove(event: PointerEvent): void {
     const x: number = event.clientX;
     const y: number = event.clientY;
     const newPosition: number = this.calculateNewPosition({
@@ -84,8 +84,8 @@ export class Movement {
   }
 
   private removeDocumentEventListeners(): void {
-    document.removeEventListener('mousemove', this.handleDocumentMouseMove);
-    document.removeEventListener('mouseup', this.handleDocumentMouseUp);
+    document.removeEventListener('pointermove', this.handleDocumentMouseMove);
+    document.removeEventListener('pointerup', this.handleDocumentMouseUp);
   }
 
   private handleDocumentMouseUp(): void {
@@ -93,7 +93,7 @@ export class Movement {
   }
 
   private bindDocumentEventListeners(): void {
-    document.addEventListener('mousemove', this.handleDocumentMouseMove);
-    document.addEventListener('mouseup', this.handleDocumentMouseUp);
+    document.addEventListener('pointermove', this.handleDocumentMouseMove);
+    document.addEventListener('pointerup', this.handleDocumentMouseUp);
   }
 }
