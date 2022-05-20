@@ -74,6 +74,8 @@ export class Movement {
       y,
       distanceToCursor: this.handleClickData.distanceToCursor,
     });
+
+    console.log(newPosition);
     const isTargetFrom: boolean = this.handleClickData.target === this.handles.fromHandle;
     const target = isTargetFrom ? 'from' : 'to';
 

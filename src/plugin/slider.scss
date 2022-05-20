@@ -28,6 +28,7 @@
     box-sizing: border-box;
     bottom: -50px;
     cursor: pointer;
+    touch-action: none;
 
     &_state {
       &_vertical {
@@ -50,6 +51,7 @@
     border-radius: 50%;
     cursor: pointer;
     z-index: 3;
+    touch-action: none;
 
     &_hidden {
       display: none;

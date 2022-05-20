@@ -129,7 +129,7 @@ export class View {
     const isNotSliderBody = event.target !== this.interval.interval && event.target !== this.slider.slider;
     if (isNotSliderBody) return;
 
-    const halfHandleWidth: number = this.handles.fromHandle.offsetWidth / 2;
+    const halfHandleWidth: number = -this.handles.fromHandle.offsetWidth / 2;
     this.updatePositions({
       target: 'unspecified',
       newPosition: this.movement.calculateNewPosition({

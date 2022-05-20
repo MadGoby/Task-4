@@ -163,6 +163,7 @@ class Model {
 
   private determineValueTarget(value: number, target: UnspecifiedValueTarget): ValueTarget {
     if (target !== 'unspecified') return target;
+    if (!this.getOptions().double) return 'from';
 
     const fromDifference: number = Math.abs(Number(this.values.from) - Number(value));
     const toDifference: number = Math.abs(Number(this.values.to) - Number(value));
