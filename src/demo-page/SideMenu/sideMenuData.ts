@@ -273,7 +273,7 @@ const sideMenuData: SideMenuData = {
     verticalWrapper: ['verticalToggleWrapper'],
     integerToggleWrapper: ['integerToggle', 'integerObjective', 'integerToggleBorder'],
     integerWrapper: ['integerToggleWrapper'],
-    sideMenuContainer: ['currentValuesWrapper', 'inputWrapper', 'stepWrapper', 'toWrapper', 'handlesValuesWrapper',
+    sideMenuContainer: ['currentValuesWrapper', 'inputWrapper', 'toWrapper', 'stepWrapper', 'handlesValuesWrapper',
       'valueScaleWrapper', 'verticalWrapper', 'integerWrapper'],
   },
   cloneList: {
