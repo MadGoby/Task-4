@@ -35,7 +35,7 @@ type BasicModelSettings = {
   max: number,
   from: number,
   to: number,
-  step: number | boolean,
+  step: number,
 };
 
 export {

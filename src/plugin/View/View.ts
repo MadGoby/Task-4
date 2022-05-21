@@ -60,16 +60,16 @@ export class View {
   public updateView(): void {
     const options: BasicViewSettings = this.getOptions();
 
-    this.slider.changePlane(options.vertical);
-    this.handles.changePlane(options.vertical);
-    this.valuesScale.changePlane(options.vertical);
+    this.slider.changePlane(options.isVertical);
+    this.handles.changePlane(options.isVertical);
+    this.valuesScale.changePlane(options.isVertical);
     this.handles.changeHandlesDisplay({
-      isDouble: options.double,
+      isDouble: options.isDouble,
       sliderWidth: this.slider.slider.offsetWidth,
     });
-    this.interval.changeIntervalDisplay(options.double);
-    this.valuesScale.changeValueScaleDisplay(options.valueScale);
-    this.handles.changeHandlesValuesDisplay(options.handlesValues);
+    this.interval.changeIntervalDisplay(options.isDouble);
+    this.valuesScale.changeValueScaleDisplay(options.isValueScale);
+    this.handles.changeHandlesValuesDisplay(options.isHandlesValues);
   }
 
   public refreshValueScale(values: DataForValueScale): void {

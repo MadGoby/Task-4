@@ -8,12 +8,12 @@ describe('Model', () => {
   const sliderOptions: SliderOptions = {
     min: 0,
     max: 10,
-    double: true,
-    handlesValues: true,
-    vertical: false,
-    step: false,
-    valueScale: true,
-    integer: true,
+    isDouble: true,
+    isHandlesValues: true,
+    isVertical: false,
+    isStep: false,
+    isValueScale: true,
+    isInteger: true,
   };
 
   beforeEach(() => {

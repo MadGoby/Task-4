@@ -39,7 +39,7 @@ export class Movement {
       distanceToCursor,
     } = settings;
 
-    return this.getOptions().vertical
+    return this.getOptions().isVertical
       ? this.slider.offsetWidth - (
         y - Number(distanceToCursor) - this.slider.getBoundingClientRect().top)
       : x - Number(distanceToCursor) - this.slider.getBoundingClientRect().left;
@@ -53,7 +53,7 @@ export class Movement {
     } = setting;
     const isFromHandle: boolean = target === this.handles.fromHandle;
     const targetHandle: HTMLSpanElement = isFromHandle ? this.handles.fromHandle : this.handles.toHandle;
-    const distanceToCursor: number = this.getOptions().vertical
+    const distanceToCursor: number = this.getOptions().isVertical
       ? y - targetHandle.getBoundingClientRect().top - (targetHandle.offsetWidth)
       : x - targetHandle.getBoundingClientRect().left;
     this.handleClickData = {
@@ -75,7 +75,6 @@ export class Movement {
       distanceToCursor: this.handleClickData.distanceToCursor,
     });
 
-    console.log(newPosition);
     const isTargetFrom: boolean = this.handleClickData.target === this.handles.fromHandle;
     const target = isTargetFrom ? 'from' : 'to';
 

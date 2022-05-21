@@ -10,12 +10,12 @@ type UpdatePositions = (data: UpdatePositionsData) => UpdatePositionsData;
 type PassNewValue = UpdatePositions;
 
 type BasicViewSettings = {
-  double: boolean;
-  handlesValues: boolean;
-  vertical: boolean;
-  step: boolean | number;
-  valueScale: boolean;
-  integer: boolean;
+  isDouble: boolean;
+  isHandlesValues: boolean;
+  isVertical: boolean;
+  isStep: boolean | number;
+  isValueScale: boolean;
+  isInteger: boolean;
 };
 
 type HandlePositions = {

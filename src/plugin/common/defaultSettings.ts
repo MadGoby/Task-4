@@ -5,12 +5,12 @@ import {
 const gobyDefaults: SliderOptions = {
   min: 0,
   max: 100,
-  double: false,
-  handlesValues: false,
-  vertical: false,
-  step: false,
-  valueScale: true,
-  integer: true,
+  isStep: false,
+  isDouble: false,
+  isHandlesValues: false,
+  isVertical: false,
+  isValueScale: true,
+  isInteger: true,
 };
 
 export { gobyDefaults };

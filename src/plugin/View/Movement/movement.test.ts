@@ -10,12 +10,12 @@ describe('Movement', () => {
     slider: document.createElement('div'),
     environmentLink: { updatePositions: (data: UpdatePositionsData) => data },
     getOptions: () => ({
-      double: true,
-      handlesValues: true,
-      vertical: false,
-      step: false,
-      valueScale: true,
-      integer: true,
+      isDouble: true,
+      isHandlesValues: true,
+      isVertical: false,
+      isStep: false,
+      isValueScale: true,
+      isInteger: true,
     }),
     handles: new Handles(),
   };

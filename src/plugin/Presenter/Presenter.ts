@@ -61,7 +61,7 @@ export class Presenter {
           position: newPosition,
           target,
           sliderWidth: that.view.slider.slider.offsetWidth - that.view.handles.fromHandle.offsetWidth,
-          isDouble: that.getOptions().double,
+          isDouble: that.getOptions().isDouble,
         };
 
         that.model.writeValueFromPosition(settings);
@@ -82,7 +82,7 @@ export class Presenter {
           value: newPosition,
           target,
           sliderWidth: that.view.slider.slider.offsetWidth - that.view.handles.fromHandle.offsetWidth,
-          isDouble: that.getOptions().double,
+          isDouble: that.getOptions().isDouble,
         });
 
         return true;
@@ -101,7 +101,7 @@ export class Presenter {
     this.view.refreshHandleValues({
       value: this.model.values.from,
       target: 'from',
-      isToFixed: options.integer,
+      isToFixed: options.isInteger,
       totalValues: this.model.getTotalValues(),
       minValue: Number(this.model.values.min),
     });
@@ -109,7 +109,7 @@ export class Presenter {
     this.view.refreshHandleValues({
       value: this.model.values.to,
       target: 'to',
-      isToFixed: options.integer,
+      isToFixed: options.isInteger,
       totalValues: this.model.getTotalValues(),
       minValue: Number(this.model.values.min),
     });
@@ -149,11 +149,9 @@ export class Presenter {
 
   private static fixStepFromUpdate(userValues: UserSliderOptions): UserSliderOptions {
     const minStep: number = 0.01;
-    const withoutStep: number = 0;
-    const isStepNeedBeRemoved = userValues.step === withoutStep || Number(userValues.step) < minStep;
+    const isStepLessThenMin: boolean = typeof userValues.step === 'number' && userValues.step < minStep;
 
-    if (isStepNeedBeRemoved) userValues.step = withoutStep;
-    if (userValues.step === true) userValues.step = minStep;
+    if (isStepLessThenMin) userValues.step = minStep;
     return userValues;
   }
 

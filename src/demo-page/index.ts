@@ -32,12 +32,12 @@ function handleToggleInputChange(sideMenu: SideMenu, event: Event): void {
     const optionsKey: string = key.replace('Toggle', '');
     const slider: IPlugin = this.data('plugin_gobySlider');
 
-    if (optionsKey === 'double') slider.update({ double: target.checked });
-    if (optionsKey === 'handlesValues') slider.update({ handlesValues: target.checked });
-    if (optionsKey === 'valueScale') slider.update({ valueScale: target.checked });
-    if (optionsKey === 'vertical') slider.update({ vertical: target.checked });
-    if (optionsKey === 'integer') slider.update({ integer: target.checked });
-    if (optionsKey === 'step') slider.update({ step: target.checked });
+    if (optionsKey === 'double') slider.update({ isDouble: target.checked });
+    if (optionsKey === 'handlesValues') slider.update({ isHandlesValues: target.checked });
+    if (optionsKey === 'valueScale') slider.update({ isValueScale: target.checked });
+    if (optionsKey === 'vertical') slider.update({ isVertical: target.checked });
+    if (optionsKey === 'integer') slider.update({ isInteger: target.checked });
+    if (optionsKey === 'step') slider.update({ isStep: target.checked });
   };
 
   Object.keys(sideMenu.sideMenuElements).forEach((key: string): void => {

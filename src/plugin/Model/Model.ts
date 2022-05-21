@@ -19,15 +19,18 @@ class Model {
 
     const from: number = options.from ? options.from : options.min;
     const to: number = options.to ? options.to : options.max;
+    const stepRatio: number = 40;
+    const step: number = options.step ? options.step : (options.max - options.min) / stepRatio;
     this.getOptions().from = from;
     this.getOptions().to = to;
+    this.getOptions().step = step;
 
     this.values = {
       min: Model.convertFractional(options.min),
       max: Model.convertFractional(options.max),
       from: Model.convertFractional(from),
       to: Model.convertFractional(to),
-      step: Model.convertFractional(Number(options.step)),
+      step: Model.convertFractional(step),
     };
   }
 
@@ -41,11 +44,11 @@ class Model {
       this.writeDataToModel({
         target: key,
         value: Model.convertFractional(value),
-        isDouble: options.double,
+        isDouble: options.isDouble,
       });
     });
 
-    this.values.step = options.step;
+    if (options.step) this.values.step = options.step;
   }
 
   public writeDataToModel(data: DataForRefreshingModel): void {
@@ -74,7 +77,7 @@ class Model {
   public writeValueFromPosition(settings: CalculationData): void {
     const value: number = this.calculateValue(settings);
     const isStepTarget = (settings.target === 'from' || settings.target === 'to')
-      && this.values.step !== 0;
+      && this.getOptions().isStep;
 
     if (!isStepTarget) {
       this.writeValue({
@@ -163,7 +166,7 @@ class Model {
 
   private determineValueTarget(value: number, target: UnspecifiedValueTarget): ValueTarget {
     if (target !== 'unspecified') return target;
-    if (!this.getOptions().double) return 'from';
+    if (!this.getOptions().isDouble) return 'from';
 
     const fromDifference: number = Math.abs(Number(this.values.from) - Number(value));
     const toDifference: number = Math.abs(Number(this.values.to) - Number(value));

@@ -6,12 +6,12 @@ require('jasmine-jquery');
 describe('View', () => {
   let view: View;
   const settings: BasicViewSettings = {
-    double: true,
-    handlesValues: true,
-    step: true,
-    valueScale: true,
-    vertical: true,
-    integer: true,
+    isDouble: true,
+    isHandlesValues: true,
+    isStep: true,
+    isValueScale: true,
+    isVertical: true,
+    isInteger: true,
   };
   const target: HTMLDivElement = document.createElement('div');
 
