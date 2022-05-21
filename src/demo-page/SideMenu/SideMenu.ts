@@ -30,13 +30,14 @@ export class SideMenu {
     const { isInteger } = data;
 
     this.sideMenuElements.fromOutput.innerText = isInteger ? `${Math.round(data.from!)}` : `${data.from}`;
-    this.sideMenuElements.toOutput.innerText = isInteger ? `${Math.round(data.to!)}` : `${data.to}`;
     (this.sideMenuElements.fromInput as HTMLInputElement).value = isInteger
       ? `${Math.round(data.from!)}` : `${data.from}`;
-    (this.sideMenuElements.toInput as HTMLInputElement).value = isInteger ? `${Math.round(data.to!)}` : `${data.to}`;
+    const toValue: string = isInteger ? `${Math.round(data.to!)}` : `${data.to}`;
+    this.sideMenuElements.toOutput.innerText = toValue;
+    (this.sideMenuElements.toInput as HTMLInputElement).value = data.isDouble ? toValue : '';
     (this.sideMenuElements.minInput as HTMLInputElement).value = isInteger ? `${Math.round(data.min!)}` : `${data.min}`;
     (this.sideMenuElements.maxInput as HTMLInputElement).value = isInteger ? `${Math.round(data.max!)}` : `${data.max}`;
-    (this.sideMenuElements.stepInput as HTMLInputElement).value = `${data.step}`;
+    (this.sideMenuElements.stepInput as HTMLInputElement).value = data.isStep ? `${data.step}` : '';
     (this.sideMenuElements.doubleToggle as HTMLInputElement).checked = data.isDouble;
     (this.sideMenuElements.handlesValuesToggle as HTMLInputElement).checked = data.isHandlesValues;
     (this.sideMenuElements.valueScaleToggle as HTMLInputElement).checked = data.isValueScale;
@@ -113,23 +114,21 @@ export class SideMenu {
 
     if (isNeedToShowTo) {
       this.sideMenuElements.toOutput.classList.remove('goby-slider__output-value_hidden');
-      this.sideMenuElements.toInputWrapper.classList.remove('goby-slider__input-wrapper_hidden');
+      this.sideMenuElements.toInput.removeAttribute('disabled');
     } else if (isNeedToHideTo) {
       this.sideMenuElements.toOutput.classList.add('goby-slider__output-value_hidden');
-      this.sideMenuElements.toInputWrapper.classList.add('goby-slider__input-wrapper_hidden');
+      this.sideMenuElements.toInput.setAttribute('disabled', 'disabled');
     }
   }
 
   private changeStepDisplay(isStep: boolean):void {
-    const isNeedToShowTo: boolean = isStep
-      && this.sideMenuElements.stepInputWrapper.classList.contains('goby-slider__input-wrapper_hidden');
-    const isNeedToHideTo: boolean = !isStep
-      && !this.sideMenuElements.stepInputWrapper.classList.contains('goby-slider__output-value_hidden');
+    const isNeedToShowTo: boolean = isStep && this.sideMenuElements.stepInput.hasAttribute('disabled');
+    const isNeedToHideTo: boolean = !isStep && !this.sideMenuElements.stepInput.hasAttribute('disabled');
 
     if (isNeedToShowTo) {
-      this.sideMenuElements.stepInputWrapper.classList.remove('goby-slider__input-wrapper_hidden');
+      this.sideMenuElements.stepInput.removeAttribute('disabled');
     } else if (isNeedToHideTo) {
-      this.sideMenuElements.stepInputWrapper.classList.add('goby-slider__input-wrapper_hidden');
+      this.sideMenuElements.stepInput.setAttribute('disabled', 'disabled');
     }
   }
 }
