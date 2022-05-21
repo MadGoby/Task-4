@@ -5,7 +5,7 @@ import { Presenter } from './Presenter/Presenter';
 import {
   PluginInfo,
   SliderOptions,
-  Update, UserCallback,
+  Update,
   UserSliderOptions,
 } from './types';
 import { IPlugin } from './interfaces';
