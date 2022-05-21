@@ -5,7 +5,7 @@ import { Presenter } from './Presenter/Presenter';
 import {
   PluginInfo,
   SliderOptions,
-  Update,
+  Update, UserCallback,
   UserSliderOptions,
 } from './types';
 import { IPlugin } from './interfaces';
@@ -21,8 +21,25 @@ class Plugin implements IPlugin {
 
   constructor(element: HTMLElement, options: UserSliderOptions) {
     this.element = element;
-    this.options = $.extend({}, gobyDefaults, options);
+    this.options = $.extend({}, gobyDefaults, this.getDataConfig(), options);
     this.initialize(this.element, this.getOptions);
+  }
+
+  private getDataConfig(): UserSliderOptions {
+    const element: JQuery<HTMLElement> = $(this.element);
+    return {
+      min: element.data('min'),
+      max: element.data('max'),
+      step: element.data('step'),
+      isDouble: element.data('is-double'),
+      isHandlesValues: element.data('is-handlesValues'),
+      isVertical: element.data('is-vertical'),
+      isStep: element.data('is-step'),
+      isValueScale: element.data('is-valueScale'),
+      isInteger: element.data('is-integer'),
+      from: element.data('from'),
+      to: element.data('to'),
+    };
   }
 
   private initialize(element: HTMLElement, getOptions: () => SliderOptions): void {
@@ -49,3 +66,7 @@ $.fn.gobySlider = function initializeGobySlider(sliderSettings: SliderOptions): 
     $.data(this, 'plugin_gobySlider', new Plugin(this, sliderSettings));
   });
 };
+
+$((): void => {
+  $('.js-gobySliderWrapper').gobySlider({});
+});

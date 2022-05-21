@@ -2,7 +2,6 @@ const path = require('path');
 const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
-const TerserPlugin = require('terser-webpack-plugin');
 
 module.exports = {
   mode: 'development',
@@ -57,6 +56,7 @@ module.exports = {
     new HTMLWebpackPlugin({
       template: './src/demo-page/index.html',
       filename: 'index.html',
+      excludeChunks: ['slider'],
       scriptLoading: 'blocking',
     }),
     new webpack.ProvidePlugin({
