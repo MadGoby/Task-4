@@ -56,7 +56,7 @@ npm install
     <div class="your-container-class js-gobySliderWrapper"></div>
     ``` 
 ### Параметры слайдера
-2. Параметры передать с помощью HTML аттрибута "data" в стиле "kebab-case".
+2. Параметры можно передать с помощью HTML аттрибута "data" в стиле "kebab-case".
    #### Пример для параметров `{ isDouble: true, min: 50 }`
     ```
     <div class="js-gobySliderWrapper" data-is-double=true data-min="50"></div>
