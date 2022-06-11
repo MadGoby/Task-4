@@ -156,7 +156,8 @@
 <a name='L97'></a><a href='#L97'>97</a>
 <a name='L98'></a><a href='#L98'>98</a>
 <a name='L99'></a><a href='#L99'>99</a>
-<a name='L100'></a><a href='#L100'>100</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L100'></a><a href='#L100'>100</a>
+<a name='L101'></a><a href='#L101'>101</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -204,6 +205,27 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -211,34 +233,14 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -268,15 +270,15 @@ import { Handles } from '../Handles/Handles';
 &nbsp;
 @autobind
 export class Movement {
-  readonly slider: HTMLDivElement;
-&nbsp;
-  private readonly handles: Handles;
-&nbsp;
-  readonly getOptions: () =&gt; BasicViewSettings;
+  public readonly movementSettings: MovementSettings;
 &nbsp;
   private handleClickData: HandleClickData;
 &nbsp;
-  public movementSettings: MovementSettings;
+  private readonly slider: HTMLDivElement;
+&nbsp;
+  private readonly getOptions: () =&gt; BasicViewSettings;
+&nbsp;
+  private readonly handles: Handles;
 &nbsp;
   constructor(settings: MovementSettings) {
     this.slider = settings.slider;
@@ -296,27 +298,10 @@ export class Movement {
       distanceToCursor,
     } = settings;
 &nbsp;
-    return this.getOptions().vertical
+    return this.getOptions().isVertical
       ? <span class="branch-0 cbranch-no" title="branch not covered" >this.slider.offsetWidth - (</span>
         y - Number(distanceToCursor) - this.slider.getBoundingClientRect().top)
       : x - Number(distanceToCursor) - this.slider.getBoundingClientRect().left;
-  }
-&nbsp;
-  private <span class="fstat-no" title="function not covered" >handleDocumentMouseMove(</span>event: MouseEvent): void {
-    const x: number = <span class="cstat-no" title="statement not covered" >event.clientX;</span>
-    const y: number = <span class="cstat-no" title="statement not covered" >event.clientY;</span>
-    const newPosition: number = <span class="cstat-no" title="statement not covered" >this.calculateNewPosition({</span>
-      x,
-      y,
-      distanceToCursor: this.handleClickData.distanceToCursor,
-    });
-    const isTargetFrom: boolean = <span class="cstat-no" title="statement not covered" >this.handleClickData.target === this.handles.fromHandle;</span>
-    const target = <span class="cstat-no" title="statement not covered" >isTargetFrom ? 'from' : 'to';</span>
-&nbsp;
-<span class="cstat-no" title="statement not covered" >    this.movementSettings.environmentLink.updatePositions({</span>
-      target,
-      newPosition,
-    });
   }
 &nbsp;
   public handleListener(setting: MovementEvent): void {
@@ -327,7 +312,7 @@ export class Movement {
     } = setting;
     const isFromHandle: boolean = target === this.handles.fromHandle;
     const targetHandle: HTMLSpanElement = isFromHandle ? this.handles.fromHandle : <span class="branch-1 cbranch-no" title="branch not covered" >this.handles.toHandle;</span>
-    const distanceToCursor: number = this.getOptions().vertical
+    const distanceToCursor: number = this.getOptions().isVertical
       ? <span class="branch-0 cbranch-no" title="branch not covered" >y - targetHandle.getBoundingClientRect().top - (targetHandle.offsetWidth)</span>
       : x - targetHandle.getBoundingClientRect().left;
     this.handleClickData = {
@@ -340,9 +325,27 @@ export class Movement {
     this.bindDocumentEventListeners();
   }
 &nbsp;
+  private <span class="fstat-no" title="function not covered" >handleDocumentMouseMove(</span>event: PointerEvent): void {
+    const x: number = <span class="cstat-no" title="statement not covered" >event.clientX;</span>
+    const y: number = <span class="cstat-no" title="statement not covered" >event.clientY;</span>
+    const newPosition: number = <span class="cstat-no" title="statement not covered" >this.calculateNewPosition({</span>
+      x,
+      y,
+      distanceToCursor: this.handleClickData.distanceToCursor,
+    });
+&nbsp;
+    const isTargetFrom: boolean = <span class="cstat-no" title="statement not covered" >this.handleClickData.target === this.handles.fromHandle;</span>
+    const target = <span class="cstat-no" title="statement not covered" >isTargetFrom ? 'from' : 'to';</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    this.movementSettings.environmentLink.updatePositions({</span>
+      target,
+      newPosition,
+    });
+  }
+&nbsp;
   private <span class="fstat-no" title="function not covered" >removeDocumentEventListeners(</span>): void {
-<span class="cstat-no" title="statement not covered" >    document.removeEventListener('mousemove', this.handleDocumentMouseMove);</span>
-<span class="cstat-no" title="statement not covered" >    document.removeEventListener('mouseup', this.handleDocumentMouseUp);</span>
+<span class="cstat-no" title="statement not covered" >    document.removeEventListener('pointermove', this.handleDocumentMouseMove);</span>
+<span class="cstat-no" title="statement not covered" >    document.removeEventListener('pointerup', this.handleDocumentMouseUp);</span>
   }
 &nbsp;
   private <span class="fstat-no" title="function not covered" >handleDocumentMouseUp(</span>): void {
@@ -350,8 +353,8 @@ export class Movement {
   }
 &nbsp;
   private bindDocumentEventListeners(): void {
-    document.addEventListener('mousemove', this.handleDocumentMouseMove);
-    document.addEventListener('mouseup', this.handleDocumentMouseUp);
+    document.addEventListener('pointermove', this.handleDocumentMouseMove);
+    document.addEventListener('pointerup', this.handleDocumentMouseUp);
   }
 }
 &nbsp;</pre></td></tr></table></pre>
@@ -361,7 +364,7 @@ export class Movement {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Mon May 16 2022 18:25:40 GMT+0300 (Москва, стандартное время)
+                at Sat Jun 11 2022 18:46:05 GMT+0300 (Москва, стандартное время)
             </div>
         </div>
         <script src="../../prettify.js"></script>

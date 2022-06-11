@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">95.24% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>21/21</span>
+                <span class='fraction'>20/21</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">85.71% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>7/7</span>
+                <span class='fraction'>6/7</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">95.24% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>21/21</span>
+                <span class='fraction'>20/21</span>
             </div>
         
             
@@ -137,15 +137,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">8x</span>
-<span class="cline-any cline-yes">8x</span>
-<span class="cline-any cline-yes">8x</span>
-<span class="cline-any cline-yes">8x</span>
-<span class="cline-any cline-yes">8x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -161,34 +153,42 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">8x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">8x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { SliderAssemblerSettings } from './types';
 &nbsp;
 export class Slider {
-  readonly slider: HTMLDivElement;
+  public readonly slider: HTMLDivElement;
 &nbsp;
-  readonly sliderWrapper: HTMLDivElement;
+  public readonly sliderWrapper: HTMLDivElement;
 &nbsp;
-  readonly mainWrapper: HTMLDivElement;
+  public readonly mainWrapper: HTMLDivElement;
 &nbsp;
   constructor() {
     this.mainWrapper = document.createElement('div');
@@ -196,14 +196,6 @@ export class Slider {
     this.sliderWrapper = document.createElement('div');
 &nbsp;
     this.createHTMLElements();
-  }
-&nbsp;
-  private createHTMLElements(): void {
-    this.slider.classList.add('goby-slider__body');
-    this.sliderWrapper.classList.add('goby-slider__slider');
-    this.mainWrapper.classList.add('goby-slider');
-    this.sliderWrapper.append(this.slider);
-    this.mainWrapper.append(this.sliderWrapper);
   }
 &nbsp;
   public initializeSliderElements(settings: SliderAssemblerSettings): void {
@@ -220,14 +212,6 @@ export class Slider {
     );
   }
 &nbsp;
-  private checkIsNeedToDisplayHorizontally(isVertical: boolean): boolean {
-    return ((this.slider.classList.contains('goby-slider__body_state_vertical')) &amp;&amp; (!isVertical));
-  }
-&nbsp;
-  private checkIsNeedToDisplayVertical(isVertical: boolean): boolean {
-    return ((!this.slider.classList.contains('goby-slider__body_state_vertical')) &amp;&amp; (isVertical));
-  }
-&nbsp;
   public changePlane(isVertical: boolean): void {
     switch (true) {
       case this.checkIsNeedToDisplayVertical(isVertical):
@@ -238,9 +222,25 @@ export class Slider {
         this.slider.classList.toggle('goby-slider__body_state_vertical');
         this.sliderWrapper.classList.toggle('goby-slider__slider_state_vertical');
         break;
-      default:
-        break;
+<span class="branch-2 cbranch-no" title="branch not covered" >      default:</span>
+<span class="cstat-no" title="statement not covered" >        break;</span>
     }
+  }
+&nbsp;
+  private createHTMLElements(): void {
+    this.slider.classList.add('goby-slider__body');
+    this.sliderWrapper.classList.add('goby-slider__slider');
+    this.mainWrapper.classList.add('goby-slider');
+    this.sliderWrapper.append(this.slider);
+    this.mainWrapper.append(this.sliderWrapper);
+  }
+&nbsp;
+  private checkIsNeedToDisplayHorizontally(isVertical: boolean): boolean {
+    return ((this.slider.classList.contains('goby-slider__body_state_vertical')) &amp;&amp; (!isVertical));
+  }
+&nbsp;
+  private checkIsNeedToDisplayVertical(isVertical: boolean): boolean {
+    return ((!this.slider.classList.contains('goby-slider__body_state_vertical')) &amp;&amp; (isVertical));
   }
 }
 &nbsp;</pre></td></tr></table></pre>
@@ -250,7 +250,7 @@ export class Slider {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Mon May 16 2022 18:25:40 GMT+0300 (Москва, стандартное время)
+                at Sat Jun 11 2022 18:46:05 GMT+0300 (Москва, стандартное время)
             </div>
         </div>
         <script src="../../prettify.js"></script>
