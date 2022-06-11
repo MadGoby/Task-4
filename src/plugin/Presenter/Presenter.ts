@@ -147,10 +147,13 @@ export class Presenter {
     });
   }
 
-  private static fixStepFromUpdate(userValues: UserSliderOptions): UserSliderOptions {
+  private fixStepFromUpdate(userValues: UserSliderOptions): UserSliderOptions {
     const minStep: number = 0.01;
-    const isStepLessThenMin: boolean = typeof userValues.step === 'number' && userValues.step < minStep;
+    const isStep = userValues.isStep === true;
+    const isStepLessThenMin: boolean = typeof userValues.step === 'number'
+      && userValues.step < minStep;
 
+    if (isStep) this.model.fixValuesAfterStepChange();
     if (isStepLessThenMin) userValues.step = minStep;
     return userValues;
   }
@@ -160,7 +163,7 @@ export class Presenter {
 
     return new Proxy(this.updateEnvironment.update, {
       apply(environment: Update, thisArgs: IPlugin, argArray: [UserSliderOptions]): boolean {
-        const userValues: UserSliderOptions = Presenter.fixStepFromUpdate(argArray[0]);
+        const userValues: UserSliderOptions = that.fixStepFromUpdate(argArray[0]);
 
         thisArgs.options = ({ ...thisArgs.options, ...that.model.values, ...userValues });
         that.view.updateView();

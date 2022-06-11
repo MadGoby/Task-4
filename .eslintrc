@@ -26,6 +26,7 @@
   },
   "ignorePatterns": ["**/*.css", "**/*.html"],
   "rules": {
+    "linebreak-style": ["error", "windows"],
     "max-len": ["error", { "code":  121}],
     "fsd/hof-name-prefix": "error",
     "fsd/no-heavy-constructor": "error",

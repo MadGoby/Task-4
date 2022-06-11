@@ -76,25 +76,23 @@ class Model {
 
   public writeValueFromPosition(settings: CalculationData): void {
     const value: number = this.calculateValue(settings);
-    const isStepTarget = (settings.target === 'from' || settings.target === 'to')
-      && this.getOptions().isStep;
+    const target: ValueTarget = settings.target !== 'unspecified'
+      ? settings.target
+      : this.determineValueTarget(value, settings.target);
+    const isStepTarget = this.getOptions().isStep;
 
     if (!isStepTarget) {
       this.writeValue({
         value,
-        target: settings.target,
+        target,
         isDouble: settings.isDouble,
         sliderWidth: settings.sliderWidth,
       });
       return;
     }
 
-    const target: 'from' | 'to' = settings.target === 'from' ? 'from' : 'to';
-    const isInRange: boolean = Number.isInteger(Model.convertFractional(this.values[target] / Number(this.values.step)));
-    const newValue: number | false = isInRange
-      ? this.calculateStepValue(value, target)
-      : this.calculateOutStepRangeValue(value, target);
-    if (newValue === false) return;
+    const newValue = this.calculateStepValue(value);
+
     this.writeDataToModel({
       target,
       value: newValue,
@@ -125,6 +123,11 @@ class Model {
       60: String(Model.convertFractional(calculateValue(0.6))),
       80: String(Model.convertFractional(calculateValue(0.8))),
     };
+  }
+
+  public fixValuesAfterStepChange(): void {
+    this.values.from = this.calculateStepValue(this.values.from);
+    this.values.to = this.calculateStepValue(this.values.to);
   }
 
   private fixRangeValues(data: DataForRefreshingModel, value: number): number {
@@ -186,32 +189,10 @@ class Model {
     return Model.convertFractional(newValue);
   }
 
-  private calculateOutStepRangeValue(value: number, target: 'from' | 'to'): number | false {
-    const lessStepValue: number = Model.convertFractional(Math.floor(
-      this.values[target] / Number(this.values.step),
+  private calculateStepValue(value: number): number {
+    return Model.convertFractional(Math.round(
+      value / Number(this.values.step),
     ) * Number(this.values.step));
-    const biggerStepValue: number = Model.convertFractional(Math.ceil(
-      this.values[target] / Number(this.values.step),
-    ) * Number(this.values.step));
-
-    switch (true) {
-      case value <= lessStepValue:
-        return lessStepValue;
-      case value >= biggerStepValue:
-        return biggerStepValue;
-      default:
-        return false;
-    }
-  }
-
-  private calculateStepValue(value: number, target: 'from' | 'to'): number | false {
-    const valueDifference: number = Math.abs(value - this.values[target]);
-
-    if (valueDifference < this.values.step) return false;
-
-    return value < this.values[target]
-      ? Model.convertFractional(this.values[target] - Number(this.values.step))
-      : Model.convertFractional(this.values[target] + Number(this.values.step));
   }
 }
 
