@@ -1,7 +1,6 @@
 import { DataForValueScale } from './types';
 import { Model } from './Model';
 import { SliderOptions } from '../types';
-import {Slider} from "src/plugin/View/Slider/Slider";
 
 describe('Model', () => {
   let model: Model;
