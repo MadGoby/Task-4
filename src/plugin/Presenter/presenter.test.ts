@@ -46,6 +46,6 @@ describe('Presenter', () => {
       newPosition: 30,
     });
 
-    expect(model.values.from).toEqual(3);
+    expect(model.values.from).toEqual(2.78);
   });
 });

@@ -1,3 +1,5 @@
+import { Validator } from '../utils/Validator';
+
 import {
   BasicModelSettings,
   CalculationData,
@@ -15,7 +17,7 @@ class Model {
 
   constructor(getOptions: () => SliderOptions) {
     this.getOptions = getOptions;
-    const options: SliderOptions = this.getOptions();
+    const { options } = new Validator(this.getOptions());
 
     const from: number = options.from ? options.from : options.min;
     const to: number = options.to ? options.to : options.max;
@@ -36,7 +38,7 @@ class Model {
   }
 
   public updateValues(): void {
-    const options: SliderOptions = this.getOptions();
+    const { options } = new Validator(this.getOptions());
     const modelValues: Array<ValueTarget> = ['min', 'max', 'from', 'to'];
 
     modelValues.forEach((key: ValueTarget) => {

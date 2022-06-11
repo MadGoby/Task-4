@@ -1,6 +1,7 @@
 import { DataForValueScale } from './types';
 import { Model } from './Model';
 import { SliderOptions } from '../types';
+import {Slider} from "src/plugin/View/Slider/Slider";
 
 describe('Model', () => {
   let model: Model;
@@ -109,6 +110,7 @@ describe('Model', () => {
 
   it('writeValueFromPosition() step if step not passed', () => {
     model.values.step = 2;
+    sliderOptions.isStep = true;
 
     model.writeValueFromPosition({
       target: 'from',
@@ -117,29 +119,16 @@ describe('Model', () => {
       sliderWidth: 100,
     });
 
-    expect(model.values.from).toEqual(0);
+    expect(model.values.from).toEqual(2);
   });
 
   it('writeValueFromPosition() step if passed', () => {
     model.values.step = 2;
+    sliderOptions.isStep = true;
 
     model.writeValueFromPosition({
       target: 'from',
       position: 25,
-      isDouble: false,
-      sliderWidth: 100,
-    });
-
-    expect(model.values.from).toEqual(2);
-  });
-
-  it('writeValueFromPosition() if old value not in range', () => {
-    model.values.step = 2;
-    model.values.from = 1.5;
-
-    model.writeValueFromPosition({
-      target: 'from',
-      position: 35,
       isDouble: false,
       sliderWidth: 100,
     });
