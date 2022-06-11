@@ -21,9 +21,10 @@ class Model {
     const to: number = options.to ? options.to : options.max;
     const stepRatio: number = 40;
     const step: number = options.step ? options.step : (options.max - options.min) / stepRatio;
+    const totalValues = options.max - options.min;
     this.getOptions().from = from;
     this.getOptions().to = to;
-    this.getOptions().step = step;
+    this.getOptions().step = step > totalValues / 2 ? totalValues / 2 : step;
 
     this.values = {
       min: Model.convertFractional(options.min),
@@ -48,7 +49,11 @@ class Model {
       });
     });
 
-    if (options.step) this.values.step = options.step;
+    if (options.step) {
+      const totalValues = options.max - options.min;
+      const step = options.step > totalValues / 2 ? totalValues / 2 : options.step;
+      this.values.step = Model.convertFractional(step);
+    }
   }
 
   public writeDataToModel(data: DataForRefreshingModel): void {
